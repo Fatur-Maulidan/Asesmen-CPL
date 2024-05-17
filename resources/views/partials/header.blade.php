@@ -6,8 +6,8 @@
         </a>
         <div class="d-flex align-items-center ">
             <div class="d-flex flex-column text-end me-2">
-                <div class="fw-bold">Jonh Doe</div>
-                <div>Koordinator Program Studi</div>
+                <div class="fw-bold">{{ $nama }}</div>
+                <div>{{ $role }}</div>
             </div>
             <img src="{{ asset('images/logo-polban2.png') }}" alt="polban" width=40>
         </div>
