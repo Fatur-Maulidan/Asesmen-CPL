@@ -26,8 +26,14 @@
 </head>
 
 <body>
-    @include('partials.header')
-    @include('partials.navbar')
+    @php
+        $isLoginView = $isLoginView ?? false;
+    @endphp
+
+    @if ($isLoginView == false)
+        @include('partials.header')
+        @include('partials.navbar')
+    @endif
 
     <main class="container my-5">
         @yield('main')
@@ -37,5 +43,8 @@
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     {{-- Bootstrap Js --}}
     <script src="{{ asset('js/app.js') }}"></script>
+    {{-- Custom Js --}}
+    @stack('scripts')
 </body>
+
 </html>
