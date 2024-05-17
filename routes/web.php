@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('login', function () {
+    return view('login', [
+        'title' => 'Login'
+    ]);
+});
+
 Route::redirect('/', '/kurikulum');
 
 Route::resource('kurikulum', KurikulumController::class)->only(['index', 'create', 'store']);
