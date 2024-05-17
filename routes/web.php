@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Kaprodi\KurikulumController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/kurikulum');
+
+Route::resource('kurikulum', KurikulumController::class)->only(['index', 'create', 'store']);
