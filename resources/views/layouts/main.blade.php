@@ -17,7 +17,7 @@
 
         body {
             font-family: 'Inter', sans-serif !important;
-            direction: ltr !important;
+            /* direction: rtl !important; */
         }
 
         .no-bullet {
