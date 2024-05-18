@@ -29,6 +29,14 @@ Route::get('mata-kuliah', function () {
     ]);
 })->name('mata-kuliah');
 
+Route::get('mata-kuliah/informasi-umum', function () {
+    return view('dosen.informasi-umum', [
+        'title' => 'Informasi Umum Mata Kuliah',
+        'nama' => 'John Doe',
+        'role' => 'Dosen'
+    ]);
+})->name('mata-kuliah.informasi-umum');
+
 Route::redirect('/', '/kurikulum');
 
 Route::resource('kurikulum', KurikulumController::class)

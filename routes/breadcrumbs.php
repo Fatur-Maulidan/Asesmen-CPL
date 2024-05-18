@@ -22,4 +22,9 @@ Breadcrumbs::for('mata-kuliah', function (BreadcrumbTrail $trail): void {
     $trail->push('Home', route('mata-kuliah'));
 });
 
+Breadcrumbs::for('mata-kuliah.informasi-umum', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah');
+    $trail->push('Informasi Umum Mata Kuliah', route('mata-kuliah.informasi-umum'));
+});
+
 ?>

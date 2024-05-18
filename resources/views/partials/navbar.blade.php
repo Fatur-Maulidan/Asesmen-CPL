@@ -11,20 +11,9 @@
             <li class="nav-item d-flex flex-row">
                 <?php $navbar = isNavbarRole($role); ?>
                 @foreach ($navbar as $index => $nav)
-                    @if ($index == 0)
-                        <a class="nav-link active me-2">{{ $nav }}</a>
-                    @else
-                        <a class="nav-link me-2">{{ $nav }}</a>
-                    @endif
+                    <a class="nav-link {{ $index == 0 ? 'active' : '' }} me-2"
+                        href="{{ $nav['link'] ?? '#' }}">{{ $nav['title'] }}</a>
                 @endforeach
-                {{-- <a class="nav-link active" aria-current="page" href="{{ route('kurikulum.index') }}">Kurikulum</a> --}}
-            </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li> --}}
         </ul>
     </div>
 </nav>

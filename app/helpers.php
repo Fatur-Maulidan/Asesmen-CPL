@@ -1,14 +1,27 @@
 <?php
 
 function isNavbarRole($role){
-    $dosen = array(
-        'Dashboard',
-        'Informasi Umum',
-        'Indikator Kinerja',
-        'Tujuan Pembelajaran',
-        'Rencana Asesmen',
-        'Nilai Mahasiswa'
-    );
+    $dosen = [
+        [
+            'title' => 'Dashboard',
+        ],
+        [
+            'title' => 'Informasi Umum',
+            'link' => 'mata-kuliah/informasi-umum'
+        ],
+        [
+            'title' => 'Indikator Kinerja',
+        ],
+        [
+            'title' => 'Tujuan Pembelajaran',
+        ],
+        [
+            'title' => 'Rencana Asesmen',
+        ],
+        [
+            'title' => 'Nilai Mahasiswa',
+        ]
+    ];
 
     $kaprodi = array(
         'Dashboard',
