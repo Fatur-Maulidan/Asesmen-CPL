@@ -19,7 +19,7 @@
                             <i class="bi bi-eye-slash position-absolute" style="top:20%;right:5%;" id="togglePassword"></i>
                         </div>
                         <div class="mb-5">
-                            <a href=""
+                            <a href="#"
                                 class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
                                 style="font-size:12px;">
                                 Lupa Kata Sandi?

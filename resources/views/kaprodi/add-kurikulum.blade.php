@@ -3,8 +3,7 @@
 @section('breadcrumb')
     <nav aria-label="breadcrumb mb-4">
         <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="{{ route('kurikulum.index') }}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Tambah Kurikulum Baru</li>
+            <li class="breadcrumb-item" aria-current="page">{{ Breadcrumbs::render() }}</li>
         </ol>
     </nav>
     <h1>Tambah Kurikulum Baru</h1>

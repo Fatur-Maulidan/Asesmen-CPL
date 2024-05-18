@@ -21,6 +21,20 @@ Route::get('login', function () {
     ]);
 });
 
+Route::get('mata-kuliah', function () {
+    return view('dosen.home', [
+        'title' => 'Mata Kuliah',
+        'nama' => 'John Doe',
+        'role' => 'Dosen'
+    ]);
+})->name('mata-kuliah');
+
 Route::redirect('/', '/kurikulum');
 
-Route::resource('kurikulum', KurikulumController::class)->only(['index', 'create', 'store']);
+Route::resource('kurikulum', KurikulumController::class)
+    ->only(['index', 'create', 'store'])
+    ->names([
+        'index' => 'kurikulum.index',
+        'create' => 'kurikulum.create',
+        'store' => 'kurikulum.store'
+    ]);
