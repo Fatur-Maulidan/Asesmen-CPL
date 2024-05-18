@@ -8,15 +8,33 @@
         @yield('breadcrumb')
 
         <ul class="nav nav-underline">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ route('kurikulum.index') }}">Kurikulum</a>
+            <li class="nav-item d-flex flex-row">
+                <?php $navbar = isNavbarRole($role); ?>
+                @foreach ($navbar as $index => $nav)
+                    @if ($index == 0)
+                        <a class="nav-link active me-2">{{ $nav }}</a>
+                    @else
+                        <a class="nav-link me-2">{{ $nav }}</a>
+                    @endif
+                @endforeach
+                {{-- <a class="nav-link active" aria-current="page" href="{{ route('kurikulum.index') }}">Kurikulum</a> --}}
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="#">Link</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Link</a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 </nav>
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.nav-link').click(function() {
+                $('.nav-link').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
+@endpush
