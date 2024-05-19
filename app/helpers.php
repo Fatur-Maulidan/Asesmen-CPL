@@ -22,7 +22,7 @@ function isNavbarRole($role){
         ],
         [
             'title' => 'Tujuan Pembelajaran',
-            'link' => '#',
+            'link' => 'mata-kuliah.tujuan-pembelajaran',
         ],
         [
             'title' => 'Rencana Asesmen',

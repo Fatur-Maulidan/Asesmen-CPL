@@ -37,4 +37,9 @@ Breadcrumbs::for('mata-kuliah.indikator-kinerja.detail-informasi', function (Bre
     $trail->push('Detail Informasi Indikator Kinerja', route('mata-kuliah.indikator-kinerja.detail-informasi'));
 });
 
+Breadcrumbs::for('mata-kuliah.tujuan-pembelajaran', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah');
+    $trail->push('Tujuan Pembelajaran', route('mata-kuliah.tujuan-pembelajaran'));
+});
+
 ?>
