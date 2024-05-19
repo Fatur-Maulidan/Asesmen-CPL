@@ -38,6 +38,10 @@
                                 </ul>
                             </div>
                         </div>
+                        <div class="d-flex flex-column justify-content-center px-3 rounded-sm border border-2"
+                            style="height:60px">
+                            <a href="">Lihat Detail</a>
+                        </div>
                     </div>
                 </div>
             @endfor
