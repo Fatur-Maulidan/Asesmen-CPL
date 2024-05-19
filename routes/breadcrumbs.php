@@ -32,4 +32,9 @@ Breadcrumbs::for('mata-kuliah.indikator-kinerja', function (BreadcrumbTrail $tra
     $trail->push('Indikator Kinerja Mata Kuliah', route('mata-kuliah.indikator-kinerja'));
 });
 
+Breadcrumbs::for('mata-kuliah.indikator-kinerja.detail-informasi', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah.indikator-kinerja');
+    $trail->push('Detail Informasi Indikator Kinerja', route('mata-kuliah.indikator-kinerja.detail-informasi'));
+});
+
 ?>

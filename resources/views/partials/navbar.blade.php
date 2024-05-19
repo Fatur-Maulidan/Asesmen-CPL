@@ -11,7 +11,17 @@
             <li class="nav-item d-flex flex-row">
                 <?php $navbar = isNavbarRole($role); ?>
                 @foreach ($navbar as $index => $nav)
-                    <a class="nav-link {{ Route::is($nav['link']) ? 'active' : '' }} me-3"
+                    <?php
+                    $isActive = Route::is($nav['link']);
+                    if (isset($nav['child_links'])) {
+                        foreach ($nav['child_links'] as $childNav) {
+                            if (Route::is($childNav['link'])) {
+                                $isActive = true;
+                            }
+                        }
+                    }
+                    ?>
+                    <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
                         href="{{ $nav['link'] != '#' ? route($nav['link']) : '#' }}">{{ $nav['title'] }}</a>
                 @endforeach
         </ul>

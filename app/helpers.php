@@ -13,6 +13,12 @@ function isNavbarRole($role){
         [
             'title' => 'Indikator Kinerja',
             'link' => 'mata-kuliah.indikator-kinerja',
+            'child_links' => [
+                [
+                    'title' => 'Detail Informasi Indikator Kinerja',
+                    'link' => 'mata-kuliah.indikator-kinerja.detail-informasi'
+                ]
+            ]
         ],
         [
             'title' => 'Tujuan Pembelajaran',

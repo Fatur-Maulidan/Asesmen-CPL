@@ -45,6 +45,14 @@ Route::get('mata-kuliah/indikator-kinerja', function () {
     ]);
 })->name('mata-kuliah.indikator-kinerja');
 
+Route::get('mata-kuliah/indikator-kinerja/detail-informasi', function () {
+    return view('dosen.informasi-indikator-kinerja', [
+        'title' => 'Detail Informasi Indikator Kinerja',
+        'nama' => 'John Doe',
+        'role' => 'Dosen'
+    ]);
+})->name('mata-kuliah.indikator-kinerja.detail-informasi');
+
 Route::redirect('/', '/kurikulum');
 
 Route::resource('kurikulum', KurikulumController::class)
