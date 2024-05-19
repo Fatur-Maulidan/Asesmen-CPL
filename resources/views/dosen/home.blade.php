@@ -65,8 +65,9 @@
                         </div>
                     </div>
                     <div class="card-footer text-body-secondary py-3">
-                        <a href="" class="d-block">Lihat Detailnya</a>
-                        <a href="" class="d-block">Lihat Tujuan Pembelajaran</a>
+                        <a href="{{ route('mata-kuliah.informasi-umum') }}" class="d-block">Lihat Detailnya</a>
+                        <a href="{{ route('mata-kuliah.tujuan-pembelajaran') }}" class="d-block">Lihat Tujuan
+                            Pembelajaran</a>
                         <a href="" class="d-block">Lihat Asesmen Pembelajaran</a>
                     </div>
                 </div>

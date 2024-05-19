@@ -48,21 +48,18 @@
                         <div class="">{{ $nama }}</div>
                     </div>
                 </div>
-
                 <div class="d-flex flex-column mb-4">
                     <div class="fw-bold">Deskripsi</div>
                     <div class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quasi autem unde
                         cum impedit quas ab aspernatur ea illo eum!/div>
                     </div>
                 </div>
-
                 <div class="d-flex flex-column mb-4">
                     <div class="fw-bold">Indikator Kinerja Induk</div>
                     <div class="d-flex flex-column">
                         <div class="">SS-1.{{ $i }}</div>
                     </div>
                 </div>
-
                 <div class="d-flex flex-column">
                     <div class="fw-bold">Bobot berdasarkan Indikator Kinerja</div>
                     <div class="">1</div>
