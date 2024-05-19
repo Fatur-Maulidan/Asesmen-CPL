@@ -4,22 +4,27 @@ function isNavbarRole($role){
     $dosen = [
         [
             'title' => 'Dashboard',
+            'link' => '#',
         ],
         [
             'title' => 'Informasi Umum',
-            'link' => 'mata-kuliah/informasi-umum'
+            'link' => 'mata-kuliah.informasi-umum'
         ],
         [
             'title' => 'Indikator Kinerja',
+            'link' => '#',
         ],
         [
             'title' => 'Tujuan Pembelajaran',
+            'link' => '#',
         ],
         [
             'title' => 'Rencana Asesmen',
+            'link' => '#',
         ],
         [
             'title' => 'Nilai Mahasiswa',
+            'link' => '#',
         ]
     ];
 
