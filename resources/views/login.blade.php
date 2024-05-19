@@ -35,6 +35,7 @@
         </div>
     </div>
 @endsection
+
 @push('scripts')
     <script>
         const togglePassword = document.querySelector('#togglePassword');

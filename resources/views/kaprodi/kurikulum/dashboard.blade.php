@@ -1,0 +1,24 @@
+@extends('layouts.main')
+
+@section('breadcrumb')
+    {{ Breadcrumbs::render('dashboard', 2022) }}
+@endsection
+
+@section('main')
+    {{-- Filter buttons --}}
+    <div class="row mb-4">
+        <div class="col-12">
+            <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="option1">Semua</label>
+
+            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+            <label class="btn btn-outline-primary rounded-pill px-3" for="option2">Berjalan</label>
+
+            <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+            <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Peninjauan</label>
+
+            <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
+            <label class="btn btn-outline-primary rounded-pill px-3" for="option4">Arsip</label>
+        </div>
+    </div>
+@endsection

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Kaprodi\CPLController;
+use App\Http\Controllers\Kaprodi\DashboardController;
 use App\Http\Controllers\Kaprodi\KurikulumController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +26,5 @@ Route::get('login', function () {
 Route::redirect('/', '/kurikulum');
 
 Route::resource('kurikulum', KurikulumController::class)->only(['index', 'create', 'store']);
+Route::get('{kurikulum}', [DashboardController::class, 'index'])->name('dashboard');
+Route::resource('{kurikulum}/cpl', CPLController::class)->only(['index', 'create', 'store']);

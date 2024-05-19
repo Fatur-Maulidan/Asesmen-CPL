@@ -5,19 +5,20 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class KurikulumController extends Controller
+class CPLController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($kurikulum)
     {
-        return view('kaprodi.kurikulum.index', [
+        return view('kaprodi.cpl.index', [
             'title' => 'Home',
             'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $kurikulum
         ]);
     }
 
@@ -28,11 +29,7 @@ class KurikulumController extends Controller
      */
     public function create()
     {
-        return view('kaprodi.kurikulum.create', [
-            'title' => 'Tambah Kurikulum Baru',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
-        ]);
+        //
     }
 
     /**

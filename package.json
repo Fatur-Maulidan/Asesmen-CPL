@@ -12,8 +12,6 @@
     "devDependencies": {
         "axios": "^1.6.8",
         "bootstrap": "^5.3.3",
-        "browser-sync": "^3.0.2",
-        "browser-sync-webpack-plugin": "^2.3.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
@@ -21,7 +19,9 @@
         "sass": "^1.77.1"
     },
     "dependencies": {
+        "@popperjs/core": "^2.11.8",
         "bootstrap-icons": "^1.11.3",
+        "jquery": "^3.7.1",
         "sass-loader": "^14.2.1"
     }
 }

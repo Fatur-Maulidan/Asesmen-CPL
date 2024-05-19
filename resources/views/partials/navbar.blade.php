@@ -7,16 +7,39 @@
 
         @yield('breadcrumb')
 
-        <ul class="nav nav-underline">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ route('kurikulum.index') }}">Kurikulum</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
+        <ul class="nav nav-underline mt-4">
+            @if (Route::is('kurikulum.*'))
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ route('kurikulum.index') }}">Kurikulum</a>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a class="nav-link @if (url()->current() == route('dashboard', ['kurikulum' => 2022])) active @endif"
+                        href="{{ route('dashboard', ['kurikulum' => 2022]) }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @if (url()->current() == route('cpl.index', ['kurikulum' => 2022])) active @endif"
+                        href="{{ route('cpl.index', ['kurikulum' => 2022]) }}">Capaian Pembelajaran</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Indikator Kinerja</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Tujuan Pembelajaran</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Mata Kuliah</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Mahasiswa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Dosen</a>
+                </li>
+                <li class="nav-item ms-auto align-self-end">
+                    <h3 class="mb-0"><span class="badge text-bg-warning rounded-bottom-0">Peninjauan</span></h3>
+                </li>
+            @endif
         </ul>
     </div>
 </nav>
