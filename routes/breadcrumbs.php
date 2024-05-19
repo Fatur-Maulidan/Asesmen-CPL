@@ -27,4 +27,9 @@ Breadcrumbs::for('mata-kuliah.informasi-umum', function (BreadcrumbTrail $trail)
     $trail->push('Informasi Umum Mata Kuliah', route('mata-kuliah.informasi-umum'));
 });
 
+Breadcrumbs::for('mata-kuliah.indikator-kinerja', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah');
+    $trail->push('Indikator Kinerja Mata Kuliah', route('mata-kuliah.indikator-kinerja'));
+});
+
 ?>

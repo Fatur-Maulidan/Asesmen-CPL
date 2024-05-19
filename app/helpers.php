@@ -12,7 +12,7 @@ function isNavbarRole($role){
         ],
         [
             'title' => 'Indikator Kinerja',
-            'link' => '#',
+            'link' => 'mata-kuliah.indikator-kinerja',
         ],
         [
             'title' => 'Tujuan Pembelajaran',
@@ -28,15 +28,36 @@ function isNavbarRole($role){
         ]
     ];
 
-    $kaprodi = array(
-        'Dashboard',
-        'Capaian Pembelajaran',
-        'Indikator Kinerja',
-        'Tujuan Pembelajaran',
-        'Mata Kuliah',
-        'Mahasiswa',
-        'Dosen'
-    );
+    $kaprodi = [
+        [
+            'title' => 'Dashboard',
+            'link' => '#',
+        ],
+        [
+            'title' => 'Capaian Pembelajaran',
+            'link' => '#',
+        ],
+        [
+            'title' => 'Indikator Kinerja',
+            'link' => '#',
+        ],
+        [
+            'title' => 'Tujuan Pembelajaran',
+            'link' => '#',
+        ],
+        [
+            'title' => 'Mata Kuliah',
+            'link' => '#',
+        ],
+        [
+            'title' => 'Mahasiswa',
+            'link' => '#',
+        ],
+        [
+            'title' => 'Dosen',
+            'link' => '#',
+        ],
+    ];
 
     return $role == 'Dosen' ? $dosen : $kaprodi;
 } 
