@@ -23,6 +23,12 @@ function isNavbarRole($role){
         [
             'title' => 'Tujuan Pembelajaran',
             'link' => 'mata-kuliah.tujuan-pembelajaran',
+            'child_links' => [
+                [
+                    'title' => 'Detail Informasi Tujuan Pembelajaran',
+                    'link' => 'mata-kuliah.tujuan-pembelajaran.detail-informasi'
+                ]
+            ]
         ],
         [
             'title' => 'Rencana Asesmen',

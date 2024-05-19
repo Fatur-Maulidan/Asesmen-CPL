@@ -46,7 +46,7 @@ Route::get('mata-kuliah/indikator-kinerja', function () {
 })->name('mata-kuliah.indikator-kinerja');
 
 Route::get('mata-kuliah/indikator-kinerja/detail-informasi', function () {
-    return view('dosen.informasi-indikator-kinerja', [
+    return view('dosen.detail-informasi-indikator-kinerja', [
         'title' => 'Detail Informasi Indikator Kinerja',
         'nama' => 'John Doe',
         'role' => 'Dosen'
@@ -60,6 +60,14 @@ Route::get('mata-kuliah/tujuan-pembelajaran', function () {
         'role' => 'Dosen'
     ]);
 })->name('mata-kuliah.tujuan-pembelajaran');
+
+Route::get('mata-kuliah/tujuan-pembelajaran/detail-informasi', function () {
+    return view('dosen.detail-informasi-tujuan-pembelajaran', [
+        'title' => 'Detail Informasi Tujuan Pembelajaran',
+        'nama' => 'John Doe',
+        'role' => 'Dosen'
+    ]);
+})->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
 
 Route::redirect('/', '/kurikulum');
 

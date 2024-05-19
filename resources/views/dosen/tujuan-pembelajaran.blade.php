@@ -47,7 +47,7 @@
                         </div>
                         <div class="d-flex flex-column justify-content-center px-3 rounded-sm border border-1"
                             style="height:60px">
-                            <a href="">Lihat Detail</a>
+                            <a href="{{ route('mata-kuliah.tujuan-pembelajaran.detail-informasi') }}">Lihat Detail</a>
                         </div>
                     </div>
                 </div>

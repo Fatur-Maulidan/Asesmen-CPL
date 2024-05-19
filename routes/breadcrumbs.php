@@ -42,4 +42,8 @@ Breadcrumbs::for('mata-kuliah.tujuan-pembelajaran', function (BreadcrumbTrail $t
     $trail->push('Tujuan Pembelajaran', route('mata-kuliah.tujuan-pembelajaran'));
 });
 
+Breadcrumbs::for('mata-kuliah.tujuan-pembelajaran.detail-informasi', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah.tujuan-pembelajaran');
+    $trail->push('Detail Informasi Tujuan Pembelajaran', route('mata-kuliah.tujuan-pembelajaran.detail-informasi'));
+});
 ?>
