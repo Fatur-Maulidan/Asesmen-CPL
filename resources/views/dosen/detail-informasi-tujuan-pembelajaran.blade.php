@@ -60,12 +60,12 @@
         <div class="d-flex flex-column pt-3 px-4 border border-1 rounded" style="width: 30%; height:100vh;">
             @for ($i = 1; $i <= 4; $i++)
                 @if ($i == 1)
-                    <div class="d-flex flex-row py-2 px-3 rounded border border-1 justify-content-between mb-2">
+                    <div class="d-flex flex-row py-2 px-3 rounded border border-1 justify-content-between mb-2 btn-tp">
                         <div class="">TP-{{ $i }}</div>
                         <div class="badge text-bg-success">Disetujui</div>
                     </div>
                 @else
-                    <div class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2">
+                    <div class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2 btn-tp">
                         <div class="">TP-{{ $i }}</div>
                         @if ($i == 1 || $i == 2)
                             <div class="badge text-bg-success ms-3">Disetujui</div>
@@ -122,4 +122,9 @@
     @endsection
 
     @push('scripts')
+        <script>
+            ($document).ready(function() {
+
+            });
+        </script>
     @endpush
