@@ -49,13 +49,45 @@
                 <div class="modal-footer">
                     <div class="d-flex flex-row" style="width: 100%">
                         <button type="button" class="btn btn-danger me-2" style="width: 50%"
-                            data-bs-dismiss="modal">Batal</button>
+                            data-bs-target="#batal-ubah-tujuan-pembelajaran" data-bs-dismiss="modal"
+                            data-bs-toggle="modal">Batal</button>
                         <button type="button" class="btn btn-success" style="width: 50%">Ajukan Persetujuan</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="batal-ubah-tujuan-pembelajaran" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pembatalan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="width: 100%">
+                    <div class="d-flex flex-column justify-content-center align-items-center" style="height: 200px">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor"
+                            style="color:#F39035;" class="bi bi-exclamation-triangle-fill mb-2" viewBox="0 0 16 16">
+                            <path
+                                d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                        </svg>
+                        <div class="">Anda yakin ingin membatalkan proses ini?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex flex-row" style="width: 100%">
+                        <button type="button" class="btn btn-danger me-2" style="width: 50%"
+                            data-bs-target="#ubah-tujuan-pembelajaran" data-bs-dismiss="modal"
+                            data-bs-toggle="modal">Tidak</button>
+                        <button type="button" class="btn btn-success" style="width: 50%">Ya</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="d-flex flex-row justify-content-center">
         <div class="d-flex flex-column pt-3 px-4 border border-1 rounded" style="width: 30%; height:100vh;">
             @for ($i = 1; $i <= 4; $i++)
@@ -78,6 +110,7 @@
                 @endif
             @endfor
         </div>
+        <div id="spreadsheet"></div>
         <div class="ms-4" style="width: 70%">
             <div class="d-flex flex-column">
                 <div class="d-flex flex-row mb-4 justify-content-between">
@@ -123,8 +156,52 @@
 
     @push('scripts')
         <script>
-            ($document).ready(function() {
+            var data = [
+                ['Jazz', 'Honda', '2019-02-12', '', true, '$ 2.000,00', '#777700'],
+                ['Civic', 'Honda', '2018-07-11', '', true, '$ 4.000,01', '#007777'],
+            ];
 
+            jspreadsheet(document.getElementById('spreadsheet'), {
+                data: data,
+                columns: [{
+                        type: 'text',
+                        title: 'Car',
+                        width: 120
+                    },
+                    {
+                        type: 'dropdown',
+                        title: 'Make',
+                        width: 200,
+                        source: ["Alfa Romeo", "Audi", "Bmw"]
+                    },
+                    {
+                        type: 'calendar',
+                        title: 'Available',
+                        width: 200
+                    },
+                    {
+                        type: 'image',
+                        title: 'Photo',
+                        width: 120
+                    },
+                    {
+                        type: 'checkbox',
+                        title: 'Stock',
+                        width: 80
+                    },
+                    {
+                        type: 'numeric',
+                        title: 'Price',
+                        width: 100,
+                        mask: '$ #.##,00',
+                        decimal: ','
+                    },
+                    {
+                        type: 'color',
+                        width: 100,
+                        render: 'square',
+                    }
+                ]
             });
         </script>
     @endpush

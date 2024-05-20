@@ -34,6 +34,10 @@
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
 
+    {{-- Jexcel Spreadsheet --}}
+    <link rel="stylesheet" href="https://jsuites.net/docs/v4/jsuites.css" type="text/css" />
+    <link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+
 </head>
 
 <body>
@@ -54,6 +58,9 @@
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     {{-- Bootstrap Js --}}
     <script src="{{ asset('js/app.js') }}"></script>
+    {{-- Jexcel Spreadsheet --}}
+    <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+    <script src="https://jsuites.net/docs/v4/jsuites.js"></script>
     {{-- Select2 --}}
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
