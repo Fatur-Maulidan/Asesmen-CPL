@@ -10,6 +10,7 @@
 @endsection
 
 @section('main')
+    {{-- Modal 1 --}}
     <div class="modal fade" id="ubah-tujuan-pembelajaran" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -57,14 +58,13 @@
             </div>
         </div>
     </div>
-
+    {{-- Modal 2 --}}
     <div class="modal fade" id="batal-ubah-tujuan-pembelajaran" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Pembatalan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="width: 100%">
                     <div class="d-flex flex-column justify-content-center align-items-center" style="height: 200px">
@@ -81,7 +81,8 @@
                         <button type="button" class="btn btn-danger me-2" style="width: 50%"
                             data-bs-target="#ubah-tujuan-pembelajaran" data-bs-dismiss="modal"
                             data-bs-toggle="modal">Tidak</button>
-                        <button type="button" class="btn btn-success" style="width: 50%">Ya</button>
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Close"
+                            style="width: 50%">Ya</button>
                     </div>
                 </div>
             </div>
@@ -128,7 +129,7 @@
                             <div class="">{{ $nama }}</div>
                         </div>
                     </div>
-                    <div class="d-flex flex-row">
+                    <div class="d-flex flex-row" style="height: 40px">
                         <button class="btn btn-danger me-2 px-4">Hapus</button>
                         <button class="btn btn-warning px-4" data-bs-toggle="modal"
                             data-bs-target="#ubah-tujuan-pembelajaran">Ubah</button>
@@ -155,53 +156,5 @@
     @endsection
 
     @push('scripts')
-        <script>
-            var data = [
-                ['Jazz', 'Honda', '2019-02-12', '', true, '$ 2.000,00', '#777700'],
-                ['Civic', 'Honda', '2018-07-11', '', true, '$ 4.000,01', '#007777'],
-            ];
-
-            jspreadsheet(document.getElementById('spreadsheet'), {
-                data: data,
-                columns: [{
-                        type: 'text',
-                        title: 'Car',
-                        width: 120
-                    },
-                    {
-                        type: 'dropdown',
-                        title: 'Make',
-                        width: 200,
-                        source: ["Alfa Romeo", "Audi", "Bmw"]
-                    },
-                    {
-                        type: 'calendar',
-                        title: 'Available',
-                        width: 200
-                    },
-                    {
-                        type: 'image',
-                        title: 'Photo',
-                        width: 120
-                    },
-                    {
-                        type: 'checkbox',
-                        title: 'Stock',
-                        width: 80
-                    },
-                    {
-                        type: 'numeric',
-                        title: 'Price',
-                        width: 100,
-                        mask: '$ #.##,00',
-                        decimal: ','
-                    },
-                    {
-                        type: 'color',
-                        width: 100,
-                        render: 'square',
-                    }
-                ]
-            });
-        </script>
+        <script></script>
     @endpush

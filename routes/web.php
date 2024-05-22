@@ -72,9 +72,4 @@ Route::get('mata-kuliah/tujuan-pembelajaran/detail-informasi', function () {
 Route::redirect('/', '/kurikulum');
 
 Route::resource('kurikulum', KurikulumController::class)
-    ->only(['index', 'create', 'store'])
-    ->names([
-        'index' => 'kurikulum.index',
-        'create' => 'kurikulum.create',
-        'store' => 'kurikulum.store'
-    ]);
+    ->only(['index', 'create', 'store']);

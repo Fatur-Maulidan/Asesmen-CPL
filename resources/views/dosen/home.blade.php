@@ -11,7 +11,8 @@
 
 @section('main')
     <div class="d-flex flex-row mb-4 me-4" style="width: 50%;">
-        <select class="form-select" id="tahun-akademik" style="width:50%" data-placeholder="Pilih Tahun Akademik">
+        <select class="form-select" id="tahun-akademik" style="width:50%;padding-left:-200px"
+            data-placeholder="Pilih Tahun Akademik">
             <option></option>
             @for ($index = 0; $index < 5; $index++)
                 <option style="color:black" value="202{{ $index }}/202{{ $index + 1 }}">
