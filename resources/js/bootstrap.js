@@ -30,3 +30,4 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.$ = require('jquery');
 window.Popper = require('@popperjs/core');
 window.bootstrap = require('bootstrap');
+require('select2');
