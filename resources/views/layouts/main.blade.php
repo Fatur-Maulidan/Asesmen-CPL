@@ -39,9 +39,7 @@
         @yield('main')
     </main>
 
-    {{-- jquery --}}
-    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
-    {{-- Bootstrap Js --}}
+    {{-- App --}}
     <script src="{{ asset('js/app.js') }}"></script>
     {{-- Custom Js --}}
     @stack('scripts')

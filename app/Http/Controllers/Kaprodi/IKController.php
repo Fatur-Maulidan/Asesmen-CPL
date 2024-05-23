@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CPLController extends Controller
+class IKController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CPLController extends Controller
      */
     public function index($kurikulum)
     {
-        return view('kaprodi.cpl.index', [
-            'title' => 'CPL',
+        return view('kaprodi.ik.index', [
+            'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum
@@ -51,10 +51,21 @@ class CPLController extends Controller
      */
     public function show($id)
     {
-        return view('kaprodi.cpl.show', [
-            'title' => 'CPL',
+        return view('kaprodi.ik.show', [
+            'title' => 'IK',
             'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
+            'role' => 'Koordinator Program Studi',
+            // 'kurikulum' => $kurikulum
+        ]);
+    }
+
+    public function detail($id)
+    {
+        return view('kaprodi.ik.detail', [
+            'title' => 'IK',
+            'nama' => 'Jhon Doe',
+            'role' => 'Koordinator Program Studi',
+            // 'kurikulum' => $kurikulum
         ]);
     }
 
@@ -66,10 +77,11 @@ class CPLController extends Controller
      */
     public function edit($id)
     {
-        return view('kaprodi.cpl.edit', [
-            'title' => 'CPL',
+        return view('kaprodi.ik.edit', [
+            'title' => 'IK',
             'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
+            'role' => 'Koordinator Program Studi',
+            // 'kurikulum' => $kurikulum
         ]);
     }
 

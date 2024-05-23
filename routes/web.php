@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Kaprodi\CPLController;
 use App\Http\Controllers\Kaprodi\DashboardController;
+use App\Http\Controllers\Kaprodi\IKController;
 use App\Http\Controllers\Kaprodi\KurikulumController;
+use App\Http\Controllers\Kaprodi\TPController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,4 +29,7 @@ Route::redirect('/', '/kurikulum');
 
 Route::resource('kurikulum', KurikulumController::class)->only(['index', 'create', 'store']);
 Route::get('{kurikulum}', [DashboardController::class, 'index'])->name('dashboard');
-Route::resource('{kurikulum}/cpl', CPLController::class)->only(['index', 'create', 'store']);
+Route::resource('{kurikulum}/cpl', CPLController::class)->only(['index', 'show', 'edit',]);
+Route::resource('{kurikulum}/ik', IKController::class)->only(['index', 'show', 'edit',]);
+Route::get('{kurikulum}/ik/{ik}/detail', [IKController::class, 'detail'])->name('ik.detail');
+Route::resource('{kurikulum}/tp', TPController::class)->only(['index', 'show', 'edit',]);

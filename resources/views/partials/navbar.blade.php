@@ -18,14 +18,16 @@
                         href="{{ route('dashboard', ['kurikulum' => 2022]) }}">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @if (url()->current() == route('cpl.index', ['kurikulum' => 2022])) active @endif"
+                    <a class="nav-link @if (Route::is('cpl.*')) active @endif"
                         href="{{ route('cpl.index', ['kurikulum' => 2022]) }}">Capaian Pembelajaran</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Indikator Kinerja</a>
+                    <a class="nav-link @if (Route::is('ik.*')) active @endif"
+                        href="{{ route('ik.index', ['kurikulum' => 2022]) }}">Indikator Kinerja</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Tujuan Pembelajaran</a>
+                    <a class="nav-link @if (Route::is('tp.*')) active @endif"
+                        href="{{ route('tp.index', ['kurikulum' => 2022]) }}">Tujuan Pembelajaran</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="">Mata Kuliah</a>
