@@ -93,6 +93,14 @@ Route::get('mata-kuliah/rencana-asesmen/detail-informasi/ubah', function () {
     ]);
 })->name('mata-kuliah.rencana-asesmen.detail-informasi.ubah');
 
+Route::get('mata-kuliah/nilai-mahasiswa', function () {
+    return view('dosen.nilai-mahasiswa', [
+        'title' => 'Nilai Mahasiswa',
+        'nama' => 'John Doe',
+        'role' => 'Dosen'
+    ]);
+})->name('mata-kuliah.nilai-mahasiswa');
+
 Route::redirect('/', '/kurikulum');
 
 Route::resource('kurikulum', KurikulumController::class)
