@@ -1,0 +1,19 @@
+.btn-tp {
+    box-sizing: border-box; /* Add this line */
+    border: 1px solid; /* Assuming you want a solid border */
+    border-color: white;
+}
+
+.btn-tp:hover {
+    border-style: ridge;
+    position: relative;
+    border-color: black;
+}
+
+.select2-container--bootstrap-5 .select2-selection--single{
+    background-position: right .75rem center !important;
+}
+
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear{
+    left: 16rem !important;
+}

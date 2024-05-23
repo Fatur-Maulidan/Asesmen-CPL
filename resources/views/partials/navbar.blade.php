@@ -7,7 +7,7 @@
 
         @yield('breadcrumb')
 
-        <ul class="nav nav-underline mt-4">
+        {{-- <ul class="nav nav-underline mt-4">
             @if (Route::is('kurikulum.*'))
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ route('kurikulum.index') }}">Kurikulum</a>
@@ -41,7 +41,36 @@
                 <li class="nav-item ms-auto align-self-end">
                     <h3 class="mb-0"><span class="badge text-bg-warning rounded-bottom-0">Peninjauan</span></h3>
                 </li>
-            @endif
+            @endif --}}
+
+        <ul class="nav nav-underline">
+            <li class="nav-item d-flex flex-row">
+                <?php $navbar = isNavbarRole($role); ?>
+                @foreach ($navbar as $index => $nav)
+                    <?php
+                    $isActive = Route::is($nav['link']);
+                    if (isset($nav['child_links'])) {
+                        foreach ($nav['child_links'] as $childNav) {
+                            if (Route::is($childNav['link'])) {
+                                $isActive = true;
+                            }
+                        }
+                    }
+                    ?>
+                    <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
+                        href="{{ $nav['link'] != '#' ? route($nav['link']) : '#' }}">{{ $nav['title'] }}</a>
+                @endforeach
+            </li>
         </ul>
     </div>
 </nav>
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.nav-link').click(function() {
+                $('.nav-link').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
+@endpush

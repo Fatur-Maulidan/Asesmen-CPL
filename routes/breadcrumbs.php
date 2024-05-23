@@ -21,3 +21,33 @@ Breadcrumbs::for('cpl.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard', 2022);
     $trail->push('Capaian Pembelajaran', route('cpl.index', ['kurikulum' => 2022]));
 });
+
+// Breadcrumb For Dosen-Mata Kuliah
+Breadcrumbs::for('mata-kuliah', function (BreadcrumbTrail $trail): void {
+    $trail->push('Home', route('mata-kuliah'));
+});
+
+Breadcrumbs::for('mata-kuliah.informasi-umum', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah');
+    $trail->push('Informasi Umum Mata Kuliah', route('mata-kuliah.informasi-umum'));
+});
+
+Breadcrumbs::for('mata-kuliah.indikator-kinerja', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah');
+    $trail->push('Indikator Kinerja Mata Kuliah', route('mata-kuliah.indikator-kinerja'));
+});
+
+Breadcrumbs::for('mata-kuliah.indikator-kinerja.detail-informasi', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah.indikator-kinerja');
+    $trail->push('Detail Informasi Indikator Kinerja', route('mata-kuliah.indikator-kinerja.detail-informasi'));
+});
+
+Breadcrumbs::for('mata-kuliah.tujuan-pembelajaran', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah');
+    $trail->push('Tujuan Pembelajaran', route('mata-kuliah.tujuan-pembelajaran'));
+});
+
+Breadcrumbs::for('mata-kuliah.tujuan-pembelajaran.detail-informasi', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah.tujuan-pembelajaran');
+    $trail->push('Detail Informasi Tujuan Pembelajaran', route('mata-kuliah.tujuan-pembelajaran.detail-informasi'));
+});
