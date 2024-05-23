@@ -69,6 +69,30 @@ Route::get('mata-kuliah/tujuan-pembelajaran/detail-informasi', function () {
     ]);
 })->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
 
+Route::get('mata-kuliah/rencana-asesmen', function () {
+    return view('dosen.rencana-asesmen', [
+        'title' => 'Rencana Asesmen',
+        'nama' => 'John Doe',
+        'role' => 'Dosen'
+    ]);
+})->name('mata-kuliah.rencana-asesmen');
+
+Route::get('mata-kuliah/rencana-asesmen/detail-informasi', function () {
+    return view('dosen.detail-informasi-rencana-asesmen', [
+        'title' => 'Detail Informasi Rencana Asesmen',
+        'nama' => 'John Doe',
+        'role' => 'Dosen'
+    ]);
+})->name('mata-kuliah.rencana-asesmen.detail-informasi');
+
+Route::get('mata-kuliah/rencana-asesmen/detail-informasi/ubah', function () {
+    return view('dosen.ubah-detail-informasi-rencana-asesmen', [
+        'title' => 'Ubah Rencana Asesmen',
+        'nama' => 'John Doe',
+        'role' => 'Dosen'
+    ]);
+})->name('mata-kuliah.rencana-asesmen.detail-informasi.ubah');
+
 Route::redirect('/', '/kurikulum');
 
 Route::resource('kurikulum', KurikulumController::class)

@@ -32,7 +32,17 @@ function isNavbarRole($role){
         ],
         [
             'title' => 'Rencana Asesmen',
-            'link' => '#',
+            'link' => 'mata-kuliah.rencana-asesmen',
+            'child_links' => [
+                [
+                    'title' => 'Detail Informasi Rencana Asesmen',
+                    'link' => 'mata-kuliah.rencana-asesmen.detail-informasi'
+                ],
+                [
+                    'title' => 'Ubah Detail Informasi Rencana Asesmen',
+                    'link' => 'mata-kuliah.rencana-asesmen.detail-informasi.ubah'
+                ]
+            ]
         ],
         [
             'title' => 'Nilai Mahasiswa',

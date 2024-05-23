@@ -46,4 +46,21 @@ Breadcrumbs::for('mata-kuliah.tujuan-pembelajaran.detail-informasi', function (B
     $trail->parent('mata-kuliah.tujuan-pembelajaran');
     $trail->push('Detail Informasi Tujuan Pembelajaran', route('mata-kuliah.tujuan-pembelajaran.detail-informasi'));
 });
+
+
+Breadcrumbs::for('mata-kuliah.rencana-asesmen', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah');
+    $trail->push('Rencana Asesmen', route('mata-kuliah.rencana-asesmen'));
+});
+
+
+Breadcrumbs::for('mata-kuliah.rencana-asesmen.detail-informasi', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah.rencana-asesmen');
+    $trail->push('Asesmen Pembelajaran', route('mata-kuliah.rencana-asesmen.detail-informasi'));
+});
+
+Breadcrumbs::for('mata-kuliah.rencana-asesmen.detail-informasi.ubah', function (BreadcrumbTrail $trail): void {
+    $trail->parent('mata-kuliah.rencana-asesmen.detail-informasi');
+    $trail->push('Ubah Detail Informasi Rencana Asesmen', route('mata-kuliah.rencana-asesmen.detail-informasi.ubah'));
+});
 ?>
