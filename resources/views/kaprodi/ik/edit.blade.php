@@ -1,7 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{-- {{ Breadcrumbs::render('cpl.show') }} --}}
+    {{ Breadcrumbs::render('ik.edit', $kurikulum, $ik['kode']) }}
+    <h1 class="fw-bold mb-0">Ubah Pemetaan {{ $ik['kode'] }} pada Capaian Pembelajaran</h1>
 @endsection
 
 @section('main')
@@ -11,27 +12,27 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100 active">IK-1</a>
+                        <a href="" class="btn btn-light w-100 text-start active">IK-1</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-2</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-2</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-3</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-3</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-4</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-4</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-5</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-5</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-6</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-6</a>
                     </div>
                 </div>
             </div>
@@ -83,7 +84,7 @@
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
+                                <button class="accordion-button fw-bold bg-light" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     Sikap (S)
                                 </button>
@@ -129,7 +130,7 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold collapsed" type="button"
+                                <button class="accordion-button fw-bold bg-light collapsed" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
                                     aria-controls="collapseTwo">
                                     Pengetahuan (P)
@@ -175,7 +176,7 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold collapsed" type="button"
+                                <button class="accordion-button fw-bold bg-light collapsed" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
                                     aria-controls="collapseThree">
                                     KU (Keterampilan Umum)
@@ -222,7 +223,7 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold collapsed" type="button"
+                                <button class="accordion-button fw-bold bg-light collapsed" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
                                     aria-controls="collapseFour">
                                     KK (Keterampilan Khusus)

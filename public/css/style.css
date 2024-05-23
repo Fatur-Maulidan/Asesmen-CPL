@@ -1,6 +1,20 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif !important;
+    /* direction: rtl !important; */
+}
+
+.no-bullet {
+    list-style-type: none;
+}
+
 .btn-tp {
-    box-sizing: border-box; /* Add this line */
-    border: 1px solid; /* Assuming you want a solid border */
+    box-sizing: border-box;
+    /* Add this line */
+    border: 1px solid;
+    /* Assuming you want a solid border */
     border-color: white;
 }
 
@@ -10,10 +24,10 @@
     border-color: black;
 }
 
-.select2-container--bootstrap-5 .select2-selection--single{
+.select2-container--bootstrap-5 .select2-selection--single {
     background-position: right .75rem center !important;
 }
 
-.select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear{
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear {
     left: 16rem !important;
 }

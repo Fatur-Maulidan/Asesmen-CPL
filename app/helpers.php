@@ -1,6 +1,7 @@
 <?php
 
-function isNavbarRole($role){
+function isNavbarRole($role)
+{
     $dosen = [
         [
             'title' => 'Dashboard',
@@ -42,6 +43,11 @@ function isNavbarRole($role){
 
     $kaprodi = [
         [
+            'title' => 'Home',
+            'link' => route('kurikulum.index'),
+            'page_name' => 'Kurikulum'
+        ],
+        [
             'title' => 'Dashboard',
             'link' => '#',
         ],
@@ -72,6 +78,4 @@ function isNavbarRole($role){
     ];
 
     return $role == 'Dosen' ? $dosen : $kaprodi;
-} 
-
-?>
+}

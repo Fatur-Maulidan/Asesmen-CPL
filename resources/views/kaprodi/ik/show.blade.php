@@ -1,7 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{-- {{ Breadcrumbs::render('cpl.show') }} --}}
+    {{ Breadcrumbs::render('ik.show', $kurikulum, $ik['kode']) }}
+    <h1 class="fw-bold mb-0">{{ $ik['kode'] }}</h1>
 @endsection
 
 @section('main')
@@ -11,27 +12,27 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100 active">IK-1</a>
+                        <a href="" class="btn btn-light w-100 text-start active">IK-1</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-2</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-2</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-3</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-3</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-4</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-4</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-5</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-5</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-6</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-6</a>
                     </div>
                 </div>
             </div>
@@ -86,7 +87,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('ik.detail', ['kurikulum' => 2022, 'ik' => 'ik-1']) }}"
+                    <a href="{{ route('ik.detail', ['kurikulum' => $kurikulum, 'ik' => 'ss-1.1']) }}"
                         class="btn btn-outline-primary ">Pemetaannya pada CPL</a>
                     <button class="btn btn-danger">Hapus</button>
                     {{-- Button trigger modal --}}
@@ -108,7 +109,7 @@
                     <div class="accordion" id="accordionExample2">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                <button class="accordion-button bg-light" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">Rubrik
                                     1 ( < 50 )</button>
                             </h2>
@@ -125,8 +126,9 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">Rubrik
+                                <button class="accordion-button bg-light collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo2" aria-expanded="false"
+                                    aria-controls="collapseTwo2">Rubrik
                                     2 ( 50 - 60 )</button>
                             </h2>
                             <div id="collapseTwo2" class="accordion-collapse collapse"
@@ -142,8 +144,8 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree2" aria-expanded="false"
+                                <button class="accordion-button bg-light collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false"
                                     aria-controls="collapseThree2">Rubrik 3 ( 61 - 71 )</button>
                             </h2>
                             <div id="collapseThree2" class="accordion-collapse collapse"
@@ -159,8 +161,8 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFour2" aria-expanded="false"
+                                <button class="accordion-button bg-light collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseFour2" aria-expanded="false"
                                     aria-controls="collapseFour2">Rubrik 4 ( 72 - 80 )</button>
                             </h2>
                             <div id="collapseFour2" class="accordion-collapse collapse"
@@ -176,8 +178,8 @@
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFive2" aria-expanded="false"
+                                <button class="accordion-button bg-light collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseFive2" aria-expanded="false"
                                     aria-controls="collapseFive2">Rubrik 5 ( > 80 )</button>
                             </h2>
                             <div id="collapseFive2" class="accordion-collapse collapse"

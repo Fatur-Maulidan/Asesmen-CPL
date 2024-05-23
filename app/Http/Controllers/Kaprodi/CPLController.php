@@ -15,7 +15,7 @@ class CPLController extends Controller
     public function index($kurikulum)
     {
         return view('kaprodi.cpl.index', [
-            'title' => 'CPL',
+            'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum
@@ -49,12 +49,16 @@ class CPLController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($kurikulum, $id)
     {
         return view('kaprodi.cpl.show', [
-            'title' => 'CPL',
+            'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $kurikulum,
+            'cpl' => [
+                'kode' => 'SS-1'
+            ]
         ]);
     }
 
@@ -64,12 +68,16 @@ class CPLController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($kurikulum, $id)
     {
         return view('kaprodi.cpl.edit', [
             'title' => 'CPL',
             'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $kurikulum,
+            'cpl' => [
+                'kode' => 'SS-1'
+            ]
         ]);
     }
 

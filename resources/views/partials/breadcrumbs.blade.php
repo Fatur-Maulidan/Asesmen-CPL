@@ -8,5 +8,4 @@
              @endif
          @endforeach
      </ol>
-     <h1 class="fw-bold mb-0">{{ $breadcrumb->title }}</h1>
  @endunless

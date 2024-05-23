@@ -15,7 +15,7 @@ class IKController extends Controller
     public function index($kurikulum)
     {
         return view('kaprodi.ik.index', [
-            'title' => 'IK',
+            'title' => 'Indikator Kinerja',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum
@@ -49,23 +49,29 @@ class IKController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($kurikulum, $id)
     {
         return view('kaprodi.ik.show', [
             'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            // 'kurikulum' => $kurikulum
+            'kurikulum' => $kurikulum,
+            'ik' => [
+                'kode' => 'SS-1.1'
+            ]
         ]);
     }
 
-    public function detail($id)
+    public function detail($kurikulum, $id)
     {
         return view('kaprodi.ik.detail', [
             'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            // 'kurikulum' => $kurikulum
+            'kurikulum' => $kurikulum,
+            'ik' => [
+                'kode' => 'SS-1.1'
+            ]
         ]);
     }
 
@@ -75,13 +81,16 @@ class IKController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($kurikulum, $id)
     {
         return view('kaprodi.ik.edit', [
             'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            // 'kurikulum' => $kurikulum
+            'kurikulum' => $kurikulum,
+            'ik' => [
+                'kode' => 'SS-1.1'
+            ]
         ]);
     }
 

@@ -7,15 +7,15 @@
 
         @yield('breadcrumb')
 
-        {{-- <ul class="nav nav-underline mt-4">
-            @if (Route::is('kurikulum.*'))
+        <ul class="nav nav-underline mt-4">
+            @if (Route::is('kurikulum.*') && !Route::is('kurikulum.dashboard'))
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ route('kurikulum.index') }}">Kurikulum</a>
                 </li>
             @else
                 <li class="nav-item">
-                    <a class="nav-link @if (url()->current() == route('dashboard', ['kurikulum' => 2022])) active @endif"
-                        href="{{ route('dashboard', ['kurikulum' => 2022]) }}">Dashboard</a>
+                    <a class="nav-link @if (url()->current() == route('kurikulum.dashboard', ['kurikulum' => 2022])) active @endif"
+                        href="{{ route('kurikulum.dashboard', ['kurikulum' => 2022]) }}">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @if (Route::is('cpl.*')) active @endif"
@@ -42,16 +42,37 @@
                     <h3 class="mb-0"><span class="badge text-bg-warning rounded-bottom-0">Peninjauan</span></h3>
                 </li>
             @endif
-        </ul> --}}
+        </ul>
 
-        <ul class="nav nav-underline mt-4">
-            @php $navbar = isNavbarRole($role); @endphp
+        {{-- <ul class="nav nav-underline">
+            <?php $navbar = isNavbarRole($role); ?>
             @foreach ($navbar as $index => $nav)
-                <li class="nav-item">
-                    <a class="nav-link"
-                        href="{{ $nav['link'] == '#' ? '#' : route($nav['link']) }}">{{ $nav['title'] }}</a>
+                <li class="nav-item d-flex flex-row">
+                    <?php
+                    $isActive = Route::is($nav['link']);
+                    if (isset($nav['child_links'])) {
+                        foreach ($nav['child_links'] as $childNav) {
+                            if (Route::is($childNav['link'])) {
+                                $isActive = true;
+                            }
+                        }
+                    }
+                    ?>
+                    <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
+                        href="{{ $nav['link'] != '#' ? route($nav['link']) : '#' }}">{{ $nav['title'] }}</a>
                 </li>
             @endforeach
-        </ul>
+        </ul> --}}
     </div>
 </nav>
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.nav-link').click(function() {
+                $('.nav-link').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
+@endpush

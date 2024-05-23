@@ -2,6 +2,7 @@
 
 @section('breadcrumb')
     {{ Breadcrumbs::render('kurikulum.create') }}
+    <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
 @section('main')
@@ -104,7 +105,7 @@
     {{-- Buttons --}}
     <div class="row">
         <div class="col-8 text-end">
-            <button type="button" class="btn btn-danger px-3 me-2">Batal</button>
+            <a href="{{ route('kurikulum.index') }}" class="btn btn-danger px-3 me-2">Batal</a>
             <button type="button" class="btn btn-primary px-3">Simpan</button>
         </div>
     </div>

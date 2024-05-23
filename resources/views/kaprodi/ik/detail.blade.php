@@ -1,7 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{-- {{ Breadcrumbs::render('cpl.show') }} --}}
+    {{ Breadcrumbs::render('ik.detail', $kurikulum, $ik['kode']) }}
+    <h1 class="fw-bold mb-0">Pemetaan {{ $ik['kode'] }} pada Capaian Pembelajaran</h1>
 @endsection
 
 @section('main')
@@ -11,27 +12,27 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100 active">IK-1</a>
+                        <a href="" class="btn btn-light w-100 text-start active">IK-1</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-2</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-2</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-3</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-3</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-4</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-4</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-5</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-5</a>
                     </div>
 
                     <div class="mb-3">
-                        <a href="" class="btn btn-light w-100">IK-6</a>
+                        <a href="" class="btn btn-light w-100 text-start">IK-6</a>
                     </div>
                 </div>
             </div>
@@ -55,7 +56,8 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('ik.edit', ['kurikulum' => 2022, 'ik' => 'ik-1']) }}" class="btn btn-warning">Ubah
+                    <a href="{{ route('ik.edit', ['kurikulum' => $kurikulum, 'ik' => 'ss-1.1']) }}"
+                        class="btn btn-warning">Ubah
                         Pemetaan</a>
                 </div>
             </div>

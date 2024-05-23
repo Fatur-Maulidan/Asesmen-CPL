@@ -2,6 +2,7 @@
 
 @section('breadcrumb')
     {{ Breadcrumbs::render('kurikulum.index') }}
+    <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
 @section('main')
@@ -40,10 +41,10 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center py-3">
                     <div class="d-inline">
-                        <span class="fs-5 fw-bold me-2">Kurikulum 20XX</span>
+                        <span class="fs-5 fw-bold me-2">Kurikulum 2022</span>
                         <span class="badge text-bg-success">Berjalan</span>
                     </div>
-                    <a href="{{ route('dashboard', ['kurikulum' => 2022]) }}" class="link-secondary">
+                    <a href="{{ route('kurikulum.dashboard', ['kurikulum' => 2022]) }}" class="link-secondary">
                         <i class="bi bi-arrow-right-circle" style="font-size: 1.5rem;"></i>
                     </a>
                 </div>
@@ -70,7 +71,7 @@
                         <span class="fs-5 fw-bold me-2">Kurikulum 20XX</span>
                         <span class="badge text-bg-success">Berjalan</span>
                     </div>
-                    <a href="" class="link-secondary">
+                    <a href="#" class="link-secondary">
                         <i class="bi bi-arrow-right-circle" style="font-size: 1.5rem;"></i>
                     </a>
                 </div>
@@ -99,7 +100,7 @@
                         <span class="fs-5 fw-bold me-2">Kurikulum 20XX</span>
                         <span class="badge text-bg-warning">Peninjauan</span>
                     </div>
-                    <a href="" class="link-secondary">
+                    <a href="#" class="link-secondary">
                         <i class="bi bi-arrow-right-circle" style="font-size: 1.5rem;"></i>
                     </a>
                 </div>
@@ -123,7 +124,7 @@
                         <span class="fs-5 fw-bold me-2">Kurikulum 20XX</span>
                         <span class="badge text-bg-secondary">Arsip</span>
                     </div>
-                    <a href="" class="link-secondary">
+                    <a href="#" class="link-secondary">
                         <i class="bi bi-arrow-right-circle" style="font-size: 1.5rem;"></i>
                     </a>
                 </div>
@@ -147,7 +148,7 @@
                         <span class="fs-5 fw-bold me-2">Kurikulum 20XX</span>
                         <span class="badge text-bg-success">Berjalan</span>
                     </div>
-                    <a href="" class="link-secondary">
+                    <a href="#" class="link-secondary">
                         <i class="bi bi-arrow-right-circle" style="font-size: 1.5rem;"></i>
                     </a>
                 </div>

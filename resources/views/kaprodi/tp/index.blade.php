@@ -1,7 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{-- {{ Breadcrumbs::render('cpl.index') }} --}}
+    {{ Breadcrumbs::render('tp.index', $kurikulum) }}
+    <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
 @section('main')
@@ -91,7 +92,7 @@
                                     aliquam
                                     mollitia, reprehenderit ratione modi minus recusandae animi fugiat eius!</p>
                             </td>
-                            <td class="py-3 align-content-center ">
+                            <td class="py-3 align-content-center">
                                 <div class="d-flex">
                                     <div class="form-check me-3">
                                         <input class="form-check-input" type="radio" name="status[1]"

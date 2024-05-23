@@ -73,11 +73,16 @@ Route::get('mata-kuliah/tujuan-pembelajaran/detail-informasi', function () {
     ]);
 })->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
 
-Route::redirect('/', '/kurikulum');
+Route::redirect('/', '/kaprodi/kurikulum');
 
-Route::resource('kurikulum', KurikulumController::class)->only(['index', 'create', 'store']);
-Route::get('{kurikulum}', [DashboardController::class, 'index'])->name('dashboard');
-Route::resource('{kurikulum}/cpl', CPLController::class)->only(['index', 'show', 'edit',]);
-Route::resource('{kurikulum}/ik', IKController::class)->only(['index', 'show', 'edit',]);
-Route::get('{kurikulum}/ik/{ik}/detail', [IKController::class, 'detail'])->name('ik.detail');
-Route::resource('{kurikulum}/tp', TPController::class)->only(['index', 'show', 'edit',]);
+Route::prefix('kaprodi')->group(function () {
+    Route::resource('kurikulum', KurikulumController::class)->only(['index', 'create', 'store']);
+    Route::get('kurikulum/{kurikulum}', [DashboardController::class, 'index'])->name('kurikulum.dashboard');
+
+    Route::resource('kurikulum/{kurikulum}/cpl', CPLController::class)->only(['index', 'show', 'edit']);
+
+    Route::resource('kurikulum/{kurikulum}/ik', IKController::class)->only(['index', 'show', 'edit',]);
+    Route::get('kurikulum/{kurikulum}/ik/{ik}/detail', [IKController::class, 'detail'])->name('ik.detail');
+
+    Route::resource('kurikulum/{kurikulum}/tp', TPController::class)->only(['index', 'show', 'edit',]);
+});

@@ -12,13 +12,13 @@ class TPController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($kurikulum)
     {
         return view('kaprodi.tp.index', [
-            'title' => 'IK',
+            'title' => 'Tujuan Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            // 'kurikulum' => $kurikulum
+            'kurikulum' => $kurikulum
         ]);
     }
 

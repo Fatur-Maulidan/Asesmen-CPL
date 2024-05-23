@@ -1,7 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('cpl.index') }}
+    {{ Breadcrumbs::render('cpl.index', $kurikulum) }}
+    <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
 @section('main')
@@ -62,7 +63,7 @@
                 <div class="modal-footer">
                     <div class="row w-100">
                         <div class="col">
-                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-danger w-100">Batal</button>
                         </div>
                         <div class="col">
                             <button type="button" class="btn btn-success w-100">Tambah</button>
@@ -94,7 +95,7 @@
                             <p class="mb-0">Belum ada pemetaan</p>
                         </div>
                         <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="{{ route('cpl.show', ['kurikulum' => 2022, 'cpl' => 'ss-1']) }}" class="me-3">Lihat
+                            <a href="{{ route('cpl.show', ['kurikulum' => 2022, 'cpl' => '1']) }}" class="me-3">Lihat
                                 detail</a>
                             <a href="">Ubah pembobotan</a>
                         </div>

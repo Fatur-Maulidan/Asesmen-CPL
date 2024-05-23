@@ -18,7 +18,6 @@ class KurikulumController extends Controller
             'title' => 'Home',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi'
-
         ]);
     }
 
