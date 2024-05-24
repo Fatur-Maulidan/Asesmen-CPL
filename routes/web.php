@@ -4,6 +4,7 @@ use App\Http\Controllers\Kaprodi\CPLController;
 use App\Http\Controllers\Kaprodi\DashboardController;
 use App\Http\Controllers\Kaprodi\IKController;
 use App\Http\Controllers\Kaprodi\KurikulumController;
+use App\Http\Controllers\Kaprodi\MKController;
 use App\Http\Controllers\Kaprodi\TPController;
 use Illuminate\Support\Facades\Route;
 
@@ -85,4 +86,6 @@ Route::prefix('kaprodi')->group(function () {
     Route::get('kurikulum/{kurikulum}/ik/{ik}/detail', [IKController::class, 'detail'])->name('ik.detail');
 
     Route::resource('kurikulum/{kurikulum}/tp', TPController::class)->only(['index', 'show', 'edit',]);
+
+    Route::resource('kurikulum/{kurikulum}/mk', MKController::class)->only(['index', 'show']);
 });

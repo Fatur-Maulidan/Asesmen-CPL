@@ -57,6 +57,17 @@ Breadcrumbs::for('tp.index', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->push('Tujuan Pembelajaran', route('tp.index', ['kurikulum' => $kurikulum]));
 });
 
+// MK
+Breadcrumbs::for('mk.index', function (BreadcrumbTrail $trail, $kurikulum) {
+    $trail->parent('kurikulum.dashboard', $kurikulum);
+    $trail->push('Mata Kuliah', route('mk.index', ['kurikulum' => $kurikulum]));
+});
+
+Breadcrumbs::for('mk.show', function (BreadcrumbTrail $trail, $kurikulum, $mk) {
+    $trail->parent('mk.index', $kurikulum);
+    $trail->push($mk['kode'] . ' - ' . $mk['nama'], route('mk.show', ['kurikulum' => $kurikulum, 'mk' => '1']));
+});
+
 // --- end of Kaprodi
 
 // Breadcrumb For Dosen-Mata Kuliah

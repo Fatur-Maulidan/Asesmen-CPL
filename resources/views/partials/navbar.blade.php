@@ -30,7 +30,8 @@
                         href="{{ route('tp.index', ['kurikulum' => 2022]) }}">Tujuan Pembelajaran</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Mata Kuliah</a>
+                    <a class="nav-link @if (Route::is('mk.*')) active @endif"
+                        href="{{ route('mk.index', ['kurikulum' => 2022]) }}">Mata Kuliah</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="">Mahasiswa</a>
