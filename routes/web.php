@@ -4,6 +4,7 @@ use App\Http\Controllers\Kaprodi\CPLController;
 use App\Http\Controllers\Kaprodi\DashboardController;
 use App\Http\Controllers\Kaprodi\IKController;
 use App\Http\Controllers\Kaprodi\KurikulumController;
+use App\Http\Controllers\Kaprodi\MahasiswaController;
 use App\Http\Controllers\Kaprodi\MKController;
 use App\Http\Controllers\Kaprodi\TPController;
 use Illuminate\Support\Facades\Route;
@@ -106,7 +107,7 @@ Route::get('mata-kuliah/nilai-mahasiswa', function () {
     ]);
 })->name('mata-kuliah.nilai-mahasiswa');
 
-Route::redirect('/', '/kurikulum');
+Route::redirect('/', '/kaprodi/kurikulum');
 
 Route::prefix('kaprodi')->group(function () {
     Route::resource('kurikulum', KurikulumController::class)->only(['index', 'create', 'store']);
@@ -120,4 +121,6 @@ Route::prefix('kaprodi')->group(function () {
     Route::resource('kurikulum/{kurikulum}/tp', TPController::class)->only(['index', 'show', 'edit',]);
 
     Route::resource('kurikulum/{kurikulum}/mk', MKController::class)->only(['index', 'show']);
+
+    Route::resource('kurikulum/{kurikulum}/mahasiswa', MahasiswaController::class)->only(['index']);
 });

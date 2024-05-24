@@ -35,7 +35,8 @@
                             href="{{ route('mk.index', ['kurikulum' => 2022]) }}">Mata Kuliah</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Mahasiswa</a>
+                        <a class="nav-link @if (Route::is('mahasiswa.*')) active @endif"
+                            href="{{ route('mahasiswa.index', ['kurikulum' => 2022]) }}">Mahasiswa</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">Dosen</a>
