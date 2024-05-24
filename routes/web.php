@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Kaprodi\CPLController;
 use App\Http\Controllers\Kaprodi\DashboardController;
+use App\Http\Controllers\Kaprodi\DosenController;
 use App\Http\Controllers\Kaprodi\IKController;
 use App\Http\Controllers\Kaprodi\KurikulumController;
 use App\Http\Controllers\Kaprodi\MahasiswaController;
@@ -123,4 +124,6 @@ Route::prefix('kaprodi')->group(function () {
     Route::resource('kurikulum/{kurikulum}/mk', MKController::class)->only(['index', 'show']);
 
     Route::resource('kurikulum/{kurikulum}/mahasiswa', MahasiswaController::class)->only(['index']);
+
+    Route::resource('kurikulum/{kurikulum}/dosen', DosenController::class)->only(['index']);
 });

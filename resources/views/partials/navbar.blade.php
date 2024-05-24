@@ -39,7 +39,8 @@
                             href="{{ route('mahasiswa.index', ['kurikulum' => 2022]) }}">Mahasiswa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Dosen</a>
+                        <a class="nav-link @if (Route::is('dosen.*')) active @endif"
+                            href="{{ route('dosen.index', ['kurikulum' => 2022]) }}">Dosen</a>
                     </li>
                     <li class="nav-item ms-auto align-self-end">
                         <h3 class="mb-0"><span class="badge text-bg-warning rounded-bottom-0">Peninjauan</span></h3>
