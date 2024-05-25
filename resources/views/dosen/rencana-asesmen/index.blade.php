@@ -17,20 +17,23 @@
                     <th scope="col">Tujuan Pembelajaran</th>
                     @for ($i = 1; $i <= 8; $i++)
                         <th scope="col"><a
-                                href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi') }}">{{ 'Tugas#' . $i }}</a>
+                                href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah]) }}">{{ 'Tugas#' . $i }}</a>
                         </th>
                     @endfor
                     @for ($i = 1; $i <= 2; $i++)
                         <th scope="col"><a
-                                href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi') }}">{{ 'Tugas#' . $i }}</a>
+                                href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah]) }}">{{ 'Tugas#' . $i }}</a>
                         </th>
                     @endfor
-                    <th scope="col"><a href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi') }}">Tugas
+                    <th scope="col"><a
+                            href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah]) }}">Tugas
                             Besar</a>
                     </th>
-                    <th scope="col"><a href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi') }}">UTS</a>
+                    <th scope="col"><a
+                            href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah]) }}">UTS</a>
                     </th>
-                    <th scope="col"><a href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi') }}">UAS</a>
+                    <th scope="col"><a
+                            href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah]) }}">UAS</a>
                     </th>
                 </tr>
             </thead>

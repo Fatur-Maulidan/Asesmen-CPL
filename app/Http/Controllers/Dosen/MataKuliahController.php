@@ -26,12 +26,13 @@ class MataKuliahController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function informasiUmum()
+    public function informasiUmum($kodeMataKuliah)
     {
         return view('dosen.mata-kuliah.informasi-umum', [
             'title' => 'Informasi Umum Mata Kuliah',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }
 

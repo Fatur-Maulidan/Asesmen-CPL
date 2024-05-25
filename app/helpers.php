@@ -9,7 +9,7 @@ function isNavbarRole($role)
         ],
         [
             'title' => 'Informasi Umum',
-            'link' => 'dosen.mata-kuliah.informasi-umum'
+            'link' => 'dosen.mata-kuliah.informasi-umum',
         ],
         [
             'title' => 'Indikator Kinerja',
@@ -17,7 +17,7 @@ function isNavbarRole($role)
             'child_links' => [
                 [
                     'title' => 'Detail Informasi Indikator Kinerja',
-                    'link' => 'dosen.mata-kuliah.indikator-kinerja.detail-informasi'
+                    'link' => 'dosen.mata-kuliah.indikator-kinerja.detail-informasi',
                 ]
             ]
         ],
@@ -27,7 +27,7 @@ function isNavbarRole($role)
             'child_links' => [
                 [
                     'title' => 'Detail Informasi Tujuan Pembelajaran',
-                    'link' => 'dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi'
+                    'link' => 'dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi',
                 ]
             ]
         ],
@@ -37,11 +37,11 @@ function isNavbarRole($role)
             'child_links' => [
                 [
                     'title' => 'Detail Informasi Rencana Asesmen',
-                    'link' => 'dosen.mata-kuliah.rencana-asesmen.detail-informasi'
+                    'link' => 'dosen.mata-kuliah.rencana-asesmen.detail-informasi',
                 ],
                 [
                     'title' => 'Ubah Detail Informasi Rencana Asesmen',
-                    'link' => 'dosen.mata-kuliah.rencana-asesmen.detail-informasi.ubah'
+                    'link' => 'dosen.mata-kuliah.rencana-asesmen.detail-informasi.ubah',
                 ],
             ]
         ],

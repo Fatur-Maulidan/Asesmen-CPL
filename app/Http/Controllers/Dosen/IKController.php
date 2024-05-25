@@ -12,12 +12,14 @@ class IKController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($kodeMataKuliah)
     {
+        // dd($kodeMataKuliah);
         return view('dosen.indikator-kinerja.index', [
-            'title' => 'Indeks Kinerja',
+            'title' => 'Indekator Kinerja',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }
 
@@ -87,12 +89,14 @@ class IKController extends Controller
         //
     }
 
-    public function detailInformasi()
+    public function detailInformasi($kodeMataKuliah)
     {
+        // dd($kodeMataKuliah);
         return view('dosen.indikator-kinerja.detail-informasi', [
             'title' => 'Detail Informasi',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }
 }

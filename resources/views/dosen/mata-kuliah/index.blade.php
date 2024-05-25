@@ -28,14 +28,15 @@
     </div>
 
     <div class="row overflow-auto ">
-        @for ($index = 0; $index < 3; $index++)
+        @for ($index = 1; $index <= 3; $index++)
             <div class="col-4">
                 <div class="card">
                     <div class="card-header d-flex flex-column">
                         <div class=" d-flex flex-row justify-content-between align-items-center py-3">
                             <div class="d-flex flex-column">
                                 <div class="d-flex flex-row align-items-center">
-                                    <div class="fs-5 fw-bold me-2">21IF1001</div>
+                                    <?php $kodeMataKuliah = '21IF100' . $index; ?>
+                                    <div class="fs-5 fw-bold me-2">{{ $kodeMataKuliah }}</div>
                                     <div class="badge text-bg-success">Berjalan</div>
                                 </div>
                                 <div class="">Dasar Dasar Pemrograman</div>
@@ -66,8 +67,11 @@
                         </div>
                     </div>
                     <div class="card-footer text-body-secondary py-3">
-                        <a href="{{ route('dosen.mata-kuliah.informasi-umum') }}" class="d-block">Lihat Detailnya</a>
-                        <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran') }}" class="d-block">Lihat Tujuan
+                        <a href="{{ route('dosen.mata-kuliah.informasi-umum', ['kodeMataKuliah' => $kodeMataKuliah]) }}"
+                            class="d-block">Lihat
+                            Detailnya</a>
+                        <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $kodeMataKuliah]) }}"
+                            class="d-block">Lihat Tujuan
                             Pembelajaran</a>
                         <a href="" class="d-block">Lihat Asesmen Pembelajaran</a>
                     </div>

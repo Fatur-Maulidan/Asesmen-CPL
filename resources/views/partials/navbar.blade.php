@@ -63,7 +63,7 @@
                         }
                         ?>
                         <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
-                            href="{{ $nav['link'] != '#' ? route($nav['link']) : '#' }}">{{ $nav['title'] }}</a>
+                            href="{{ $nav['link'] != '#' ? route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah]) : '#' }}">{{ $nav['title'] }}</a>
                     </li>
                 @endforeach
             </ul>

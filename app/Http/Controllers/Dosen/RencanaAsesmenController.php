@@ -12,12 +12,13 @@ class RencanaAsesmenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($kodeMataKuliah)
     {
         return view('dosen.rencana-asesmen.index', [
             'title' => 'Rencana Asesmen',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'kodeMataKuliah' => $kodeMataKuliah,
         ]);
     }
 
@@ -59,12 +60,13 @@ class RencanaAsesmenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($kodeMataKuliah)
     {
         return view('dosen.rencana-asesmen.ubah-detail-informasi', [
             'title' => 'Ubah Rencana Asesmen',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'kodeMataKuliah' => $kodeMataKuliah,
         ]);
     }
 
@@ -91,19 +93,21 @@ class RencanaAsesmenController extends Controller
         //
     }
 
-    public function detailInformasi() {
+    public function detailInformasi($kodeMataKuliah) {
         return view('dosen.rencana-asesmen.detail-informasi', [
             'title' => 'Detail Informasi Rencana Asesmen',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'kodeMataKuliah' => $kodeMataKuliah,
         ]);
     }
 
-    public function nilaiMahasiswa() {
+    public function nilaiMahasiswa($kodeMataKuliah) {
         return view('dosen.rencana-asesmen.nilai-mahasiswa', [
             'title' => 'Nilai Mahasiswa',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'kodeMataKuliah' => $kodeMataKuliah,
         ]);
     }
 }

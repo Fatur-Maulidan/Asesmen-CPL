@@ -12,12 +12,13 @@ class TPController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($kodeMataKuliah)
     {
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }
 
@@ -87,11 +88,12 @@ class TPController extends Controller
         //
     }
 
-    public function detailInformasi() {
+    public function detailInformasi($kodeMataKuliah) {
         return view('dosen.tujuan-pembelajaran.detail-informasi', [
             'title' => 'Detail Informasi Tujuan Pembelajaran',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }
 }

@@ -68,10 +68,10 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
         Route::get('/', [MataKuliahController::class, 'index'])
             ->name('mata-kuliah');
     
-        Route::get('informasi-umum', [MataKuliahController::class, 'informasiUmum'])
+        Route::get('{kodeMataKuliah}/informasi-umum', [MataKuliahController::class, 'informasiUmum'])
             ->name('mata-kuliah.informasi-umum');
     
-        Route::prefix('indikator-kinerja')->group(function () {
+        Route::prefix('{kodeMataKuliah}/indikator-kinerja')->group(function () {
             Route::get('/', [IKDosen::class, 'index'])
                 ->name('mata-kuliah.indikator-kinerja');
     
@@ -79,7 +79,7 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
                 ->name('mata-kuliah.indikator-kinerja.detail-informasi');
         });
     
-        Route::prefix('tujuan-pembelajaran')->group(function () {
+        Route::prefix('{kodeMataKuliah}/tujuan-pembelajaran')->group(function () {
             Route::get('/', [TPDosen::class, 'index'])
                 ->name('mata-kuliah.tujuan-pembelajaran');
     
@@ -87,7 +87,7 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
                 ->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
         });
     
-        Route::prefix('rencana-asesmen')->group(function () {
+        Route::prefix('{kodeMataKuliah}/rencana-asesmen')->group(function () {
             Route::get('/', [RencanaAsesmenController::class, 'index'])
                 ->name('mata-kuliah.rencana-asesmen');
     
@@ -97,7 +97,8 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
             Route::get('detail-informasi/ubah', [RencanaAsesmenController::class, 'edit'])
                 ->name('mata-kuliah.rencana-asesmen.detail-informasi.ubah');
         });
-        Route::get('nilai-mahasiswa', [RencanaAsesmenController::class, 'nilaiMahasiswa'])
+        
+        Route::get('nilai-mahasiswa/{kodeMataKuliah}', [RencanaAsesmenController::class, 'nilaiMahasiswa'])
                 ->name('mata-kuliah.nilai-mahasiswa');
     });
 });
