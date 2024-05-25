@@ -1,21 +1,33 @@
 @extends('layouts.main')
 
 @section('main')
+    @if (session()->has('loginError'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('loginError') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+
     <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;background-color:#FEFEFE">
         <div class="d-flex flex-column align-items-center border-end-2 border-bottom-2 px-5 py-5 shadow-sm"
             style="background-color:#FFFFFF;">
             <div class="fw-bold fs-3 mb-4">Masuk</div>
-            <form action="" method="POST">
+            <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="d-flex flex-column align-items-evenly">
                     <div class="">
                         <div class="mb-4">
-                            <input type="email" placeholder="NIP" class="rounded py-2 px-2 border border-dark"
-                                id="email" name="email" required>
+                            <input type="number" placeholder="NIP"
+                                class="rounded py-2 px-2 border border-dark @error('NIP') is-invalid @enderror"
+                                id="NIP" name="NIP" autofocus required value="{{ old('NIP') }}">
+                            @error('NIP')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-2 position-relative">
                             <input type="password" placeholder="Kata Sandi" class="rounded py-2 px-2 border border-dark"
-                                id="password" required>
+                                name="password" id="password" required>
                             <i class="bi bi-eye-slash position-absolute" style="top:20%;right:5%;" id="togglePassword"></i>
                         </div>
                         <div class="mb-5">
