@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Kaprodi\KurikulumController;
+use App\Http\Controllers\Dosen\MataKuliahController;
+use App\Http\Controllers\Dosen\TPController;
+use App\Http\Controllers\Dosen\RencanaAsesmenController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,31 +18,54 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('login', function () {
-    return view('login', [
-        'title' => 'Login',
-        'isLoginView' => true
-    ]);
+Route::get('login', [AuthController::class, 'index'])
+    ->name('login')->middleware('guest');
+
+Route::post('login', [AuthController::class, 'authenticate']);
+
+Route::get('logout', [AuthController::class, 'logout'])
+    ->name('logout');
+
+Route::prefix('mata-kuliah')->group(function () {
+    Route::get('/', [MataKuliahController::class, 'index'])
+        ->name('mata-kuliah');
+
+    Route::get('informasi-umum', [MataKuliahController::class, 'informasiUmum'])
+        ->name('mata-kuliah.informasi-umum');
+
+    // Route::prefix('indikator-kinerja')->group(function () {
+    //     Route::get('/', [MataKuliahController::class, 'indikatorKinerja'])
+    //         ->name('mata-kuliah.indikator-kinerja');
+
+    //     Route::get('detail-informasi', [MataKuliahController::class, 'detailInformasiIndikatorKinerja'])
+    //         ->name('mata-kuliah.indikator-kinerja.detail-informasi');
+    // });
+
+    Route::prefix('tujuan-pembelajaran')->group(function () {
+        Route::get('/', [TPController::class, 'index'])
+            ->name('mata-kuliah.tujuan-pembelajaran');
+
+        Route::get('detail-informasi', [TPController::class, 'detailInformasi'])
+            ->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
+    });
+
+    Route::prefix('rencana-asesmen')->group(function () {
+        Route::get('/', [RencanaAsesmenController::class, 'index'])
+            ->name('mata-kuliah.rencana-asesmen');
+
+        Route::get('detail-informasi', [RencanaAsesmenController::class, 'detailInformasi'])
+            ->name('mata-kuliah.rencana-asesmen.detail-informasi');
+
+        Route::get('detail-informasi/ubah', [RencanaAsesmenController::class, 'edit'])
+            ->name('mata-kuliah.rencana-asesmen.detail-informasi.ubah');
+
+        Route::post('nilai-mahasiswa', [RencanaAsesmenController::class, 'nilaiMahasiswa'])
+            ->name('mata-kuliah.rencana-asesmen.nilai-mahasiswa');
+    });
 });
 
-Route::get('mata-kuliah', function () {
-    return view('dosen.home', [
-        'title' => 'Mata Kuliah',
-        'nama' => 'John Doe',
-        'role' => 'Dosen'
-    ]);
-})->name('mata-kuliah');
-
-Route::get('mata-kuliah/informasi-umum', function () {
-    return view('dosen.informasi-umum', [
-        'title' => 'Informasi Umum Mata Kuliah',
-        'nama' => 'John Doe',
-        'role' => 'Dosen'
-    ]);
-})->name('mata-kuliah.informasi-umum');
-
 Route::get('mata-kuliah/indikator-kinerja', function () {
-    return view('dosen.indikator-kinerja', [
+    return view('dosen.indikator-kinerja.index', [
         'title' => 'Indikator Kinerja',
         'nama' => 'John Doe',
         'role' => 'Dosen'
@@ -46,52 +73,14 @@ Route::get('mata-kuliah/indikator-kinerja', function () {
 })->name('mata-kuliah.indikator-kinerja');
 
 Route::get('mata-kuliah/indikator-kinerja/detail-informasi', function () {
-    return view('dosen.detail-informasi-indikator-kinerja', [
+    return view('dosen.indikator-kinerja.detail-informasi', [
         'title' => 'Detail Informasi Indikator Kinerja',
         'nama' => 'John Doe',
         'role' => 'Dosen'
     ]);
 })->name('mata-kuliah.indikator-kinerja.detail-informasi');
 
-Route::get('mata-kuliah/tujuan-pembelajaran', function () {
-    return view('dosen.tujuan-pembelajaran', [
-        'title' => 'Tujuan Pembelajaran',
-        'nama' => 'John Doe',
-        'role' => 'Dosen'
-    ]);
-})->name('mata-kuliah.tujuan-pembelajaran');
 
-Route::get('mata-kuliah/tujuan-pembelajaran/detail-informasi', function () {
-    return view('dosen.detail-informasi-tujuan-pembelajaran', [
-        'title' => 'Detail Informasi Tujuan Pembelajaran',
-        'nama' => 'John Doe',
-        'role' => 'Dosen'
-    ]);
-})->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
-
-Route::get('mata-kuliah/rencana-asesmen', function () {
-    return view('dosen.rencana-asesmen', [
-        'title' => 'Rencana Asesmen',
-        'nama' => 'John Doe',
-        'role' => 'Dosen'
-    ]);
-})->name('mata-kuliah.rencana-asesmen');
-
-Route::get('mata-kuliah/rencana-asesmen/detail-informasi', function () {
-    return view('dosen.detail-informasi-rencana-asesmen', [
-        'title' => 'Detail Informasi Rencana Asesmen',
-        'nama' => 'John Doe',
-        'role' => 'Dosen'
-    ]);
-})->name('mata-kuliah.rencana-asesmen.detail-informasi');
-
-Route::get('mata-kuliah/rencana-asesmen/detail-informasi/ubah', function () {
-    return view('dosen.ubah-detail-informasi-rencana-asesmen', [
-        'title' => 'Ubah Rencana Asesmen',
-        'nama' => 'John Doe',
-        'role' => 'Dosen'
-    ]);
-})->name('mata-kuliah.rencana-asesmen.detail-informasi.ubah');
 
 Route::get('mata-kuliah/nilai-mahasiswa', function () {
     return view('dosen.nilai-mahasiswa', [

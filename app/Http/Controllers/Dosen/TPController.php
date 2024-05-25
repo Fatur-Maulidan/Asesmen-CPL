@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dosen;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MataKuliahController extends Controller
+class TPController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class MataKuliahController extends Controller
      */
     public function index()
     {
-        return view('dosen.mata-kuliah.index', [
-            'title' => 'Mata Kuliah',
+        return view('dosen.tujuan-pembelajaran.index', [
+            'title' => 'Tujuan Pembelajaran',
             'nama' => 'John Doe',
             'role' => 'Dosen'
         ]);
@@ -26,13 +26,9 @@ class MataKuliahController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function informasiUmum()
+    public function create()
     {
-        return view('dosen.mata-kuliah.informasi-umum', [
-            'title' => 'Informasi Umum Mata Kuliah',
-            'nama' => 'John Doe',
-            'role' => 'Dosen'
-        ]);
+        //
     }
 
     /**
@@ -89,5 +85,13 @@ class MataKuliahController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function detailInformasi() {
+        return view('dosen.tujuan-pembelajaran.detail-informasi', [
+            'title' => 'Detail Informasi Tujuan Pembelajaran',
+            'nama' => 'John Doe',
+            'role' => 'Dosen'
+        ]);
     }
 }
