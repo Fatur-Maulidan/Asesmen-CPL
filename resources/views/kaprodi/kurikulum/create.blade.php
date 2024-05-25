@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kurikulum.create') }}
+    {{ Breadcrumbs::render('kaprodi.kurikulum.create') }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 

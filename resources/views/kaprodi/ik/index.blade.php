@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('ik.index', $kurikulum) }}
+    {{ Breadcrumbs::render('kaprodi.ik.index', $kurikulum) }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
@@ -123,7 +123,8 @@
                             <p class="mb-0">Belum ada pemetaan</p>
                         </div>
                         <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="{{ route('ik.show', ['kurikulum' => 2022, 'ik' => 'ss-1.1']) }}" class="me-3">Lihat
+                            <a href="{{ route('kaprodi.ik.show', ['kurikulum' => 2022, 'ik' => 'ss-1.1']) }}"
+                                class="me-3">Lihat
                                 detail</a>
                             <a href="">Pemetaan terhadap Capaian Pembelajaran</a>
                         </div>

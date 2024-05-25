@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kurikulum.index') }}
+    {{ Breadcrumbs::render('kaprodi.kurikulum.index') }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
@@ -14,7 +14,7 @@
             </form>
         </div>
         <div class="col text-end">
-            <a href="{{ route('kurikulum.create') }}" class="btn btn-primary">Tambah Kurikulum Baru</a>
+            <a href="{{ route('kaprodi.kurikulum.create') }}" class="btn btn-primary">Tambah Kurikulum Baru</a>
         </div>
     </div>
 
@@ -44,7 +44,7 @@
                         <span class="fs-5 fw-bold me-2">Kurikulum 2022</span>
                         <span class="badge text-bg-success">Berjalan</span>
                     </div>
-                    <a href="{{ route('kurikulum.dashboard', ['kurikulum' => 2022]) }}" class="link-secondary">
+                    <a href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => 2022]) }}" class="link-secondary">
                         <i class="bi bi-arrow-right-circle" style="font-size: 1.5rem;"></i>
                     </a>
                 </div>

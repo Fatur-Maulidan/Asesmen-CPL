@@ -246,7 +246,7 @@
                 modal.hide();
                 modalEl.addEventListener('hidden.bs.modal', event => {
                     window.location.href =
-                        "{{ route('cpl.show', ['kurikulum' => $kurikulum, 'cpl' => '1']) }}";
+                        "{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => '1']) }}";
                 });
             });
         });

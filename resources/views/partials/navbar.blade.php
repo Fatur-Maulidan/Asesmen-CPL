@@ -9,38 +9,38 @@
 
         @if ($role == 'Koordinator Program Studi')
             <ul class="nav nav-underline mt-4">
-                @if (Route::is('kurikulum.*') && !Route::is('kurikulum.dashboard'))
+                @if (Route::is('kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard'))
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('kurikulum.index') }}">Kurikulum</a>
+                        <a class="nav-link active" href="{{ route('kaprodi.kurikulum.index') }}">Kurikulum</a>
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link @if (url()->current() == route('kurikulum.dashboard', ['kurikulum' => 2022])) active @endif"
-                            href="{{ route('kurikulum.dashboard', ['kurikulum' => 2022]) }}">Dashboard</a>
+                        <a class="nav-link @if (url()->current() == route('kaprodi.kurikulum.dashboard', ['kurikulum' => 2022])) active @endif"
+                            href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => 2022]) }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Route::is('cpl.*')) active @endif"
-                            href="{{ route('cpl.index', ['kurikulum' => 2022]) }}">Capaian Pembelajaran</a>
+                        <a class="nav-link @if (Route::is('kaprodi.cpl.*')) active @endif"
+                            href="{{ route('kaprodi.cpl.index', ['kurikulum' => 2022]) }}">Capaian Pembelajaran</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Route::is('ik.*')) active @endif"
-                            href="{{ route('ik.index', ['kurikulum' => 2022]) }}">Indikator Kinerja</a>
+                        <a class="nav-link @if (Route::is('kaprodi.ik.*')) active @endif"
+                            href="{{ route('kaprodi.ik.index', ['kurikulum' => 2022]) }}">Indikator Kinerja</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Route::is('tp.*')) active @endif"
-                            href="{{ route('tp.index', ['kurikulum' => 2022]) }}">Tujuan Pembelajaran</a>
+                        <a class="nav-link @if (Route::is('kaprodi.tp.*')) active @endif"
+                            href="{{ route('kaprodi.tp.index', ['kurikulum' => 2022]) }}">Tujuan Pembelajaran</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Route::is('mk.*')) active @endif"
-                            href="{{ route('mk.index', ['kurikulum' => 2022]) }}">Mata Kuliah</a>
+                        <a class="nav-link @if (Route::is('kaprodi.mk.*')) active @endif"
+                            href="{{ route('kaprodi.mk.index', ['kurikulum' => 2022]) }}">Mata Kuliah</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Route::is('mahasiswa.*')) active @endif"
-                            href="{{ route('mahasiswa.index', ['kurikulum' => 2022]) }}">Mahasiswa</a>
+                        <a class="nav-link @if (Route::is('kaprodi.mahasiswa.*')) active @endif"
+                            href="{{ route('kaprodi.mahasiswa.index', ['kurikulum' => 2022]) }}">Mahasiswa</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Route::is('dosen.*')) active @endif"
-                            href="{{ route('dosen.index', ['kurikulum' => 2022]) }}">Dosen</a>
+                        <a class="nav-link @if (Route::is('kaprodi.dosen.*')) active @endif"
+                            href="{{ route('kaprodi.dosen.index', ['kurikulum' => 2022]) }}">Dosen</a>
                     </li>
                     <li class="nav-item ms-auto align-self-end">
                         <h3 class="mb-0"><span class="badge text-bg-warning rounded-bottom-0">Peninjauan</span></h3>

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('cpl.show', $kurikulum, $cpl['kode']) }}
+    {{ Breadcrumbs::render('kaprodi.cpl.show', $kurikulum, $cpl['kode']) }}
     <h1 class="fw-bold mb-0">{{ $cpl['kode'] }}</h1>
 @endsection
 
@@ -186,7 +186,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('cpl.edit', ['kurikulum' => 2022, 'cpl' => 'ss-1']) }}"
+                    <a href="{{ route('kaprodi.cpl.edit', ['kurikulum' => 2022, 'cpl' => 'ss-1']) }}"
                         class="btn btn-outline-primary ">Ubah Pemetaannya pada MK</a>
                     {{-- Button trigger modal --}}
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"

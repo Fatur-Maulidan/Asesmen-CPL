@@ -61,7 +61,8 @@
                         </div>
                     </div>
                     <div class="">
-                        <a href="{{ route('mata-kuliah.rencana-asesmen.detail-informasi.ubah') }}" class="btn btn-warning">
+                        <a href="{{ route('dosen.mata-kuliah.rencana-asesmen.detail-informasi.ubah') }}"
+                            class="btn btn-warning">
                             Ubah
                             Pemetaan</a>
                     </div>
