@@ -1,10 +1,17 @@
 <?php
 
+use App\Http\Controllers\Kaprodi\CPLController;
+use App\Http\Controllers\Kaprodi\DashboardController;
+use App\Http\Controllers\Kaprodi\DosenController;
+use App\Http\Controllers\Kaprodi\IKController;
 use App\Http\Controllers\Kaprodi\KurikulumController;
 use App\Http\Controllers\Dosen\MataKuliahController;
-use App\Http\Controllers\Dosen\TPController;
+use App\Http\Controllers\Dosen\TPController as TPDosen;
 use App\Http\Controllers\Dosen\RencanaAsesmenController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Kaprodi\MahasiswaController;
+use App\Http\Controllers\Kaprodi\MKController;
+use App\Http\Controllers\Kaprodi\TPController as TPKaprodi;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,10 +49,10 @@ Route::prefix('mata-kuliah')->group(function () {
     // });
 
     Route::prefix('tujuan-pembelajaran')->group(function () {
-        Route::get('/', [TPController::class, 'index'])
+        Route::get('/', [TPDosen::class, 'index'])
             ->name('mata-kuliah.tujuan-pembelajaran');
 
-        Route::get('detail-informasi', [TPController::class, 'detailInformasi'])
+        Route::get('detail-informasi', [TPDosen::class, 'detailInformasi'])
             ->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
     });
 
@@ -90,7 +97,22 @@ Route::get('mata-kuliah/nilai-mahasiswa', function () {
     ]);
 })->name('mata-kuliah.nilai-mahasiswa');
 
-Route::redirect('/', '/kurikulum');
+Route::redirect('/', '/kaprodi/kurikulum');
 
-Route::resource('kurikulum', KurikulumController::class)
-    ->only(['index', 'create', 'store']);
+Route::prefix('kaprodi')->group(function () {
+    Route::resource('kurikulum', KurikulumController::class)->only(['index', 'create', 'store']);
+    Route::get('kurikulum/{kurikulum}', [DashboardController::class, 'index'])->name('kurikulum.dashboard');
+
+    Route::resource('kurikulum/{kurikulum}/cpl', CPLController::class)->only(['index', 'show', 'edit']);
+
+    Route::resource('kurikulum/{kurikulum}/ik', IKController::class)->only(['index', 'show', 'edit',]);
+    Route::get('kurikulum/{kurikulum}/ik/{ik}/detail', [IKController::class, 'detail'])->name('ik.detail');
+
+    Route::resource('kurikulum/{kurikulum}/tp', TPController::class)->only(['index', 'show', 'edit',]);
+
+    Route::resource('kurikulum/{kurikulum}/mk', MKController::class)->only(['index', 'show']);
+
+    Route::resource('kurikulum/{kurikulum}/mahasiswa', MahasiswaController::class)->only(['index']);
+
+    Route::resource('kurikulum/{kurikulum}/dosen', DosenController::class)->only(['index']);
+});

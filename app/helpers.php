@@ -1,6 +1,7 @@
 <?php
 
-function isNavbarRole($role){
+function isNavbarRole($role)
+{
     $dosen = [
         [
             'title' => 'Dashboard',
@@ -52,6 +53,11 @@ function isNavbarRole($role){
 
     $kaprodi = [
         [
+            'title' => 'Home',
+            'link' => route('kurikulum.index'),
+            'page_name' => 'Kurikulum'
+        ],
+        [
             'title' => 'Dashboard',
             'link' => '#',
         ],
@@ -82,9 +88,10 @@ function isNavbarRole($role){
     ];
 
     return $role == 'Dosen' ? $dosen : $kaprodi;
-} 
+}
 
-function mahasiswa(){
+function mahasiswa()
+{
     $mahasiswa = [
         ["nim" => "211511001", "nama" => "ACHMADYA RIDWAN ILYAWAN"],
         ["nim" => "211511002", "nama" => "ADILLA RACHMAWATI PRADANA"],
@@ -123,8 +130,73 @@ function mahasiswa(){
     return $mahasiswa;
 }
 
-function countMahasiswa($mahasiswa){
+function countMahasiswa($mahasiswa)
+{
     return count($mahasiswa);
 }
 
-?>
+function getDosen()
+{
+    return [
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'Siti Dwi Setiarini',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'Aprianti Nanda S.',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'Trisna Gelar A.',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'Santi Sundari',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'Ferry Ferizal',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'Didik Suwito',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'Hasri Hayati',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'Sri Ratna W.',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'N. S. Junaedi',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+        [
+            'nip' => rand(100000000000000000, 999999999999999999),
+            'kode' => 'K' . rand(100, 999) . 'N',
+            'nama' => 'Waway Qodratullah S.',
+            'email' => 'dummy.dosen.jtk@polban.ac.id'
+        ],
+    ];
+}

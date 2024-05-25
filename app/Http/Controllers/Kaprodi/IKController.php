@@ -5,19 +5,20 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class KurikulumController extends Controller
+class IKController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($kurikulum)
     {
-        return view('kaprodi.kurikulum.index', [
-            'title' => 'Home',
+        return view('kaprodi.ik.index', [
+            'title' => 'Indikator Kinerja',
             'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $kurikulum
         ]);
     }
 
@@ -28,11 +29,7 @@ class KurikulumController extends Controller
      */
     public function create()
     {
-        return view('kaprodi.kurikulum.create', [
-            'title' => 'Tambah Kurikulum Baru',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
-        ]);
+        //
     }
 
     /**
@@ -52,9 +49,30 @@ class KurikulumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($kurikulum, $id)
     {
-        //
+        return view('kaprodi.ik.show', [
+            'title' => 'IK',
+            'nama' => 'Jhon Doe',
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $kurikulum,
+            'ik' => [
+                'kode' => 'SS-1.1'
+            ]
+        ]);
+    }
+
+    public function detail($kurikulum, $id)
+    {
+        return view('kaprodi.ik.detail', [
+            'title' => 'IK',
+            'nama' => 'Jhon Doe',
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $kurikulum,
+            'ik' => [
+                'kode' => 'SS-1.1'
+            ]
+        ]);
     }
 
     /**
@@ -63,9 +81,17 @@ class KurikulumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($kurikulum, $id)
     {
-        //
+        return view('kaprodi.ik.edit', [
+            'title' => 'IK',
+            'nama' => 'Jhon Doe',
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $kurikulum,
+            'ik' => [
+                'kode' => 'SS-1.1'
+            ]
+        ]);
     }
 
     /**

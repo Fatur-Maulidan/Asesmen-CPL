@@ -7,26 +7,70 @@
 
         @yield('breadcrumb')
 
-        <ul class="nav nav-underline">
-            <li class="nav-item d-flex flex-row">
+        @if ($role == 'Koordinator Program Studi')
+            <ul class="nav nav-underline mt-4">
+                @if (Route::is('kurikulum.*') && !Route::is('kurikulum.dashboard'))
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ route('kurikulum.index') }}">Kurikulum</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link @if (url()->current() == route('kurikulum.dashboard', ['kurikulum' => 2022])) active @endif"
+                            href="{{ route('kurikulum.dashboard', ['kurikulum' => 2022]) }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('cpl.*')) active @endif"
+                            href="{{ route('cpl.index', ['kurikulum' => 2022]) }}">Capaian Pembelajaran</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('ik.*')) active @endif"
+                            href="{{ route('ik.index', ['kurikulum' => 2022]) }}">Indikator Kinerja</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('tp.*')) active @endif"
+                            href="{{ route('tp.index', ['kurikulum' => 2022]) }}">Tujuan Pembelajaran</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('mk.*')) active @endif"
+                            href="{{ route('mk.index', ['kurikulum' => 2022]) }}">Mata Kuliah</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('mahasiswa.*')) active @endif"
+                            href="{{ route('mahasiswa.index', ['kurikulum' => 2022]) }}">Mahasiswa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('dosen.*')) active @endif"
+                            href="{{ route('dosen.index', ['kurikulum' => 2022]) }}">Dosen</a>
+                    </li>
+                    <li class="nav-item ms-auto align-self-end">
+                        <h3 class="mb-0"><span class="badge text-bg-warning rounded-bottom-0">Peninjauan</span></h3>
+                    </li>
+                @endif
+            </ul>
+        @else
+            <ul class="nav nav-underline">
                 <?php $navbar = isNavbarRole($role); ?>
                 @foreach ($navbar as $index => $nav)
-                    <?php
-                    $isActive = Route::is($nav['link']);
-                    if (isset($nav['child_links'])) {
-                        foreach ($nav['child_links'] as $childNav) {
-                            if (Route::is($childNav['link'])) {
-                                $isActive = true;
+                    <li class="nav-item d-flex flex-row">
+                        <?php
+                        $isActive = Route::is($nav['link']);
+                        if (isset($nav['child_links'])) {
+                            foreach ($nav['child_links'] as $childNav) {
+                                if (Route::is($childNav['link'])) {
+                                    $isActive = true;
+                                }
                             }
                         }
-                    }
-                    ?>
-                    <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
-                        href="{{ $nav['link'] != '#' ? route($nav['link']) : '#' }}">{{ $nav['title'] }}</a>
+                        ?>
+                        <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
+                            href="{{ $nav['link'] != '#' ? route($nav['link']) : '#' }}">{{ $nav['title'] }}</a>
+                    </li>
                 @endforeach
-        </ul>
+            </ul>
+        @endif
     </div>
 </nav>
+
 @push('scripts')
     <script>
         $(document).ready(function() {
