@@ -14,7 +14,11 @@ class IKController extends Controller
      */
     public function index()
     {
-        //
+        return view('dosen.indikator-kinerja.index', [
+            'title' => 'Indeks Kinerja',
+            'nama' => 'John Doe',
+            'role' => 'Dosen'
+        ]);
     }
 
     /**
@@ -81,5 +85,14 @@ class IKController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function detailInformasi()
+    {
+        return view('dosen.indikator-kinerja.detail-informasi', [
+            'title' => 'Detail Informasi',
+            'nama' => 'John Doe',
+            'role' => 'Dosen'
+        ]);
     }
 }

@@ -9,52 +9,52 @@ function isNavbarRole($role)
         ],
         [
             'title' => 'Informasi Umum',
-            'link' => 'mata-kuliah.informasi-umum'
+            'link' => 'dosen.mata-kuliah.informasi-umum'
         ],
         [
             'title' => 'Indikator Kinerja',
-            'link' => 'mata-kuliah.indikator-kinerja',
+            'link' => 'dosen.mata-kuliah.indikator-kinerja',
             'child_links' => [
                 [
                     'title' => 'Detail Informasi Indikator Kinerja',
-                    'link' => 'mata-kuliah.indikator-kinerja.detail-informasi'
+                    'link' => 'dosen.mata-kuliah.indikator-kinerja.detail-informasi'
                 ]
             ]
         ],
         [
             'title' => 'Tujuan Pembelajaran',
-            'link' => 'mata-kuliah.tujuan-pembelajaran',
+            'link' => 'dosen.mata-kuliah.tujuan-pembelajaran',
             'child_links' => [
                 [
                     'title' => 'Detail Informasi Tujuan Pembelajaran',
-                    'link' => 'mata-kuliah.tujuan-pembelajaran.detail-informasi'
+                    'link' => 'dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi'
                 ]
             ]
         ],
         [
             'title' => 'Rencana Asesmen',
-            'link' => 'mata-kuliah.rencana-asesmen',
+            'link' => 'dosen.mata-kuliah.rencana-asesmen',
             'child_links' => [
                 [
                     'title' => 'Detail Informasi Rencana Asesmen',
-                    'link' => 'mata-kuliah.rencana-asesmen.detail-informasi'
+                    'link' => 'dosen.mata-kuliah.rencana-asesmen.detail-informasi'
                 ],
                 [
                     'title' => 'Ubah Detail Informasi Rencana Asesmen',
-                    'link' => 'mata-kuliah.rencana-asesmen.detail-informasi.ubah'
-                ]
+                    'link' => 'dosen.mata-kuliah.rencana-asesmen.detail-informasi.ubah'
+                ],
             ]
         ],
         [
             'title' => 'Nilai Mahasiswa',
-            'link' => 'mata-kuliah.nilai-mahasiswa',
+            'link' => 'dosen.mata-kuliah.nilai-mahasiswa',
         ]
     ];
 
     $kaprodi = [
         [
             'title' => 'Home',
-            'link' => route('kurikulum.index'),
+            'link' => route('kaprodi.kurikulum.index'),
             'page_name' => 'Kurikulum'
         ],
         [
