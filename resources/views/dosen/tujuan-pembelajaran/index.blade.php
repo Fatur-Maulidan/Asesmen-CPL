@@ -17,63 +17,69 @@
     </div>
     <div class="modal fade" id="tambah-tujuan-pembelajaran" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Buat Tujuan Pembelajaran</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="width: 100%">
-                    <div class="d-flex flex-row">
-                        <div class="d-flex flex-column">
-                            <div class="d-flex flex-column mb-2">
-                                <label for="exampleFormControlInput1" class="form-label fw-bold">Deskripsi</label>
-                                <textarea class="form-control" id="exampleFormControlInput1" rows="3"></textarea>
+        <form method="POST"
+            action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.store', ['kodeMataKuliah' => $kodeMataKuliah]) }}">
+            @csrf
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Buat Tujuan Pembelajaran</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="width: 100%">
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-column">
+                                <div class="d-flex flex-column mb-2">
+                                    <label for="exampleFormControlInput1" class="form-label fw-bold">Deskripsi</label>
+                                    <textarea class="form-control" id="exampleFormControlInput1" rows="3" name="deskripsi"></textarea>
+                                </div>
+                                <div class="d-flex flex-column mb-2">
+                                    <div class="fw-bold">Rentang bobot berdasarkan IK induk</div>
+                                    <div class="">Pilih terlebih Indikator Kinerja induk terlebih dahulu</div>
+                                </div>
+                                <div class="d-flex flex-column ">
+                                    <div class="fw-bold">Bobot</div>
+                                    <select class="form-select" name="bobot">
+                                        <option value="" disabled selected>Pilih Bobot</option>
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
                             </div>
-                            <div class="d-flex flex-column mb-2">
-                                <div class="fw-bold">Rentang bobot berdasarkan IK induk</div>
-                                <div class="">Pilih terlebih Indikator Kinerja induk terlebih dahulu</div>
-                            </div>
-                            <div class="d-flex flex-column ">
-                                <div class="fw-bold">Bobot</div>
-                                <select class="form-select">
-                                    <option value="" disabled selected>Pilih Bobot</option>
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-column ms-4" style="width: 50%">
-                            <div class="card">
-                                <h5 class="card-header">Sudah ada pemetaan dengan TP</h5>
-                                <div class="card-body py-4 px-4 overflow-auto" style="height: 350px">
-                                    @for ($i = 1; $i <= 3; $i++)
-                                        <div class="d-flex flex-column mb-4">
-                                            <div class="d-flex flex-column">
-                                                <div class="d-flex flex-row">
-                                                    <input type="checkbox">
-                                                    <div class="fw-bold" style="margin-left: 10px">SS-{{ $i }}
+                            <div class="d-flex flex-column ms-4" style="width: 50%">
+                                <div class="card">
+                                    <h5 class="card-header">Sudah ada pemetaan dengan TP</h5>
+                                    <div class="card-body py-4 px-4 overflow-auto" style="height: 350px">
+                                        @for ($i = 1; $i <= 3; $i++)
+                                            <div class="d-flex flex-column mb-4">
+                                                <div class="d-flex flex-column">
+                                                    <div class="d-flex flex-row">
+                                                        <input type="checkbox">
+                                                        <div class="fw-bold" style="margin-left: 10px">
+                                                            SS-{{ $i }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="ms-4">
+                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+                                                        sunt
+                                                        repellat culpa sit saepe a rerum quibusdam nobis, in velit.
                                                     </div>
                                                 </div>
-                                                <div class="ms-4">
-                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi sunt
-                                                    repellat culpa sit saepe a rerum quibusdam nobis, in velit.
-                                                </div>
                                             </div>
-                                        </div>
-                                    @endfor
+                                        @endfor
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-success">Tambah</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Tambah</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
     <div class="d-flex flex-column">
         <div class="accordion accordion-flush" id="accordionFlushExample">

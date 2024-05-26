@@ -4,9 +4,17 @@ namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\TujuanPembelajaranStoreRequest;
+use App\Models\TujuanPembelajaran;
+use Illuminate\Support\Facades\Validator;
 
 class TPController extends Controller
 {
+    protected $validation;
+    public function __construct(){
+        $this->validation = new TujuanPembelajaranStoreRequest();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,16 +31,6 @@ class TPController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -40,18 +38,30 @@ class TPController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validator = Validator::make(
+            $request->all(), 
+            $this->validation->rules(), 
+            $this->validation->message()
+        );
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $dataTP = TujuanPembelajaran::get();
+        dd($dataTP);
+        $tujuanPembelajaran = new TujuanPembelajaran([
+            'kodeTP' => "TP-".($dataTP + 1),
+            'deskripsi' => $request->input('deskripsi'),
+            'bobot' => $request->input('bobot')
+        ]);
+
+        if($tujuanPembelajaran->save()) {
+            return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil ditambahkan');
+        } else {
+            return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal ditambahkan');
+        }
     }
 
     /**
@@ -74,7 +84,7 @@ class TPController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**

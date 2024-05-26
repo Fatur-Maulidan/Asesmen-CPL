@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TujuanPembelajaran extends Migration
+class AlterTableTujuanPembelajaran extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class TujuanPembelajaran extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('tujuan_pembelajaran', function (Blueprint $table) {
+            $table->integer('bobot')->change();
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class TujuanPembelajaran extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('tujuan_pembelajaran', function (Blueprint $table) {
+            $table->integer('bobot')->change();
+        });
     }
 }
