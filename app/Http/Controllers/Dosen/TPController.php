@@ -49,8 +49,7 @@ class TPController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $dataTP = TujuanPembelajaran::get();
-        dd($dataTP);
+        $dataTP = TujuanPembelajaran::get()->count();
         $tujuanPembelajaran = new TujuanPembelajaran([
             'kodeTP' => "TP-".($dataTP + 1),
             'deskripsi' => $request->input('deskripsi'),
