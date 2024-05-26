@@ -9,7 +9,7 @@
 
         @if ($role == 'Koordinator Program Studi')
             <ul class="nav nav-underline mt-4">
-                @if (Route::is('kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard'))
+                @if (Route::is('kaprodi.kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard'))
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('kaprodi.kurikulum.index') }}">Kurikulum</a>
                     </li>

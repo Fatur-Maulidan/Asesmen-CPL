@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MKController extends Controller
+class IndikatorKinerjaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class MKController extends Controller
      */
     public function index($kurikulum)
     {
-        return view('kaprodi.mk.index', [
-            'title' => 'Mata Kuliah',
+        return view('kaprodi.ik.index', [
+            'title' => 'Indikator Kinerja',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum
@@ -51,14 +51,26 @@ class MKController extends Controller
      */
     public function show($kurikulum, $id)
     {
-        return view('kaprodi.mk.show', [
-            'title' => 'Mata Kuliah',
+        return view('kaprodi.ik.show', [
+            'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'mk' => [
-                'kode' => '21IF001',
-                'nama' => 'Dasar Dasar Pemrograman'
+            'ik' => [
+                'kode' => 'SS-1.1'
+            ]
+        ]);
+    }
+
+    public function detail($kurikulum, $id)
+    {
+        return view('kaprodi.ik.detail', [
+            'title' => 'IK',
+            'nama' => 'Jhon Doe',
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $kurikulum,
+            'ik' => [
+                'kode' => 'SS-1.1'
             ]
         ]);
     }
@@ -69,9 +81,17 @@ class MKController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($kurikulum, $id)
     {
-        //
+        return view('kaprodi.ik.edit', [
+            'title' => 'IK',
+            'nama' => 'Jhon Doe',
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $kurikulum,
+            'ik' => [
+                'kode' => 'SS-1.1'
+            ]
+        ]);
     }
 
     /**

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CPLController extends Controller
+class MataKuliahController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class CPLController extends Controller
      */
     public function index($kurikulum)
     {
-        return view('kaprodi.cpl.index', [
-            'title' => 'Capaian Pembelajaran',
+        return view('kaprodi.mk.index', [
+            'title' => 'Mata Kuliah',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum
@@ -51,13 +51,14 @@ class CPLController extends Controller
      */
     public function show($kurikulum, $id)
     {
-        return view('kaprodi.cpl.show', [
-            'title' => 'Capaian Pembelajaran',
+        return view('kaprodi.mk.show', [
+            'title' => 'Mata Kuliah',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'cpl' => [
-                'kode' => 'SS-1'
+            'mk' => [
+                'kode' => '21IF001',
+                'nama' => 'Dasar Dasar Pemrograman'
             ]
         ]);
     }
@@ -68,17 +69,9 @@ class CPLController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($kurikulum, $id)
+    public function edit($id)
     {
-        return view('kaprodi.cpl.edit', [
-            'title' => 'CPL',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
-            'cpl' => [
-                'kode' => 'SS-1'
-            ]
-        ]);
+        //
     }
 
     /**
