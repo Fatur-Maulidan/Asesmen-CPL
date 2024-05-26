@@ -44,10 +44,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="">
+                    <form action="{{ route('admin.jurusan.store') }}" method="POST" autocomplete="off">
+                        @csrf
                         <div class="mb-4">
-                            <label for="nama" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" id="nama" placeholder="Nama Jurusan">
+                            <label for="nama_jurusan" class="form-label fw-bold">Nama</label>
+                            <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan"
+                                placeholder="Nama Jurusan">
                         </div>
 
                         <div class="mb-4">
