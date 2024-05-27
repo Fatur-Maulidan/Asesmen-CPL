@@ -22,10 +22,12 @@ class TPController extends Controller
      */
     public function index($kodeMataKuliah)
     {
+        $dataTP = TujuanPembelajaran::all();
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => 'John Doe',
             'role' => 'Dosen',
+            'dataTP' => $dataTP,
             'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }
@@ -44,16 +46,16 @@ class TPController extends Controller
             $this->validation->message()
         );
 
-        
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $dataTP = TujuanPembelajaran::get()->count();
         $tujuanPembelajaran = new TujuanPembelajaran([
-            'kodeTP' => "TP-".($dataTP + 1),
+            'kode' => "TP-".($dataTP + 1),
             'deskripsi' => $request->input('deskripsi'),
-            'bobot' => $request->input('bobot')
+            'tanggal_pengajuan' => date('Y-m-d H:i:s'),
+            'tanggal_pembaruan' => date('Y-m-d H:i:s')
         ]);
 
         if($tujuanPembelajaran->save()) {
@@ -81,9 +83,27 @@ class TPController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $kodeMataKuliah, $id)
     {
-        
+        $validator = Validator::make(
+            $request->all(), 
+            $this->validation->rules(), 
+            $this->validation->message()
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $dataTP = TujuanPembelajaran::find($id);
+        $dataTP->deskripsi = $request->input('deskripsi');
+        $dataTP->tanggal_pembaruan = date('Y-m-d H:i:s');
+
+        if($dataTP->save()) {
+            return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil diperbaharui');
+        } else {
+            return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal diperbaharui');
+        }
     }
 
     /**
@@ -97,11 +117,15 @@ class TPController extends Controller
         //
     }
 
-    public function detailInformasi($kodeMataKuliah) {
+    public function detailInformasi($kodeMataKuliah, $id) {
+        $tp = TujuanPembelajaran::find($id);
+        $dataTP = TujuanPembelajaran::get();
         return view('dosen.tujuan-pembelajaran.detail-informasi', [
             'title' => 'Detail Informasi Tujuan Pembelajaran',
             'nama' => 'John Doe',
             'role' => 'Dosen',
+            'tp' => $tp,
+            'dataTP' => $dataTP,
             'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }

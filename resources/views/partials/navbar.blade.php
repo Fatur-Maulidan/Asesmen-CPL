@@ -63,7 +63,29 @@
                         }
                         ?>
                         <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
-                            href="{{ $nav['link'] != '#' ? route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah]) : '#' }}">{{ $nav['title'] }}</a>
+                            href="{{ $nav['link'] != '#'
+                                ? (isset($nav['parameters'])
+                                    ? route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $id])
+                                    : route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah]))
+                                : '#' }}">
+                            {{ $nav['title'] }}
+                        </a>
+                        {{-- <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
+                            href="{{ $nav['link'] != '#' ? route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah]) : '#' }}">{{ $nav['title'] }}
+                        </a> --}}
+                        {{-- <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
+                            href="{{ $nav['link'] == 'specific.route'
+                                ? route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $id])
+                                : ($nav['link'] == 'another.route'
+                                    ? route($nav['link'], [
+                                        'kodeMataKuliah' => $kodeMataKuliah,
+                                        'secondParam' => $secondParam,
+                                        'thirdParam' => $thirdParam,
+                                    ])
+                                    : route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah])) }}">
+                            {{ $nav['title'] }}
+                        </a> --}}
+
                     </li>
                 @endforeach
             </ul>

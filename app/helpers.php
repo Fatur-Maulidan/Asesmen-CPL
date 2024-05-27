@@ -28,6 +28,7 @@ function isNavbarRole($role)
                 [
                     'title' => 'Detail Informasi Tujuan Pembelajaran',
                     'link' => 'dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi',
+                    'parameters' => ""
                 ]
             ]
         ],
@@ -199,4 +200,15 @@ function getDosen()
             'email' => 'dummy.dosen.jtk@polban.ac.id'
         ],
     ];
+}
+
+function checkStatus($status)
+{
+    if($status == 'Disetujui') {
+        return 'badge text-bg-success ms-3';
+    } elseif($status == 'Menunggu Validasi') {
+        return 'badge text-bg-warning ms-3';
+    } elseif($status == 'Ditolak') {
+        return 'badge text-bg-danger ms-3';
+    }
 }
