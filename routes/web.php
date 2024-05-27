@@ -86,8 +86,11 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
             Route::post('/', [TPDosen::class, 'store'])
                 ->name('mata-kuliah.tujuan-pembelajaran.store');
 
-            Route::get('detail-informasi', [TPDosen::class, 'detailInformasi'])
+            Route::get('detail-informasi/{id}', [TPDosen::class, 'detailInformasi'])
                 ->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
+
+            Route::post('/{id}', [TPDosen::class, 'update'])
+                ->name('mata-kuliah.tujuan-pembelajaran.update');
         });
     
         Route::prefix('{kodeMataKuliah}/rencana-asesmen')->group(function () {

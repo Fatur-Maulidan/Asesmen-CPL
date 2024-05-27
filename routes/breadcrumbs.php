@@ -115,9 +115,9 @@ Breadcrumbs::for('dosen.mata-kuliah.tujuan-pembelajaran', function (BreadcrumbTr
 });
 
 // Breadcrumb Dosen/mata Kuliah/Tujuan Pembelajaran/Detail Informasi
-Breadcrumbs::for('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
+Breadcrumbs::for('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', function (BreadcrumbTrail $trail, $kodeMataKuliah, $id): void {
     $trail->parent('dosen.mata-kuliah.tujuan-pembelajaran', $kodeMataKuliah);
-    $trail->push('Detail Informasi Tujuan Pembelajaran', route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah]));
+    $trail->push('Detail Informasi Tujuan Pembelajaran', route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $id]));
 });
 
 // Breadcrumb Dosen/mata Kuliah/Rencana Asesmen
