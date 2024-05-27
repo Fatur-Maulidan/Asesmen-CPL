@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\JurusanGolongan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,4 +37,13 @@ class Jurusan extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'golongan' => JurusanGolongan::class,
+    ];
 }

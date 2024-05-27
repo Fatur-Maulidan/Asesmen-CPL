@@ -6,7 +6,7 @@
 @endsection
 
 @section('main')
-    {{-- Filter buttons --}}
+    {{-- Action buttons --}}
     <div class="row mb-4">
         <div class="col">
             <form role="search">
@@ -21,6 +21,7 @@
         </div>
     </div>
 
+    {{-- Filter buttons --}}
     <div class="row mb-4">
         <div class="col-auto">
             <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
@@ -149,111 +150,114 @@
 
     {{-- Data jurusan --}}
     <div class="row gy-5">
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div class="d-inline">
-                        <span class="fs-5 fw-bold me-2">Jurusan Teknik Komputer dan Informatika</span>
+        @foreach ($jurusan as $jrsn)
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="d-inline">
+                            <span class="fs-5 fw-bold me-2">{{ $jrsn['nama'] }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <div class="fw-bold">Golongan jurusan</div>
-                        <div>Rekayasa</div>
-                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="fw-bold">Golongan jurusan</div>
+                            <div>{{ $jrsn['golongan'] }}</div>
+                        </div>
 
-                    <div class="mb-3">
-                        <div class="fw-bold">Ketua Jurusan</div>
-                        <div>Yadi Adithia</div>
-                    </div>
+                        <div class="mb-3">
+                            <div class="fw-bold">Ketua Jurusan</div>
+                            <div>Yadi Adithia</div>
+                        </div>
 
-                    <div>
-                        <div class="fw-bold">Program studi terdaftar</div>
-                        <ul class="mb-0">
-                            <li>D3 Teknik Informatika</li>
-                            <li>D4 Teknik Informatika</li>
-                        </ul>
+                        <div>
+                            <div class="fw-bold">Program studi terdaftar</div>
+                            <ul class="mb-0">
+                                <li>D3 Teknik Informatika</li>
+                                <li>D4 Teknik Informatika</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="accordion" id="accordionExample">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button bg-light fw-bold" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                D3 Teknik Informatika <span class="badge text-bg-primary ms-2">Aktif</span>
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="mb-3">
-                                    <div class="fw-bold">Nomor program studi</div>
-                                    <div>1511</div>
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button bg-light fw-bold" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    D3 Teknik Informatika <span class="badge text-bg-primary ms-2">Aktif</span>
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Nomor program studi</div>
+                                        <div>1511</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Kode program studi</div>
+                                        <div>JTK</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Koordinator program studi</div>
+                                        <div>Lukmanul Hakim</div>
+                                    </div>
+
+                                    <div>
+                                        <div class="fw-bold">Koordinator program studi</div>
+                                        <ul class="mb-0">
+                                            <li>Kurikulum 2019</li>
+                                            <li>Kurikulum 2020</li>
+                                            <li>Kurikulum 2021</li>
+                                        </ul>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button bg-light collapsed fw-bold" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                                    aria-controls="collapseTwo">
+                                    D4 Teknik Informatika <span class="badge text-bg-primary ms-2">Aktif</span>
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Nomor program studi</div>
+                                        <div>1511</div>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <div class="fw-bold">Kode program studi</div>
-                                    <div>JTK</div>
-                                </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Kode program studi</div>
+                                        <div>JTK</div>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <div class="fw-bold">Koordinator program studi</div>
-                                    <div>Lukmanul Hakim</div>
-                                </div>
+                                    <div class="mb-3">
+                                        <div class="fw-bold">Koordinator program studi</div>
+                                        <div>Lukmanul Hakim</div>
+                                    </div>
 
-                                <div>
-                                    <div class="fw-bold">Koordinator program studi</div>
-                                    <ul class="mb-0">
-                                        <li>Kurikulum 2019</li>
-                                        <li>Kurikulum 2020</li>
-                                        <li>Kurikulum 2021</li>
-                                    </ul>
+                                    <div>
+                                        <div class="fw-bold">Koordinator program studi</div>
+                                        <ul class="mb-0">
+                                            <li>Kurikulum 2019</li>
+                                            <li>Kurikulum 2020</li>
+                                            <li>Kurikulum 2021</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button bg-light collapsed fw-bold" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                                aria-controls="collapseTwo">
-                                D4 Teknik Informatika <span class="badge text-bg-primary ms-2">Aktif</span>
-                            </button>
-                        </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="mb-3">
-                                    <div class="fw-bold">Nomor program studi</div>
-                                    <div>1511</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="fw-bold">Kode program studi</div>
-                                    <div>JTK</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="fw-bold">Koordinator program studi</div>
-                                    <div>Lukmanul Hakim</div>
-                                </div>
-
-                                <div>
-                                    <div class="fw-bold">Koordinator program studi</div>
-                                    <ul class="mb-0">
-                                        <li>Kurikulum 2019</li>
-                                        <li>Kurikulum 2020</li>
-                                        <li>Kurikulum 2021</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card-body text-body-secondary">
+                        <a href="" class="me-2">Ubah</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#tambahProgramStudiModal">Tambah Program
+                            Studi</a>
                     </div>
-                </div>
-                <div class="card-body text-body-secondary">
-                    <a href="" class="me-2">Ubah</a>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambahProgramStudiModal">Tambah Program
-                        Studi</a>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
 @endsection

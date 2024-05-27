@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Jurusan;
 use Illuminate\Http\Request;
 
 class JurusanController extends Controller
@@ -17,7 +18,8 @@ class JurusanController extends Controller
         return view('admin.jurusan.index', [
             'title' => 'Jurusan',
             'nama' => 'John Tyler',
-            'role' => 'Admin'
+            'role' => 'Admin',
+            'jurusan' => Jurusan::all()
         ]);
     }
 
