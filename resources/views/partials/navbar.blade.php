@@ -1,15 +1,30 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary pb-0 border">
     <div class="container-fluid container-md d-block pt-2">
         <h6 class="mb-4">
-            <span class="fw-normal">Jurusan Teknik Komputer dan Informatika |</span>
-            <span class="fw-bold">D3 Teknik Informatika</span>
+            @if ($role == 'Admin')
+                <span class="fw-normal">Admin</span>
+            @else
+                <span class="fw-normal">Jurusan Teknik Komputer dan Informatika |</span>
+                <span class="fw-bold">D3 Teknik Informatika</span>
+            @endif
         </h6>
 
         @yield('breadcrumb')
 
-        @if ($role == 'Koordinator Program Studi')
+        @if ($role == 'Admin')
             <ul class="nav nav-underline mt-4">
-                @if (Route::is('kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard'))
+                <li class="nav-item">
+                    <a class="nav-link @if (Route::is('admin.jurusan.*')) active @endif"
+                        href="{{ route('admin.jurusan.index') }}">Jurusan</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @if (Route::is('admin.dosen.*')) active @endif"
+                        href="{{ route('admin.dosen.index') }}">Dosen</a>
+                </li>
+            </ul>
+        @elseif($role == 'Koordinator Program Studi')
+            <ul class="nav nav-underline mt-4">
+                @if (Route::is('kaprodi.kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard'))
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('kaprodi.kurikulum.index') }}">Kurikulum</a>
                     </li>

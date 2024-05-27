@@ -1,24 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Kaprodi;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MKController extends Controller
+class JurusanController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kurikulum)
+    public function index()
     {
-        return view('kaprodi.mk.index', [
-            'title' => 'Mata Kuliah',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum
+        return view('admin.jurusan.index', [
+            'title' => 'Jurusan',
+            'nama' => 'John Tyler',
+            'role' => 'Admin'
         ]);
     }
 
@@ -49,18 +48,9 @@ class MKController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kurikulum, $id)
+    public function show($id)
     {
-        return view('kaprodi.mk.show', [
-            'title' => 'Mata Kuliah',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
-            'mk' => [
-                'kode' => '21IF001',
-                'nama' => 'Dasar Dasar Pemrograman'
-            ]
-        ]);
+        //
     }
 
     /**

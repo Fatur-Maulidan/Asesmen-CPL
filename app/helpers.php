@@ -143,61 +143,101 @@ function getDosen()
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'Siti Dwi Setiarini',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
         [
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'Aprianti Nanda S.',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
         [
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'Trisna Gelar A.',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
         [
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'Santi Sundari',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
         [
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'Ferry Ferizal',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
         [
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'Didik Suwito',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
         [
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'Hasri Hayati',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
         [
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'Sri Ratna W.',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
         [
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'N. S. Junaedi',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
         [
             'nip' => rand(100000000000000000, 999999999999999999),
             'kode' => 'K' . rand(100, 999) . 'N',
             'nama' => 'Waway Qodratullah S.',
-            'email' => 'dummy.dosen.jtk@polban.ac.id'
+            'email' => 'dummy.dosen.jtk@polban.ac.id',
+            'jurusan' => 'Teknik Komputer dan Informatika',
+            'id_pengguna' => '12lknx-023',
+            'role' => 'Dosen',
+            'status' => 'Aktif'
         ],
     ];
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class IKController extends Controller
+class CapaianPembelajaranLulusanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class IKController extends Controller
      */
     public function index($kurikulum)
     {
-        return view('kaprodi.ik.index', [
-            'title' => 'Indikator Kinerja',
+        return view('kaprodi.cpl.index', [
+            'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum
@@ -51,26 +51,13 @@ class IKController extends Controller
      */
     public function show($kurikulum, $id)
     {
-        return view('kaprodi.ik.show', [
-            'title' => 'IK',
+        return view('kaprodi.cpl.show', [
+            'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'ik' => [
-                'kode' => 'SS-1.1'
-            ]
-        ]);
-    }
-
-    public function detail($kurikulum, $id)
-    {
-        return view('kaprodi.ik.detail', [
-            'title' => 'IK',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
-            'ik' => [
-                'kode' => 'SS-1.1'
+            'cpl' => [
+                'kode' => 'SS-1'
             ]
         ]);
     }
@@ -83,13 +70,13 @@ class IKController extends Controller
      */
     public function edit($kurikulum, $id)
     {
-        return view('kaprodi.ik.edit', [
-            'title' => 'IK',
+        return view('kaprodi.cpl.edit', [
+            'title' => 'CPL',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'ik' => [
-                'kode' => 'SS-1.1'
+            'cpl' => [
+                'kode' => 'SS-1'
             ]
         ]);
     }

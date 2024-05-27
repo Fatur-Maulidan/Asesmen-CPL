@@ -3,6 +3,16 @@
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
+// --- Admin
+Breadcrumbs::for('admin.jurusan.index', function (BreadcrumbTrail $trail) {
+    $trail->push('Jurusan', route('admin.jurusan.index'));
+});
+
+Breadcrumbs::for('admin.dosen.index', function (BreadcrumbTrail $trail) {
+    $trail->push('Dosen', route('admin.dosen.index'));
+});
+// --- end of Admin
+
 // --- Kaprodi
 // Kurikulum
 Breadcrumbs::for('kaprodi.kurikulum.index', function (BreadcrumbTrail $trail) {
