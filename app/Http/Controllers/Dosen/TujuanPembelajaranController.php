@@ -8,7 +8,7 @@ use App\Http\Requests\TujuanPembelajaranStoreRequest;
 use App\Models\TujuanPembelajaran;
 use Illuminate\Support\Facades\Validator;
 
-class TPController extends Controller
+class TujuanPembelajaranController extends Controller
 {
     protected $validation;
     public function __construct(){
@@ -66,17 +66,6 @@ class TPController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -112,9 +101,14 @@ class TPController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($kodeMataKuliah,$id)
     {
-        //
+        $dataTP = TujuanPembelajaran::find($id);
+        if($dataTP->delete()) {
+            return redirect(route('dosen.mata-kuliah.tujuan-pembelajaran',['kodeMataKuliah' => $kodeMataKuliah]))->with('success', 'Tujuan Pembelajaran berhasil dihapus');
+        } else {
+            return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal dihapus');
+        }
     }
 
     public function detailInformasi($kodeMataKuliah, $id) {

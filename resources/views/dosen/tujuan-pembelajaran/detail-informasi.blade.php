@@ -98,7 +98,8 @@
     <div class="d-flex flex-row justify-content-center">
         <div class="d-flex flex-column pt-3 px-4 border border-1 rounded" style="width: 30%; height:100vh;">
             @foreach ($dataTP as $index => $data)
-                <div id="{{ $tp['kode'] }}" class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2 btn-tp">
+                <div id="{{ $tp['kode'] }}"
+                    class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2 btn-tp {{ $data['kode'] == $tp['kode'] ? 'border border-1' : '' }}">
                     <div class="">{{ $data['kode'] }}</div>
                     <div class="{{ checkStatus($data['status_validasi']) }}">{{ $data['status_validasi'] }}</div>
                 </div>
@@ -123,7 +124,13 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row" style="height: 40px">
-                        <button class="btn btn-danger me-2 px-4">Hapus</button>
+                        <form
+                            action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.destroy', ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $tp->id]) }}"
+                            method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger me-2 px-4">Hapus</button>
+                        </form>
                         <button class="btn btn-warning px-4" data-bs-toggle="modal"
                             data-bs-target="#ubah-tujuan-pembelajaran">Ubah</button>
                     </div>

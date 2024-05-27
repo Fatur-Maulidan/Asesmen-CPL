@@ -8,12 +8,12 @@ use App\Http\Controllers\Kaprodi\KurikulumController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Kaprodi\MahasiswaController;
 use App\Http\Controllers\Dosen\MataKuliahController;
-use App\Http\Controllers\Dosen\IKController as IKDosen;
-use App\Http\Controllers\Dosen\TPController as TPDosen;
+use App\Http\Controllers\Dosen\IndikatorKinerjaController as IKDosen;
+use App\Http\Controllers\Dosen\TujuanPembelajaranController;
+use App\Http\Controllers\Kaprodi\TujuanPembelajaranController as TujuanPembelajaran;
 use App\Http\Controllers\Dosen\RencanaAsesmenController;
 use App\Http\Controllers\Kaprodi\CapaianPembelajaranLulusanController;
 use App\Http\Controllers\Kaprodi\IndikatorKinerjaController;
-use App\Models\TujuanPembelajaran;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -88,17 +88,20 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
         });
 
         Route::prefix('{kodeMataKuliah}/tujuan-pembelajaran')->group(function () {
-            Route::get('/', [TPDosen::class, 'index'])
+            Route::get('/', [TujuanPembelajaranController::class, 'index'])
                 ->name('mata-kuliah.tujuan-pembelajaran');
 
-            Route::post('/', [TPDosen::class, 'store'])
+            Route::post('/', [TujuanPembelajaranController::class, 'store'])
                 ->name('mata-kuliah.tujuan-pembelajaran.store');
 
-            Route::get('detail-informasi/{id}', [TPDosen::class, 'detailInformasi'])
+            Route::get('detail-informasi/{id}', [TujuanPembelajaranController::class, 'detailInformasi'])
                 ->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
 
-            Route::post('/{id}', [TPDosen::class, 'update'])
+            Route::post('/{id}', [TujuanPembelajaranController::class, 'update'])
                 ->name('mata-kuliah.tujuan-pembelajaran.update');
+
+            Route::delete('/{id}', [TujuanPembelajaranController::class, 'destroy'])
+                ->name('mata-kuliah.tujuan-pembelajaran.destroy');
         });
 
         Route::prefix('{kodeMataKuliah}/rencana-asesmen')->group(function () {
