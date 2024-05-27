@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dosen;
 use Illuminate\Http\Request;
 
 class DosenController extends Controller
@@ -18,7 +19,7 @@ class DosenController extends Controller
             'title' => 'Dosen',
             'nama' => 'John Tyler',
             'role' => 'Admin',
-            'dosen' => getDosen()
+            'dosen' => Dosen::all()
         ]);
     }
 
