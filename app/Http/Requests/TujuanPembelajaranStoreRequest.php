@@ -24,8 +24,7 @@ class TujuanPembelajaranStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'deskripsi' => 'required|string',
-            'bobot' => 'required|numeric|between:1,3'
+            'deskripsi' => 'required|string'
         ];
     }
 
@@ -33,9 +32,6 @@ class TujuanPembelajaranStoreRequest extends FormRequest
     {
         return [
             'deskripsi.required' => 'Deskripsi harus diisi',
-            'bobot.required' => 'Bobot harus diisi',
-            'bobot.numeric' => 'Bobot harus berupa angka',
-            'bobot.between' => 'Bobot harus berada diantara 1 sampai 3'
         ];
     }
 }

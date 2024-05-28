@@ -18,43 +18,49 @@
                     <h5 class="modal-title" id="exampleModalLabel">Buat Tujuan Pembelajaran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="width: 100%">
-                    <div class="d-flex flex-column">
-                        <div class="d-flex flex-column mb-4">
-                            <div class="fw-bold mb-2">Deskripsi</div>
-                            <textarea class="form-control" rows="3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quasi autem unde cum impedit quas ab aspernatur ea illo eum!</textarea>
-                        </div>
-                        <div class="d-flex flex-column mb-4">
-                            <div class="fw-bold mb-2">Indikator Kinerja Induk</div>
-                            <select class="form-select">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <option>SS-1.{{ $i }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="d-flex flex-column mb-4">
-                            <div class="fw-bold mb-2">Rentang bobot berdasarkan IK induk</div>
-                            <div class="">1 Sampai 3</div>
-                        </div>
+                <form method="POST"
+                    action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.update', ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $tp->id]) }}">
+                    @csrf
+                    <div class="modal-body" style="width: 100%">
                         <div class="d-flex flex-column">
-                            <div class="fw-bold mb-2">Bobot</div>
-                            <select class="form-select">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <option>{{ $i }}</option>
-                                @endfor
-                            </select>
-                            <div class="">Pilih bobot berdasarkan rentang bobot yang tersedia pada IK induk</div>
+                            <div class="d-flex flex-column mb-4">
+                                <div class="fw-bold mb-2">Deskripsi</div>
+                                <textarea class="form-control" name="deskripsi" rows="3">{{ $tp->deskripsi }}</textarea>
+                            </div>
+                            <div class="d-flex flex-column mb-4">
+                                <div class="fw-bold mb-2">Indikator Kinerja Induk</div>
+                                <select class="form-select">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <option>SS-1.{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="d-flex flex-column mb-4">
+                                <div class="fw-bold mb-2">Rentang bobot berdasarkan IK induk</div>
+                                <div class="">1 Sampai 3</div>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold mb-2">Bobot</div>
+                                <select class="form-select">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <option <?php if ($tp->bobot == $i) {
+                                            echo 'selected';
+                                        } ?>>{{ $i }}</option>
+                                    @endfor
+                                </select>
+                                <div class="">Pilih bobot berdasarkan rentang bobot yang tersedia pada IK induk</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="d-flex flex-row" style="width: 100%">
-                        <button type="button" class="btn btn-danger me-2" style="width: 50%"
-                            data-bs-target="#batal-ubah-tujuan-pembelajaran" data-bs-dismiss="modal"
-                            data-bs-toggle="modal">Batal</button>
-                        <button type="button" class="btn btn-success" style="width: 50%">Ajukan Persetujuan</button>
+                    <div class="modal-footer">
+                        <div class="d-flex flex-row" style="width: 100%">
+                            <button type="button" class="btn btn-danger me-2" style="width: 50%"
+                                data-bs-target="#batal-ubah-tujuan-pembelajaran" data-bs-dismiss="modal"
+                                data-bs-toggle="modal">Batal</button>
+                            <button type="submit" class="btn btn-success" style="width: 50%">Ajukan Persetujuan</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -91,25 +97,13 @@
 
     <div class="d-flex flex-row justify-content-center">
         <div class="d-flex flex-column pt-3 px-4 border border-1 rounded" style="width: 30%; height:100vh;">
-            @for ($i = 1; $i <= 4; $i++)
-                @if ($i == 1)
-                    <div class="d-flex flex-row py-2 px-3 rounded border border-1 justify-content-between mb-2 btn-tp">
-                        <div class="">TP-{{ $i }}</div>
-                        <div class="badge text-bg-success">Disetujui</div>
-                    </div>
-                @else
-                    <div class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2 btn-tp">
-                        <div class="">TP-{{ $i }}</div>
-                        @if ($i == 1 || $i == 2)
-                            <div class="badge text-bg-success ms-3">Disetujui</div>
-                        @elseif($i == 3)
-                            <div class="badge text-bg-warning ms-3">Menunggu Validasi</div>
-                        @else
-                            <div class="badge text-bg-danger ms-3">Ditolak</div>
-                        @endif
-                    </div>
-                @endif
-            @endfor
+            @foreach ($dataTP as $index => $data)
+                <div id="{{ $tp['kode'] }}"
+                    class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2 btn-tp {{ $data['kode'] == $tp['kode'] ? 'border border-1' : '' }}">
+                    <div class="">{{ $data['kode'] }}</div>
+                    <div class="{{ checkStatus($data['status_validasi']) }}">{{ $data['status_validasi'] }}</div>
+                </div>
+            @endforeach
         </div>
         <div id="spreadsheet"></div>
         <div class="ms-4" style="width: 70%">
@@ -118,11 +112,11 @@
                     <div class="d-flex flex-row">
                         <div class="d-flex flex-column">
                             <div class="fw-bold">Diubah Pada</div>
-                            <div class="">01 / Januari / 2024 01:18</div>
+                            <div class="">{{ $tp->tanggal_pengajuan }}</div>
                         </div>
                         <div class="d-flex flex-column ms-4">
                             <div class="fw-bold">Diperbarui Pada</div>
-                            <div class="">01 / Januari / 2024 01:18</div>
+                            <div class="">{{ $tp->tanggal_pembaruan }}</div>
                         </div>
                         <div class="d-flex flex-column ms-4">
                             <div class="fw-bold">Diubah Oleh</div>
@@ -130,15 +124,20 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row" style="height: 40px">
-                        <button class="btn btn-danger me-2 px-4">Hapus</button>
+                        <form
+                            action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.destroy', ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $tp->id]) }}"
+                            method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger me-2 px-4">Hapus</button>
+                        </form>
                         <button class="btn btn-warning px-4" data-bs-toggle="modal"
                             data-bs-target="#ubah-tujuan-pembelajaran">Ubah</button>
                     </div>
                 </div>
                 <div class="d-flex flex-column mb-4">
                     <div class="fw-bold">Deskripsi</div>
-                    <div class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt quasi autem unde
-                        cum impedit quas ab aspernatur ea illo eum!/div>
+                    <div class="">{{ $tp->deskripsi }}
                     </div>
                 </div>
                 <div class="d-flex flex-column mb-4">
@@ -156,5 +155,12 @@
     @endsection
 
     @push('scripts')
-        <script></script>
+        <script>
+            $(document).ready(function() {
+                $('.btn-tp').click(function() {
+                    $('.btn-tp').removeClass('border border-1');
+                    $(this).addClass('border border-1');
+                });
+            });
+        </script>
     @endpush

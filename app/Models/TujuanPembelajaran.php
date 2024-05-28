@@ -10,10 +10,16 @@ class TujuanPembelajaran extends Model
     use HasFactory;
 
     protected $fillable = [
-        'kodeTP',
+        'kode',
         'deskripsi',
-        'bobot',
+        'status_validasi',
+        'tanggal_pengajuan',
+        'tanggal_pembaruan',
+        'tanggal_validasi',
+        'alasan_penolakan'
     ];
 
     protected $table = 'tujuan_pembelajaran';
+
+    public $timestamps = false;
 }
