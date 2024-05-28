@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\JurusanRequest;
-use App\Models\Dosen;
-use App\Models\Jurusan;
+use App\Http\Requests\ProgramStudiRequest;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 
-class JurusanController extends Controller
+class ProgramStudiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,23 +16,7 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusan = Jurusan::with(['programStudi', 'programStudi.dosen:id,nama']);
-
-        if (request('filter') == 'rekayasa') {
-            $jurusan->rekayasa();
-        } elseif (request('filter') == 'non-rekayasa') {
-            $jurusan->nonRekayasa();
-        } else {
-            $jurusan->search();
-        }
-
-        return view('admin.jurusan.index', [
-            'title' => 'Jurusan',
-            'nama' => 'John Tyler',
-            'role' => 'Admin',
-            'jurusan' => $jurusan->get(),
-            'dosen' => Dosen::get(['id', 'kode', 'nama'])
-        ]);
+        //
     }
 
     /**
@@ -52,13 +35,17 @@ class JurusanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(JurusanRequest $request)
+    public function store(ProgramStudiRequest $request)
     {
         $validated = $request->validated();
 
-        Jurusan::create([
-            'nama' => $validated['nama_jurusan'],
-            'golongan' => $validated['golongan_jurusan'],
+        ProgramStudi::create([
+            'nama' => $validated['nama_prodi'],
+            'jenjang_pendidikan' => $validated['jenjang_prodi'],
+            'nomor' => $validated['nomor_prodi'],
+            'kode' => $validated['kode_prodi'],
+            'jurusan_id' => $validated['jurusan_id'],
+            'dosen_id' => $validated['koordinator_prodi'],
         ]);
 
         return response()->json([
@@ -74,11 +61,7 @@ class JurusanController extends Controller
      */
     public function show($id)
     {
-        // $jurusan = Jurusan::find($id);
-
-        // return response()->json([
-        //     'jurusan' => $jurusan
-        // ]);
+        //
     }
 
     /**
@@ -99,19 +82,9 @@ class JurusanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(JurusanRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $jurusan = Jurusan::find($id);
-        $validated = $request->validated();
-
-        $jurusan->update([
-            'nama' => $validated['nama_jurusan'],
-            'golongan' => $validated['golongan_jurusan'],
-        ]);
-
-        return response()->json([
-            'message' => 'Data berhasil diubah.'
-        ], 200);
+        //
     }
 
     /**

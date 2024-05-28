@@ -56,4 +56,11 @@ class Dosen extends Model
         'status' => StatusKeaktifan::class,
         'peran' => PeranDosen::class
     ];
+
+    // Relationship
+
+    public function programStudi()
+    {
+        return $this->hasOne(ProgramStudi::class, 'dosen_id');
+    }
 }

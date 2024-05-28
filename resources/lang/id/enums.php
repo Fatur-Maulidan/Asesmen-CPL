@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\JurusanGolongan;
 use App\Enums\PeranDosen;
 use App\Enums\StatusKeaktifan;
 
@@ -13,5 +14,10 @@ return [
     StatusKeaktifan::class => [
         StatusKeaktifan::TidakAktif => 'Tidak Aktif',
         StatusKeaktifan::Aktif => 'Aktif'
+    ],
+
+    JurusanGolongan::class => [
+        JurusanGolongan::Rekayasa => 'Rekayasa',
+        JurusanGolongan::NonRekayasa => 'Non Rekayasa'
     ]
 ];
