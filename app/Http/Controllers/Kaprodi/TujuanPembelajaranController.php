@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class TPController extends Controller
+class TujuanPembelajaranController extends Controller
 {
     /**
      * Display a listing of the resource.
