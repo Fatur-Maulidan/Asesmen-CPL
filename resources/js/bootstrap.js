@@ -31,3 +31,4 @@ window.$ = require('jquery');
 window.Popper = require('@popperjs/core');
 window.bootstrap = require('bootstrap');
 require('select2');
+require('datatables.net-bs5');

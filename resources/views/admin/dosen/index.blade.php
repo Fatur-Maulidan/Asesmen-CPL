@@ -110,7 +110,7 @@
     {{-- Data Dosen --}}
     <div class="row">
         <div class="col-12">
-            <table class="table table-striped table-hover table-responsive table-sm">
+            {{-- <table class="table table-striped table-hover table-responsive table-sm">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -152,7 +152,12 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </table> --}}
+            {{ $dataTable->table() }}
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    {{ $dataTable->scripts() }}
+@endpush

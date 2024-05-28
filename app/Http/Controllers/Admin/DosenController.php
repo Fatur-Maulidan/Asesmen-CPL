@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\DosenDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
 use Illuminate\Http\Request;
@@ -13,13 +14,12 @@ class DosenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(DosenDataTable $dataTable)
     {
-        return view('admin.dosen.index', [
+        return $dataTable->render('admin.dosen.index', [
             'title' => 'Dosen',
             'nama' => 'John Tyler',
             'role' => 'Admin',
-            'dosen' => Dosen::all()
         ]);
     }
 
