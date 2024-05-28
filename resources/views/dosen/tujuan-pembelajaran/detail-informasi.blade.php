@@ -101,7 +101,7 @@
                 <div id="{{ $tp['kode'] }}"
                     class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2 btn-tp {{ $data['kode'] == $tp['kode'] ? 'border border-1' : '' }}">
                     <div class="">{{ $data['kode'] }}</div>
-                    <div class="{{ checkStatus($data['status_validasi']) }}">{{ $data['status_validasi'] }}</div>
+                    <div class="{{ checkStatusTP($data['status_validasi']) }}">{{ $data['status_validasi'] }}</div>
                 </div>
             @endforeach
         </div>

@@ -90,7 +90,7 @@
                             data-bs-target="#flush-collapse{{ $index }}" aria-expanded="false"
                             aria-controls="flush-collapse{{ $index }}">
                             {{ $tp['kode'] }}
-                            <div class="{{ checkStatus($tp['status_validasi']) }}">{{ $tp['status_validasi'] }}</div>
+                            <div class="{{ checkStatusTP($tp['status_validasi']) }}">{{ $tp['status_validasi'] }}</div>
                         </button>
                     </h2>
                     <div id="flush-collapse{{ $index }}" class="accordion-collapse collapse"

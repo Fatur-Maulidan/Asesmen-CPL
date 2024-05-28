@@ -14,6 +14,10 @@
         @if ($role == 'Admin')
             <ul class="nav nav-underline mt-4">
                 <li class="nav-item">
+                    <a class="nav-link @if (Route::is('admin.dashboard.*')) active @endif"
+                        href="{{ route('admin.dashboard.index') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link @if (Route::is('admin.jurusan.*')) active @endif"
                         href="{{ route('admin.jurusan.index') }}">Jurusan</a>
                 </li>
@@ -85,22 +89,6 @@
                                 : '#' }}">
                             {{ $nav['title'] }}
                         </a>
-                        {{-- <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
-                            href="{{ $nav['link'] != '#' ? route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah]) : '#' }}">{{ $nav['title'] }}
-                        </a> --}}
-                        {{-- <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
-                            href="{{ $nav['link'] == 'specific.route'
-                                ? route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $id])
-                                : ($nav['link'] == 'another.route'
-                                    ? route($nav['link'], [
-                                        'kodeMataKuliah' => $kodeMataKuliah,
-                                        'secondParam' => $secondParam,
-                                        'thirdParam' => $thirdParam,
-                                    ])
-                                    : route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah])) }}">
-                            {{ $nav['title'] }}
-                        </a> --}}
-
                     </li>
                 @endforeach
             </ul>

@@ -2,6 +2,21 @@
 
 function isNavbarRole($role)
 {
+    $admin = [
+        [
+            'title' => 'Dashboard',
+            'link' => '#'
+        ],
+        [
+            'title' => 'Jurusan',
+            'link' => 'admin.jurusan',
+        ],
+        [
+            'title' => 'Dosen',
+            'link' => '#'
+        ],
+    ];
+
     $dosen = [
         [
             'title' => 'Dashboard',
@@ -39,10 +54,12 @@ function isNavbarRole($role)
                 [
                     'title' => 'Detail Informasi Rencana Asesmen',
                     'link' => 'dosen.mata-kuliah.rencana-asesmen.detail-informasi',
+                    'parameters' => ""
                 ],
                 [
                     'title' => 'Ubah Detail Informasi Rencana Asesmen',
                     'link' => 'dosen.mata-kuliah.rencana-asesmen.detail-informasi.ubah',
+                    'parameters' => ""
                 ],
             ]
         ],
@@ -88,7 +105,8 @@ function isNavbarRole($role)
         ],
     ];
 
-    return $role == 'Dosen' ? $dosen : $kaprodi;
+    return $role == 'Dosen' ? $dosen : 
+                $role == 'Koordinator Program Studi' ? $kaprodi : $admin;
 }
 
 function mahasiswa()
@@ -242,7 +260,7 @@ function getDosen()
     ];
 }
 
-function checkStatus($status)
+function checkStatusTP($status)
 {
     if($status == 'Disetujui') {
         return 'badge text-bg-success ms-3';
