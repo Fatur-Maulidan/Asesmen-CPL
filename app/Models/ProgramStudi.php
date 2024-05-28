@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\JurusanGolongan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Jurusan extends Model
+class ProgramStudi extends Model
 {
     use HasFactory;
 
@@ -15,7 +14,7 @@ class Jurusan extends Model
      *
      * @var string
      */
-    protected $table = 'jurusan';
+    protected $table = 'program_studi';
 
     /**
      * The primary key associated with the table.
@@ -36,7 +35,7 @@ class Jurusan extends Model
      *
      * @var array
      */
-    protected $fillable = ['nama', 'golongan'];
+    protected $fillable = ['nomor', 'nama', 'kode', 'jenjang_pendidikan', 'jurusan_id', 'dosen_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -50,33 +49,17 @@ class Jurusan extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'golongan' => JurusanGolongan::class,
-    ];
+    protected $casts = [];
 
-    // Relationships
+    // Relationship
 
-    public function programStudi()
+    public function jurusan()
     {
-        return $this->hasMany(ProgramStudi::class, 'jurusan_id');
+        return $this->belongsTo(Jurusan::class, 'jurusan_id');
     }
 
-    // Scope
-
-    public function scopeRekayasa($query)
+    public function dosen()
     {
-        return $query->where('golongan', 'Rekayasa');
-    }
-
-    public function scopeNonRekayasa($query)
-    {
-        return $query->where('golongan', 'Non Rekayasa');
-    }
-
-    public function scopeSearch($query)
-    {
-        if (request('search')) {
-            return $query->where('nama', 'like', '%' . request('search') . '%');
-        }
+        return $this->belongsTo(Dosen::class, 'dosen_id');
     }
 }

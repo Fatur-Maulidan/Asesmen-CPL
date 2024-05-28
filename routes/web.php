@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DosenController as AdminDosenController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Admin\ProgramStudiController;
 use App\Http\Controllers\Kaprodi\DashboardController;
 use App\Http\Controllers\Kaprodi\DosenController;
 use App\Http\Controllers\Kaprodi\KurikulumController;
@@ -42,7 +43,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
     Route::resource('dashboard', AdminDashboard::class);
 
     Route::resource('jurusan', JurusanController::class)
-        ->only(['index', 'create', 'store']);
+        ->only(['index', 'store', 'update']);
+
+    Route::resource('program-studi', ProgramStudiController::class)
+        ->only(['store']);
 
     Route::resource('dosen', AdminDosenController::class);
 });

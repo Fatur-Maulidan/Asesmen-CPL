@@ -29,25 +29,30 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="">
+                    <form action="" method="POST" autocomplete="off">
+                        @csrf
                         <div class="mb-4">
-                            <label for="nama" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" id="nama" placeholder="Nama Jurusan">
+                            <label for="nama_dosen" class="form-label fw-bold">Nama</label>
+                            <input type="text" class="form-control" id="nama_dosen" name="nama_dosen"
+                                placeholder="Nama Dosen">
                         </div>
 
                         <div class="mb-4">
-                            <label for="nip" class="form-label fw-bold">NIP</label>
-                            <input type="text" class="form-control" id="nip" placeholder="Nomor Induk Pegawai">
+                            <label for="nip_dosen" class="form-label fw-bold">NIP</label>
+                            <input type="text" class="form-control" id="nip_dosen" name="nip_dosen"
+                                placeholder="Nomor Induk Pegawai">
                         </div>
 
                         <div class="mb-4">
-                            <label for="kode" class="form-label fw-bold">Kode dosen</label>
-                            <input type="text" class="form-control" id="kode" placeholder="Kode dosen">
+                            <label for="kode_dosen" class="form-label fw-bold">Kode dosen</label>
+                            <input type="text" class="form-control" id="kode_dosen" name="kode_dosen"
+                                placeholder="Kode dosen">
                         </div>
 
                         <div class="mb-4">
-                            <label for="email" class="form-label fw-bold">Email dosen</label>
-                            <input type="email" class="form-control" id="email" placeholder="Email dosen">
+                            <label for="email_dosen" class="form-label fw-bold">Email dosen</label>
+                            <input type="email" class="form-control" id="email_dosen" name="email_dosen"
+                                placeholder="Email dosen">
                         </div>
 
                         <div>
@@ -105,16 +110,15 @@
     {{-- Data Dosen --}}
     <div class="row">
         <div class="col-12">
-            <table class="table table-striped table-hover table-responsive">
+            {{-- <table class="table table-striped table-hover table-responsive table-sm">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">ID</th>
                         <th scope="col">NIP</th>
                         <th scope="col">Kode Dosen</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Email Polban</th>
-                        <th scope="col">Jurusan</th>
-                        <th scope="col">ID Pengguna</th>
                         <th scope="col">Role</th>
                         <th scope="col">Status</th>
                         <th scope="col">Tindakan</th>
@@ -128,28 +132,32 @@
                                     <input class="form-check-input" type="checkbox" value="">
                                 </div>
                             </th>
-                            <td class="align-middle">{{ $dsn['nip'] }}</td>
-                            <td class="align-middle">{{ $dsn['kode'] }}</td>
-                            <td class="align-middle">{{ Str::title($dsn['nama']) }}</td>
-                            <td class="align-middle">{{ $dsn['email'] }}</td>
-                            <td class="align-middle">{{ $dsn['jurusan'] }}</td>
-                            <td class="align-middle">{{ $dsn['id_pengguna'] }}</td>
-                            <td class="align-middle">{{ $dsn['role'] }}</td>
+                            <td class="align-middle">{{ $dsn->id }}</td>
+                            <td class="align-middle">{{ $dsn->nip }}</td>
+                            <td class="align-middle">{{ $dsn->kode }}</td>
+                            <td class="align-middle">{{ $dsn->nama }}</td>
+                            <td class="align-middle">{{ $dsn->email }}</td>
+                            <td class="align-middle">{{ \App\Enums\PeranDosen::getDescription($dsn->peran) }}</td>
                             <td class="align-middle">
-                                @if ($dsn['status'] == 'Aktif')
+                                @if ($dsn->status->is(\App\Enums\StatusKeaktifan::Aktif))
                                     <button type="button" class="btn btn-danger">Nonaktifkan</button>
                                 @else
                                     <button type="button" class="btn btn-success">Aktifkan</button>
                                 @endif
                             </td>
                             <td class="align-middle">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#ubahMahasiswaModal">Ubah</a>
+                                <a href="#">Ubah</a>
                                 <a href="#">Hapus</a>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </table> --}}
+            {{ $dataTable->table() }}
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    {{ $dataTable->scripts() }}
+@endpush

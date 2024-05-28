@@ -1,25 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Kaprodi;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProgramStudiRequest;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 
-class TujuanPembelajaranController extends Controller
+class ProgramStudiController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kurikulum)
+    public function index()
     {
-        return view('kaprodi.tp.index', [
-            'title' => 'Tujuan Pembelajaran',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum
-        ]);
+        //
     }
 
     /**
@@ -38,9 +35,22 @@ class TujuanPembelajaranController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProgramStudiRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        ProgramStudi::create([
+            'nama' => $validated['nama_prodi'],
+            'jenjang_pendidikan' => $validated['jenjang_prodi'],
+            'nomor' => $validated['nomor_prodi'],
+            'kode' => $validated['kode_prodi'],
+            'jurusan_id' => $validated['jurusan_id'],
+            'dosen_id' => $validated['koordinator_prodi'],
+        ]);
+
+        return response()->json([
+            'message' => 'Data berhasil ditambah.'
+        ], 201);
     }
 
     /**

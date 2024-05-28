@@ -34,11 +34,14 @@
     </main>
 
     {{-- App Js --}}
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 
     {{-- Jexcel Spreadsheet --}}
     <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
     <script src="https://jsuites.net/docs/v4/jsuites.js"></script>
+
+    {{-- DataTable --}}
+    <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 
     {{-- Custom Js --}}
     @stack('scripts')

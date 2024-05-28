@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Enums\JurusanGolongan;
+use App\Enums\PeranDosen;
+use App\Enums\StatusKeaktifan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Jurusan extends Model
+class Dosen extends Model
 {
     use HasFactory;
 
@@ -15,7 +16,7 @@ class Jurusan extends Model
      *
      * @var string
      */
-    protected $table = 'jurusan';
+    protected $table = 'dosen';
 
     /**
      * The primary key associated with the table.
@@ -36,14 +37,14 @@ class Jurusan extends Model
      *
      * @var array
      */
-    protected $fillable = ['nama', 'golongan'];
+    protected $fillable = ['nip', 'kode', 'nama', 'jenis_kelamin', 'email', 'status', 'peran', 'kata_sandi'];
 
     /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * The attributes that should be cast.
@@ -51,32 +52,15 @@ class Jurusan extends Model
      * @var array
      */
     protected $casts = [
-        'golongan' => JurusanGolongan::class,
+        'jenis_kelamin' => 'boolean',
+        'status' => StatusKeaktifan::class,
+        'peran' => PeranDosen::class
     ];
 
-    // Relationships
+    // Relationship
 
     public function programStudi()
     {
-        return $this->hasMany(ProgramStudi::class, 'jurusan_id');
-    }
-
-    // Scope
-
-    public function scopeRekayasa($query)
-    {
-        return $query->where('golongan', 'Rekayasa');
-    }
-
-    public function scopeNonRekayasa($query)
-    {
-        return $query->where('golongan', 'Non Rekayasa');
-    }
-
-    public function scopeSearch($query)
-    {
-        if (request('search')) {
-            return $query->where('nama', 'like', '%' . request('search') . '%');
-        }
+        return $this->hasOne(ProgramStudi::class, 'dosen_id');
     }
 }
