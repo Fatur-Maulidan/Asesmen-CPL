@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DosenController as AdminDosenController;
 use App\Http\Controllers\Admin\JurusanController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\ProgramStudiController;
 use App\Http\Controllers\Kaprodi\DashboardController;
 use App\Http\Controllers\Kaprodi\DosenController;
@@ -39,6 +40,8 @@ Route::get('logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middleware' => ['auth', 'can:view_kurikulum']
+    Route::resource('dashboard', AdminDashboard::class);
+
     Route::resource('jurusan', JurusanController::class)
         ->only(['index', 'store', 'update']);
 

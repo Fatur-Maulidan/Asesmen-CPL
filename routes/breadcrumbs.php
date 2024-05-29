@@ -4,6 +4,10 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 // --- Admin
+Breadcrumbs::for('admin.dashboard.index', function (BreadcrumbTrail $trail) {
+    $trail->push('Dashboard', route('admin.dashboard.index'));
+});
+
 Breadcrumbs::for('admin.jurusan.index', function (BreadcrumbTrail $trail) {
     $trail->push('Jurusan', route('admin.jurusan.index'));
 });
