@@ -20,7 +20,7 @@ function isNavbarRole($role)
     $dosen = [
         [
             'title' => 'Dashboard',
-            'link' => '#',
+            'link' => 'admin.dashboard.index',
         ],
         [
             'title' => 'Informasi Umum',

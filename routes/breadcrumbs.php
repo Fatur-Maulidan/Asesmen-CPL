@@ -101,6 +101,12 @@ Breadcrumbs::for('dosen.mata-kuliah', function (BreadcrumbTrail $trail): void {
     $trail->push('Home', route('dosen.mata-kuliah'));
 });
 
+// Breadcrumb Dosen Dashboard
+Breadcrumbs::for('dosen.dashboard.index', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
+    $trail->parent(route('dosen.mata-kuliah'));
+    $trail->push('Dashboard', route('dosen.dashboard.index', ['kodeMataKuliah' =>  $kodeMataKuliah]));
+});
+
 // Breadcrumb Dosen/Mata Kuliah/Informasi Umum 
 Breadcrumbs::for('dosen.mata-kuliah.informasi-umum', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
     $trail->parent('dosen.mata-kuliah');
