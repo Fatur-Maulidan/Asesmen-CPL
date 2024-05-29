@@ -105,8 +105,17 @@ function isNavbarRole($role)
         ],
     ];
 
-    return $role == 'Dosen' ? $dosen : 
-                $role == 'Koordinator Program Studi' ? $kaprodi : $admin;
+    switch ($role) {
+        case 'Admin':
+            return $admin;
+            break;
+        case 'Dosen':
+            return $dosen;
+            break;
+        default:
+            return $kaprodi;
+            break;
+    };
 }
 
 function mahasiswa()
@@ -262,11 +271,11 @@ function getDosen()
 
 function checkStatusTP($status)
 {
-    if($status == 'Disetujui') {
+    if ($status == 'Disetujui') {
         return 'badge text-bg-success ms-3';
-    } elseif($status == 'Menunggu Validasi') {
+    } elseif ($status == 'Menunggu Validasi') {
         return 'badge text-bg-warning ms-3';
-    } elseif($status == 'Ditolak') {
+    } elseif ($status == 'Ditolak') {
         return 'badge text-bg-danger ms-3';
     }
 }

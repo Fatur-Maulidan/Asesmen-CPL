@@ -2,6 +2,8 @@
 
 namespace App\DataTables;
 
+use App\Enums\PeranDosen;
+use App\Enums\StatusKeaktifan;
 use App\Models\Dosen;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -21,7 +23,32 @@ class DosenDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'dosen.action');
+            // ->addColumn('action', 'dosen.action');
+            ->addColumn('peran', function (Dosen $dosen) {
+                return PeranDosen::getDescription($dosen->peran);
+            })
+            ->addColumn('status', function (Dosen $dosen) {
+                if ($dosen->status->is(StatusKeaktifan::Aktif)) {
+                    $button = '<button type="submit" class="btn btn-danger">Nonaktifkan</button>';
+                } else {
+                    $button = '<button type="submit" class="btn btn-success">Aktifkan</button>';
+                }
+
+                $form = '<form action="' . route('admin.dosen.toggleStatus', ['dosen' => $dosen->id]) . '" method="post">
+                    ' . csrf_field() . '
+                    ' . method_field('patch') . '
+                    ' . $button . '
+                </form>';
+
+                return $form;
+            })
+            ->addColumn('tindakan', function (Dosen $dosen) {
+                $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#tambahDosenModal" data-id="' . $dosen->id . '">Ubah</a>
+                <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusDosenModal" data-id="' . $dosen->id . '">Hapus</a>';
+
+                return $content;
+            })
+            ->rawColumns(['status', 'tindakan']);
     }
 
     /**
@@ -44,6 +71,7 @@ class DosenDataTable extends DataTable
     {
         return $this->builder()
             ->setTableId('dosen-table')
+            // ->selectClassName('mt-4')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -70,13 +98,14 @@ class DosenDataTable extends DataTable
             //     ->printable(false)
             //     ->width(60)
             //     ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('nip'),
+            Column::make('id')->title('ID'),
+            Column::make('nip')->title('NIP'),
             Column::make('kode'),
             Column::make('nama'),
             Column::make('email'),
             Column::make('peran'),
             Column::make('status'),
+            Column::make('tindakan')
             // Column::make('created_at'),
             // Column::make('updated_at'),
         ];
