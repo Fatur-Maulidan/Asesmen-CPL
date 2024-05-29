@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\DosenDataTable;
+use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DosenRequest;
 use App\Models\Dosen;
+use App\Models\Jurusan;
 use Illuminate\Http\Request;
 
 class DosenController extends Controller
@@ -20,6 +23,7 @@ class DosenController extends Controller
             'title' => 'Dosen',
             'nama' => 'John Tyler',
             'role' => 'Admin',
+            'jurusan' => Jurusan::get(['id', 'nama'])
         ]);
     }
 
@@ -39,9 +43,18 @@ class DosenController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DosenRequest $request)
     {
-        //
+        if ($request->ajax()) {
+            $validated = $request->validated();
+            $validated = array_merge($validated, ['status' => StatusKeaktifan::Aktif, 'kata_sandi' => 'password']);
+
+            Dosen::create($validated);
+
+            return response()->json([
+                'message' => 'Data berhasil ditambah.'
+            ], 201);
+        }
     }
 
     /**
@@ -52,7 +65,13 @@ class DosenController extends Controller
      */
     public function show($id)
     {
-        //
+        if (request()->ajax()) {
+            $dosen = Dosen::find($id);
+
+            return response()->json([
+                'dosen' => $dosen
+            ]);
+        }
     }
 
     /**
@@ -73,9 +92,19 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DosenRequest $request, $id)
     {
-        //
+        if ($request->ajax()) {
+            $dosen = Dosen::find($id);
+
+            $validated = $request->validated();
+
+            $dosen->update($validated);
+
+            return response()->json([
+                'message' => 'Data berhasil diubah.'
+            ]);
+        }
     }
 
     /**
@@ -86,6 +115,19 @@ class DosenController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Dosen::destroy($id);
+
+        return redirect()->back();
+    }
+
+    public function toggleStatus($id)
+    {
+        $dosen = Dosen::find($id);
+
+        $dosen->update([
+            'status' => ($dosen->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::TidakAktif : StatusKeaktifan::Aktif
+        ]);
+
+        return redirect()->back();
     }
 }

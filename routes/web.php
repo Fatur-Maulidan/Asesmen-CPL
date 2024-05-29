@@ -45,7 +45,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
     Route::resource('program-studi', ProgramStudiController::class)
         ->only(['store']);
 
-    Route::resource('dosen', AdminDosenController::class);
+    Route::resource('dosen', AdminDosenController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::patch('dosen/toggle-status/{dosen}', [AdminDosenController::class, 'toggleStatus'])->name('dosen.toggleStatus');
 });
 
 Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'middleware' => ['auth', 'can:view_kurikulum']

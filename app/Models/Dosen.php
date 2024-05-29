@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\JenisKelamin;
 use App\Enums\PeranDosen;
 use App\Enums\StatusKeaktifan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,7 +45,7 @@ class Dosen extends Model
      *
      * @var bool
      */
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that should be cast.
@@ -52,7 +53,7 @@ class Dosen extends Model
      * @var array
      */
     protected $casts = [
-        'jenis_kelamin' => 'boolean',
+        'jenis_kelamin' => JenisKelamin::class,
         'status' => StatusKeaktifan::class,
         'peran' => PeranDosen::class
     ];
