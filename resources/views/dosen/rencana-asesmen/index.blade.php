@@ -58,7 +58,7 @@
                         @endfor
                     </tr>
                     <tr>
-                        <td colspan="14" class="p-0">
+                        <td colspan="12" class="p-0">
                             <div id="collapse{{ $i }}" class="accordion-collapse collapse"
                                 aria-labelledby="heading{{ $i }}" data-bs-parent="#accordionExample">
                                 <div class="accordion-body px-3 py-4">

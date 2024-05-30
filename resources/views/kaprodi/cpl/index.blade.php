@@ -81,142 +81,36 @@
     {{-- Data CPL --}}
     <div class="row">
         <div class="col-12">
-            <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            SS-1
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
+            <div class="accordion accordion-flush" id="accordionExample">
+                @foreach ($dataCPL as $index => $cpl)
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ $index }}" aria-expanded="false"
+                                aria-controls="collapse{{ $index }}">
+                                {{ $cpl->kode }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ $index }}" class="accordion-collapse collapse"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <p class="fw-bold mb-1">Deskripsi</p>
+                                <p class="mb-4">{{ $cpl->deskripsi }}</p>
 
-                            <p class="fw-bold mb-1">Mata Kuliah</p>
-                            <p class="mb-0">Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => 2022, 'cpl' => '1']) }}"
-                                class="me-3">Lihat
-                                detail</a>
-                            <a href="">Ubah pembobotan</a>
+                                <p class="fw-bold mb-1">Mata Kuliah</p>
+                                <p class="mb-0">Belum ada pemetaan</p>
+                            </div>
+                            <div class="accordion-footer bg-light mb-0 p-3 border-top ">
+                                <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => 2022, 'cpl' => $cpl->kode]) }}"
+                                    class="me-3">Lihat
+                                    detail</a>
+                                <a href="">Ubah pembobotan</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            SS-2
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
-
-                            <p class="fw-bold mb-1">Mata Kuliah</p>
-                            <p>Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="" class="me-3">Lihat detail</a>
-                            <a href="">Ubah pembobotan</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            SS-3
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
-
-                            <p class="fw-bold mb-1">Mata Kuliah</p>
-                            <p>Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="" class="me-3">Lihat detail</a>
-                            <a href="">Ubah pembobotan</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            SS-4
-                        </button>
-                    </h2>
-                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
-
-                            <p class="fw-bold mb-1">Mata Kuliah</p>
-                            <p>Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="" class="me-3">Lihat detail</a>
-                            <a href="">Ubah pembobotan</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                            SS-5
-                        </button>
-                    </h2>
-                    <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
-
-                            <p class="fw-bold mb-1">Mata Kuliah</p>
-                            <p>Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="" class="me-3">Lihat detail</a>
-                            <a href="">Ubah pembobotan</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                            SS-6
-                        </button>
-                    </h2>
-                    <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
-
-                            <p class="fw-bold mb-1">Mata Kuliah</p>
-                            <p>Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="" class="me-3">Lihat detail</a>
-                            <a href="">Ubah pembobotan</a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
+    </div>
     </div>
 @endsection

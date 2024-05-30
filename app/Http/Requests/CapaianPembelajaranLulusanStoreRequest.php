@@ -24,7 +24,6 @@ class CapaianPembelajaranLulusanStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'domain' => 'required',
             'deskripsi' => 'required'
         ];
     }
@@ -32,7 +31,6 @@ class CapaianPembelajaranLulusanStoreRequest extends FormRequest
     public function message()
     {
         return [
-            'domain.required' => 'Domain harus diisi',
             'deskripsi.required' => 'Deskripsi harus diisi'
         ];
     }

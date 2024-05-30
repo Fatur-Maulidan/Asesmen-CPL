@@ -22,10 +22,12 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function index($kurikulum)
     {
+        $dataCPL = CapaianPembelajaranLulusan::all()->sortBy('kode');
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
+            'dataCPL' => $dataCPL,
             'kurikulum' => $kurikulum
         ]);
     }
@@ -75,14 +77,15 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function show($kurikulum, $id)
     {
+        $dataCPL = CapaianPembelajaranLulusan::all()->sortBy('kode');
+        $CPL = CapaianPembelajaranLulusan::where('kode',$id)->first();
         return view('kaprodi.cpl.show', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'cpl' => [
-                'kode' => 'SS-1'
-            ]
+            'dataCPL' => $dataCPL,
+            'cpl' => $CPL,
         ]);
     }
 
@@ -112,9 +115,27 @@ class CapaianPembelajaranLulusanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $kurikulum, $cpl)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            $this->validation->rules(),
+            $this->validation->message()
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $dataCPL = CapaianPembelajaranLulusan::where('kode', $cpl)->first();
+        $dataCPL->deskripsi = $request->input('deskripsi');
+        $dataCPL->tanggal_pembaruan = date('Y-m-d H:i:s');
+
+        if($dataCPL->save()){
+            return redirect()->route('kaprodi.cpl.show', compact('kurikulum', 'cpl'));
+        } else {
+            return redirect()->back()->with('error', 'Gagal menambahkan data');
+        }
     }
 
     /**

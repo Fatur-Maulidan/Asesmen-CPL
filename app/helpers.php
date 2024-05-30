@@ -279,3 +279,11 @@ function checkStatusTP($status)
         return 'badge text-bg-danger ms-3';
     }
 }
+
+function countCPL($prefix, $dataCPL){
+    $count = 0;
+    foreach($dataCPL as $cpl){
+        if(strpos($cpl->kode, $prefix) === 0) $count++;
+    }
+    return $count;
+}
