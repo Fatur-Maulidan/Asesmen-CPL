@@ -24,7 +24,9 @@
                             @foreach ($dataCPL as $data)
                                 @if ($data->domain == 'Sikap')
                                     <div class="mb-3">
-                                        <a href="" class="btn text-start w-100">{{ $data->kode }}</a>
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $data->kode]) }}"
+                                            class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
+                                            data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
                                     </div>
                                 @endif
                             @endforeach
@@ -44,7 +46,9 @@
                             @foreach ($dataCPL as $data)
                                 @if ($data->domain == 'Pengetahuan')
                                     <div class="mb-3">
-                                        <a href="" class="btn btn-light text-start w-100">{{ $data->kode }}</a>
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $data->kode]) }}"
+                                            class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
+                                            data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
                                     </div>
                                 @endif
                             @endforeach
@@ -65,7 +69,9 @@
                             @foreach ($dataCPL as $data)
                                 @if ($data->domain == 'Keterampilan Umum')
                                     <div class="mb-3">
-                                        <a href="" class="btn btn-light text-start w-100">{{ $data->kode }}</a>
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $data->kode]) }}"
+                                            class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
+                                            data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
                                     </div>
                                 @endif
                             @endforeach
@@ -86,7 +92,9 @@
                             @foreach ($dataCPL as $data)
                                 @if ($data->domain == 'Keterampilan Khusus')
                                     <div class="mb-3">
-                                        <a href="" class="btn btn-light text-start w-100">{{ $data->kode }}</a>
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $data->kode]) }}"
+                                            class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
+                                            data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
                                     </div>
                                 @endif
                             @endforeach
@@ -133,7 +141,6 @@
             </div>
         </div>
 
-
         {{-- Confirm modal --}}
         <div class="modal fade" id="exampleModalToggle2" data-bs-backdrop="static" data-bs-keyboard="false"
             aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
@@ -170,11 +177,11 @@
                 <div class="col d-flex">
                     <div class="me-4">
                         <div class="fw-bold">Diubah pada</div>
-                        <div>{{ $cpl->tanggal_pengajuan }}</div>
+                        <div id="tanggal-pengajuan">{{ $cpl->tanggal_pengajuan }}</div>
                     </div>
                     <div class="me-4">
                         <div class="fw-bold">Diperbarui pada</div>
-                        <div>{{ $cpl->tanggal_pembaruan }}</div>
+                        <div id="tanggal-pembaruan">{{ $cpl->tanggal_pembaruan }}</div>
                     </div>
                     <div>
                         <div class="fw-bold">Diubah oleh</div>
@@ -194,7 +201,7 @@
             <div class="row">
                 <div class="col">
                     <div class="fw-bold">Deskripsi</div>
-                    <p>{{ $cpl->deskripsi }}</p>
+                    <p id="cpl-deskripsi">{{ $cpl->deskripsi }}</p>
                 </div>
             </div>
             <div class="row">
@@ -309,3 +316,39 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        // $(document).ready(function() {
+        //     $(".btn-tp").click(function(e) {
+        //         e.preventDefault();
+        //         $(this).removeClass('border border-1');
+        //         $(this).addClass('border border-1');
+        //         let kode = $(this).data('kode');
+        //         let url = "{{ route('kaprodi.cpl.show', ['kurikulum' => 2022, 'cpl' => ':kode']) }}";
+        //         url = url.replace(':kode', kode);
+
+        //         $.ajax({
+        //             url: url,
+        //             type: "GET",
+        //             success: function(data) {
+        //                 console.log(data);
+        //                 // Update the placeholders with the new data
+        //                 $('#cpl-kode').text(data.cpl.kode);
+        //                 $('#tanggal-pengajuan').text(data.cpl.tanggal_pengajuan);
+        //                 $('#tanggal-pembaruan').text(data.cpl.tanggal_pembaruan);
+        //                 $('#cpl-deskripsi').text(data.cpl.deskripsi);
+
+        //                 $('#breadcrumb').html(
+        //                     `{{ Breadcrumbs::render('kaprodi.cpl.show', $kurikulum, ':kode') }}`
+        //                     .replace(':kode', data.cpl.kode));
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 console.error("AJAX Error: ", status, error);
+        //                 $("#selected-cpl").html(`<p>Error fetching CPL data.</p>`);
+        //             }
+        //         });
+        //     });
+        // });
+    </script>
+@endpush

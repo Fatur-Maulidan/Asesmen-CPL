@@ -79,6 +79,15 @@ class CapaianPembelajaranLulusanController extends Controller
     {
         $dataCPL = CapaianPembelajaranLulusan::all()->sortBy('kode');
         $CPL = CapaianPembelajaranLulusan::where('kode',$id)->first();
+
+        // if (request()->expectsJson()) {
+        //     return response()->json([
+        //         'kurikulum' => $kurikulum,
+        //         'dataCPL' => $dataCPL,
+        //         'cpl' => $CPL,
+        //     ]);
+        // }
+
         return view('kaprodi.cpl.show', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
@@ -88,6 +97,8 @@ class CapaianPembelajaranLulusanController extends Controller
             'cpl' => $CPL,
         ]);
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
