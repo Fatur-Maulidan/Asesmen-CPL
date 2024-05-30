@@ -11,19 +11,23 @@
     <div class="row mb-5">
         <div class="col-auto">
             <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option1">Semua</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="Semua" for="option1">Semua</label>
 
             <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option2">Sikap (SS)</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="SS" for="option2">Sikap
+                (SS)</label>
 
             <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Pengetahuan (P)</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="PP" for="option3">Pengetahuan
+                (P)</label>
 
             <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option4">Keterampilan Umum (KU)</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KU" for="option4">Keterampilan Umum
+                (KU)</label>
 
             <input type="radio" class="btn-check" name="options" id="option5" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option5">Keterampilan Khusus (KK)</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KK" for="option5">Keterampilan Khusus
+                (KK)</label>
         </div>
         <div class="col text-end">
             {{-- Button trigger modal --}}
@@ -114,3 +118,23 @@
     </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('input[name="options"]').change(function() {
+                let filterValue = $('label[for="' + $(this).attr('id') + '"]').data('filter');
+                console.log(filterValue)
+                if (filterValue === 'Semua') {
+                    $('.accordion-item').show();
+                } else {
+                    $('.accordion-item').hide();
+                    $('.accordion-item').each(function() {
+                        if ($(this).find('button').text().includes(filterValue)) {
+                            $(this).show();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush

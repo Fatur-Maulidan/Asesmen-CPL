@@ -23,6 +23,14 @@ class CapaianPembelajaranLulusanController extends Controller
     public function index($kurikulum)
     {
         $dataCPL = CapaianPembelajaranLulusan::all()->sortBy('kode');
+
+            if (request()->expectsJson()) {
+            return response()->json([
+                'kurikulum' => $kurikulum,
+                'dataCPL' => $dataCPL
+            ]);
+        }
+
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
