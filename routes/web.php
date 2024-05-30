@@ -57,11 +57,16 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
     Route::resource('kurikulum', KurikulumController::class)
         ->only(['index', 'create', 'store']);
 
-    Route::get('kurikulum/{kurikulum}', [DashboardController::class, 'index'])
+    Route::get('kurikulum/{kurikulum}', [KaprodiDashboard::class, 'index'])
         ->name('kurikulum.dashboard');
 
     Route::resource('kurikulum/{kurikulum}/cpl', CapaianPembelajaranLulusanController::class)
-        ->only(['index', 'show', 'edit']);
+        ->only(['index', 'show', 'store', 'update'])
+        ->names([
+            'index' => 'cpl.index',
+            'store' => 'cpl.store',
+            'update' => 'cpl.update',
+        ]);
 
     Route::resource('kurikulum/{kurikulum}/ik', IndikatorKinerjaController::class)
         ->only(['index', 'show', 'edit',]);

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTujuanPembelajaransTable extends Migration
+class CreateCapaianPembelajaranLulusansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateTujuanPembelajaransTable extends Migration
      */
     public function up()
     {
-        Schema::create('tujuan_pembelajaran', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->string('kodeTP', 10)->unique();
+        Schema::create('capaian_pembelajaran_lulusan', function (Blueprint $table) {
+            $table->id();
+            $table->string('kode')->unique();
+            $table->string('domain');
             $table->text('deskripsi');
-            $table->float('bobot', 8, 2);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateTujuanPembelajaransTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tujuan_pembelajaran');
+        Schema::dropIfExists('capaian_pembelajaran_lulusan');
     }
 }

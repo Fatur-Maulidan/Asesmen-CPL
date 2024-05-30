@@ -7,6 +7,7 @@
 
 @section('main')
     {{-- Filter buttons --}}
+
     <div class="row mb-5">
         <div class="col-auto">
             <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
@@ -33,46 +34,49 @@
     </div>
 
     {{-- Modal --}}
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Tambah Capaian Pembelajaran</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="">
-                        <div class="mb-3">
-                            <label for="domain" class="form-label fw-bold">Domain</label>
-                            <select class="form-select" id="domain">
-                                <option selected>Pilih domain</option>
-                                <option value="1">Sikap (S)</option>
-                                <option value="2">Pengetahuan (P)</option>
-                                <option value="3">Keterampilan Umum (KU)</option>
-                                <option value="4">Keterampilan Khusus (KK)</option>
-                            </select>
-                        </div>
+    <form method="POST" action="{{ route('kaprodi.cpl.store', ['kurikulum' => $kurikulum]) }}">
+        @csrf
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Tambah Capaian Pembelajaran</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="mb-3">
+                                <label for="domain" class="form-label fw-bold">Domain</label>
+                                <select class="form-select" id="domain" name="domain">
+                                    <option selected hidden>Pilih domain</option>
+                                    <option value="Sikap">Sikap (S)</option>
+                                    <option value="Pengetahuan">Pengetahuan (P)</option>
+                                    <option value="Keterampilan Umum">Keterampilan Umum (KU)</option>
+                                    <option value="Keterampilan Khusus">Keterampilan Khusus (KK)</option>
+                                </select>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <div class="row w-100">
-                        <div class="col">
-                            <button type="button" class="btn btn-danger w-100">Batal</button>
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-success w-100">Tambah</button>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" name="deskripsi" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row w-100">
+                            <div class="col">
+                                <button type="button" class="btn btn-danger w-100">Batal</button>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-success w-100">Tambah</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
     {{-- Data CPL --}}
     <div class="row">
