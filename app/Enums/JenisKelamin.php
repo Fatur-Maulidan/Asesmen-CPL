@@ -10,6 +10,6 @@ use BenSampo\Enum\Enum;
  */
 final class JenisKelamin extends Enum
 {
-    const LakiLaki =   0;
-    const Perempuan =   1;
+    const LakiLaki =   'L';
+    const Perempuan =   'P';
 }

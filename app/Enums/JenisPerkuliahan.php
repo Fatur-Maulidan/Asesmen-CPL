@@ -9,8 +9,8 @@ use BenSampo\Enum\Enum;
  * @method static static OptionTwo()
  * @method static static OptionThree()
  */
-final class JurusanGolongan extends Enum
+final class JenisPerkuliahan extends Enum
 {
-    const Rekayasa =   'Rekayasa';
-    const Nonrekayasa =   'Nonrekayasa';
+    const Teori =   'Teori';
+    const Praktik =   'Praktik';
 }

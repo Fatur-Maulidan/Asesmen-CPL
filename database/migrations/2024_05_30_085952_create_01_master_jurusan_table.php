@@ -1,10 +1,11 @@
 <?php
 
+use App\Enums\JurusanGolongan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTujuanPembelajaransTable extends Migration
+class Create01MasterJurusanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +14,10 @@ class CreateTujuanPembelajaransTable extends Migration
      */
     public function up()
     {
-        Schema::create('tujuan_pembelajaran', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->string('kodeTP', 10)->unique();
-            $table->text('deskripsi');
-            $table->float('bobot', 8, 2);
+        Schema::create('01_MASTER_jurusan', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama', 50)->unique();
+            $table->enum('golongan', JurusanGolongan::getValues());
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateTujuanPembelajaransTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tujuan_pembelajarans');
+        Schema::dropIfExists('01_MASTER_jurusan');
     }
 }

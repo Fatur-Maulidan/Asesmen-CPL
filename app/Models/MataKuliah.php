@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use App\Enums\JenjangPendidikan;
 use Illuminate\Database\Eloquent\Model;
 
-class ProgramStudi extends Model
+class MataKuliah extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '02_MASTER_program_studi';
+    protected $table = '06_MASTER_mata_kuliah';
 
     /**
      * The primary key associated with the table.
@@ -33,7 +32,7 @@ class ProgramStudi extends Model
      *
      * @var array
      */
-    protected $fillable = ['nomor', 'nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_id', 'koordinator_nip'];
+    protected $fillable = ['kode', 'nama', 'deskripsi', '03_MASTER_kurikulum_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -47,28 +46,11 @@ class ProgramStudi extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'jenjang_pendidikan' => JenjangPendidikan::class
-    ];
+    protected $casts = [];
 
     // Relationship
-    public function jurusan()
-    {
-        return $this->belongsTo(Jurusan::class, '01_MASTER_jurusan_id');
-    }
-
     public function kurikulum()
     {
-        return $this->hasMany(Kurikulum::class, '02_MASTER_program_studi');
-    }
-
-    public function dosen()
-    {
-        return $this->belongsTo(Dosen::class, 'koordinator_nip');
-    }
-
-    public function mahasiswa()
-    {
-        return $this->hasMany(Mahasiswa::class, '02_MASTER_program_studi_id');
+        return $this->belongsTo(Kurikulum::class, '03_MASTER_kurikulum_id');
     }
 }

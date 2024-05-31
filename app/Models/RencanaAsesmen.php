@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use App\Enums\JenjangPendidikan;
 use Illuminate\Database\Eloquent\Model;
 
-class ProgramStudi extends Model
+class RencanaAsesmen extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '02_MASTER_program_studi';
+    protected $table = '09_MASTER_rencana_asesmen';
 
     /**
      * The primary key associated with the table.
@@ -33,7 +32,7 @@ class ProgramStudi extends Model
      *
      * @var array
      */
-    protected $fillable = ['nomor', 'nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_id', 'koordinator_nip'];
+    protected $fillable = ['kategori', 'kode', 'minggu'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -47,28 +46,16 @@ class ProgramStudi extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'jenjang_pendidikan' => JenjangPendidikan::class
-    ];
+    protected $casts = [];
 
     // Relationship
-    public function jurusan()
-    {
-        return $this->belongsTo(Jurusan::class, '01_MASTER_jurusan_id');
-    }
-
-    public function kurikulum()
-    {
-        return $this->hasMany(Kurikulum::class, '02_MASTER_program_studi');
-    }
-
-    public function dosen()
-    {
-        return $this->belongsTo(Dosen::class, 'koordinator_nip');
-    }
-
     public function mahasiswa()
     {
-        return $this->hasMany(Mahasiswa::class, '02_MASTER_program_studi_id');
+        return $this->belongsToMany(Mahasiswa::class, '18_MASTER_nilai_mahasiswa', '09_MASTER_rencana_asesmen_id', '05_MASTER_mahasiswa_nim')->using(NilaiMahasiswa::class)->withTimestamps();
+    }
+
+    public function tujuanPembelajaran()
+    {
+        return $this->belongsToMany(TujuanPembelajaran::class, '21_MASTER_peta_ra_tp', '09_MASTER_rencana_asesmen_id', '16_MASTER_tujuan_pembelajaran_id')->using(PetaRaTp::class);
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProgramStudisTable extends Migration
+class Create09MasterRencanaAsesmenTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateProgramStudisTable extends Migration
      */
     public function up()
     {
-        Schema::create('program_studis', function (Blueprint $table) {
+        Schema::create('09_MASTER_rencana_asesmen', function (Blueprint $table) {
             $table->id();
+            $table->string('kategori', 15);
+            $table->string('kode', 20);
+            $table->unsignedInteger('minggu');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateProgramStudisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('program_studis');
+        Schema::dropIfExists('09_MASTER_rencana_asesmen');
     }
 }

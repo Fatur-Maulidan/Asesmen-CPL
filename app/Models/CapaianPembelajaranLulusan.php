@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use App\Enums\JenjangPendidikan;
+use App\Enums\DomainCPL;
 use Illuminate\Database\Eloquent\Model;
 
-class ProgramStudi extends Model
+class CapaianPembelajaranLulusan extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '02_MASTER_program_studi';
+    protected $table = '07_MASTER_capaian_pembelajaran_lulusan';
 
     /**
      * The primary key associated with the table.
@@ -33,7 +33,7 @@ class ProgramStudi extends Model
      *
      * @var array
      */
-    protected $fillable = ['nomor', 'nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_id', 'koordinator_nip'];
+    protected $fillable = ['kode', 'deskripsi', 'domain', '03_MASTER_kurikulum_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,27 +48,17 @@ class ProgramStudi extends Model
      * @var array
      */
     protected $casts = [
-        'jenjang_pendidikan' => JenjangPendidikan::class
+        'domain' => DomainCPL::class
     ];
 
     // Relationship
-    public function jurusan()
-    {
-        return $this->belongsTo(Jurusan::class, '01_MASTER_jurusan_id');
-    }
-
     public function kurikulum()
     {
-        return $this->hasMany(Kurikulum::class, '02_MASTER_program_studi');
+        return $this->belongsTo(Kurikulum::class, '03_MASTER_kurikulum_id');
     }
 
-    public function dosen()
+    public function indikatorKinerja()
     {
-        return $this->belongsTo(Dosen::class, 'koordinator_nip');
-    }
-
-    public function mahasiswa()
-    {
-        return $this->hasMany(Mahasiswa::class, '02_MASTER_program_studi_id');
+        return $this->belongsToMany(IndikatorKinerja::class, '13_MASTER_peta_cp_ik', '07_MASTER_capaian_pembelajaran_lulusan_id', '08_MASTER_indikator_kinerja_id')->using(PetaCpIk::class);
     }
 }

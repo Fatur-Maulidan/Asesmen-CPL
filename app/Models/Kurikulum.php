@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use App\Enums\JurusanGolongan;
+use App\Enums\StatusKurikulum;
 use Illuminate\Database\Eloquent\Model;
 
-class Jurusan extends Model
+class Kurikulum extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '01_MASTER_jurusan';
+    protected $table = '03_MASTER_kurikulum';
 
     /**
      * The primary key associated with the table.
@@ -33,7 +33,7 @@ class Jurusan extends Model
      *
      * @var array
      */
-    protected $fillable = ['nama', 'golongan'];
+    protected $fillable = ['tahun', 'tahun_berlaku', 'tahun_berakhir', 'status', 'konf_tenggat_waktu_tp', 'jumlah_maksimal_rubrik', 'nilai_rentang_rubrik', '02_MASTER_program_studi_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,35 +48,22 @@ class Jurusan extends Model
      * @var array
      */
     protected $casts = [
-        'golongan' => JurusanGolongan::class,
+        'status' => StatusKurikulum::class
     ];
 
     // Relationship
     public function programStudi()
     {
-        return $this->hasMany(ProgramStudi::class, '01_MASTER_jurusan_id');
+        return $this->belongsTo(ProgramStudi::class, '02_MASTER_program_studi_id');
     }
 
-    public function dosen()
+    public function mataKuliah()
     {
-        return $this->hasMany(Dosen::class, '01_MASTER_jurusan_id');
+        return $this->hasMany(MataKuliah::class, '03_MASTER_kurikulum_id');
     }
 
-    // Scope
-    public function scopeRekayasa($query)
+    public function cpl()
     {
-        return $query->where('golongan', 'Rekayasa');
-    }
-
-    public function scopeNonRekayasa($query)
-    {
-        return $query->where('golongan', 'Non Rekayasa');
-    }
-
-    public function scopeSearch($query)
-    {
-        if (request('search')) {
-            return $query->where('nama', 'like', '%' . request('search') . '%');
-        }
+        return $this->hasMany(CapaianPembelajaranLulusan::class, '03_MASTER_kurikulum_id');
     }
 }

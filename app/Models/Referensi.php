@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use App\Enums\JenjangPendidikan;
 use Illuminate\Database\Eloquent\Model;
 
-class ProgramStudi extends Model
+class Referensi extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '02_MASTER_program_studi';
+    protected $table = '11_MASTER_referensi';
 
     /**
      * The primary key associated with the table.
@@ -33,7 +32,7 @@ class ProgramStudi extends Model
      *
      * @var array
      */
-    protected $fillable = ['nomor', 'nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_id', 'koordinator_nip'];
+    protected $fillable = ['judul', 'penerbit', 'tahun_terbit'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -47,28 +46,16 @@ class ProgramStudi extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'jenjang_pendidikan' => JenjangPendidikan::class
-    ];
+    protected $casts = [];
 
     // Relationship
-    public function jurusan()
+    public function mataKuliahRegister()
     {
-        return $this->belongsTo(Jurusan::class, '01_MASTER_jurusan_id');
+        return $this->belongsToMany(MataKuliahRegister::class, '15_MASTER_referensi_utama', '11_MASTER_referensi_id', '10_MASTER_mk_register_id');
     }
 
-    public function kurikulum()
+    function pengarang()
     {
-        return $this->hasMany(Kurikulum::class, '02_MASTER_program_studi');
-    }
-
-    public function dosen()
-    {
-        return $this->belongsTo(Dosen::class, 'koordinator_nip');
-    }
-
-    public function mahasiswa()
-    {
-        return $this->hasMany(Mahasiswa::class, '02_MASTER_program_studi_id');
+        return $this->belongsToMany(Pengarang::class, '23_MASTER_pengarang_referensi', '11_MASTER_referensi_id', '23_MASTER_pengarang_id')->using(PengarangReferensi::class);
     }
 }

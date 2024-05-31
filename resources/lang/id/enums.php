@@ -1,23 +1,61 @@
 <?php
 
+use App\Enums\DomainCPL;
+use App\Enums\JenisKelamin;
+use App\Enums\JenisPerkuliahan;
+use App\Enums\JenjangPendidikan;
 use App\Enums\JurusanGolongan;
-use App\Enums\PeranDosen;
+use App\Enums\RoleDosen;
 use App\Enums\StatusKeaktifan;
+use App\Enums\StatusKurikulum;
+use App\Enums\StatusMataKuliah;
 
 return [
-    PeranDosen::class => [
-        PeranDosen::P2MPP => 'P2MPP',
-        PeranDosen::Dosen => 'Dosen',
-        PeranDosen::KoordinatorProgramStudi => 'Koordinator Program Studi',
+    DomainCPL::class => [
+        DomainCPL::Sikap => 'Sikap',
+        DomainCPL::Pengetahuan => 'Pengetahuan',
+        DomainCPL::KeterampilanUmum => 'Keterampilan Umum',
+        DomainCPL::KeterampilanKhusus => 'Keterampilan Khusus'
     ],
 
-    StatusKeaktifan::class => [
-        StatusKeaktifan::TidakAktif => 'Tidak Aktif',
-        StatusKeaktifan::Aktif => 'Aktif'
+    JenisKelamin::class => [
+        JenisKelamin::LakiLaki => 'Laki-Laki',
+        JenisKelamin::Perempuan => 'Perempuan'
+    ],
+
+    JenisPerkuliahan::class => [
+        JenisPerkuliahan::Teori => 'Teori',
+        JenisPerkuliahan::Praktik => 'Praktik'
+    ],
+
+    JenjangPendidikan::class => [
+        JenjangPendidikan::D3 => 'D3',
+        JenjangPendidikan::D4 => 'D4'
     ],
 
     JurusanGolongan::class => [
         JurusanGolongan::Rekayasa => 'Rekayasa',
-        JurusanGolongan::NonRekayasa => 'Non Rekayasa'
+        JurusanGolongan::Nonrekayasa => 'Nonrekayasa'
+    ],
+
+    RoleDosen::class => [
+        RoleDosen::KoorProgramStudi => 'Koor. Program Studi',
+        RoleDosen::P2MPP => 'P2MPP',
+    ],
+
+    StatusKeaktifan::class => [
+        StatusKeaktifan::Nonaktif => 'Nonaktif',
+        StatusKeaktifan::Aktif => 'Aktif'
+    ],
+
+    StatusKurikulum::class => [
+        StatusKurikulum::Aktif => 'Aktif',
+        StatusKurikulum::Nonaktif => 'Nonaktif',
+        StatusKurikulum::Peninjauan => 'Peninjauan',
+    ],
+
+    StatusMataKuliah::class => [
+        StatusMataKuliah::Berjalan => 'Berjalan',
+        StatusMataKuliah::Selesai => 'Selesai'
     ]
 ];

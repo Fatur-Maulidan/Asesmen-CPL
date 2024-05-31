@@ -11,6 +11,6 @@ use BenSampo\Enum\Enum;
  */
 final class StatusKeaktifan extends Enum implements LocalizedEnum
 {
-    const TidakAktif = 0;
-    const Aktif = 1;
+    const Nonaktif = 'Nonaktif';
+    const Aktif = 'Aktif';
 }
