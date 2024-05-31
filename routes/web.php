@@ -3,8 +3,9 @@
 use App\Http\Controllers\Admin\DosenController as AdminDosenController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Kaprodi\DashboardController as KaprodiDashboard;
+use App\Http\Controllers\Dosen\DashboardController as DosenDashboard;
 use App\Http\Controllers\Admin\ProgramStudiController;
-use App\Http\Controllers\Kaprodi\DashboardController;
 use App\Http\Controllers\Kaprodi\DosenController;
 use App\Http\Controllers\Kaprodi\KurikulumController;
 use App\Http\Controllers\AuthController;
@@ -55,14 +56,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
 Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'middleware' => ['auth', 'can:view_kurikulum']
     Route::resource('kurikulum', KurikulumController::class)
         ->only(['index', 'create', 'store']);
-    Route::get('kurikulum/{kurikulum}', [DashboardController::class, 'index'])
+
+    Route::get('kurikulum/{kurikulum}', [KaprodiDashboard::class, 'index'])
         ->name('kurikulum.dashboard');
 
     Route::resource('kurikulum/{kurikulum}/cpl', CapaianPembelajaranLulusanController::class)
-        ->only(['index', 'show', 'edit']);
+        ->only(['index', 'show', 'store', 'edit', 'update']);
 
     Route::resource('kurikulum/{kurikulum}/ik', IndikatorKinerjaController::class)
         ->only(['index', 'show', 'edit',]);
+
     Route::get('kurikulum/{kurikulum}/ik/{ik}/detail', [IndikatorKinerjaController::class, 'detail'])
         ->name('ik.detail');
 
@@ -81,6 +84,9 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
 
 Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kuliah'], 'as' => 'dosen.'], function () {
     Route::prefix('/mata-kuliah')->group(function () {
+        Route::get('{kodeMataKuliah}/dashboard', [DosenDashboard::class, 'index'])
+            ->name('dashboard.index');
+
         Route::get('/', [MataKuliahController::class, 'index'])
             ->name('mata-kuliah');
 

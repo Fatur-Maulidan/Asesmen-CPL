@@ -20,7 +20,7 @@ function isNavbarRole($role)
     $dosen = [
         [
             'title' => 'Dashboard',
-            'link' => '#',
+            'link' => 'admin.dashboard.index',
         ],
         [
             'title' => 'Informasi Umum',
@@ -278,4 +278,12 @@ function checkStatusTP($status)
     } elseif ($status == 'Ditolak') {
         return 'badge text-bg-danger ms-3';
     }
+}
+
+function countCPL($prefix, $dataCPL){
+    $count = 0;
+    foreach($dataCPL as $cpl){
+        if(strpos($cpl->kode, $prefix) === 0) $count++;
+    }
+    return $count;
 }
