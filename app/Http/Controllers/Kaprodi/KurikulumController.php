@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Kaprodi;
 
+use App\Enums\StatusKurikulum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\KurikulumRequest;
+use App\Models\Kurikulum;
 use Illuminate\Http\Request;
 
 class KurikulumController extends Controller
@@ -17,7 +20,8 @@ class KurikulumController extends Controller
         return view('kaprodi.kurikulum.index', [
             'title' => 'Home',
             'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => Kurikulum::all()
         ]);
     }
 
@@ -41,9 +45,33 @@ class KurikulumController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(KurikulumRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $nilai = [];
+        for ($i = 0; $i < $validated['jumlah_maksimal_rubrik']; $i++) {
+            $temp = [
+                ($i + 1) => [
+                    'makna_tingkat_kemampuan' => $validated['makna_tingkat_kemampuan'][$i],
+                    'nilai' => [
+                        'awal' => $validated['nilai'][$i]['a'],
+                        'akhir' => $validated['nilai'][$i]['b'],
+                    ]
+                ]
+            ];
+            $nilai[$i + 1] = $temp[$i + 1];
+        }
+
+        Kurikulum::create([
+            'tahun' => $validated['tahun'],
+            'tahun_berlaku' => $validated['tahun'],
+            'status' => StatusKurikulum::Peninjauan,
+            'jumlah_maksimal_rubrik' => $validated['jumlah_maksimal_rubrik'],
+            'nila_rentang_rubrik' => $nilai
+        ]);
+
+        return redirect()->to(route('kaprodi.kurikulum.index'));
     }
 
     /**

@@ -17,7 +17,7 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusan = Jurusan::with(['programStudi', 'programStudi.dosen:id,nama']);
+        $jurusan = Jurusan::with(['programStudi', 'programStudi.dosen:nip,nama']);
 
         if (request('filter') == 'rekayasa') {
             $jurusan->rekayasa();
@@ -32,7 +32,7 @@ class JurusanController extends Controller
             'nama' => 'John Tyler',
             'role' => 'Admin',
             'jurusan' => $jurusan->get(),
-            'dosen' => Dosen::get(['id', 'kode', 'nama'])
+            'dosen' => Dosen::get(['nip', 'kode', 'nama'])
         ]);
     }
 

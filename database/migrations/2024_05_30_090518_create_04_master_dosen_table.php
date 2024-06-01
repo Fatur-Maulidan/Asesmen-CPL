@@ -5,6 +5,7 @@ use App\Enums\RoleDosen;
 use App\Enums\StatusKeaktifan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 class Create04MasterDosenTable extends Migration
@@ -23,7 +24,8 @@ class Create04MasterDosenTable extends Migration
             $table->string('email', 50)->unique();
             $table->enum('jenis_kelamin', JenisKelamin::getValues());
             $table->enum('role', RoleDosen::getValues());
-            $table->enum('status', StatusKeaktifan::getValues());
+            $table->enum('status', StatusKeaktifan::getValues())->default(StatusKeaktifan::Aktif);
+            $table->string('kata_sandi')->default(Hash::make('katasandi123'));
             $table->timestamps();
             $table->foreignId('01_MASTER_jurusan_id')->constrained('01_MASTER_jurusan');
         });

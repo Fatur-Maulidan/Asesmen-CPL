@@ -34,8 +34,8 @@
             <label class="btn btn-outline-primary rounded-pill px-3" for="filter_rekayasa">Rekayasa</label>
 
             <input type="radio" class="btn-check" name="golongan" id="filter_nonrekayasa"
-                value="{{ \App\Enums\JurusanGolongan::NonRekayasa }}" @if (request('filter') == 'non-rekayasa') checked @endif>
-            <label class="btn btn-outline-primary rounded-pill px-3" for="filter_nonrekayasa">Non Rekayasa</label>
+                value="{{ \App\Enums\JurusanGolongan::Nonrekayasa }}" @if (request('filter') == 'non-rekayasa') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="filter_nonrekayasa">Nonrekayasa</label>
         </div>
     </div>
 
@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="golongan_jurusan" id="nonrekayasa"
-                                        value="{{ \App\Enums\JurusanGolongan::NonRekayasa }}">
+                                        value="{{ \App\Enums\JurusanGolongan::Nonrekayasa }}">
                                     <label class="form-check-label" for="nonrekayasa">Non Rekayasa</label>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="golongan_jurusan"
-                                        id="nonrekayasa_ubah" value="{{ \App\Enums\JurusanGolongan::NonRekayasa }}">
+                                        id="nonrekayasa_ubah" value="{{ \App\Enums\JurusanGolongan::Nonrekayasa }}">
                                     <label class="form-check-label" for="nonrekayasa_ubah">Non Rekayasa</label>
                                 </div>
                             </div>
@@ -215,7 +215,7 @@
                             <select class="form-select" id="koordinator_prodi" name="koordinator_prodi">
                                 <option value="" selected>Pilih dosen</option>
                                 @foreach ($dosen as $dsn)
-                                    <option value="{{ $dsn->id }}">{{ $dsn->kode . ' - ' . $dsn->nama }}
+                                    <option value="{{ $dsn->nip }}">{{ $dsn->kode . ' - ' . $dsn->nama }}
                                     </option>
                                 @endforeach
                             </select>
@@ -362,7 +362,7 @@
                     case 'Rekayasa':
                         location.href = url + '?filter=rekayasa'
                         break;
-                    case 'Non Rekayasa':
+                    case 'Nonrekayasa':
                         location.href = url + '?filter=non-rekayasa'
                         break;
                 }

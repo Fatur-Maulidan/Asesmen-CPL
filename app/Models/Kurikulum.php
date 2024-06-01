@@ -48,7 +48,8 @@ class Kurikulum extends Model
      * @var array
      */
     protected $casts = [
-        'status' => StatusKurikulum::class
+        'status' => StatusKurikulum::class,
+        'nilai_rentang_rubrik' => 'array'
     ];
 
     // Relationship

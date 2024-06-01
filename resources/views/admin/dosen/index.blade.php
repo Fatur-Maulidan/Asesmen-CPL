@@ -13,9 +13,9 @@
                 <label for="filter_role" class="form-label fw-bold">Filter berdasarkan role</label>
                 <select class="form-select" id="filter_role">
                     <option selected>Pilih role</option>
-                    <option value="{{ \App\Enums\PeranDosen::P2MPP }}">P2MPP</option>
-                    <option value="{{ \App\Enums\PeranDosen::Dosen }}">Dosen</option>
-                    <option value="{{ \App\Enums\PeranDosen::KoordinatorProgramStudi }}">Koordinator Program Studi</option>
+                    <option value="{{ \App\Enums\RoleDosen::P2MPP }}">P2MPP</option>
+                    {{-- <option value="{{ \App\Enums\RoleDosen::Dosen }}">Dosen</option> --}}
+                    <option value="{{ \App\Enums\RoleDosen::KoorProgramStudi }}">Koordinator Program Studi</option>
                 </select>
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <select class="form-select" id="filter_status">
                     <option selected>Pilih status</option>
                     <option value="{{ \App\Enums\StatusKeaktifan::Aktif }}">Aktif</option>
-                    <option value="{{ \App\Enums\StatusKeaktifan::TidakAktif }}">Tidak Aktif</option>
+                    <option value="{{ \App\Enums\StatusKeaktifan::Nonaktif }}">Tidak Aktif</option>
                 </select>
             </div>
         </div>
@@ -105,42 +105,42 @@
                             <div id="email_feedback" class="text-danger"></div>
                         </div>
 
-                        {{-- <div class="mb-3">
-                            <label for="domain" class="form-label fw-bold">Jurusan</label>
-                            <select class="form-select" id="domain">
+                        <div class="mb-3">
+                            <label for="jurusan" class="form-label fw-bold">Jurusan</label>
+                            <select class="form-select" id="jurusan" name="jurusan">
                                 <option selected>Pilih jurusan</option>
                                 @foreach ($jurusan as $jrsn)
                                     <option value="{{ $jrsn->id }}">{{ $jrsn->nama }}</option>
                                 @endforeach
                             </select>
-                        </div> --}}
+                        </div>
 
                         <div class="mb-3">
                             <div class="fw-bold mb-2">Role</div>
                             <div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="peran"
-                                        value="{{ \App\Enums\PeranDosen::Dosen }}" id="role_dosen">
+                                    <input class="form-check-input" type="radio" name="role"
+                                        value="{{ \App\Enums\RoleDosen::Dosen }}" id="role_dosen">
                                     <label class="form-check-label" for="role_dosen">
                                         Dosen
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="peran"
-                                        value="{{ \App\Enums\PeranDosen::KoordinatorProgramStudi }}" id="role_kaprodi">
+                                    <input class="form-check-input" type="radio" name="role"
+                                        value="{{ \App\Enums\RoleDosen::KoorProgramStudi }}" id="role_kaprodi">
                                     <label class="form-check-label" for="role_kaprodi">
                                         Koordinator Program Studi
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="peran"
-                                        value="{{ \App\Enums\PeranDosen::P2MPP }}" id="role_p2mpp">
+                                    <input class="form-check-input" type="radio" name="role"
+                                        value="{{ \App\Enums\RoleDosen::P2MPP }}" id="role_p2mpp">
                                     <label class="form-check-label" for="role_p2mpp">
                                         P2MPP
                                     </label>
                                 </div>
                             </div>
-                            <div id="peran_feedback" class="text-danger"></div>
+                            <div id="role_feedback" class="text-danger"></div>
                         </div>
                     </form>
                 </div>
@@ -222,7 +222,7 @@
                             <td class="align-middle">{{ $dsn->kode }}</td>
                             <td class="align-middle">{{ $dsn->nama }}</td>
                             <td class="align-middle">{{ $dsn->email }}</td>
-                            <td class="align-middle">{{ \App\Enums\PeranDosen::getDescription($dsn->peran) }}</td>
+                            <td class="align-middle">{{ \App\Enums\RoleDosen::getDescription($dsn->role) }}</td>
                             <td class="align-middle">
                                 @if ($dsn->status->is(\App\Enums\StatusKeaktifan::Aktif))
                                     <button type="button" class="btn btn-danger">Nonaktifkan</button>
@@ -240,7 +240,6 @@
             </table> --}}
             {{ $dataTable->table(['class' => 'table table-hover table-striped mt-3']) }}
         </div>
-    </div>
     </div>
 @endsection
 
@@ -267,7 +266,7 @@
                 $('#kode_feedback').html('');
                 $('#jenis_kelamin_feedback').html('');
                 $('#email_feedback').html('');
-                $('#peran_feedback').html('');
+                $('#role_feedback').html('');
             });
 
             $('#btn-tambah').on('click', function() {
@@ -330,11 +329,11 @@
                                 $('#email_feedback').html('');
                             }
 
-                            if ('peran' in err.responseJSON.errors) {
-                                $('#peran_feedback').html(err.responseJSON.errors
-                                    .peran[0]);
+                            if ('role' in err.responseJSON.errors) {
+                                $('#role_feedback').html(err.responseJSON.errors
+                                    .role[0]);
                             } else {
-                                $('#peran_feedback').html('');
+                                $('#role_feedback').html('');
                             }
                         } else if (err.status == 500) {
                             console.log(err);
@@ -366,13 +365,14 @@
                         $('#nama').val(res.dosen.nama);
                         $('#nip').val(res.dosen.nip);
                         $('#kode').val(res.dosen.kode);
+                        $('#jurusan').val(res.dosen['01_MASTER_jurusan_id']).change();
                         (res.dosen.jenis_kelamin ==
                             '{{ \App\Enums\JenisKelamin::LakiLaki }}') ? $('#jk_laki').prop(
                             'checked', true): $('#jk_perempuan').prop('checked', true);
                         $('#email').val(res.dosen.email);
-                        if (res.dosen.peran == '{{ \App\Enums\PeranDosen::Dosen }}') {
+                        if (res.dosen.role == '{{ \App\Enums\RoleDosen::Dosen }}') {
                             $('#role_dosen').prop('checked', true);
-                        } else if (res.dosen.peran == '{{ \App\Enums\PeranDosen::P2MPP }}') {
+                        } else if (res.dosen.role == '{{ \App\Enums\RoleDosen::P2MPP }}') {
                             $('#role_p2mpp').prop('checked', true);
                         } else {
                             $('#role_kaprodi').prop('checked', true);
