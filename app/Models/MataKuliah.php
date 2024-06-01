@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use App\Enums\DomainCPL;
 use Illuminate\Database\Eloquent\Model;
 
-class CapaianPembelajaranLulusan extends Model
+class MataKuliah extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '07_MASTER_capaian_pembelajaran_lulusan';
+    protected $table = '06_MASTER_mata_kuliah';
 
     /**
      * The primary key associated with the table.
@@ -33,7 +32,7 @@ class CapaianPembelajaranLulusan extends Model
      *
      * @var array
      */
-    protected $fillable = ['kode', 'deskripsi', 'domain', '03_MASTER_kurikulum_id'];
+    protected $fillable = ['kode', 'nama', 'deskripsi', '03_MASTER_kurikulum_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -47,18 +46,11 @@ class CapaianPembelajaranLulusan extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'domain' => DomainCPL::class
-    ];
+    protected $casts = [];
 
     // Relationship
     public function kurikulum()
     {
         return $this->belongsTo(Kurikulum::class, '03_MASTER_kurikulum_id');
-    }
-
-    public function indikatorKinerja()
-    {
-        return $this->belongsToMany(IndikatorKinerja::class, '13_MASTER_peta_cp_ik', '07_MASTER_capaian_pembelajaran_lulusan_id', '08_MASTER_indikator_kinerja_id')->using(PetaCpIk::class);
     }
 }

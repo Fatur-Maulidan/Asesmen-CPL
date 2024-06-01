@@ -1,11 +1,10 @@
 <?php
 
-use App\Enums\JurusanGolongan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJurusanTable extends Migration
+class Create09MasterRencanaAsesmenTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +13,11 @@ class CreateJurusanTable extends Migration
      */
     public function up()
     {
-        Schema::create('jurusan', function (Blueprint $table) {
+        Schema::create('09_MASTER_rencana_asesmen', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 50);
-            $table->enum('golongan', JurusanGolongan::getValues());
+            $table->string('kategori', 15);
+            $table->string('kode', 20);
+            $table->unsignedInteger('minggu');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateJurusanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jurusan');
+        Schema::dropIfExists('09_MASTER_rencana_asesmen');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterTableTujuanPembelajaran extends Migration
+class Create22MasterPengarangTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AlterTableTujuanPembelajaran extends Migration
      */
     public function up()
     {
-        Schema::table('tujuan_pembelajaran', function (Blueprint $table) {
-            $table->integer('bobot')->change();
+        Schema::create('22_MASTER_pengarang', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama', 50);
         });
     }
 
@@ -25,8 +26,6 @@ class AlterTableTujuanPembelajaran extends Migration
      */
     public function down()
     {
-        Schema::table('tujuan_pembelajaran', function (Blueprint $table) {
-            $table->integer('bobot')->change();
-        });
+        Schema::dropIfExists('22_MASTER_pengarang');
     }
 }

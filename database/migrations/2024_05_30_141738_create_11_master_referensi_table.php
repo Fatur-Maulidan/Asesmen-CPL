@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCapaianPembelajaranLulusansTable extends Migration
+class Create11MasterReferensiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateCapaianPembelajaranLulusansTable extends Migration
      */
     public function up()
     {
-        Schema::create('capaian_pembelajaran_lulusan', function (Blueprint $table) {
+        Schema::create('11_MASTER_referensi', function (Blueprint $table) {
             $table->id();
-            $table->string('kode')->unique();
-            $table->string('domain');
-            $table->text('deskripsi');
+            $table->string('judul', 50);
+            $table->string('penerbit', 30);
+            $table->year('tahun_terbit');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateCapaianPembelajaranLulusansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('capaian_pembelajaran_lulusan');
+        Schema::dropIfExists('11_MASTER_referensi');
     }
 }
