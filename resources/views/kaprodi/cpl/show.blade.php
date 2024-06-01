@@ -189,7 +189,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('kaprodi.cpl.edit', ['kurikulum' => 2022, 'cpl' => 'ss-1']) }}"
+                    <a href="{{ route('kaprodi.cpl.edit', ['kurikulum' => $kurikulum, 'cpl' => 'ss-1']) }}"
                         class="btn btn-outline-primary ">Ubah Pemetaannya pada MK</a>
                     {{-- Button trigger modal --}}
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CapaianPembelajaranLulusanStoreRequest;
 use App\Models\CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Kurikulum;
+use App\Models\Dosen;
 
 class CapaianPembelajaranLulusanController extends Controller
 {
@@ -22,14 +24,9 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function index($kurikulum)
     {
-        $dataCPL = CapaianPembelajaranLulusan::all()->sortBy('kode');
-
-            if (request()->expectsJson()) {
-            return response()->json([
-                'kurikulum' => $kurikulum,
-                'dataCPL' => $dataCPL
-            ]);
-        }
+        $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function($query) use ($kurikulum) {
+            $query->where('tahun', $kurikulum);
+        })->get()->sortBy('kode');
 
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
@@ -60,14 +57,27 @@ class CapaianPembelajaranLulusanController extends Controller
 
         $kodeDomain = $this->kodeCP($request->input('domain'));
         
-        $dataCPL = CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')->get()->count();
+        $kaprodiNip = '199301062019031017';
+
+        $data = Kurikulum::where('tahun', $kurikulum)
+                ->whereHas('programStudi', function ($query) use ($kaprodiNip) {
+                    $query->where('koordinator_nip', $kaprodiNip);
+                })
+                ->with('programStudi')
+                ->first();
+
+        $dataCPL = CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
+                    ->whereHas('kurikulum', function($query) use ($kurikulum) {
+                        $query->where('tahun', $kurikulum);
+                    })
+                    ->get()
+                    ->count();
 
         $cpl = new CapaianPembelajaranLulusan([
             'kode' => $kodeDomain . "-" . ($dataCPL + 1),
             'domain' => $request->input('domain'),
             'deskripsi' => $request->input('deskripsi'),
-            'tanggal_pengajuan' => date('Y-m-d H:i:s'),
-            'tanggal_pembaruan' => date('Y-m-d H:i:s')
+            '03_MASTER_kurikulum_id' => $data->id
         ]);
 
         if($cpl->save()){
