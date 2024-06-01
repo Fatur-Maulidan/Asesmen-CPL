@@ -4,9 +4,20 @@ namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\CapaianPembelajaranLulusan;
+use App\Models\IndikatorKinerja;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\IndikatorKinerjaStoreRequest;
 
 class IndikatorKinerjaController extends Controller
 {
+    protected $validator;
+    
+    public function __construct()
+    {
+        $this->validator = new IndikatorKinerjaStoreRequest();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,22 +25,15 @@ class IndikatorKinerjaController extends Controller
      */
     public function index($kurikulum)
     {
+        $cpInduk = CapaianPembelajaranLulusan::all()->sortBy('kode');
+
         return view('kaprodi.ik.index', [
             'title' => 'Indikator Kinerja',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum
+            'kurikulum' => $kurikulum,
+            'cpInduk' => $cpInduk
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -40,7 +44,30 @@ class IndikatorKinerjaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make(
+            $request->all(),
+            $this->validator->rules(),
+            $this->validator->messages()
+        );
+
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
+
+        $dataIK = IndikatorKinerja::get()->count();
+
+        $indikatorKinerja = new IndikatorKinerja([
+            'kode' => "IK-".($dataIK + 1),
+            'indikator' => $request->input('indikator'),
+            'deskripsi' => $request->input('deskripsi'),
+            'bobot' => $request->input('bobot')
+        ]);
+        
+        if($indikatorKinerja->save()){
+            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $request->input('kurikulum')])->with('success', 'Data berhasil ditambahkan');
+        } else {
+            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $request->input('kurikulum')])->with('error', 'Data gagal ditambahkan');
+        }
     }
 
     /**

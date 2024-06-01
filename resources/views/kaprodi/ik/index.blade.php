@@ -46,11 +46,10 @@
                         <div class="mb-3">
                             <label for="domain" class="form-label fw-bold">Capaian Pembelajaran Induk</label>
                             <select class="form-select" id="domain">
-                                <option selected>Pilih CP Induk</option>
-                                <option value="1">S-1</option>
-                                <option value="2">P-1</option>
-                                <option value="3">KU-1</option>
-                                <option value="4">KK-1</option>
+                                <option selected hidden>Pilih CP Induk</option>
+                                @foreach ($cpInduk as $cp)
+                                    <option value="{{ $cp->kode }}">{{ $cp->kode }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -60,29 +59,32 @@
                         </div>
 
                         <div class="fw-bold mb-3">Rubrik</div>
-                        <div class="mb-3">
-                            <div class="row mb-4">
-                                <div class="col">
-                                    <div class="fw-bold">Tingkat kemampuan</div>
-                                    <div>1</div>
+                        @for ($i = 1; $i <= 5; $i++)
+                            <div class="mb-3">
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <div class="fw-bold">Tingkat kemampuan</div>
+                                        <div>{{ $i }}</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="fw-bold">Makna kualitatif</div>
+                                        <div>Kurang sekali</div>
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <div class="fw-bold">Makna kualitatif</div>
-                                    <div>Kurang sekali</div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="fw-bold">Makna tingkat kemampuan</div>
+                                        <div>Pernah mempalajari atau secara tidak langsung dikenalkan</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="fw-bold">Makna tingkat kemampuan</div>
-                                    <div>Pernah mempalajari atau secara tidak langsung dikenalkan</div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="exampleFormControlTextarea2" class="form-label fw-bold">Deskripsi</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea2" rows="3"></textarea>
-                        </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea2" class="form-label fw-bold">Deskripsi</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea2" rows="3"></textarea>
+                            </div>
+                        @endfor
                     </form>
                 </div>
                 <div class="modal-footer">

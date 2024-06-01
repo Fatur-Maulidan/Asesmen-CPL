@@ -123,7 +123,6 @@
         $(document).ready(function() {
             $('input[name="options"]').change(function() {
                 let filterValue = $('label[for="' + $(this).attr('id') + '"]').data('filter');
-                console.log(filterValue)
                 if (filterValue === 'Semua') {
                     $('.accordion-item').show();
                 } else {
