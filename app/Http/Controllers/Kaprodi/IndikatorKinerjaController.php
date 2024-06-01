@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CapaianPembelajaranLulusan;
 use App\Models\IndikatorKinerja;
+use App\Models\CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\IndikatorKinerjaStoreRequest;
 
@@ -25,14 +25,28 @@ class IndikatorKinerjaController extends Controller
      */
     public function index($kurikulum)
     {
-        $cpInduk = CapaianPembelajaranLulusan::all()->sortBy('kode');
+        $pemetaanIkCp = [];
+
+        $cpInduk = CapaianPembelajaranLulusan::whereHas('kurikulum', function($query) use ($kurikulum) {
+            $query->where('tahun', $kurikulum);
+        })
+        ->get()
+        ->sortBy('kode');
+
+        $dataIk = IndikatorKinerja::get();
+        foreach($dataIk as $ik){
+            $pemetaanIkCp[] = IndikatorKinerja::where('id',$ik->id)->whereHas('capaianPembelajaranLulusan', function($query) use ($ik) {
+                $query->where('08_master_indikator_kinerja_id', $ik->id);
+            })->get()->first();
+        };
 
         return view('kaprodi.ik.index', [
             'title' => 'Indikator Kinerja',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'cpInduk' => $cpInduk
+            'cpInduk' => $cpInduk,
+            'dataIk' => $pemetaanIkCp
         ]);
     }
 
@@ -42,8 +56,10 @@ class IndikatorKinerjaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $kurikulum)
     {
+        $kaprodiNip = '199301062019031017';
+
         $validation = Validator::make(
             $request->all(),
             $this->validator->rules(),
@@ -56,9 +72,20 @@ class IndikatorKinerjaController extends Controller
 
         $dataIK = IndikatorKinerja::get()->count();
 
+        $cariCp = CapaianPembelajaranLulusan::where('kode', $request->input('domain'))
+        ->whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
+            $query->where('tahun', $kurikulum)
+            ->whereHas('programStudi', function($query) use ($kaprodiNip) {
+                $query->where('koordinator_nip', $kaprodiNip);
+            });
+        })
+        ->with('kurikulum.programStudi.dosen')
+        ->first();
+
+        dd($cpl = $request->input('cpInduk'));
+
         $indikatorKinerja = new IndikatorKinerja([
             'kode' => "IK-".($dataIK + 1),
-            'indikator' => $request->input('indikator'),
             'deskripsi' => $request->input('deskripsi'),
             'bobot' => $request->input('bobot')
         ]);
