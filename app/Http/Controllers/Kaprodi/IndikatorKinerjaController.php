@@ -8,6 +8,8 @@ use App\Models\IndikatorKinerja;
 use App\Models\CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\IndikatorKinerjaStoreRequest;
+use App\Models\PetaCpIk;
+use App\Models\Rubrik;
 
 class IndikatorKinerjaController extends Controller
 {
@@ -33,12 +35,19 @@ class IndikatorKinerjaController extends Controller
         ->get()
         ->sortBy('kode');
 
+        
         $dataIk = IndikatorKinerja::get();
         foreach($dataIk as $ik){
+            // $data = IndikatorKinerja::leftJoin('13_master_peta_cp_ik as cpik', '08_master_indikator_kinerja.id', '=', 'cpik.08_MASTER_indikator_kinerja_id')
+            // ->select('08_master_indikator_kinerja.*', 'cpik.*')
+            // ->get();
+
             $pemetaanIkCp[] = IndikatorKinerja::where('id',$ik->id)->whereHas('capaianPembelajaranLulusan', function($query) use ($ik) {
                 $query->where('08_master_indikator_kinerja_id', $ik->id);
             })->get()->first();
         };
+
+        // dd($pemetaanIkCp);
 
         return view('kaprodi.ik.index', [
             'title' => 'Indikator Kinerja',
@@ -59,6 +68,7 @@ class IndikatorKinerjaController extends Controller
     public function store(Request $request, $kurikulum)
     {
         $kaprodiNip = '199301062019031017';
+        $level_kemampuan = rubrik();
 
         $validation = Validator::make(
             $request->all(),
@@ -72,7 +82,7 @@ class IndikatorKinerjaController extends Controller
 
         $dataIK = IndikatorKinerja::get()->count();
 
-        $cariCp = CapaianPembelajaranLulusan::where('kode', $request->input('domain'))
+        $cariCp = CapaianPembelajaranLulusan::where('kode', $request->input('cpInduk'))
         ->whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
             $query->where('tahun', $kurikulum)
             ->whereHas('programStudi', function($query) use ($kaprodiNip) {
@@ -82,18 +92,35 @@ class IndikatorKinerjaController extends Controller
         ->with('kurikulum.programStudi.dosen')
         ->first();
 
-        dd($cpl = $request->input('cpInduk'));
-
         $indikatorKinerja = new IndikatorKinerja([
             'kode' => "IK-".($dataIK + 1),
             'deskripsi' => $request->input('deskripsi'),
             'bobot' => $request->input('bobot')
         ]);
-        
+
+        $cplInduk = $request->input('cpInduk');
+
         if($indikatorKinerja->save()){
-            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $request->input('kurikulum')])->with('success', 'Data berhasil ditambahkan');
+            $cpIk = new PetaCpIk([
+                '07_MASTER_capaian_pembelajaran_lulusan_id' => $cariCp->id,
+                '08_MASTER_indikator_kinerja_id' => $indikatorKinerja->id,
+            ]);
+            
+            $cpIk->save();
+
+            for($i = 0; $i < 5; $i++){
+                $rubrik = new Rubrik([
+                    'urutan' => $i+1,
+                    'level_kemampuan' => $level_kemampuan[$i],
+                    'deskripsi' => $request->input('rubrik-'.($i)),
+                    '08_MASTER_indikator_kinerja_id' => $indikatorKinerja->id
+                ]);
+
+                $rubrik->save();
+            }
+            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $kurikulum])->with('success', 'Data berhasil ditambahkan');
         } else {
-            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $request->input('kurikulum')])->with('error', 'Data gagal ditambahkan');
+            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $kurikulum])->with('error', 'Data gagal ditambahkan');
         }
     }
 

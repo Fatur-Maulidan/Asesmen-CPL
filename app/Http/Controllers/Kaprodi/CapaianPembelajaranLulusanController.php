@@ -176,10 +176,10 @@ class CapaianPembelajaranLulusanController extends Controller
         foreach($word as $w){
             $kode .= strtoupper(substr($w, 0, 1));
         }
-        return $this->checkIfWordMoreThanTwo($kode, $wordCount);
+        return $this->checkIfWordLessThanTwo($kode, $wordCount);
     }
 
-    private function checkIfWordMoreThanTwo($kode, $wordCount){
+    private function checkIfWordLessThanTwo($kode, $wordCount){
         if($wordCount < 2){
             $kode = $kode . $kode;
         }

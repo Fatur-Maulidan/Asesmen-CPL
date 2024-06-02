@@ -287,3 +287,7 @@ function countCPL($prefix, $dataCPL){
     }
     return $count;
 }
+
+function rubrik() {
+    return ["Kurang Sekali", "Kurang", "Cukup", "Baik", "Sangat Baik"];
+}
