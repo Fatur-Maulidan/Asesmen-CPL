@@ -105,15 +105,23 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="jenis_kelamin" class="fw-bold">Jenis Kelamin</label>
-                            <select class="form-select @error('jenis_kelamin') is-invalid @enderror" name="jenis_kelamin"
-                                id="jenis_kelamin" aria-label="Default select example" required>
-                                <option>Pilih jenis kelamin</option>
-                                <option value="{{ \App\Enums\JenisKelamin::LakiLaki }}"
-                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::LakiLaki) {{ 'selected' }} @endif>Laki-Laki</option>
-                                <option value="{{ \App\Enums\JenisKelamin::Perempuan }}"
-                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::Perempuan) {{ 'selected' }} @endif>Perempuan</option>
-                            </select>
+                            <div class="fw-bold mb-2">Jenis Kelamin</div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                    value="{{ \App\Enums\JenisKelamin::LakiLaki }}" id="jk_laki_tambah"
+                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::LakiLaki) {{ 'checked' }} @endif>
+                                <label class="form-check-label" for="jk_laki_tambah">
+                                    Laki-Laki
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                    value="{{ \App\Enums\JenisKelamin::Perempuan }}" id="jk_perempuan_tambah"
+                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::Perempuan) {{ 'checked' }} @endif>
+                                <label class="form-check-label" for="jk_perempuan_tambah">
+                                    Perempuan
+                                </label>
+                            </div>
                             @error('jenis_kelamin')
                                 <div class="invalid-feedback">
                                     <ul>
@@ -147,7 +155,7 @@
                                 name="tahun_angkatan" aria-label="Default select example" required>
                                 <option selected>Pilih tahun masuk</option>
                                 @for ($i = 2020; $i < date('Y'); $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
+                                    <option value="{{ $i }}" @if (old('tahun_angkatan') == $i) {{ 'selected' }} @endif>{{ $i }}</option>
                                 @endfor
                             </select>
                             @error('tahun_angkatan')
@@ -166,9 +174,9 @@
                             <select class="form-select @error('kelas') is-invalid @enderror" name="kelas"
                                 aria-label="Default select example" required>
                                 <option selected>Pilih kelas</option>
-                                <option value="1" @if (old('kelas') == 'A') {{ 'selected' }} @endif>A
+                                <option value="A" @if (old('kelas') == 'A') {{ 'selected' }} @endif>A
                                 </option>
-                                <option value="2" @if (old('kelas') == 'B') {{ 'selected' }} @endif>B
+                                <option value="B" @if (old('kelas') == 'B') {{ 'selected' }} @endif>B
                                 </option>
                             </select>
                             @error('kelas')
