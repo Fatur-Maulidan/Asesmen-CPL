@@ -45,10 +45,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
 
     Route::resource('jurusan', JurusanController::class)
         ->only(['index', 'store', 'update']);
+    Route::get('jurusan/download-template', [JurusanController::class, 'downloadTemplate'])->name('jurusan.downloadTemplate');
+    Route::post('jurusan/import', [JurusanController::class, 'import'])->name('jurusan.import');
 
     Route::resource('program-studi', ProgramStudiController::class)
         ->only(['store']);
 
+    Route::get('dosen/download-template', [AdminDosenController::class, 'downloadTemplate'])->name('dosen.downloadTemplate');
+    Route::post('dosen/import', [AdminDosenController::class, 'import'])->name('dosen.import');
     Route::resource('dosen', AdminDosenController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::patch('dosen/toggle-status/{dosen}', [AdminDosenController::class, 'toggleStatus'])->name('dosen.toggleStatus');
 });

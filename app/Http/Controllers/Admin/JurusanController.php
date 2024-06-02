@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JurusanRequest;
+use App\Imports\JurusanImport;
 use App\Models\Dosen;
 use App\Models\Jurusan;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JurusanController extends Controller
 {
@@ -17,12 +19,12 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusan = Jurusan::with(['programStudi', 'programStudi.dosen:id,nama']);
+        $jurusan = Jurusan::with(['programStudi', 'programStudi.dosen:nip,nama']);
 
         if (request('filter') == 'rekayasa') {
             $jurusan->rekayasa();
         } elseif (request('filter') == 'non-rekayasa') {
-            $jurusan->nonRekayasa();
+            $jurusan->nonrekayasa();
         } else {
             $jurusan->search();
         }
@@ -32,7 +34,7 @@ class JurusanController extends Controller
             'nama' => 'John Tyler',
             'role' => 'Admin',
             'jurusan' => $jurusan->get(),
-            'dosen' => Dosen::get(['id', 'kode', 'nama'])
+            'dosen' => Dosen::get(['nip', 'kode', 'nama'])
         ]);
     }
 
@@ -123,5 +125,19 @@ class JurusanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function downloadTemplate()
+    {
+        $file_path = public_path('files/templates/Template_Jurusan.xlsx');
+
+        return response()->download($file_path);
+    }
+
+    public function import()
+    {
+        Excel::import(new JurusanImport, request()->file('formFile'));
+
+        return redirect(route('admin.jurusan.index'))->with('success', 'All good!');
     }
 }

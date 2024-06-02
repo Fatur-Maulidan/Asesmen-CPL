@@ -9,13 +9,16 @@
     {{-- Action buttons --}}
     <div class="row mb-4">
         <div class="col">
-            <form role="search" method="GET" action="">
-                <input class="form-control search" type="search" id="search" name="search" placeholder="Cari"
-                    autocomplete="off" value="{{ request('search') }}">
+            <form role="search" method="GET" action="" autocomplete="off">
+                <input class="form-control search" type="search" id="search" name="search"
+                    placeholder="Cari"value="{{ request('search') }}">
             </form>
         </div>
         <div class="col text-end">
             {{-- Button trigger modal --}}
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importJurusanModal">
+                Import Jurusan
+            </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahJurusanModal">
                 Tambah Jurusan Baru
             </button>
@@ -34,8 +37,36 @@
             <label class="btn btn-outline-primary rounded-pill px-3" for="filter_rekayasa">Rekayasa</label>
 
             <input type="radio" class="btn-check" name="golongan" id="filter_nonrekayasa"
-                value="{{ \App\Enums\JurusanGolongan::NonRekayasa }}" @if (request('filter') == 'non-rekayasa') checked @endif>
-            <label class="btn btn-outline-primary rounded-pill px-3" for="filter_nonrekayasa">Non Rekayasa</label>
+                value="{{ \App\Enums\JurusanGolongan::Nonrekayasa }}" @if (request('filter') == 'non-rekayasa') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="filter_nonrekayasa">Nonrekayasa</label>
+        </div>
+    </div>
+
+    {{-- Import Jurusan Modal --}}
+    <div class="modal fade" id="importJurusanModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="importJurusanModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="importJurusanModalLabel">Import Jurusan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.jurusan.import') }}" method="POST" autocomplete="off"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-5">
+                            <label for="formFile" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('admin.jurusan.downloadTemplate') }}" class="btn btn-outline-success">Download
+                                Template</a>
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -63,13 +94,13 @@
                             <div class="fw-bold mb-2">Golongan</div>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="golongan_jurusan" id="rekayasa"
-                                        value="{{ \App\Enums\JurusanGolongan::Rekayasa }}">
+                                    <input class="form-check-input" type="radio" name="golongan_jurusan"
+                                        id="rekayasa" value="{{ \App\Enums\JurusanGolongan::Rekayasa }}">
                                     <label class="form-check-label" for="rekayasa">Rekayasa</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="golongan_jurusan" id="nonrekayasa"
-                                        value="{{ \App\Enums\JurusanGolongan::NonRekayasa }}">
+                                    <input class="form-check-input" type="radio" name="golongan_jurusan"
+                                        id="nonrekayasa" value="{{ \App\Enums\JurusanGolongan::Nonrekayasa }}">
                                     <label class="form-check-label" for="nonrekayasa">Non Rekayasa</label>
                                 </div>
                             </div>
@@ -132,7 +163,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="golongan_jurusan"
-                                        id="nonrekayasa_ubah" value="{{ \App\Enums\JurusanGolongan::NonRekayasa }}">
+                                        id="nonrekayasa_ubah" value="{{ \App\Enums\JurusanGolongan::Nonrekayasa }}">
                                     <label class="form-check-label" for="nonrekayasa_ubah">Non Rekayasa</label>
                                 </div>
                             </div>
@@ -215,7 +246,7 @@
                             <select class="form-select" id="koordinator_prodi" name="koordinator_prodi">
                                 <option value="" selected>Pilih dosen</option>
                                 @foreach ($dosen as $dsn)
-                                    <option value="{{ $dsn->id }}">{{ $dsn->kode . ' - ' . $dsn->nama }}
+                                    <option value="{{ $dsn->nip }}">{{ $dsn->kode . ' - ' . $dsn->nama }}
                                     </option>
                                 @endforeach
                             </select>
@@ -362,7 +393,7 @@
                     case 'Rekayasa':
                         location.href = url + '?filter=rekayasa'
                         break;
-                    case 'Non Rekayasa':
+                    case 'Nonrekayasa':
                         location.href = url + '?filter=non-rekayasa'
                         break;
                 }

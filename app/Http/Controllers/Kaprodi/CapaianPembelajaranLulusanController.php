@@ -13,7 +13,8 @@ use App\Models\Dosen;
 class CapaianPembelajaranLulusanController extends Controller
 {
     protected $validation;
-    public function __construct() {
+    public function __construct()
+    {
         $this->validation = new CapaianPembelajaranLulusanStoreRequest();
     }
 
@@ -24,7 +25,7 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function index($kurikulum)
     {
-        $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function($query) use ($kurikulum) {
+        $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function ($query) use ($kurikulum) {
             $query->where('tahun', $kurikulum);
         })->get()->sortBy('kode');
 
@@ -59,18 +60,18 @@ class CapaianPembelajaranLulusanController extends Controller
 
         $kodeDomain = $this->kodeCP($request->input('domain'));
         $data = Kurikulum::where('tahun', $kurikulum)
-                ->whereHas('programStudi', function ($query) use ($kaprodiNip) {
-                    $query->where('koordinator_nip', $kaprodiNip);
-                })
-                ->with('programStudi')
-                ->first();
+            ->whereHas('programStudi', function ($query) use ($kaprodiNip) {
+                $query->where('koordinator_nip', $kaprodiNip);
+            })
+            ->with('programStudi')
+            ->first();
 
         $dataCPL = CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
-                    ->whereHas('kurikulum', function($query) use ($kurikulum) {
-                        $query->where('tahun', $kurikulum);
-                    })
-                    ->get()
-                    ->count();
+            ->whereHas('kurikulum', function ($query) use ($kurikulum) {
+                $query->where('tahun', $kurikulum);
+            })
+            ->get()
+            ->count();
 
         $cpl = new CapaianPembelajaranLulusan([
             'kode' => $kodeDomain . "-" . ($dataCPL + 1),
@@ -79,7 +80,7 @@ class CapaianPembelajaranLulusanController extends Controller
             '03_MASTER_kurikulum_id' => $data->id
         ]);
 
-        if($cpl->save()){
+        if ($cpl->save()) {
             return redirect()->route('kaprodi.cpl.index', compact('kurikulum'));
         } else {
             return redirect()->back()->with('error', 'Gagal menambahkan data');
@@ -95,7 +96,7 @@ class CapaianPembelajaranLulusanController extends Controller
     public function show($kurikulum, $id)
     {
         $dataCPL = CapaianPembelajaranLulusan::all()->sortBy('kode');
-        $cpl = CapaianPembelajaranLulusan::where('kode',$id)->first();
+        $cpl = CapaianPembelajaranLulusan::where('kode', $id)->first();
 
         return view('kaprodi.cpl.show', [
             'title' => 'Capaian Pembelajaran',
@@ -151,7 +152,7 @@ class CapaianPembelajaranLulusanController extends Controller
         $dataCPL->deskripsi = $request->input('deskripsi');
         $dataCPL->tanggal_pembaruan = date('Y-m-d H:i:s');
 
-        if($dataCPL->save()){
+        if ($dataCPL->save()) {
             return redirect()->route('kaprodi.cpl.show', compact('kurikulum', 'cpl'));
         } else {
             return redirect()->back()->with('error', 'Gagal menambahkan data');
@@ -169,11 +170,12 @@ class CapaianPembelajaranLulusanController extends Controller
         //
     }
 
-    private function kodeCP($domain){
+    private function kodeCP($domain)
+    {
         $wordCount = str_word_count($domain);
         $word = explode(" ", $domain);
         $kode = "";
-        foreach($word as $w){
+        foreach ($word as $w) {
             $kode .= strtoupper(substr($w, 0, 1));
         }
         return $this->checkIfWordLessThanTwo($kode, $wordCount);

@@ -11,7 +11,7 @@ use BenSampo\Enum\Enum;
  */
 final class StatusKurikulum extends Enum
 {
-    const Aktif =   1;
-    const Nonaktif =   2;
-    const Peninjauan = 3;
+    const Aktif =   '1';
+    const Nonaktif =   '2';
+    const Peninjauan = '3';
 }

@@ -6,9 +6,11 @@ use App\DataTables\DosenDataTable;
 use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DosenRequest;
+use App\Imports\DosenImport;
 use App\Models\Dosen;
 use App\Models\Jurusan;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DosenController extends Controller
 {
@@ -47,7 +49,8 @@ class DosenController extends Controller
     {
         if ($request->ajax()) {
             $validated = $request->validated();
-            $validated = array_merge($validated, ['status' => StatusKeaktifan::Aktif, 'kata_sandi' => 'password']);
+            $validated['01_MASTER_jurusan_id'] = $validated['jurusan'];
+            unset($validated['jurusan']);
 
             Dosen::create($validated);
 
@@ -63,10 +66,10 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($nip)
     {
         if (request()->ajax()) {
-            $dosen = Dosen::find($id);
+            $dosen = Dosen::find($nip);
 
             return response()->json([
                 'dosen' => $dosen
@@ -92,10 +95,10 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(DosenRequest $request, $id)
+    public function update(DosenRequest $request, $nip)
     {
         if ($request->ajax()) {
-            $dosen = Dosen::find($id);
+            $dosen = Dosen::find($nip);
 
             $validated = $request->validated();
 
@@ -113,21 +116,35 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($nip)
     {
-        Dosen::destroy($id);
+        Dosen::destroy($nip);
 
         return redirect()->back();
     }
 
-    public function toggleStatus($id)
+    public function toggleStatus($nip)
     {
-        $dosen = Dosen::find($id);
+        $dosen = Dosen::find($nip);
 
         $dosen->update([
-            'status' => ($dosen->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::TidakAktif : StatusKeaktifan::Aktif
+            'status' => ($dosen->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::Nonaktif : StatusKeaktifan::Aktif
         ]);
 
         return redirect()->back();
+    }
+
+    public function downloadTemplate()
+    {
+        $file_path = public_path('files/templates/Template_Dosen.xlsx');
+
+        return response()->download($file_path);
+    }
+
+    public function import()
+    {
+        Excel::import(new DosenImport, request()->file('formFile'));
+
+        return redirect(route('admin.dosen.index'))->with('success', 'All good!');
     }
 }

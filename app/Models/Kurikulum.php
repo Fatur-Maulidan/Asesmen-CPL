@@ -48,7 +48,8 @@ class Kurikulum extends Model
      * @var array
      */
     protected $casts = [
-        'status' => StatusKurikulum::class
+        'status' => StatusKurikulum::class,
+        'nilai_rentang_rubrik' => 'array'
     ];
 
     // Relationship
@@ -65,5 +66,28 @@ class Kurikulum extends Model
     public function cpl()
     {
         return $this->hasMany(CapaianPembelajaranLulusan::class, '03_MASTER_kurikulum_id');
+    }
+
+    // Scope
+    public function scopeAktif($query)
+    {
+        return $query->where('status', StatusKurikulum::Aktif);
+    }
+
+    public function scopeNonaktif($query)
+    {
+        return $query->where('status', StatusKurikulum::Nonaktif);
+    }
+
+    public function scopePeninjauan($query)
+    {
+        return $query->where('status', StatusKurikulum::Peninjauan());
+    }
+
+    public function scopeSearch($query)
+    {
+        if (request('search')) {
+            return $query->where('tahun', 'like', '%' . request('search') . '%');
+        }
     }
 }

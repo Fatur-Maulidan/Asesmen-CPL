@@ -17,7 +17,7 @@ class Create02MasterProgramStudiTable extends Migration
         Schema::create('02_MASTER_program_studi', function (Blueprint $table) {
             $table->id();
             $table->string('nomor', 4);
-            $table->string('nama', 50)->unique();
+            $table->string('nama', 50);
             $table->string('kode', '10')->unique();
             $table->enum('jenjang_pendidikan', JenjangPendidikan::getValues());
             $table->timestamps();

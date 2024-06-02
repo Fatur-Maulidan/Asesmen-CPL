@@ -2,12 +2,23 @@
 
 namespace App\Http\Controllers\Kaprodi;
 
+use App\Enums\StatusKurikulum;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\KurikulumRequest;
+use App\Models\Dosen;
 use App\Models\Kurikulum;
+use App\Models\Mahasiswa;
+use Illuminate\Http\Request;
 
 class KurikulumController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('810317609391432000');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +37,11 @@ class KurikulumController extends Controller
             'title' => 'Home',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
+<<<<<<< HEAD
+            'kurikulum' => Kurikulum::all()
+=======
             'dataKurikulum' => $kurikulum
+>>>>>>> origin/development
         ]);
     }
 
@@ -40,7 +55,8 @@ class KurikulumController extends Controller
         return view('kaprodi.kurikulum.create', [
             'title' => 'Tambah Kurikulum Baru',
             'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
+            'role' => 'Koordinator Program Studi',
+            'program_studi_id' => $this->user->programStudi->id
         ]);
     }
 
@@ -50,9 +66,34 @@ class KurikulumController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(KurikulumRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $nilai = [];
+        for ($i = 0; $i < $validated['jumlah_maksimal_rubrik']; $i++) {
+            $temp = [
+                ($i + 1) => [
+                    'makna_tingkat_kemampuan' => $validated['makna_tingkat_kemampuan'][$i],
+                    'nilai' => [
+                        'awal' => $validated['nilai'][$i]['a'],
+                        'akhir' => $validated['nilai'][$i]['b'],
+                    ]
+                ]
+            ];
+            $nilai[$i + 1] = $temp[$i + 1];
+        }
+
+        Kurikulum::create([
+            'tahun' => $validated['tahun'],
+            'tahun_berlaku' => $validated['tahun'],
+            'status' => StatusKurikulum::Peninjauan,
+            'jumlah_maksimal_rubrik' => $validated['jumlah_maksimal_rubrik'],
+            'nilai_rentang_rubrik' => $nilai,
+            '02_MASTER_program_studi_id' => $validated['program_studi_id']
+        ]);
+
+        return redirect()->to(route('kaprodi.kurikulum.index'));
     }
 
     /**

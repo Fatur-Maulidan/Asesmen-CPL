@@ -42,7 +42,7 @@ class Dosen extends Model
      *
      * @var array
      */
-    protected $fillable = ['nip', 'kode', 'nama', 'email', 'jenis_kelamin', 'role', 'status', '01_MASTER_jurusan_id'];
+    protected $fillable = ['nip', 'kode', 'nama', 'email', 'jenis_kelamin', 'role', 'status', 'kata_sandi', '01_MASTER_jurusan_id'];
 
     /**
      * Indicates if the model should be timestamped.

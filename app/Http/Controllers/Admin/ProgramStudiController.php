@@ -44,8 +44,8 @@ class ProgramStudiController extends Controller
             'jenjang_pendidikan' => $validated['jenjang_prodi'],
             'nomor' => $validated['nomor_prodi'],
             'kode' => $validated['kode_prodi'],
-            'jurusan_id' => $validated['jurusan_id'],
-            'dosen_id' => $validated['koordinator_prodi'],
+            '01_MASTER_jurusan_id' => $validated['jurusan_id'],
+            'koordinator_nip' => $validated['koordinator_prodi'],
         ]);
 
         return response()->json([

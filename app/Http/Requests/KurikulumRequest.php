@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DosenRequest extends FormRequest
+class KurikulumRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,11 @@ class DosenRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => 'bail|required',
-            'nip' => 'bail|required',
-            'kode' => 'bail|required',
-            'jenis_kelamin' => 'bail|required',
-            'email' => 'bail|required|email',
-            'jurusan' => 'bail|required',
-            'role' => 'bail|required',
+            'tahun' => 'bail|required',
+            'jumlah_maksimal_rubrik' => 'bail|required',
+            'makna_tingkat_kemampuan' => 'bail|required',
+            'nilai' => 'bail|required',
+            'program_studi_id' => 'bail|required'
         ];
     }
 }
