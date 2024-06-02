@@ -290,7 +290,7 @@ if (!function_exists('checkStatusTP')) {
     }
 }
 
-if (function_exists('countCPL')) {
+if (!function_exists('countCPL')) {
     function countCPL($prefix, $dataCPL)
     {
         $count = 0;
@@ -298,5 +298,11 @@ if (function_exists('countCPL')) {
             if (strpos($cpl->kode, $prefix) === 0) $count++;
         }
         return $count;
+    }
+}
+
+if (!function_exists('rubrik')) {
+    function rubrik(){
+        return ["Kurang Sekali", "Kurang", "Cukup", "Baik", "Sangat Baik"];
     }
 }

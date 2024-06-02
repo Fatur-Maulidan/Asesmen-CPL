@@ -26,25 +26,18 @@ class KurikulumController extends Controller
      */
     public function index()
     {
-        $kurikulum = Kurikulum::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
-        // $mahasiswa = Mahasiswa::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
-
-        if (request('filter') == 'aktif') {
-            $kurikulum->aktif();
-        } elseif (request('filter') == 'nonaktif') {
-            $kurikulum->nonaktif();
-        } elseif (request('filter') == 'peninjauan') {
-            $kurikulum->peninjauan();
-        } else {
-            $kurikulum->search();
-        }
+        $kaprodiNip = '199301062019031017';
+        $kurikulum = Kurikulum::whereHas('programStudi', function($query) use ($kaprodiNip) {
+                        $query->where('koordinator_nip', $kaprodiNip);
+                    })
+                    ->with('programStudi')
+                    ->get();
 
         return view('kaprodi.kurikulum.index', [
             'title' => 'Home',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'data_kurikulum' => $kurikulum->get(),
-            // 'mahasiswa_terdaftar' => $mahasiswa
+            'data_kurikulum' => $kurikulum
         ]);
     }
 

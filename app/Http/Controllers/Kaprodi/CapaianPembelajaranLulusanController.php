@@ -95,7 +95,15 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function show($kurikulum, $id)
     {
-        $dataCPL = CapaianPembelajaranLulusan::all()->sortBy('kode');
+        $kaprodiNip = '199301062019031017';
+
+        $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
+            $query->where('tahun', $kurikulum)
+            ->whereHas('programStudi', function($query) use ($kaprodiNip) {
+                $query->where('koordinator_nip', $kaprodiNip);
+            });
+        })->get()->sortBy('kode');
+
         $cpl = CapaianPembelajaranLulusan::where('kode', $id)->first();
 
         return view('kaprodi.cpl.show', [
@@ -138,6 +146,8 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function update(Request $request, $kurikulum, $cpl)
     {
+        $kaprodiNip = '199301062019031017';
+        
         $validator = Validator::make(
             $request->all(),
             $this->validation->rules(),
@@ -148,9 +158,15 @@ class CapaianPembelajaranLulusanController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $dataCPL = CapaianPembelajaranLulusan::where('kode', $cpl)->first();
+        $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
+            $query->where('tahun', $kurikulum)
+            ->whereHas('programStudi', function($query) use ($kaprodiNip) {
+                $query->where('koordinator_nip', $kaprodiNip);
+            });
+        })->where('kode', $cpl)->first();
+        
         $dataCPL->deskripsi = $request->input('deskripsi');
-        $dataCPL->tanggal_pembaruan = date('Y-m-d H:i:s');
+        $dataCPL->updated_at = date('Y-m-d H:i:s');
 
         if ($dataCPL->save()) {
             return redirect()->route('kaprodi.cpl.show', compact('kurikulum', 'cpl'));
@@ -178,12 +194,11 @@ class CapaianPembelajaranLulusanController extends Controller
         foreach ($word as $w) {
             $kode .= strtoupper(substr($w, 0, 1));
         }
-        return $this->checkIfWordMoreThanTwo($kode, $wordCount);
+        return $this->checkIfWordLessThanTwo($kode, $wordCount);
     }
 
-    private function checkIfWordMoreThanTwo($kode, $wordCount)
-    {
-        if ($wordCount < 2) {
+    private function checkIfWordLessThanTwo($kode, $wordCount){
+        if($wordCount < 2){
             $kode = $kode . $kode;
         }
         return $kode;

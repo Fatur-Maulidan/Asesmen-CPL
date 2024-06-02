@@ -83,7 +83,7 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
     Route::post('kurikulum/{kurikulum}/mahasiswa/import', [MahasiswaController::class, 'import'])->name('mahasiswa.import');
     Route::patch('kurikulum/{kurikulum}/mahasiswa/toggle-status/{mahasiswa}', [MahasiswaController::class, 'toggleStatus'])->name('mahasiswa.toggleStatus');
     Route::resource('kurikulum/{kurikulum}/mahasiswa', MahasiswaController::class)
-        ->only(['index', 'destroy']);
+        ->only(['index', 'store', 'destroy']);
 
     Route::resource('kurikulum/{kurikulum}/dosen', DosenController::class)
         ->only(['index']);

@@ -62,16 +62,18 @@
                         </div>
 
                         <div class="fw-bold mb-3">Rubrik</div>
-                        @for ($i = 1; $i <= 5; $i++)
+
+                        <?php $dataRubrik = rubrik(); ?>
+                        @for ($i = 0; $i < 5; $i++)
                             <div class="mb-3">
                                 <div class="row mb-4">
                                     <div class="col">
                                         <div class="fw-bold">Tingkat kemampuan</div>
-                                        <div>{{ $i }}</div>
+                                        <div>{{ $i + 1 }}</div>
                                     </div>
                                     <div class="col">
                                         <div class="fw-bold">Makna kualitatif</div>
-                                        <div>Kurang sekali</div>
+                                        <div>{{ $dataRubrik[$i] }}</div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -120,7 +122,6 @@
                                 <button class="accordion-button collapsed fw-bold" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
                                     aria-expanded="false" aria-controls="collapse{{ $index }}">
-                                    {{-- <?php dd($dataIk); ?> --}}
                                     {{ $ik->kode }}
 
                                 </button>
