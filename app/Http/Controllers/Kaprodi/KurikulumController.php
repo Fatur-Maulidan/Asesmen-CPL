@@ -37,11 +37,7 @@ class KurikulumController extends Controller
             'title' => 'Home',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-<<<<<<< HEAD
-            'kurikulum' => Kurikulum::all()
-=======
             'dataKurikulum' => $kurikulum
->>>>>>> origin/development
         ]);
     }
 
