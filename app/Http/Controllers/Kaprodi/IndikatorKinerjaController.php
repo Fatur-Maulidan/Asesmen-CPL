@@ -27,6 +27,7 @@ class IndikatorKinerjaController extends Controller
      */
     public function index($kurikulum)
     {
+        $kaprodiNip = '199301062019031017';
         $pemetaanIkCp = [];
 
         $cpInduk = CapaianPembelajaranLulusan::whereHas('kurikulum', function($query) use ($kurikulum) {
@@ -42,12 +43,16 @@ class IndikatorKinerjaController extends Controller
             // ->select('08_master_indikator_kinerja.*', 'cpik.*')
             // ->get();
 
-            $pemetaanIkCp[] = IndikatorKinerja::where('id',$ik->id)->whereHas('capaianPembelajaranLulusan', function($query) use ($ik) {
-                $query->where('08_master_indikator_kinerja_id', $ik->id);
+            $pemetaanIkCp[] = IndikatorKinerja::where('id',$ik->id)->whereHas('capaianPembelajaranLulusan', function($query) use ($ik, $kurikulum, $kaprodiNip) {
+                $query->where('08_master_indikator_kinerja_id', $ik->id)
+                ->whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
+                    $query->where('tahun', $kurikulum)
+                    ->whereHas('programStudi', function($query) use ($kaprodiNip) {
+                        $query->where('koordinator_nip', $kaprodiNip);
+                    });
+                });
             })->get()->first();
         };
-
-        // dd($pemetaanIkCp);
 
         return view('kaprodi.ik.index', [
             'title' => 'Indikator Kinerja',
@@ -80,7 +85,15 @@ class IndikatorKinerjaController extends Controller
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
-        $dataIK = IndikatorKinerja::get()->count();
+        $dataIK = IndikatorKinerja::whereHas('capaianPembelajaranLulusan', 
+        function($query) use ($kaprodiNip, $kurikulum) {
+            $query->whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
+                $query->where('tahun', $kurikulum)
+                ->whereHas('programStudi', function($query) use ($kaprodiNip) {
+                    $query->where('koordinator_nip', $kaprodiNip);
+                });
+            });
+        })->get()->count();
 
         $cariCp = CapaianPembelajaranLulusan::where('kode', $request->input('cpInduk'))
         ->whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
@@ -130,20 +143,45 @@ class IndikatorKinerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kurikulum, $id)
+    public function show($kurikulum, $ik)
     {
+        $kaprodiNip = '199301062019031017';
+        $pemetaanIkCp = [];
+
+        $ik = IndikatorKinerja::where('kode', $ik)
+            ->with('capaianPembelajaranLulusan.kurikulum.programStudi')
+            ->with('rubrik')
+            ->get()
+            ->first();
+
+        $dataIk = IndikatorKinerja::get();
+        foreach($dataIk as $data){
+            // $data = IndikatorKinerja::leftJoin('13_master_peta_cp_ik as cpik', '08_master_indikator_kinerja.id', '=', 'cpik.08_MASTER_indikator_kinerja_id')
+            // ->select('08_master_indikator_kinerja.*', 'cpik.*')
+            // ->get();
+
+            $pemetaanIkCp[] = IndikatorKinerja::where('id',$data->id)->whereHas('capaianPembelajaranLulusan', function($query) use ($data, $kurikulum, $kaprodiNip) {
+                $query->where('08_master_indikator_kinerja_id', $data->id)
+                ->whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
+                    $query->where('tahun', $kurikulum)
+                    ->whereHas('programStudi', function($query) use ($kaprodiNip) {
+                        $query->where('koordinator_nip', $kaprodiNip);
+                    });
+                });
+            })->get()->first();
+        };
+            
         return view('kaprodi.ik.show', [
             'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'ik' => [
-                'kode' => 'SS-1.1'
-            ]
+            'dataIk' => $pemetaanIkCp,
+            'ik' => $ik
         ]);
     }
 
-    public function detail($kurikulum, $id)
+    public function detail($kurikulum, $ik)
     {
         return view('kaprodi.ik.detail', [
             'title' => 'IK',
@@ -182,9 +220,29 @@ class IndikatorKinerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $kurikulum, $id)
     {
-        //
+        $kaprodiNip = '199301062019031017';
+
+        $validation = Validator::make(
+            $request->all(),
+            $this->validator->rules(),
+            $this->validator->messages()
+        );
+
+        if ($validation->fails()) {
+            return redirect()->back()->withErrors($validation)->withInput();
+        }
+
+        $dataIk = IndikatorKinerja::where('id',$id)->first();
+
+        $dataIk->deskripsi = $request->input('deskripsi');
+        
+        if($dataIk->save()){
+            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $dataIk->kode])->with('success', 'Data berhasil diubah');
+        } else {
+            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $dataIk->kode])->with('error', 'Data gagal diubah');
+        }
     }
 
     /**

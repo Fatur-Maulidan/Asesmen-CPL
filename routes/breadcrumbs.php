@@ -45,9 +45,9 @@ Breadcrumbs::for('kaprodi.ik.index', function (BreadcrumbTrail $trail, $kurikulu
     $trail->push('Indikator Kinerja', route('kaprodi.ik.index', ['kurikulum' => $kurikulum]));
 });
 
-Breadcrumbs::for('kaprodi.ik.show', function (BreadcrumbTrail $trail, $kurikulum, $kode_ik) {
+Breadcrumbs::for('kaprodi.ik.show', function (BreadcrumbTrail $trail, $kurikulum, $ik) {
     $trail->parent('kaprodi.ik.index', $kurikulum);
-    $trail->push($kode_ik, route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $kode_ik]));
+    $trail->push($ik, route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $ik]));
 });
 
 Breadcrumbs::for('kaprodi.ik.detail', function (BreadcrumbTrail $trail, $kurikulum, $kode_ik) {

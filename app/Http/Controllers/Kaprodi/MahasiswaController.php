@@ -8,9 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MahasiswaRequest;
 use App\Imports\MahasiswaImport;
 use App\Models\Dosen;
+use App\Models\Kurikulum;
 use App\Models\Mahasiswa;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
@@ -55,25 +56,32 @@ class MahasiswaController extends Controller
      */
     public function store(MahasiswaRequest $request, $kurikulum)
     {
-        $validateData = $request->validated();
+        // Stub purpose only, value aslinya dihasilkan berdasarkan tahun akademik yang dipilih
+        $kurikulum = '2021';
 
-        $mahasiswa_model = new Mahasiswa([
+        $validateData = $request->validated();
+        $kurikulumModel = new Kurikulum();
+
+        $mahasiswaModel = new Mahasiswa([
             'nim' => $validateData['nim'],
             'nama' => $validateData['nama'],
             'jenis_kelamin' => $validateData['jenis_kelamin'],
+            'kelas' => $validateData['kelas'],
             'email' => $validateData['email'],
             'tahun_angkatan' => $validateData['tahun_angkatan'],
             'status' => StatusKeaktifan::Aktif,
-            '02_MASTER_program_studi_id' => $kurikulum->programStudi->id
+            'tahun' => $kurikulum,
+            '02_MASTER_program_studi_id' => $kurikulumModel->getProgramStudiId($kurikulum)
         ]);
 
-        $mahasiswa_model->save();
-
         try {
-            $mahasiswa_model->save();
+            $mahasiswaModel->save();
+
             return redirect()->route('kaprodi.mahasiswa.index')->with('success', 'Berhasil menambahkan data');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menambahkan data');
+        } catch (\Illuminate\Database\QueryException $e) {
+            $errorMessage = ($e->errorInfo[1] == 1062) ? 'NIM atau email yang sama sudah terdaftar!' : 'Gagal menambahkan data!';
+
+            return redirect()->back()->with('error', $errorMessage)->withInput();
         }
     }
 

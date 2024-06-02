@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('ik.edit', $kurikulum, $ik['kode']) }}
+    {{ Breadcrumbs::render('kaprodi.ik.edit', $kurikulum, $ik['kode']) }}
     <h1 class="fw-bold mb-0">Ubah Pemetaan {{ $ik['kode'] }} pada Capaian Pembelajaran</h1>
 @endsection
 
