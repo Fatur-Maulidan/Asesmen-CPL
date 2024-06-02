@@ -26,7 +26,29 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="">
+                    @if ($errors->any())
+                        <div class="alert alert-danger" role="alert">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    @if (session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum]) }}">
+                        @csrf
                         <div class="mb-3">
                             <label for="nama" class="form-label fw-bold">Nama</label>
                             <input type="text" class="form-control" id="nama" placeholder="Nama mahasiswa">
@@ -60,17 +82,17 @@
                                 <option value="2">B</option>
                             </select>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <div class="row w-100">
-                        <div class="col">
-                            <button type="button" class="btn btn-danger w-100">Batal</button>
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-success w-100">Tambah</button>
-                        </div>
                     </div>
+                    <div class="modal-footer">
+                        <div class="row w-100">
+                            <div class="col">
+                                <button type="button" class="btn btn-danger w-100">Batal</button>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-success w-100">Tambah</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
