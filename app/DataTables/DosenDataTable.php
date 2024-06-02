@@ -36,7 +36,7 @@ class DosenDataTable extends DataTable
 
                 $form = '<form action="' . route('admin.dosen.toggleStatus', ['dosen' => $dosen->nip]) . '" method="post">
                     ' . csrf_field() . '
-                    ' . method_field('patch') . '
+                    ' . method_field('PATCH') . '
                     ' . $button . '
                 </form>';
 

@@ -11,6 +11,7 @@ use App\Models\Dosen;
 use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpParser\Node\Stmt\Do_;
 
 class DosenController extends Controller
 {
@@ -97,9 +98,9 @@ class DosenController extends Controller
      */
     public function update(DosenRequest $request, $nip)
     {
-        if ($request->ajax()) {
-            $dosen = Dosen::find($nip);
+        $dosen = Dosen::find($nip);
 
+        if ($request->ajax()) {
             $validated = $request->validated();
 
             $dosen->update($validated);
