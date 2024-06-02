@@ -91,9 +91,15 @@ class MahasiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($kurikulum, $nim)
     {
-        //
+        if (request()->ajax()) {
+            $mahasiswa = Mahasiswa::find($nim);
+
+            return response()->json([
+                'mahasiswa' => $mahasiswa
+            ]);
+        }
     }
 
     /**
@@ -114,9 +120,19 @@ class MahasiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MahasiswaRequest $request, $kurikulum, $nim)
     {
-        //
+        $mahasiswa = Mahasiswa::find($nim);
+
+        if ($request->ajax()) {
+            $validated = $request->validated();
+
+            $mahasiswa->update($validated);
+
+            return response()->json([
+                'message' => 'Data berhasil diubah.'
+            ]);
+        }
     }
 
     /**

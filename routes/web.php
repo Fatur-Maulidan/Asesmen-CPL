@@ -99,7 +99,7 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
     Route::post('kurikulum/{kurikulum}/mahasiswa/import', [KaprodiMahasiswaController::class, 'import'])->name('mahasiswa.import');
     Route::patch('kurikulum/{kurikulum}/mahasiswa/toggle-status/{mahasiswa}', [KaprodiMahasiswaController::class, 'toggleStatus'])->name('mahasiswa.toggleStatus');
     Route::resource('kurikulum/{kurikulum}/mahasiswa', KaprodiMahasiswaController::class)
-        ->only(['index', 'store', 'destroy']);
+        ->only(['index', 'store', 'show', 'update', 'destroy']);
 
     // # Dosen
     Route::resource('kurikulum/{kurikulum}/dosen', KaprodiDosenController::class)

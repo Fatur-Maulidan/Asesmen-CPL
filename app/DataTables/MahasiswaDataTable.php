@@ -38,8 +38,8 @@ class MahasiswaDataTable extends DataTable
                 return $form;
             })
             ->addColumn('tindakan', function (Mahasiswa $mhs) {
-                $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#tambahDosenModal" data-id="' . $mhs->nim . '">Ubah</a>
-                <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusDosenModal" data-id="' . $mhs->nim . '">Hapus</a>';
+                $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#ubahMahasiswaModal" data-nim="' . $mhs->nim . '">Ubah</a>
+                <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusDosenModal" data-nim="' . $mhs->nim . '">Hapus</a>';
 
                 return $content;
             })

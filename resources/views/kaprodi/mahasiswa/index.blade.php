@@ -70,7 +70,8 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum]) }}">
+                    <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum]) }}"
+                        autocomplete="off">
                         @csrf
 
                         <div class="mb-3">
@@ -104,9 +105,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="" class="fw-bold">Jenis Kelamin</label>
+                            <label for="jenis_kelamin" class="fw-bold">Jenis Kelamin</label>
                             <select class="form-select @error('jenis_kelamin') is-invalid @enderror" name="jenis_kelamin"
-                                aria-label="Default select example" required>
+                                id="jenis_kelamin" aria-label="Default select example" required>
                                 <option>Pilih jenis kelamin</option>
                                 <option value="{{ \App\Enums\JenisKelamin::LakiLaki }}"
                                     @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::LakiLaki) {{ 'selected' }} @endif>Laki-Laki</option>
@@ -126,8 +127,9 @@
 
                         <div class="mb-3">
                             <label for="email" class="form-label fw-bold">Email</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                                id="email" placeholder="Email mahasiswa" value="{{ old('email') }}">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                name="email" id="email" placeholder="Email mahasiswa"
+                                value="{{ old('email') }}">
                             @error('email')
                                 <div class="invalid-feedback">
                                     <ul>
@@ -141,15 +143,12 @@
 
                         <div class="mb-3">
                             <label for="" class="fw-bold">Tahun masuk</label>
-                            <select class="form-select @error('tahun_angkatan') is-invalid @enderror" name="tahun_angkatan"
-                                aria-label="Default select example" required>
+                            <select class="form-select @error('tahun_angkatan') is-invalid @enderror"
+                                name="tahun_angkatan" aria-label="Default select example" required>
                                 <option selected>Pilih tahun masuk</option>
-                                <option value="2024" @if (old('tahun_angkatan') == '1') {{ 'selected' }} @endif>2024
-                                </option>
-                                <option value="2023" @if (old('tahun_angkatan') == '2') {{ 'selected' }} @endif>2023
-                                </option>
-                                <option value="2022" @if (old('tahun_angkatan') == '3') {{ 'selected' }} @endif>2022
-                                </option>
+                                @for ($i = 2020; $i < date('Y'); $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
                             </select>
                             @error('tahun_angkatan')
                                 <div class="invalid-feedback">
@@ -186,7 +185,7 @@
                 <div class="modal-footer">
                     <div class="row w-100">
                         <div class="col">
-                            <button type="button" class="btn btn-danger w-100">Batal</button>
+                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
                         </div>
                         <div class="col">
                             <button type="submit" class="btn btn-success w-100">Tambah</button>
@@ -204,70 +203,104 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="ubahMahasiswaModalLabel">Tambah Mahasiswa</h1>
+                    <h1 class="modal-title fs-5 fw-bold" id="ubahMahasiswaModalLabel">Ubah Mahasiswa</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="">
+                    <form action="" method="POST" autocomplete="off" id="ubahMahasiswaForm">
+                        @csrf
+                        @method('PATCH')
                         <div class="mb-3">
-                            <label for="nama" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" id="nama" placeholder="Nama mahasiswa"
-                                value="">
+                            <label for="nim_ubah" class="form-label fw-bold">NIM</label>
+                            <input type="text" class="form-control" id="nim_ubah" name="nim"
+                                placeholder="NIM mahasiswa" value="">
+                            <div id="nim_ubah_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="nim" class="form-label fw-bold">NIM</label>
-                            <input type="text" class="form-control" id="nim" placeholder="NIM mahasiswa"
-                                value="">
+                            <label for="nama_ubah" class="form-label fw-bold">Nama</label>
+                            <input type="text" class="form-control" id="nama_ubah" name="nama"
+                                placeholder="Nama mahasiswa" value="">
+                            <div id="nama_ubah_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="email" class="form-label fw-bold">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Email mahasiswa"
-                                value="">
+                            <div class="fw-bold mb-2">Jenis Kelamin</div>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                        value="{{ \App\Enums\JenisKelamin::LakiLaki }}" id="jk_laki_ubah">
+                                    <label class="form-check-label" for="jk_laki_ubah">Laki-Laki</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                        value="{{ \App\Enums\JenisKelamin::Perempuan }}" id="jk_perempuan_ubah">
+                                    <label class="form-check-label" for="jk_perempuan_ubah">Perempuan</label>
+                                </div>
+                            </div>
+                            <div id="jenis_kelamin_ubah_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="" class="fw-bold">Tahun masuk</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Pilih tahun masuk</option>
-                                <option value="1">2024</option>
-                                <option value="2">2023</option>
-                                <option value="3" selected>2022</option>
+                            <label for="email_ubah" class="form-label fw-bold">Email</label>
+                            <input type="email_ubah" class="form-control" id="email_ubah" name="email"
+                                placeholder="Email mahasiswa" value="">
+                            <div id="email_ubah_feedback" class="text-danger"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tahun_angkatan_ubah" class="fw-bold mb-2">Tahun Angkatan</label>
+                            <select class="form-select" id="tahun_angkatan_ubah" name="tahun_angkatan">
+                                <option>Pilih tahun masuk</option>
+                                @for ($i = 2020; $i < date('Y'); $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
                             </select>
+                            <div id="tahun_angkatan_ubah_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="" class="fw-bold">Kelas</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Pilih kelas</option>
-                                <option value="1" selected>A</option>
-                                <option value="2">B</option>
-                            </select>
+                            <div class="fw-bold mb-2">Kelas</div>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="kelas" value="A"
+                                        id="kelas_A">
+                                    <label class="form-check-label" for="kelas_A">A</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="kelas" value="B"
+                                        id="kelas_B">
+                                    <label class="form-check-label" for="kelas_B">B</label>
+                                </div>
+                            </div>
+                            <div id="kelas_ubah_feedback" class="text-danger"></div>
                         </div>
 
                         <div>
-                            <label for="" class="fw-bold d-block">Status kemahasiswaan</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                    id="inlineRadio1" value="option1" checked>
-                                <label class="form-check-label" for="inlineRadio1">Aktif</label>
+                            <div class="fw-bold mb-2">Status</div>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status"
+                                        value="{{ \App\Enums\StatusKeaktifan::Aktif }}" id="aktif">
+                                    <label class="form-check-label" for="aktif">Aktif</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="status"
+                                        value="{{ \App\Enums\StatusKeaktifan::Nonaktif }}" id="nonaktif">
+                                    <label class="form-check-label" for="nonaktif">Nonaktif</label>
+                                </div>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                    id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">Nonaktif</label>
-                            </div>
+                            <div id="status_ubah_feedback" class="text-danger"></div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <div class="row w-100">
                         <div class="col">
-                            <button type="button" class="btn btn-danger w-100">Batal</button>
+                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-success w-100">Tambah</button>
+                            <button type="submit" class="btn btn-success w-100" form="ubahMahasiswaForm">Ubah</button>
                         </div>
                     </div>
                 </div>
@@ -358,11 +391,143 @@
     {{ $dataTable->scripts() }}
     <script>
         $(document).ready(function() {
+            const ubahMahasiswaModal = document.getElementById('ubahMahasiswaModal');
+            const ubahMahasiswaModalInstance = new bootstrap.Modal('#ubahMahasiswaModal');
+
+            ubahMahasiswaModal.addEventListener('hidden.bs.modal', event => {
+                $('#ubahMahasiswaForm').attr('action', '');
+                $('#nim_ubah').val('');
+                $('#nama_ubah').val('');
+                $('#jk_laki_ubah').prop('checked', false);
+                $('#jk_perempuan_ubah').prop('checked', false);
+                $('#email_ubah').val('');
+                $('#tahun_angkatan_ubah').prop('selectedIndex', 0);
+                $('#kelas_A').prop('checked', false);
+                $('#kelas_B').prop('checked', false);
+                $('#aktif').prop('checked', false);
+                $('#nonaktif').prop('checked', false);
+
+                $('#nim_ubah_feedback').html('');
+                $('#nama_ubah_feedback').html('');
+                $('#jenis_kelamin_ubah_feedback').html('');
+                $('#email_ubah_feedback').html('');
+                $('#tahun_angkatan_ubah_feedback').html('');
+                $('#kelas_ubah_feedback').html('');
+                $('#status_ubah_feedback').html('');
+            });
+
             $(document).on('click', '.btn-hapus', function(e) {
                 e.preventDefault();
 
-                const id = $(this).data('id');
-                $('#hapusMahasiswaForm').attr('action', "{{ url()->current() }}/" + id);
+                const nim = $(this).data('nim');
+                $('#hapusMahasiswaForm').attr('action', "{{ url()->current() }}/" + nim);
+            });
+
+            $(document).on('click', '.btn-ubah', function(e) {
+                e.preventDefault();
+
+                const nim = $(this).data('nim');
+                const url = "{{ url()->current() }}/" + nim;
+
+                $('#ubahMahasiswaForm').attr('action', url);
+                $.ajax({
+                    type: "get",
+                    url: url,
+                    dataType: "JSON",
+                    success: function(res) {
+                        console.log(res);
+
+                        $('#nim_ubah').val(res.mahasiswa.nim);
+                        $('#nama_ubah').val(res.mahasiswa.nama);
+                        if (res.mahasiswa.jenis_kelamin == 'L') {
+                            $('#jk_laki_ubah').prop('checked', true);
+                        } else {
+                            $('#jk_perempuan_ubah').prop('checked', true);
+                        }
+                        $('#email_ubah').val(res.mahasiswa.email);
+                        $('#tahun_angkatan_ubah').val(res.mahasiswa.tahun_angkatan).change();
+                        if ((res.mahasiswa.kelas).slice(1, 2) == 'A') {
+                            $('#kelas_A').prop('checked', true);
+                        } else {
+                            $('#kelas_B').prop('checked', true);
+                        }
+                        if (res.mahasiswa.status == 'Aktif') {
+                            $('#aktif').prop('checked', true);
+                        } else {
+                            $('#nonaktif').prop('checked', true);
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+            });
+
+            $('#ubahMahasiswaForm').on('submit', function(e) {
+                e.preventDefault();
+                console.log($(this).serialize())
+
+                $.ajax({
+                    type: "post",
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function(res) {
+                        console.log(res)
+                        ubahMahasiswaModalInstance.hide();
+                        location.reload();
+                    },
+                    error: function(err) {
+                        // when status code is 422, it's a validation issue
+                        if (err.status == 422) {
+                            console.log(err.responseJSON);
+
+                            if ('nim' in err.responseJSON.errors) {
+                                $('#nim_ubah_feedback').html(err.responseJSON.errors
+                                    .nim[0]);
+                            } else {
+                                $('#nim_ubah_feedback').html('');
+                            }
+
+                            if ('nama' in err.responseJSON.errors) {
+                                $('#nama_ubah_feedback').html(err.responseJSON.errors
+                                    .nama[0]);
+                            } else {
+                                $('#nama_ubah_feedback').html('');
+                            }
+
+                            if ('jenis_kelamin' in err.responseJSON.errors) {
+                                $('#jenis_kelamin_ubah_feedback').html(err.responseJSON.errors
+                                    .jenis_kelamin[0]);
+                            } else {
+                                $('#jenis_kelamin_ubah_feedback').html('');
+                            }
+
+                            if ('email' in err.responseJSON.errors) {
+                                $('#email_ubah_feedback').html(err.responseJSON.errors
+                                    .email[0]);
+                            } else {
+                                $('#email_ubah_feedback').html('');
+                            }
+
+                            if ('tahun_angkatan' in err.responseJSON.errors) {
+                                $('#tahun_angkatan_ubah_feedback').html(err.responseJSON.errors
+                                    .tahun_angkatan[0]);
+                            } else {
+                                $('#tahun_angkatan_ubah_feedback').html('');
+                            }
+
+                            if ('status' in err.responseJSON.errors) {
+                                $('#status_ubah_feedback').html(err.responseJSON.errors
+                                    .status[0]);
+                            } else {
+                                $('#status_ubah_feedback').html('');
+                            }
+                        } else if (err.status == 500) {
+                            console.log(err);
+                        }
+                    }
+                });
             });
         });
     </script>

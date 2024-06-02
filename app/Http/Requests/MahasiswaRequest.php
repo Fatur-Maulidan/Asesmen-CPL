@@ -31,14 +31,21 @@ class MahasiswaRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'nim' => ['numeric', 'regex:/^\w{9}$/', 'required'],
-            'nama' => 'alpha|required',
-            'jenis_kelamin' => ['regex:/^\w{1}$/', 'required'],
-            'email' => ['email:rfc,dns', 'regex:/polban\.ac\.id/', 'required'],
-            'tahun_angkatan' => ['regex:/^\w{4}$/', 'required'],
-            'kelas' => ['regex:/^\w{1}$/', 'required']
+        $rules = [
+            'nim' => ['required', 'numeric', 'regex:/^\w{9}$/'],
+            'nama' => 'required',
+            'jenis_kelamin' => ['required', 'regex:/^\w{1}$/'],
+            'email' => ['required', 'email:rfc,dns', 'regex:/polban\.ac\.id/', 'required'],
+            'tahun_angkatan' => ['required', 'regex:/^\w{4}$/', 'required'],
+            'kelas' => ['required', 'regex:/^\w{1}$/', 'required'],
         ];
+
+        // Additional rules for AJAX requests
+        if ($this->ajax()) {
+            $rules['status'] = 'required';
+        }
+
+        return $rules;
     }
 
     /**
