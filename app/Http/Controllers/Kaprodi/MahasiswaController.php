@@ -56,10 +56,13 @@ class MahasiswaController extends Controller
      */
     public function store(MahasiswaRequest $request, $kurikulum)
     {
-        $kurikulum = '2021';  // Stub purpose only, value aslinya dihasilkan berdasarkan tahun akademik yang dipilih
-        $validateData = $request->validated();
+        // Stub purpose only, value aslinya dihasilkan berdasarkan tahun akademik yang dipilih
+        $kurikulum = '2021';
 
-        $mahasiswa_model = new Mahasiswa([
+        $validateData = $request->validated();
+        $kurikulumModel = new Kurikulum();
+
+        $mahasiswaModel = new Mahasiswa([
             'nim' => $validateData['nim'],
             'nama' => $validateData['nama'],
             'jenis_kelamin' => $validateData['jenis_kelamin'],
@@ -68,14 +71,16 @@ class MahasiswaController extends Controller
             'tahun_angkatan' => $validateData['tahun_angkatan'],
             'status' => StatusKeaktifan::Aktif,
             'tahun' => $kurikulum,
-            '02_MASTER_program_studi_id' => Kurikulum::where('tahun', $kurikulum)->pluck('02_MASTER_program_studi_id')[0]  // Static method ini harus dibuat method sendiri dari model Kurikulum
+            '02_MASTER_program_studi_id' => $kurikulumModel->getProgramStudiId($kurikulum)
         ]);
 
         try {
-            $mahasiswa_model->save();
+            $mahasiswaModel->save();
+
             return redirect()->route('kaprodi.mahasiswa.index')->with('success', 'Berhasil menambahkan data');
         } catch (\Illuminate\Database\QueryException $e) {
             $errorMessage = ($e->errorInfo[1] == 1062) ? 'NIM atau email yang sama sudah terdaftar!' : 'Gagal menambahkan data!';
+
             return redirect()->back()->with('error', $errorMessage)->withInput();
         }
     }
