@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('ik.detail', $kurikulum, $ik['kode']) }}
+    {{ Breadcrumbs::render('kaprodi.ik.detail', $kurikulum, $ik['kode']) }}
     <h1 class="fw-bold mb-0">Pemetaan {{ $ik['kode'] }} pada Capaian Pembelajaran</h1>
 @endsection
 
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('ik.edit', ['kurikulum' => $kurikulum, 'ik' => 'ss-1.1']) }}"
+                    <a href="{{ route('kaprodi.ik.edit', ['kurikulum' => $kurikulum, 'ik' => 'ss-1.1']) }}"
                         class="btn btn-warning">Ubah
                         Pemetaan</a>
                 </div>
