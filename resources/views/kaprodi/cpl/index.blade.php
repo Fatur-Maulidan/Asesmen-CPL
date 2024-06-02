@@ -86,33 +86,39 @@
     <div class="row">
         <div class="col-12">
             <div class="accordion accordion-flush" id="accordionExample">
-                @foreach ($dataCPL as $index => $cpl)
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapse{{ $index }}" aria-expanded="false"
-                                aria-controls="collapse{{ $index }}">
-                                {{ $cpl->kode }}
-                            </button>
-                        </h2>
-                        <div id="collapse{{ $index }}" class="accordion-collapse collapse"
-                            data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <p class="fw-bold mb-1">Deskripsi</p>
-                                <p class="mb-4">{{ $cpl->deskripsi }}</p>
+                @if ($dataCPL->isEmpty())
+                    <div class="text-center">
+                        <p class="fs-4">Belum Ada Data Capaian Pembelajaran</p>
+                    </div>
+                @else
+                    @foreach ($dataCPL as $index => $cpl)
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse{{ $index }}" aria-expanded="false"
+                                    aria-controls="collapse{{ $index }}">
+                                    {{ $cpl->kode }}
+                                </button>
+                            </h2>
+                            <div id="collapse{{ $index }}" class="accordion-collapse collapse"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p class="fw-bold mb-1">Deskripsi</p>
+                                    <p class="mb-4">{{ $cpl->deskripsi }}</p>
 
-                                <p class="fw-bold mb-1">Mata Kuliah</p>
-                                <p class="mb-0">Belum ada pemetaan</p>
-                            </div>
-                            <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => 2022, 'cpl' => $cpl->kode]) }}"
-                                    class="me-3">Lihat
-                                    detail</a>
-                                <a href="">Ubah pembobotan</a>
+                                    <p class="fw-bold mb-1">Mata Kuliah</p>
+                                    <p class="mb-0">Belum ada pemetaan</p>
+                                </div>
+                                <div class="accordion-footer bg-light mb-0 p-3 border-top ">
+                                    <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $cpl->kode]) }}"
+                                        class="me-3">Lihat
+                                        detail</a>
+                                    <a href="">Ubah pembobotan</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>
@@ -123,7 +129,6 @@
         $(document).ready(function() {
             $('input[name="options"]').change(function() {
                 let filterValue = $('label[for="' + $(this).attr('id') + '"]').data('filter');
-                console.log(filterValue)
                 if (filterValue === 'Semua') {
                     $('.accordion-item').show();
                 } else {

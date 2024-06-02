@@ -34,32 +34,33 @@
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link @if (url()->current() == route('kaprodi.kurikulum.dashboard', ['kurikulum' => 2022])) active @endif"
-                            href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => 2022]) }}">Dashboard</a>
+                        <a class="nav-link @if (url()->current() == route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum])) active @endif"
+                            href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum]) }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.cpl.*')) active @endif"
-                            href="{{ route('kaprodi.cpl.index', ['kurikulum' => 2022]) }}">Capaian Pembelajaran</a>
+                            href="{{ route('kaprodi.cpl.index', ['kurikulum' => $kurikulum]) }}">Capaian
+                            Pembelajaran</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.ik.*')) active @endif"
-                            href="{{ route('kaprodi.ik.index', ['kurikulum' => 2022]) }}">Indikator Kinerja</a>
+                            href="{{ route('kaprodi.ik.index', ['kurikulum' => $kurikulum]) }}">Indikator Kinerja</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.tp.*')) active @endif"
-                            href="{{ route('kaprodi.tp.index', ['kurikulum' => 2022]) }}">Tujuan Pembelajaran</a>
+                            href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum]) }}">Tujuan Pembelajaran</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.mk.*')) active @endif"
-                            href="{{ route('kaprodi.mk.index', ['kurikulum' => 2022]) }}">Mata Kuliah</a>
+                            href="{{ route('kaprodi.mk.index', ['kurikulum' => $kurikulum]) }}">Mata Kuliah</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.mahasiswa.*')) active @endif"
-                            href="{{ route('kaprodi.mahasiswa.index', ['kurikulum' => 2022]) }}">Mahasiswa</a>
+                            href="{{ route('kaprodi.mahasiswa.index', ['kurikulum' => $kurikulum]) }}">Mahasiswa</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.dosen.*')) active @endif"
-                            href="{{ route('kaprodi.dosen.index', ['kurikulum' => 2022]) }}">Dosen</a>
+                            href="{{ route('kaprodi.dosen.index', ['kurikulum' => $kurikulum]) }}">Dosen</a>
                     </li>
                     <li class="nav-item ms-auto align-self-end">
                         <h3 class="mb-0"><span class="badge text-bg-warning rounded-bottom-0">Peninjauan</span></h3>

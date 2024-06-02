@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\KurikulumRequest;
 use App\Models\Kurikulum;
 use Illuminate\Http\Request;
+use App\Models\Kurikulum;
 
 class KurikulumController extends Controller
 {
@@ -17,11 +18,22 @@ class KurikulumController extends Controller
      */
     public function index()
     {
+        $kaprodiNip = '199301062019031017';
+        $kurikulum = Kurikulum::whereHas('programStudi', function($query) use ($kaprodiNip) {
+                        $query->where('koordinator_nip', $kaprodiNip);
+                    })
+                    ->with('programStudi')
+                    ->get();
+
         return view('kaprodi.kurikulum.index', [
             'title' => 'Home',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
+<<<<<<< HEAD
             'kurikulum' => Kurikulum::all()
+=======
+            'dataKurikulum' => $kurikulum
+>>>>>>> origin/development
         ]);
     }
 

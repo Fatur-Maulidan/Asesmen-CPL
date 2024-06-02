@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CapaianPembelajaranLulusanStoreRequest;
 use App\Models\CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Kurikulum;
+use App\Models\Dosen;
 
 class CapaianPembelajaranLulusanController extends Controller
 {
     protected $validation;
-    public function __construct() {
+    public function __construct()
+    {
         $this->validation = new CapaianPembelajaranLulusanStoreRequest();
     }
 
@@ -22,14 +25,9 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function index($kurikulum)
     {
-        $dataCPL = CapaianPembelajaranLulusan::all()->sortBy('kode');
-
-            if (request()->expectsJson()) {
-            return response()->json([
-                'kurikulum' => $kurikulum,
-                'dataCPL' => $dataCPL
-            ]);
-        }
+        $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function ($query) use ($kurikulum) {
+            $query->where('tahun', $kurikulum);
+        })->get()->sortBy('kode');
 
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
@@ -48,6 +46,8 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function store(Request $request, $kurikulum)
     {
+        $kaprodiNip = '199301062019031017';
+
         $validator = Validator::make(
             $request->all(),
             $this->validation->rules(),
@@ -59,18 +59,28 @@ class CapaianPembelajaranLulusanController extends Controller
         }
 
         $kodeDomain = $this->kodeCP($request->input('domain'));
-        
-        $dataCPL = CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')->get()->count();
+        $data = Kurikulum::where('tahun', $kurikulum)
+            ->whereHas('programStudi', function ($query) use ($kaprodiNip) {
+                $query->where('koordinator_nip', $kaprodiNip);
+            })
+            ->with('programStudi')
+            ->first();
+
+        $dataCPL = CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
+            ->whereHas('kurikulum', function ($query) use ($kurikulum) {
+                $query->where('tahun', $kurikulum);
+            })
+            ->get()
+            ->count();
 
         $cpl = new CapaianPembelajaranLulusan([
             'kode' => $kodeDomain . "-" . ($dataCPL + 1),
             'domain' => $request->input('domain'),
             'deskripsi' => $request->input('deskripsi'),
-            'tanggal_pengajuan' => date('Y-m-d H:i:s'),
-            'tanggal_pembaruan' => date('Y-m-d H:i:s')
+            '03_MASTER_kurikulum_id' => $data->id
         ]);
 
-        if($cpl->save()){
+        if ($cpl->save()) {
             return redirect()->route('kaprodi.cpl.index', compact('kurikulum'));
         } else {
             return redirect()->back()->with('error', 'Gagal menambahkan data');
@@ -86,15 +96,7 @@ class CapaianPembelajaranLulusanController extends Controller
     public function show($kurikulum, $id)
     {
         $dataCPL = CapaianPembelajaranLulusan::all()->sortBy('kode');
-        $CPL = CapaianPembelajaranLulusan::where('kode',$id)->first();
-
-        // if (request()->expectsJson()) {
-        //     return response()->json([
-        //         'kurikulum' => $kurikulum,
-        //         'dataCPL' => $dataCPL,
-        //         'cpl' => $CPL,
-        //     ]);
-        // }
+        $cpl = CapaianPembelajaranLulusan::where('kode', $id)->first();
 
         return view('kaprodi.cpl.show', [
             'title' => 'Capaian Pembelajaran',
@@ -102,7 +104,7 @@ class CapaianPembelajaranLulusanController extends Controller
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
             'dataCPL' => $dataCPL,
-            'cpl' => $CPL,
+            'cpl' => $cpl,
         ]);
     }
 
@@ -150,7 +152,7 @@ class CapaianPembelajaranLulusanController extends Controller
         $dataCPL->deskripsi = $request->input('deskripsi');
         $dataCPL->tanggal_pembaruan = date('Y-m-d H:i:s');
 
-        if($dataCPL->save()){
+        if ($dataCPL->save()) {
             return redirect()->route('kaprodi.cpl.show', compact('kurikulum', 'cpl'));
         } else {
             return redirect()->back()->with('error', 'Gagal menambahkan data');
@@ -168,18 +170,20 @@ class CapaianPembelajaranLulusanController extends Controller
         //
     }
 
-    private function kodeCP($domain){
+    private function kodeCP($domain)
+    {
         $wordCount = str_word_count($domain);
         $word = explode(" ", $domain);
         $kode = "";
-        foreach($word as $w){
+        foreach ($word as $w) {
             $kode .= strtoupper(substr($w, 0, 1));
         }
         return $this->checkIfWordMoreThanTwo($kode, $wordCount);
     }
 
-    private function checkIfWordMoreThanTwo($kode, $wordCount){
-        if($wordCount < 2){
+    private function checkIfWordMoreThanTwo($kode, $wordCount)
+    {
+        if ($wordCount < 2) {
             $kode = $kode . $kode;
         }
         return $kode;

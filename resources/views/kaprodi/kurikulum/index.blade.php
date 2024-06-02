@@ -37,15 +37,16 @@
 
     {{-- Data kurikulum --}}
     <div class="row gy-5">
-        @forelse ($kurikulum as $krklm)
+        @forelse ($dataKurikulum as $kurikulum)
             <div class="col-4">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center py-3">
                         <div class="d-inline">
-                            <span class="fs-5 fw-bold me-2">Kurikulum {{ $krklm->tahun }}</span>
-                            <span class="badge text-bg-success">{{ $krklm->status }}</span>
+                            <span class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</span>
+                            <span
+                                class="badge {{ $kurikulum->status->key == 'Aktif' ? 'text-bg-success' : 'text-bg-danger' }}">{{ $kurikulum->status->key == 'Aktif' ? 'Berjalan' : 'Berhenti' }}</span>
                         </div>
-                        <a href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => $krklm->tahun]) }}"
+                        <a href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum->tahun]) }}"
                             class="link-secondary">
                             <i class="bi bi-arrow-right-circle" style="font-size: 1.5rem;"></i>
                         </a>
