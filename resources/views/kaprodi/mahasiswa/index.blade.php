@@ -50,23 +50,32 @@
                     <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum]) }}">
                         @csrf
                         <div class="mb-3">
-                            <label for="nama" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" id="nama" placeholder="Nama mahasiswa">
+                            <label for="nim" class="form-label fw-bold">NIM</label>
+                            <input type="text" class="form-control" name="nim" id="nim" placeholder="NIM mahasiswa">
                         </div>
 
                         <div class="mb-3">
-                            <label for="nim" class="form-label fw-bold">NIM</label>
-                            <input type="text" class="form-control" id="nim" placeholder="NIM mahasiswa">
+                            <label for="nama" class="form-label fw-bold">Nama</label>
+                            <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama mahasiswa">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="" class="fw-bold">Jenis Kelamin</label>
+                            <select class="form-select" name="jenis_kelamin" aria-label="Default select example">
+                                <option selected>Pilih jenis kelamin</option>
+                                <option value="{{ \App\Enums\JenisKelamin::LakiLaki }}">Laki-Laki</option>
+                                <option value="{{ \App\Enums\JenisKelamin::Perempuan }}">Perempuan</option>
+                            </select>
                         </div>
 
                         <div class="mb-3">
                             <label for="email" class="form-label fw-bold">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Email mahasiswa">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email mahasiswa">
                         </div>
 
                         <div class="mb-3">
                             <label for="" class="fw-bold">Tahun masuk</label>
-                            <select class="form-select" aria-label="Default select example">
+                            <select class="form-select" name="tahun_angkatan" aria-label="Default select example">
                                 <option selected>Pilih tahun masuk</option>
                                 <option value="1">2024</option>
                                 <option value="2">2023</option>
@@ -76,7 +85,7 @@
 
                         <div>
                             <label for="" class="fw-bold">Kelas</label>
-                            <select class="form-select" aria-label="Default select example">
+                            <select class="form-select" name="kelas" aria-label="Default select example">
                                 <option selected>Pilih kelas</option>
                                 <option value="1">A</option>
                                 <option value="2">B</option>

@@ -47,11 +47,12 @@ class MahasiswaController extends Controller
     public function store(MahasiswaRequest $request, $kurikulum)
     {
         $validateData = $request->validated();
-
+        
         $mahasiswa_model = new Mahasiswa([
             'nim' => $validateData['nim'],
             'nama' => $validateData['nama'],
             'jenis_kelamin' => $validateData['jenis_kelamin'],
+            'kelas' => $validateData['kelas'],
             'email' => $validateData['email'],
             'tahun_angkatan' => $validateData['tahun_angkatan'],
             'status' => StatusKeaktifan::Aktif,
