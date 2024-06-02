@@ -102,8 +102,9 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
         ->only(['index', 'store', 'show', 'update', 'destroy']);
 
     // # Dosen
+    Route::patch('dosen/toggle-status/{dosen}', [KaprodiDosenController::class, 'toggleStatus'])->name('dosen.toggleStatus');
     Route::resource('kurikulum/{kurikulum}/dosen', KaprodiDosenController::class)
-        ->only(['index']);
+        ->only(['index', 'show', 'update', 'destroy']);
 });
 
 // # Route untuk dosen

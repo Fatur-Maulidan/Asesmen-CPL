@@ -2,24 +2,34 @@
 
 namespace App\Http\Controllers\Kaprodi;
 
+use App\DataTables\DosenDataTable;
+use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DosenRequest;
+use App\Models\Dosen;
 use Illuminate\Http\Request;
 
 class DosenController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('810317609391432000');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kurikulum)
+    public function index(DosenDataTable $dataTable, $kurikulum)
     {
-        return view('kaprodi.dosen.index', [
+        return $dataTable->with(['kaprodi' => true, 'jurusan_id' => $this->user->jurusan->id])->render('kaprodi.dosen.index', [
             'title' => 'Dosen',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'dosen' => getDosen()
         ]);
     }
 
@@ -50,9 +60,15 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($kurikulum, $nip)
     {
-        //
+        if (request()->ajax()) {
+            $dosen = Dosen::find($nip);
+
+            return response()->json([
+                'dosen' => $dosen
+            ]);
+        }
     }
 
     /**
@@ -73,9 +89,19 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DosenRequest $request, $kurikulum, $nip)
     {
-        //
+        $dosen = Dosen::find($nip);
+
+        if ($request->ajax()) {
+            $validated = $request->validated();
+
+            $dosen->update($validated);
+
+            return response()->json([
+                'message' => 'Data berhasil diubah.'
+            ]);
+        }
     }
 
     /**
@@ -84,8 +110,21 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($kurikulum, $nip)
     {
-        //
+        Dosen::destroy($nip);
+
+        return redirect()->back();
+    }
+
+    public function toggleStatus($nip)
+    {
+        $dosen = Dosen::find($nip);
+
+        $dosen->update([
+            'status' => ($dosen->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::Nonaktif : StatusKeaktifan::Aktif
+        ]);
+
+        return redirect()->back();
     }
 }
