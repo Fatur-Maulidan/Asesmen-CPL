@@ -10,9 +10,41 @@
     <div class="row mb-5">
         <div class="col text-end">
             {{-- Button trigger modal --}}
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importMahasiswaModal">
+                Import Mahasiswa
+            </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahMahasiswaModal">
                 Tambah Mahasiswa
             </button>
+        </div>
+    </div>
+
+    {{-- Import Jurusan Modal --}}
+    <div class="modal fade" id="importMahasiswaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="importMahasiswaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="importMahasiswaModalLabel">Import Jurusan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('kaprodi.mahasiswa.import', ['kurikulum' => $kurikulum]) }}" method="POST"
+                        autocomplete="off" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-5">
+                            <label for="formFile" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('kaprodi.mahasiswa.downloadTemplate', ['kurikulum' => $kurikulum]) }}"
+                                class="btn btn-outline-success">Download
+                                Template</a>
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -180,19 +212,19 @@
                         <div class="mb-3">
                             <label for="nama" class="form-label fw-bold">Nama</label>
                             <input type="text" class="form-control" id="nama" placeholder="Nama mahasiswa"
-                                value="{{ $mahasiswa[0]['nama'] }}">
+                                value="">
                         </div>
 
                         <div class="mb-3">
                             <label for="nim" class="form-label fw-bold">NIM</label>
                             <input type="text" class="form-control" id="nim" placeholder="NIM mahasiswa"
-                                value="{{ $mahasiswa[0]['nim'] }}">
+                                value="">
                         </div>
 
                         <div class="mb-3">
                             <label for="email" class="form-label fw-bold">Email</label>
                             <input type="email" class="form-control" id="email" placeholder="Email mahasiswa"
-                                value="test.email@polban.ac.id">
+                                value="">
                         </div>
 
                         <div class="mb-3">
@@ -243,10 +275,43 @@
         </div>
     </div>
 
+    {{-- Hapus Modal --}}
+    <div class="modal fade" id="hapusDosenModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
+        aria-labelledby="hapusDosenModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="hapusDosenModalLabel">Konfirmasi Penghapusan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="text-center">
+                        <i class="bi bi-exclamation-triangle-fill text-warning fs-1"></i>
+                        <div>Anda yakin ingin hapus data?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Tidak</button>
+                        </div>
+                        <div class="col">
+                            <form action="" method="post" id="hapusMahasiswaForm">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-success w-100" data-bs-dismiss="modal">Ya</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Data Mahasiswa --}}
     <div class="row">
         <div class="col-12">
-            <table class="table table-striped table-hover table-responsive">
+            {{-- <table class="table table-striped table-hover table-responsive">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -283,17 +348,22 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </table> --}}
+            {{ $dataTable->table(['class' => 'table table-hover table-striped mt-3']) }}
         </div>
     </div>
 @endsection
 
 @push('scripts')
-    @if ($errors->any())
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#tambahMahasiswaModal').modal('show');
+    {{ $dataTable->scripts() }}
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.btn-hapus', function(e) {
+                e.preventDefault();
+
+                const id = $(this).data('id');
+                $('#hapusMahasiswaForm').attr('action', "{{ url()->current() }}/" + id);
             });
-        </script>
-    @endif
+        });
+    </script>
 @endpush

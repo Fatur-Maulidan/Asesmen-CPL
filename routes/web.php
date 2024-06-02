@@ -79,8 +79,11 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
     Route::resource('kurikulum/{kurikulum}/mk', MataKuliahController::class)
         ->only(['index', 'show']);
 
+    Route::get('kurikulum/{kurikulum}/mahasiswa/download-template', [MahasiswaController::class, 'downloadTemplate'])->name('mahasiswa.downloadTemplate');
+    Route::post('kurikulum/{kurikulum}/mahasiswa/import', [MahasiswaController::class, 'import'])->name('mahasiswa.import');
+    Route::patch('kurikulum/{kurikulum}/mahasiswa/toggle-status/{mahasiswa}', [MahasiswaController::class, 'toggleStatus'])->name('mahasiswa.toggleStatus');
     Route::resource('kurikulum/{kurikulum}/mahasiswa', MahasiswaController::class)
-        ->only(['index', 'store']);
+        ->only(['index', 'store', 'destroy']);
 
     Route::resource('kurikulum/{kurikulum}/dosen', DosenController::class)
         ->only(['index']);
