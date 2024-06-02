@@ -53,4 +53,9 @@ class IndikatorKinerja extends Model
     {
         return $this->belongsToMany(CapaianPembelajaranLulusan::class, '13_MASTER_peta_cp_ik', '08_MASTER_indikator_kinerja_id', '07_MASTER_capaian_pembelajaran_lulusan_id')->using(PetaCpIk::class);
     }
+
+    public function rubrik()
+    {
+        return $this->hasMany(Rubrik::class, '08_MASTER_indikator_kinerja_id');
+    }
 }

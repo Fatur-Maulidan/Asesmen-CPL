@@ -117,47 +117,48 @@
                     </div>
                 @else
                     @foreach ($dataIk as $index => $ik)
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fw-bold" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
-                                    aria-expanded="false" aria-controls="collapse{{ $index }}">
-                                    {{ $ik->kode }}
+                        @if ($ik != null)
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-bold" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
+                                        aria-expanded="false" aria-controls="collapse{{ $index }}">
+                                        {{ $ik->kode }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ $index }}" class="accordion-collapse collapse"
+                                    data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <p class="fw-bold mb-1">Deskripsi</p>
+                                        <p class="mb-4">{{ $ik->deskripsi }}</p>
 
-                                </button>
-                            </h2>
-                            <div id="collapse{{ $index }}" class="accordion-collapse collapse"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <p class="fw-bold mb-1">Deskripsi</p>
-                                    <p class="mb-4">{{ $ik->deskripsi }}</p>
+                                        <p class="fw-bold mb-1">Capaian Pembelajaran</p>
+                                        <p>
+                                            @if ($ik->capaianPembelajaranLulusan->isEmpty())
+                                                Belum ada pemetaan
+                                            @else
+                                                @foreach ($ik->capaianPembelajaranLulusan as $cpl)
+                                                    <li>
+                                                        {{ $cpl->kode }}
+                                                    </li>
+                                                @endforeach
+                                            @endif
+                                        </p>
 
-                                    <p class="fw-bold mb-1">Capaian Pembelajaran</p>
-                                    <p>
-                                        @if ($ik->capaianPembelajaranLulusan->isEmpty())
-                                            Belum ada pemetaan
-                                        @else
-                                            @foreach ($ik->capaianPembelajaranLulusan as $cpl)
-                                                <li>
-                                                    {{ $cpl->kode }}
-                                                </li>
-                                            @endforeach
-                                        @endif
-                                    </p>
-
-                                    <p class="fw-bold mb-1">Mata Kuliah</p>
-                                    <p class="mb-0">
-                                        Belum ada Pemetaan
-                                    </p>
-                                </div>
-                                <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                    <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => 'ss-1.1']) }}"
-                                        class="me-3">Lihat
-                                        detail</a>
-                                    <a href="">Pemetaan terhadap Capaian Pembelajaran</a>
+                                        <p class="fw-bold mb-1">Mata Kuliah</p>
+                                        <p class="mb-0">
+                                            Belum ada Pemetaan
+                                        </p>
+                                    </div>
+                                    <div class="accordion-footer bg-light mb-0 p-3 border-top ">
+                                        <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $ik->kode]) }}"
+                                            class="me-3">Lihat
+                                            detail</a>
+                                        <a href="">Pemetaan terhadap Capaian Pembelajaran</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     @endforeach
                 @endif
             </div>
