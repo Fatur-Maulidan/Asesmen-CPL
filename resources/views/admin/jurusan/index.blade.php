@@ -9,9 +9,9 @@
     {{-- Action buttons --}}
     <div class="row mb-4">
         <div class="col">
-            <form role="search" method="GET" action="">
-                <input class="form-control search" type="search" id="search" name="search" placeholder="Cari"
-                    autocomplete="off" value="{{ request('search') }}">
+            <form role="search" method="GET" action="" autocomplete="off">
+                <input class="form-control search" type="search" id="search" name="search"
+                    placeholder="Cari"value="{{ request('search') }}">
             </form>
         </div>
         <div class="col text-end">

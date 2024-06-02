@@ -68,9 +68,9 @@ class Jurusan extends Model
         return $query->where('golongan', 'Rekayasa');
     }
 
-    public function scopeNonRekayasa($query)
+    public function scopeNonrekayasa($query)
     {
-        return $query->where('golongan', 'Non Rekayasa');
+        return $query->where('golongan', 'Nonrekayasa');
     }
 
     public function scopeSearch($query)
