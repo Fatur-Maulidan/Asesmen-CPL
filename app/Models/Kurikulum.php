@@ -90,4 +90,15 @@ class Kurikulum extends Model
             return $query->where('tahun', 'like', '%' . request('search') . '%');
         }
     }
+
+    /**
+     * Mendapatkan ID Program Studi berdasarkan tahun kurikulumnya
+     *
+     * @param  string  $tahunAkademikVal
+     * @return int
+     */
+    public function getProgramStudiId($tahunAkademikVal)
+    {
+        return $this->where('tahun', $tahunAkademikVal)->pluck('02_MASTER_program_studi_id')[0];
+    }
 }
