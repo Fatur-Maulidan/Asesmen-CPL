@@ -66,7 +66,7 @@ class MahasiswaController extends Controller
             'nim' => $validateData['nim'],
             'nama' => $validateData['nama'],
             'jenis_kelamin' => $validateData['jenis_kelamin'],
-            'kelas' => $validateData['kelas'],
+            'kelas' => date('Y') - $validateData['tahun_angkatan'] . $validateData['kelas'],  // Harus bisa menyeseuaikan dengan tahun angkatan dan jenjang pendidikan @PENDING
             'email' => $validateData['email'],
             'tahun_angkatan' => $validateData['tahun_angkatan'],
             'status' => StatusKeaktifan::Aktif,
