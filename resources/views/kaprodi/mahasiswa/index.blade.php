@@ -155,7 +155,7 @@
                                 name="tahun_angkatan" aria-label="Default select example" required>
                                 <option selected>Pilih tahun masuk</option>
                                 @for ($i = 2020; $i < date('Y'); $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
+                                    <option value="{{ $i }}" @if (old('tahun_angkatan') == $i) {{ 'selected' }} @endif>{{ $i }}</option>
                                 @endfor
                             </select>
                             @error('tahun_angkatan')
@@ -174,9 +174,9 @@
                             <select class="form-select @error('kelas') is-invalid @enderror" name="kelas"
                                 aria-label="Default select example" required>
                                 <option selected>Pilih kelas</option>
-                                <option value="1" @if (old('kelas') == 'A') {{ 'selected' }} @endif>A
+                                <option value="A" @if (old('kelas') == 'A') {{ 'selected' }} @endif>A
                                 </option>
-                                <option value="2" @if (old('kelas') == 'B') {{ 'selected' }} @endif>B
+                                <option value="B" @if (old('kelas') == 'B') {{ 'selected' }} @endif>B
                                 </option>
                             </select>
                             @error('kelas')
