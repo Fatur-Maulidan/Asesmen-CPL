@@ -56,9 +56,6 @@ class MahasiswaController extends Controller
      */
     public function store(MahasiswaRequest $request, $kurikulum)
     {
-        // Stub purpose only, value aslinya dihasilkan berdasarkan tahun akademik yang dipilih
-        $kurikulum = '2021';
-
         $validateData = $request->validated();
         $kurikulumModel = new Kurikulum();
 
