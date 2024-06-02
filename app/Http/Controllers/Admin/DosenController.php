@@ -6,9 +6,11 @@ use App\DataTables\DosenDataTable;
 use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DosenRequest;
+use App\Imports\DosenImport;
 use App\Models\Dosen;
 use App\Models\Jurusan;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DosenController extends Controller
 {
@@ -130,5 +132,19 @@ class DosenController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    public function downloadTemplate()
+    {
+        $file_path = public_path('files/templates/Template_Dosen.xlsx');
+
+        return response()->download($file_path);
+    }
+
+    public function import()
+    {
+        Excel::import(new DosenImport, request()->file('formFile'));
+
+        return redirect(route('admin.dosen.index'))->with('success', 'All good!');
     }
 }

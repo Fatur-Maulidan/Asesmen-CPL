@@ -41,9 +41,40 @@
             </div>
         </div>
         <div class="col text-end">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importDosenModal">
+                Import Dosen
+            </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahDosenModal"
                 id="btn-tambah">Tambah
                 Dosen</button>
+        </div>
+    </div>
+
+    {{-- Import Jurusan Modal --}}
+    <div class="modal fade" id="importDosenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="importDosenModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="importDosenModalLabel">Import Jurusan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.dosen.import') }}" method="POST" autocomplete="off"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-5">
+                            <label for="formFile" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('admin.dosen.downloadTemplate') }}" class="btn btn-outline-success">Download
+                                Template</a>
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
