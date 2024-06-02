@@ -77,7 +77,7 @@ class MahasiswaController extends Controller
         try {
             $mahasiswaModel->save();
 
-            return redirect()->route('kaprodi.mahasiswa.index')->with('success', 'Berhasil menambahkan data');
+            return redirect()->route('kaprodi.mahasiswa.index', compact('kurikulum'))->with('success', 'Berhasil menambahkan data');
         } catch (\Illuminate\Database\QueryException $e) {
             $errorMessage = ($e->errorInfo[1] == 1062) ? 'NIM atau email yang sama sudah terdaftar!' : 'Gagal menambahkan data!';
 
