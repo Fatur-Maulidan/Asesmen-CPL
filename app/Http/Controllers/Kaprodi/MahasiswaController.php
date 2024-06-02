@@ -8,9 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MahasiswaRequest;
 use App\Imports\MahasiswaImport;
 use App\Models\Dosen;
+use App\Models\Kurikulum;
 use App\Models\Mahasiswa;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
@@ -55,8 +56,9 @@ class MahasiswaController extends Controller
      */
     public function store(MahasiswaRequest $request, $kurikulum)
     {
+        $kurikulum = '2021';  // Stub purpose only, value aslinya dihasilkan berdasarkan tahun akademik yang dipilih
         $validateData = $request->validated();
-        
+
         $mahasiswa_model = new Mahasiswa([
             'nim' => $validateData['nim'],
             'nama' => $validateData['nama'],
@@ -65,16 +67,16 @@ class MahasiswaController extends Controller
             'email' => $validateData['email'],
             'tahun_angkatan' => $validateData['tahun_angkatan'],
             'status' => StatusKeaktifan::Aktif,
-            '02_MASTER_program_studi_id' => $kurikulum->programStudi->id
+            'tahun' => $kurikulum,
+            '02_MASTER_program_studi_id' => Kurikulum::where('tahun', $kurikulum)->pluck('02_MASTER_program_studi_id')[0]  // Static method ini harus dibuat method sendiri dari model Kurikulum
         ]);
-
-        $mahasiswa_model->save();
 
         try {
             $mahasiswa_model->save();
             return redirect()->route('kaprodi.mahasiswa.index')->with('success', 'Berhasil menambahkan data');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menambahkan data');
+        } catch (\Illuminate\Database\QueryException $e) {
+            $errorMessage = ($e->errorInfo[1] == 1062) ? 'NIM atau email yang sama sudah terdaftar!' : 'Gagal menambahkan data!';
+            return redirect()->back()->with('error', $errorMessage)->withInput();
         }
     }
 
