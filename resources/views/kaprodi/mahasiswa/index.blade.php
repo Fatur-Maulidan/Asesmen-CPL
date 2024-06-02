@@ -105,15 +105,23 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="jenis_kelamin" class="fw-bold">Jenis Kelamin</label>
-                            <select class="form-select @error('jenis_kelamin') is-invalid @enderror" name="jenis_kelamin"
-                                id="jenis_kelamin" aria-label="Default select example" required>
-                                <option>Pilih jenis kelamin</option>
-                                <option value="{{ \App\Enums\JenisKelamin::LakiLaki }}"
-                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::LakiLaki) {{ 'selected' }} @endif>Laki-Laki</option>
-                                <option value="{{ \App\Enums\JenisKelamin::Perempuan }}"
-                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::Perempuan) {{ 'selected' }} @endif>Perempuan</option>
-                            </select>
+                            <div class="fw-bold mb-2">Jenis Kelamin</div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                    value="{{ \App\Enums\JenisKelamin::LakiLaki }}" id="jk_laki_tambah"
+                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::LakiLaki) {{ 'checked' }} @endif>
+                                <label class="form-check-label" for="jk_laki_tambah">
+                                    Laki-Laki
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                    value="{{ \App\Enums\JenisKelamin::Perempuan }}" id="jk_perempuan_tambah"
+                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::Perempuan) {{ 'checked' }} @endif>
+                                <label class="form-check-label" for="jk_perempuan_tambah">
+                                    Perempuan
+                                </label>
+                            </div>
                             @error('jenis_kelamin')
                                 <div class="invalid-feedback">
                                     <ul>
