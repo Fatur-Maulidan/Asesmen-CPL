@@ -80,7 +80,7 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
         ->only(['index', 'show']);
 
     Route::resource('kurikulum/{kurikulum}/mahasiswa', MahasiswaController::class)
-        ->only(['index']);
+        ->only(['index', 'store']);
 
     Route::resource('kurikulum/{kurikulum}/dosen', DosenController::class)
         ->only(['index']);
