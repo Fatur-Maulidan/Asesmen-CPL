@@ -59,7 +59,13 @@ class DosenDataTable extends DataTable
      */
     public function query(Dosen $model)
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+
+        if ($this->kaprodi) {
+            $query->where('01_MASTER_jurusan_id', $this->jurusan_id);
+        }
+
+        return $query;
     }
 
     /**

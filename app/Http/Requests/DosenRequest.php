@@ -29,8 +29,8 @@ class DosenRequest extends FormRequest
             'kode' => 'bail|required',
             'jenis_kelamin' => 'bail|required',
             'email' => 'bail|required|email',
-            'jurusan' => 'bail|required',
-            'role' => 'bail|required',
+            'jurusan' => 'sometimes|bail|required',
+            'role' => 'sometimes|bail|required',
         ];
     }
 }
