@@ -22,7 +22,7 @@ class MahasiswaRequest extends FormRequest
      *
      * @var bool
      */
-    protected $stopOnFirstFailure = true;
+    protected $stopOnFirstFailure = false;
 
     /**
      * Get the validation rules that apply to the request.
@@ -32,12 +32,12 @@ class MahasiswaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nim' => 'numeric|max:9',
+            'nim' => ['numeric', 'regex:/^\w{9}$/', 'required'],
             'nama' => 'alpha|required',
-            'jenis_kelamin' => 'required',
-            'email' => 'email:rfc,dns|required',
-            'tahun_angkatan' => 'required',
-            'kelas' => 'required'
+            'jenis_kelamin' => ['regex:/^\w{1}$/', 'required'],
+            'email' => ['email:rfc,dns', 'regex:/polban\.ac\.id/', 'required'],
+            'tahun_angkatan' => ['regex:/^\w{4}$/', 'required'],
+            'kelas' => ['regex:/^\w{1}$/', 'required']
         ];
     }
 
@@ -49,15 +49,31 @@ class MahasiswaRequest extends FormRequest
     public function messages(): array
     {
         return [
+            // NIM error messages
             'nim.numeric' => 'NIM harus berupa angka',
-            'nim.max' => 'NIM maksimal 9 karakter',
+            'nim.regex' => 'NIM harus 9 karakter',
+            'nim.required' => 'NIM harus diisi',
+
+            // Nama error messages
             'nama.alpha' => 'Nama harus berupa huruf',
             'nama.required' => 'Nama harus diisi',
+
+            // Jenis Kelamin error messages
             'jenis_kelamin.required' => 'Jenis Kelamin harus diisi',
+            'jenis_kelamin.regex' => 'Pilih salah satu',
+
+            // Email error messages
             'email.email' => 'Email tidak valid',
             'email.required' => 'Email harus diisi',
+            'email.regex' => 'Email harus menggunakan domain polban.ac.id',
+
+            // Tahun Angkatan error messages
             'tahun_angkatan.required' => 'Tahun Angkatan harus diisi',
-            'kelas.required' => 'Kelas harus diisi'
+            'tahun_angkatan.regex' => 'Pilih salah satu',
+
+            // Kelas error messages
+            'kelas.required' => 'Kelas harus diisi',
+            'kelas.regex' => 'Pilih salah satu'
         ];
     }
 }
