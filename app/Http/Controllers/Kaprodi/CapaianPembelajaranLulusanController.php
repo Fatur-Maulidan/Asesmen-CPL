@@ -147,6 +147,7 @@ class CapaianPembelajaranLulusanController extends Controller
     public function update(Request $request, $kurikulum, $cpl)
     {
         $kaprodiNip = '199301062019031017';
+        
         $validator = Validator::make(
             $request->all(),
             $this->validation->rules(),
