@@ -23,11 +23,6 @@ Breadcrumbs::for('kaprodi.kurikulum.index', function (BreadcrumbTrail $trail) {
     $trail->push('Home', route('kaprodi.kurikulum.index'));
 });
 
-Breadcrumbs::for('kaprodi.kurikulum.create', function (BreadcrumbTrail $trail) {
-    $trail->parent('kaprodi.kurikulum.index');
-    $trail->push('Tambah Kurikulum Baru', route('kaprodi.kurikulum.create'));
-});
-
 Breadcrumbs::for('kaprodi.kurikulum.dashboard', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->parent('kaprodi.kurikulum.index');
     $trail->push('Kurikulum ' . $kurikulum, route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum]));

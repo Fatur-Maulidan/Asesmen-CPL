@@ -19,7 +19,7 @@ class MahasiswaController extends Controller
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'mahasiswa' => mahasiswa()
+            'mahasiswa' => getMahasiswa()
         ]);
     }
 
