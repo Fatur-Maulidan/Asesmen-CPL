@@ -22,7 +22,7 @@ class Create05MasterMahasiswaTable extends Migration
             $table->string('email', 50)->unique();
             $table->string('kelas', 2);
             $table->year('tahun_angkatan');
-            $table->enum('status', StatusKeaktifan::getValues());
+            $table->enum('status', StatusKeaktifan::getValues())->default(StatusKeaktifan::Aktif);
             $table->timestamps();
             $table->foreignId('02_MASTER_program_studi_id')->constrained('02_MASTER_program_studi');
         });
