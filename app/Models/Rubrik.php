@@ -49,4 +49,8 @@ class Rubrik extends Model
     protected $casts = [];
 
     // Relationship
+    public function indikatorKinerja()
+    {
+        return $this->belongsTo(IndikatorKinerja::class, '08_MASTER_indikator_kinerja_id');
+    }
 }
