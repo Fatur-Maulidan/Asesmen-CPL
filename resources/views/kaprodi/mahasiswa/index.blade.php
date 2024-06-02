@@ -26,16 +26,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @if ($errors->any())
-                        <div class="alert alert-danger" role="alert">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
                     @if (session('success'))
                         <div class="alert alert-success" role="alert">
                             {{ session('success') }}
@@ -47,60 +37,129 @@
                             {{ session('error') }}
                         </div>
                     @endif
+
                     <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum]) }}">
                         @csrf
+
                         <div class="mb-3">
                             <label for="nim" class="form-label fw-bold">NIM</label>
-                            <input type="text" class="form-control" name="nim" id="nim" placeholder="NIM mahasiswa">
+                            <input type="text" class="form-control @error('nim') is-invalid @enderror" name="nim"
+                                id="nim" placeholder="NIM mahasiswa" value="{{ old('nim') }}">
+                            @error('nim')
+                                <div class="invalid-feedback">
+                                    <ul>
+                                        @foreach ($errors->get('nim') as $error)
+                                            <li> {{ $error }} </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
                             <label for="nama" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama mahasiswa">
+                            <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
+                                id="nama" placeholder="Nama mahasiswa" value="{{ old('nama') }}">
+                            @error('nama')
+                                <div class="invalid-feedback">
+                                    <ul>
+                                        @foreach ($errors->get('nama') as $error)
+                                            <li> {{ $error }} </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
                             <label for="" class="fw-bold">Jenis Kelamin</label>
-                            <select class="form-select" name="jenis_kelamin" aria-label="Default select example">
-                                <option selected>Pilih jenis kelamin</option>
-                                <option value="{{ \App\Enums\JenisKelamin::LakiLaki }}">Laki-Laki</option>
-                                <option value="{{ \App\Enums\JenisKelamin::Perempuan }}">Perempuan</option>
+                            <select class="form-select @error('jenis_kelamin') is-invalid @enderror" name="jenis_kelamin"
+                                aria-label="Default select example" required>
+                                <option>Pilih jenis kelamin</option>
+                                <option value="{{ \App\Enums\JenisKelamin::LakiLaki }}"
+                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::LakiLaki) {{ 'selected' }} @endif>Laki-Laki</option>
+                                <option value="{{ \App\Enums\JenisKelamin::Perempuan }}"
+                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::Perempuan) {{ 'selected' }} @endif>Perempuan</option>
                             </select>
+                            @error('jenis_kelamin')
+                                <div class="invalid-feedback">
+                                    <ul>
+                                        @foreach ($errors->get('jenis_kelamin') as $error)
+                                            <li> {{ $error }} </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
                             <label for="email" class="form-label fw-bold">Email</label>
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Email mahasiswa">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                                id="email" placeholder="Email mahasiswa" value="{{ old('email') }}">
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    <ul>
+                                        @foreach ($errors->get('email') as $error)
+                                            <li> {{ $error }} </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
                             <label for="" class="fw-bold">Tahun masuk</label>
-                            <select class="form-select" name="tahun_angkatan" aria-label="Default select example">
+                            <select class="form-select @error('tahun_angkatan') is-invalid @enderror" name="tahun_angkatan"
+                                aria-label="Default select example" required>
                                 <option selected>Pilih tahun masuk</option>
-                                <option value="1">2024</option>
-                                <option value="2">2023</option>
-                                <option value="3">2022</option>
+                                <option value="2024" @if (old('tahun_angkatan') == '1') {{ 'selected' }} @endif>2024
+                                </option>
+                                <option value="2023" @if (old('tahun_angkatan') == '2') {{ 'selected' }} @endif>2023
+                                </option>
+                                <option value="2022" @if (old('tahun_angkatan') == '3') {{ 'selected' }} @endif>2022
+                                </option>
                             </select>
+                            @error('tahun_angkatan')
+                                <div class="invalid-feedback">
+                                    <ul>
+                                        @foreach ($errors->get('tahun_angkatan') as $error)
+                                            <li> {{ $error }} </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @enderror
                         </div>
 
                         <div>
                             <label for="" class="fw-bold">Kelas</label>
-                            <select class="form-select" name="kelas" aria-label="Default select example">
+                            <select class="form-select @error('kelas') is-invalid @enderror" name="kelas"
+                                aria-label="Default select example" required>
                                 <option selected>Pilih kelas</option>
-                                <option value="1">A</option>
-                                <option value="2">B</option>
+                                <option value="1" @if (old('kelas') == 'A') {{ 'selected' }} @endif>A
+                                </option>
+                                <option value="2" @if (old('kelas') == 'B') {{ 'selected' }} @endif>B
+                                </option>
                             </select>
+                            @error('kelas')
+                                <div class="invalid-feedback">
+                                    <ul>
+                                        @foreach ($errors->get('kelas') as $error)
+                                            <li> {{ $error }} </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @enderror
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger w-100">Batal</button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-success w-100">Tambah</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <div class="row w-100">
-                            <div class="col">
-                                <button type="button" class="btn btn-danger w-100">Batal</button>
-                            </div>
-                            <div class="col">
-                                <button type="submit" class="btn btn-success w-100">Tambah</button>
-                            </div>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -228,3 +287,13 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    @if ($errors->any())
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#tambahMahasiswaModal').modal('show');
+            });
+        </script>
+    @endif
+@endpush
