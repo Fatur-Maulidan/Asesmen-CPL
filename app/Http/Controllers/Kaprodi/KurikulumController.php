@@ -5,12 +5,20 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Enums\StatusKurikulum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\KurikulumRequest;
+use App\Models\Dosen;
 use App\Models\Kurikulum;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
-use App\Models\Kurikulum;
 
 class KurikulumController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('810317609391432000');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,22 +26,25 @@ class KurikulumController extends Controller
      */
     public function index()
     {
-        $kaprodiNip = '199301062019031017';
-        $kurikulum = Kurikulum::whereHas('programStudi', function($query) use ($kaprodiNip) {
-                        $query->where('koordinator_nip', $kaprodiNip);
-                    })
-                    ->with('programStudi')
-                    ->get();
+        $kurikulum = Kurikulum::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
+        // $mahasiswa = Mahasiswa::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
+
+        if (request('filter') == 'aktif') {
+            $kurikulum->aktif();
+        } elseif (request('filter') == 'nonaktif') {
+            $kurikulum->nonaktif();
+        } elseif (request('filter') == 'peninjauan') {
+            $kurikulum->peninjauan();
+        } else {
+            $kurikulum->search();
+        }
 
         return view('kaprodi.kurikulum.index', [
             'title' => 'Home',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-<<<<<<< HEAD
-            'kurikulum' => Kurikulum::all()
-=======
-            'dataKurikulum' => $kurikulum
->>>>>>> origin/development
+            'data_kurikulum' => $kurikulum->get(),
+            // 'mahasiswa_terdaftar' => $mahasiswa
         ]);
     }
 
@@ -47,7 +58,8 @@ class KurikulumController extends Controller
         return view('kaprodi.kurikulum.create', [
             'title' => 'Tambah Kurikulum Baru',
             'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi'
+            'role' => 'Koordinator Program Studi',
+            'program_studi_id' => $this->user->programStudi->id
         ]);
     }
 
@@ -80,7 +92,8 @@ class KurikulumController extends Controller
             'tahun_berlaku' => $validated['tahun'],
             'status' => StatusKurikulum::Peninjauan,
             'jumlah_maksimal_rubrik' => $validated['jumlah_maksimal_rubrik'],
-            'nila_rentang_rubrik' => $nilai
+            'nilai_rentang_rubrik' => $nilai,
+            '02_MASTER_program_studi_id' => $validated['program_studi_id']
         ]);
 
         return redirect()->to(route('kaprodi.kurikulum.index'));

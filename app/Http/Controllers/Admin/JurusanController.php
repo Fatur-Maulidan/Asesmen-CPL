@@ -24,7 +24,7 @@ class JurusanController extends Controller
         if (request('filter') == 'rekayasa') {
             $jurusan->rekayasa();
         } elseif (request('filter') == 'non-rekayasa') {
-            $jurusan->nonRekayasa();
+            $jurusan->nonrekayasa();
         } else {
             $jurusan->search();
         }

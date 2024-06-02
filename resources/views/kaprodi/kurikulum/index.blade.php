@@ -9,8 +9,9 @@
     {{-- Search and add button --}}
     <div class="row justify-content-between mb-4">
         <div class="col-auto">
-            <form role="search">
-                <input class="form-control search" type="search" placeholder="Cari" autocomplete="off">
+            <form role="search" method="GET" action="" autocomplete="off">
+                <input class="form-control search" type="search" id="search" name="search" placeholder="Cari"
+                    value="{{ request('search') }}">
             </form>
         </div>
         <div class="col text-end">
@@ -21,30 +22,34 @@
     {{-- Filter buttons --}}
     <div class="row mb-4">
         <div class="col-12">
-            <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option1">Semua</label>
+            <input type="radio" class="btn-check" name="status" id="semua" autocomplete="off" value="semua"
+                @if (!request('filter')) checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="semua">Semua</label>
 
-            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option2">Berjalan</label>
+            <input type="radio" class="btn-check" name="status" id="aktif" autocomplete="off" value="aktif"
+                @if (request('filter') == 'aktif') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="aktif">Aktif</label>
 
-            <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Peninjauan</label>
+            <input type="radio" class="btn-check" name="status" id="nonaktif" autocomplete="off" value="nonaktif"
+                @if (request('filter') == 'nonaktif') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="nonaktif">Nonaktif</label>
 
-            <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option4">Arsip</label>
+            <input type="radio" class="btn-check" name="status" id="peninjauan" autocomplete="off" value="peninjauan"
+                @if (request('filter') == 'peninjauan') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="peninjauan">Peninjauan</label>
         </div>
     </div>
 
     {{-- Data kurikulum --}}
     <div class="row gy-5">
-        @forelse ($dataKurikulum as $kurikulum)
+        @forelse ($data_kurikulum as $kurikulum)
             <div class="col-4">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center py-3">
                         <div class="d-inline">
                             <span class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</span>
                             <span
-                                class="badge {{ $kurikulum->status->key == 'Aktif' ? 'text-bg-success' : 'text-bg-danger' }}">{{ $kurikulum->status->key == 'Aktif' ? 'Berjalan' : 'Berhenti' }}</span>
+                                class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Nonaktif)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}</span>
                         </div>
                         <a href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum->tahun]) }}"
                             class="link-secondary">
@@ -76,3 +81,28 @@
         @endforelse
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        const url = "{{ url()->current() }}";
+
+        $(document).ready(function() {
+            $('input[type=radio][name=status]').on('click', function() {
+                switch ($(this).val()) {
+                    case 'semua':
+                        location.href = url;
+                        break;
+                    case 'aktif':
+                        location.href = url + '?filter=aktif'
+                        break;
+                    case 'nonaktif':
+                        location.href = url + '?filter=nonaktif'
+                        break;
+                    case 'peninjauan':
+                        location.href = url + '?filter=peninjauan'
+                        break;
+                }
+            });
+        });
+    </script>
+@endpush

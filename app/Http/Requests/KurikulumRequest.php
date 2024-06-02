@@ -28,6 +28,7 @@ class KurikulumRequest extends FormRequest
             'jumlah_maksimal_rubrik' => 'bail|required',
             'makna_tingkat_kemampuan' => 'bail|required',
             'nilai' => 'bail|required',
+            'program_studi_id' => 'bail|required'
         ];
     }
 }

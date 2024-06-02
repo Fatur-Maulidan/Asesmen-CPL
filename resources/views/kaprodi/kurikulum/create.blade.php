@@ -8,6 +8,7 @@
 @section('main')
     <form action="{{ route('kaprodi.kurikulum.store') }}" method="POST" autocomplete="off">
         @csrf
+        <input type="hidden" name="program_studi_id" value="{{ $program_studi_id }}">
         {{-- Year input --}}
         <div class="row mb-4">
             <div class="col-4">
