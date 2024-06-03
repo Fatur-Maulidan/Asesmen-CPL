@@ -61,4 +61,6 @@ class CapaianPembelajaranLulusan extends Model
     {
         return $this->belongsToMany(IndikatorKinerja::class, '13_MASTER_peta_cp_ik', '07_MASTER_capaian_pembelajaran_lulusan_id', '08_MASTER_indikator_kinerja_id')->using(PetaCpIk::class);
     }
+
+    
 }

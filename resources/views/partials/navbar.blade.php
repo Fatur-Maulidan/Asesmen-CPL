@@ -44,11 +44,13 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.ik.*')) active @endif"
-                            href="{{ route('kaprodi.ik.index', ['kurikulum' => $kurikulum]) }}">Indikator Kinerja</a>
+                            href="{{ route('kaprodi.ik.index', ['kurikulum' => $kurikulum]) }}">Indikator
+                            Kinerja</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.tp.*')) active @endif"
-                            href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum]) }}">Tujuan Pembelajaran</a>
+                            href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum]) }}">Tujuan
+                            Pembelajaran</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.mk.*')) active @endif"

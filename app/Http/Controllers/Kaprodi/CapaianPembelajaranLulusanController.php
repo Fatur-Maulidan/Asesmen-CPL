@@ -13,9 +13,12 @@ use App\Models\Dosen;
 class CapaianPembelajaranLulusanController extends Controller
 {
     protected $validation;
+    protected $kaprodiNip;
+
     public function __construct()
     {
         $this->validation = new CapaianPembelajaranLulusanStoreRequest();
+        $this->kaprodiNip = '199301062019031017';
     }
 
     /**
@@ -25,16 +28,19 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function index($kurikulum)
     {
-        $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function ($query) use ($kurikulum) {
-            $query->where('tahun', $kurikulum);
-        })->get()->sortBy('kode');
+        $user = Dosen::with('programStudi:id,koordinator_nip')
+                ->find($this->kaprodiNip);
+
+        $kurikulum = Kurikulum::with('cpl')
+                ->where('02_MASTER_program_studi_id', $user->programStudi->id) 
+                ->first();
 
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'dataCPL' => $dataCPL,
-            'kurikulum' => $kurikulum
+            'dataCPL' => $kurikulum->cpl->sortBy('kode'),
+            'kurikulum' => $kurikulum->tahun
         ]);
     }
 
@@ -46,8 +52,6 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function store(Request $request, $kurikulum)
     {
-        $kaprodiNip = '199301062019031017';
-
         $validator = Validator::make(
             $request->all(),
             $this->validation->rules(),
@@ -59,16 +63,26 @@ class CapaianPembelajaranLulusanController extends Controller
         }
 
         $kodeDomain = $this->kodeCP($request->input('domain'));
-        $data = Kurikulum::where('tahun', $kurikulum)
-            ->whereHas('programStudi', function ($query) use ($kaprodiNip) {
-                $query->where('koordinator_nip', $kaprodiNip);
-            })
-            ->with('programStudi')
-            ->first();
+        
+        // $data = Kurikulum::where('tahun', $kurikulum)
+        //     ->whereHas('programStudi', function ($query) use ($kaprodiNip) {
+        //         $query->where('koordinator_nip', $kaprodiNip);
+        //     })
+        //     ->with('programStudi')
+        //     ->first();
+
+        $user = Dosen::with('programStudi:id,koordinator_nip')
+                ->find($this->kaprodiNip);
+
+        $kurikulum = Kurikulum::with('cpl')
+                ->where('02_MASTER_program_studi_id', $user->programStudi->id) 
+                ->first();
+        
+        // dd($kurikulum->id);
 
         $dataCPL = CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
             ->whereHas('kurikulum', function ($query) use ($kurikulum) {
-                $query->where('tahun', $kurikulum);
+                $query->where('03_master_kurikulum_id',$kurikulum->id);
             })
             ->get()
             ->count();
@@ -77,7 +91,7 @@ class CapaianPembelajaranLulusanController extends Controller
             'kode' => $kodeDomain . "-" . ($dataCPL + 1),
             'domain' => $request->input('domain'),
             'deskripsi' => $request->input('deskripsi'),
-            '03_MASTER_kurikulum_id' => $data->id
+            '03_MASTER_kurikulum_id' => $kurikulum->id
         ]);
 
         if ($cpl->save()) {
@@ -96,6 +110,10 @@ class CapaianPembelajaranLulusanController extends Controller
     public function show($kurikulum, $id)
     {
         $kaprodiNip = '199301062019031017';
+
+        // $dataCpl = CapaianPembelajaranLulusan::with('kurikulum:tahun,02_MASTER_program_studi.programStudi:id,koordinator_nip.dosen:nip')
+        //     ->find(['tahun' => $kurikulum, 'nip' => $kaprodiNip])->sortBy('kode');
+        
 
         $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
             $query->where('tahun', $kurikulum)
