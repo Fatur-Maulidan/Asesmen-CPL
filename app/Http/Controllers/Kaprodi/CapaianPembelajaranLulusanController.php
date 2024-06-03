@@ -14,11 +14,15 @@ class CapaianPembelajaranLulusanController extends Controller
 {
     protected $validation;
     protected $kaprodiNip;
+    protected $kaprodi;
+    protected $kurikulum;
 
     public function __construct()
     {
         $this->validation = new CapaianPembelajaranLulusanStoreRequest();
         $this->kaprodiNip = '199301062019031017';
+        $this->kaprodi = new Dosen();
+        $this->kurikulum = new Kurikulum();
     }
 
     /**
@@ -28,19 +32,15 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function index($kurikulum)
     {
-        $user = Dosen::with('programStudi:id,koordinator_nip')
-                ->find($this->kaprodiNip);
-
-        $kurikulum = Kurikulum::with('cpl')
-                ->where('02_MASTER_program_studi_id', $user->programStudi->id) 
-                ->first();
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
 
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'dataCPL' => $kurikulum->cpl->sortBy('kode'),
-            'kurikulum' => $kurikulum->tahun
+            'dataCPL' => $this->kurikulum->cpl->sortBy('kode'),
+            'kurikulum' => $this->kurikulum->tahun
         ]);
     }
 
@@ -63,27 +63,12 @@ class CapaianPembelajaranLulusanController extends Controller
         }
 
         $kodeDomain = $this->kodeCP($request->input('domain'));
-        
-        // $data = Kurikulum::where('tahun', $kurikulum)
-        //     ->whereHas('programStudi', function ($query) use ($kaprodiNip) {
-        //         $query->where('koordinator_nip', $kaprodiNip);
-        //     })
-        //     ->with('programStudi')
-        //     ->first();
 
-        $user = Dosen::with('programStudi:id,koordinator_nip')
-                ->find($this->kaprodiNip);
-
-        $kurikulum = Kurikulum::with('cpl')
-                ->where('02_MASTER_program_studi_id', $user->programStudi->id) 
-                ->first();
-        
-        // dd($kurikulum->id);
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->id, $kurikulum);
 
         $dataCPL = CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
-            ->whereHas('kurikulum', function ($query) use ($kurikulum) {
-                $query->where('03_master_kurikulum_id',$kurikulum->id);
-            })
+            ->where('03_MASTER_kurikulum_id', $kurikulum->id)
             ->get()
             ->count();
 
@@ -91,7 +76,7 @@ class CapaianPembelajaranLulusanController extends Controller
             'kode' => $kodeDomain . "-" . ($dataCPL + 1),
             'domain' => $request->input('domain'),
             'deskripsi' => $request->input('deskripsi'),
-            '03_MASTER_kurikulum_id' => $kurikulum->id
+            '03_MASTER_kurikulum_id' => $this->kurikulum->id
         ]);
 
         if ($cpl->save()) {
@@ -109,18 +94,8 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function show($kurikulum, $id)
     {
-        $kaprodiNip = '199301062019031017';
-
-        // $dataCpl = CapaianPembelajaranLulusan::with('kurikulum:tahun,02_MASTER_program_studi.programStudi:id,koordinator_nip.dosen:nip')
-        //     ->find(['tahun' => $kurikulum, 'nip' => $kaprodiNip])->sortBy('kode');
-        
-
-        $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
-            $query->where('tahun', $kurikulum)
-            ->whereHas('programStudi', function($query) use ($kaprodiNip) {
-                $query->where('koordinator_nip', $kaprodiNip);
-            });
-        })->get()->sortBy('kode');
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
 
         $cpl = CapaianPembelajaranLulusan::where('kode', $id)->first();
 
@@ -128,12 +103,11 @@ class CapaianPembelajaranLulusanController extends Controller
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
-            'dataCPL' => $dataCPL,
+            'kurikulum' => $this->kurikulum->tahun,
+            'dataCPL' => $this->kurikulum->cpl,
             'cpl' => $cpl,
         ]);
     }
-
 
 
     /**
@@ -144,6 +118,9 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function edit($kurikulum, $id)
     {
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->id, $kurikulum);
+
         return view('kaprodi.cpl.edit', [
             'title' => 'CPL',
             'nama' => 'Jhon Doe',
@@ -176,12 +153,11 @@ class CapaianPembelajaranLulusanController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $dataCPL = CapaianPembelajaranLulusan::whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
-            $query->where('tahun', $kurikulum)
-            ->whereHas('programStudi', function($query) use ($kaprodiNip) {
-                $query->where('koordinator_nip', $kaprodiNip);
-            });
-        })->where('kode', $cpl)->first();
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->id, $kurikulum);
+
+        $dataCPL = CapaianPembelajaranLulusan::where('kode', $cpl)
+                ->where('03_MASTER_kurikulum_id', $kurikulum->id)->first();
         
         $dataCPL->deskripsi = $request->input('deskripsi');
         $dataCPL->updated_at = date('Y-m-d H:i:s');
