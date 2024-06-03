@@ -16,7 +16,7 @@ class KurikulumController extends Controller
 
     public function __construct()
     {
-        $this->user = Dosen::with('programStudi:id,koordinator_nip')->find('810317609391432000');
+        $this->user = Dosen::with('programStudi:id,koordinator_nip')->find('199301062019031017');
     }
 
     /**

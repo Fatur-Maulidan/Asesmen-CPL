@@ -87,4 +87,8 @@ class Dosen extends Model
     {
         return $this->belongsToMany(Mahasiswa::class, '14_MASTER_perkuliahan', '04_MASTER_dosen_nip', '05_MASTER_mahasiswa_nim')->using(Perkuliahan::class);
     }
+
+    public function getProdiIdByDosenNip($nip){
+        return $this->with('programStudi:id,koordinator_nip')->find($nip);
+    }
 }

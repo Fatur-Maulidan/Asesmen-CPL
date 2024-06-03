@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kurikulum;
 use Illuminate\Http\Request;
+
 
 class DashboardController extends Controller
 {

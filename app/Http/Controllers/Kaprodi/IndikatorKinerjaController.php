@@ -95,15 +95,25 @@ class IndikatorKinerjaController extends Controller
             });
         })->get()->count();
 
-        $cariCp = CapaianPembelajaranLulusan::where('kode', $request->input('cpInduk'))
-        ->whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
-            $query->where('tahun', $kurikulum)
-            ->whereHas('programStudi', function($query) use ($kaprodiNip) {
-                $query->where('koordinator_nip', $kaprodiNip);
-            });
-        })
-        ->with('kurikulum.programStudi.dosen')
-        ->first();
+        $queryTest = CapaianPembelajaranLulusan::with('kurikulum.programStudi.dosen')->where('nip', $kaprodiNip)->get();
+        dd($queryTest->toArray());
+
+        try {
+            $cariCp = CapaianPembelajaranLulusan::where('kode', $request->input('cpInduk'))
+            ->whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
+                $query->where('tahun', $kurikulum)
+                ->whereHas('programStudi', function($query) use ($kaprodiNip) {
+                    $query->where('koordinator_nip', $kaprodiNip);
+                });
+            })
+            ->with('kurikulum.programStudi.dosen');  // Test autosave
+        } catch (\Illuminate\Database\QueryException $e) {
+            $errorMessage = ($e->errorInfo[1] == 1062) ? 'NIM atau email yang sama sudah terdaftar!' : 'Gagal menambahkan data!';
+
+            dd($e);
+        }
+
+        dd($cariCp);
 
         $indikatorKinerja = new IndikatorKinerja([
             'kode' => "IK-".($dataIK + 1),

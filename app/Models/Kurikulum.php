@@ -101,4 +101,11 @@ class Kurikulum extends Model
     {
         return $this->where('tahun', $tahunAkademikVal)->pluck('02_MASTER_program_studi_id')[0];
     }
+
+    public function getKurikulumByProdiId($prodiId, $kurikulum){
+        return $this->with('cpl')
+                    ->where('02_MASTER_program_studi_id', $prodiId)
+                    ->where('tahun', $kurikulum) 
+                    ->first();
+    }
 }
