@@ -59,12 +59,17 @@ class ProgramStudi extends Model
 
     public function kurikulum()
     {
-        return $this->hasMany(Kurikulum::class, '02_MASTER_program_studi');
+        return $this->hasMany(Kurikulum::class, '02_MASTER_program_studi_id');
+    }
+
+    public function kaprodi()
+    {
+        return $this->belongsTo(Dosen::class, 'koordinator_nip');
     }
 
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'koordinator_nip');
+        return $this->hasMany(Dosen::class, '02_MASTER_program_studi_id');
     }
 
     public function mahasiswa()

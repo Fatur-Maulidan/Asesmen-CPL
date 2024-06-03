@@ -9,36 +9,52 @@
     {{-- Search --}}
     <div class="row align-items-end mb-4">
         <div class="col-auto">
-            <div>
-                <label for="filter_role" class="form-label fw-bold">Filter berdasarkan role</label>
-                <select class="form-select" id="filter_role">
-                    <option selected>Pilih role</option>
-                    <option value="{{ \App\Enums\RoleDosen::P2MPP }}">P2MPP</option>
-                    {{-- <option value="{{ \App\Enums\RoleDosen::Dosen }}">Dosen</option> --}}
-                    <option value="{{ \App\Enums\RoleDosen::KoorProgramStudi }}">Koordinator Program Studi</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-auto">
-            <div>
-                <label for="filter_jurusan" class="form-label fw-bold">Filter berdasarkan jurusan</label>
-                <select class="form-select" id="filter_jurusan">
-                    <option selected>Pilih jurusan</option>
-                    @foreach ($jurusan as $jrsn)
-                        <option value="{{ $jrsn->id }}">{{ $jrsn->nama }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="col-auto">
-            <div>
-                <label for="filter_status" class="form-label fw-bold">Filter berdasarkan status</label>
-                <select class="form-select" id="filter_status">
-                    <option selected>Pilih status</option>
-                    <option value="{{ \App\Enums\StatusKeaktifan::Aktif }}">Aktif</option>
-                    <option value="{{ \App\Enums\StatusKeaktifan::Nonaktif }}">Tidak Aktif</option>
-                </select>
-            </div>
+            <form action="" method="GET">
+                <div class="row align-items-end">
+                    <div class="col-auto">
+                        <div>
+                            <label for="filter_role" class="form-label fw-bold">Filter berdasarkan role</label>
+                            <select class="form-select" id="filter_role" name="role">
+                                <option value="">Pilih role</option>
+                                <option value="{{ \App\Enums\RoleDosen::Dosen }}"
+                                    @if (request('role') == \App\Enums\RoleDosen::Dosen) selected @endif>Dosen</option>
+                                <option value="{{ \App\Enums\RoleDosen::P2MPP }}"
+                                    @if (request('role') == \App\Enums\RoleDosen::P2MPP) selected @endif>P2MPP</option>
+                                <option value="{{ \App\Enums\RoleDosen::KoorProgramStudi }}"
+                                    @if (request('role') == \App\Enums\RoleDosen::KoorProgramStudi) selected @endif>Koordinator Program Studi
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div>
+                            <label for="filter_jurusan" class="form-label fw-bold">Filter berdasarkan jurusan</label>
+                            <select class="form-select" id="filter_jurusan" name="jurusan">
+                                <option value="">Pilih jurusan</option>
+                                @foreach ($jurusan as $jrsn)
+                                    <option value="{{ $jrsn->id }}" @if (request('jurusan') == $jrsn->id) selected @endif>
+                                        {{ $jrsn->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div>
+                            <label for="filter_status" class="form-label fw-bold">Filter berdasarkan status</label>
+                            <select class="form-select" id="filter_status" name="status">
+                                <option value="">Pilih status</option>
+                                <option value="{{ \App\Enums\StatusKeaktifan::Aktif }}"
+                                    @if (request('status') == \App\Enums\StatusKeaktifan::Aktif) selected @endif>Aktif</option>
+                                <option value="{{ \App\Enums\StatusKeaktifan::Nonaktif }}"
+                                    @if (request('status') == \App\Enums\StatusKeaktifan::Nonaktif) selected @endif>Nonaktif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-primary">Filter</button>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="col text-end">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importDosenModal">
@@ -278,7 +294,7 @@
     {{ $dataTable->scripts() }}
     <script>
         $(document).ready(function() {
-            const tambahDosennModal = document.getElementById('tambahDosennModal');
+            const tambahDosenModal = document.getElementById('tambahDosennModal');
             const tambahDosenModalInstance = new bootstrap.Modal('#tambahDosenModal');
 
             tambahDosenModal.addEventListener('hidden.bs.modal', event => {

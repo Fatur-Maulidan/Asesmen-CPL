@@ -22,7 +22,20 @@ class DosenController extends Controller
      */
     public function index(DosenDataTable $dataTable)
     {
-        return $dataTable->render('admin.dosen.index', [
+        $filter = [];
+        if (request('role')) {
+            $filter['role'] = request('role');
+        }
+
+        if (request('jurusan')) {
+            $filter['jurusan'] = request('jurusan');
+        }
+
+        if (request('status')) {
+            $filter['status'] = request('status');
+        }
+
+        return $dataTable->with('filter', $filter)->render('admin.dosen.index', [
             'title' => 'Dosen',
             'nama' => 'John Tyler',
             'role' => 'Admin',

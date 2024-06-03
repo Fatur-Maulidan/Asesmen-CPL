@@ -24,8 +24,11 @@ class DosenDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             // ->addColumn('action', 'dosen.action');
-            ->addColumn('role', function (Dosen $dosen) {
-                return $dosen->role;
+            ->addColumn('jurusan', function (Dosen $dosen) {
+                return $dosen->jurusan->nama;
+            })
+            ->addColumn('program_studi', function (Dosen $dosen) {
+                return $dosen->programStudi->jenjang_pendidikan . ' ' . $dosen->programStudi->nama;
             })
             ->addColumn('status', function (Dosen $dosen) {
                 if ($dosen->status->is(StatusKeaktifan::Aktif)) {
@@ -63,6 +66,20 @@ class DosenDataTable extends DataTable
 
         if ($this->kaprodi) {
             $query->where('01_MASTER_jurusan_id', $this->jurusan_id);
+        }
+
+        if ($this->filter) {
+            if ($this->filter['role']) {
+                $query->where('role', $this->filter['role']);
+            }
+
+            if ($this->filter['jurusan']) {
+                $query->where('01_MASTER_jurusan_id', $this->filter['jurusan']);
+            }
+
+            if ($this->filter['status']) {
+                $query->where('status', $this->filter['status']);
+            }
         }
 
         return $query;
@@ -109,6 +126,8 @@ class DosenDataTable extends DataTable
             Column::make('nama'),
             Column::make('email'),
             Column::make('role'),
+            Column::make('jurusan'),
+            Column::make('program_studi'),
             Column::make('status'),
             Column::make('tindakan')
             // Column::make('created_at'),

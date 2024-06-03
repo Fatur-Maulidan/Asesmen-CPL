@@ -23,7 +23,6 @@ class Create02MasterProgramStudiTable extends Migration
             $table->timestamps();
             $table->foreignId('01_MASTER_jurusan_id')->constrained('01_MASTER_jurusan');
             $table->string('koordinator_nip', 18)->nullable();
-            $table->foreign('koordinator_nip')->references('nip')->on('04_MASTER_dosen')->comment('Field untuk menyimpan koordinator program studi.');
         });
     }
 

@@ -59,10 +59,10 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? [
-                PDO::MYSQL_ATTR_SSL_CA => resource_path('certificates/server-ca.pem'),
-                PDO::MYSQL_ATTR_SSL_CERT => resource_path('certificates/client-cert.pem'),
-                PDO::MYSQL_ATTR_SSL_KEY => resource_path('certificates/client-key.pem'),
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                 PDO::MYSQL_ATTR_SSL_CA => resource_path('certificates/server-ca.pem'),
+                 PDO::MYSQL_ATTR_SSL_CERT => resource_path('certificates/client-cert.pem'),
+                 PDO::MYSQL_ATTR_SSL_KEY => resource_path('certificates/client-key.pem'),
+                 PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
             ] : [],
         ],
 

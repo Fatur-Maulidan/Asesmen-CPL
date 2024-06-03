@@ -42,7 +42,7 @@ class Dosen extends Model
      *
      * @var array
      */
-    protected $fillable = ['nip', 'kode', 'nama', 'email', 'jenis_kelamin', 'role', 'status', 'kata_sandi', '01_MASTER_jurusan_id'];
+    protected $fillable = ['nip', 'kode', 'nama', 'email', 'jenis_kelamin', 'role', 'status', 'kata_sandi', '01_MASTER_jurusan_id', '02_MASTER_program_studi_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -68,9 +68,14 @@ class Dosen extends Model
         return $this->belongsTo(Jurusan::class, '01_MASTER_jurusan_id');
     }
 
-    public function programStudi()
+    public function kaprodi()
     {
         return $this->hasOne(ProgramStudi::class, 'koordinator_nip');
+    }
+
+    public function programStudi()
+    {
+        return $this->belongsTo(ProgramStudi::class, '02_MASTER_program_studi_id');
     }
 
     public function mataKuliahRegister()

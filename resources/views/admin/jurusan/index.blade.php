@@ -222,7 +222,6 @@
                                 <option value="" selected>Pilih jenjang pendidikan program studi</option>
                                 <option value="D3">D3</option>
                                 <option value="D4">D4</option>
-                                <option value="S2">S2</option>
                             </select>
                             <div id="jenjang_prodi_feedback" class="text-danger"></div>
                         </div>
@@ -332,7 +331,9 @@
 
                                             <div class="mb-3">
                                                 <div class="fw-bold">Koordinator program studi</div>
-                                                <div>{{ $prodi->dosen->nama }}</div>
+                                                <div>
+                                                    {{ $prodi->kaprodi != null ? $prodi->dosen->nama : 'Belum ada koordinator.' }}
+                                                </div>
                                             </div>
 
                                             {{-- <div>

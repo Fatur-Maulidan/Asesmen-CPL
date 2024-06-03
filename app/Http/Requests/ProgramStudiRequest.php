@@ -28,7 +28,7 @@ class ProgramStudiRequest extends FormRequest
             'jenjang_prodi' => 'bail|required',
             'nomor_prodi' => 'bail|required',
             'kode_prodi' => 'bail|required',
-            'koordinator_prodi' => 'bail|required',
+            'koordinator_prodi' => 'bail|nullable',
             'jurusan_id' => 'bail|required',
         ];
     }
