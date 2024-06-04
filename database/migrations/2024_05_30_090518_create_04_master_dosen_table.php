@@ -28,6 +28,7 @@ class Create04MasterDosenTable extends Migration
             $table->string('kata_sandi')->default(Hash::make('katasandi123'));
             $table->timestamps();
             $table->foreignId('01_MASTER_jurusan_id')->constrained('01_MASTER_jurusan');
+            $table->foreignId('02_MASTER_program_studi_id');
         });
     }
 
