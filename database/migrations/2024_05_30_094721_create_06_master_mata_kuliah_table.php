@@ -17,7 +17,8 @@ class Create06MasterMataKuliahTable extends Migration
             $table->id();
             $table->string('kode', 10)->unique();
             $table->string('nama', 60);
-            $table->string('deskripsi', 600);
+            $table->string('deskripsi', 600)->nullable();
+            $table->unsignedTinyInteger('jumlah_sks');
             $table->timestamps();
             $table->foreignId('03_MASTER_kurikulum_id')->constrained('03_MASTER_kurikulum');
         });
