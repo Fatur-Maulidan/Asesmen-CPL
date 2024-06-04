@@ -26,6 +26,7 @@ class KurikulumController extends Controller
      */
     public function index()
     {
+        dd($this->user);
         $kurikulum = Kurikulum::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
         // $mahasiswa = Mahasiswa::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
 

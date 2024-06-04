@@ -14,7 +14,7 @@ class AddForeignKeyToDosen extends Migration
     public function up()
     {
         Schema::table('04_MASTER_dosen', function (Blueprint $table) {
-            $table->foreignId('02_MASTER_program_studi_id')->constrained('02_MASTER_program_studi');
+            $table->foreignId('02_MASTER_program_studi_id')->constrained('02_MASTER_program_studi_id');
         });
     }
 
