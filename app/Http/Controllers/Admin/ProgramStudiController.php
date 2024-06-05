@@ -98,7 +98,9 @@ class ProgramStudiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        ProgramStudi::destroy($id);
+
+        return redirect()->back();
     }
 
     public function downloadTemplate()

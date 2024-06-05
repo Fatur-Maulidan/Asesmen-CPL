@@ -51,7 +51,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
 
     // # Jurusan
     Route::resource('jurusan', AdminJurusanController::class)
-        ->only(['index', 'store', 'update']);
+        ->only(['index', 'store', 'update', 'destroy']);
     Route::get('jurusan/download-template', [AdminJurusanController::class, 'downloadTemplate'])->name('jurusan.downloadTemplate');
     Route::post('jurusan/import', [AdminJurusanController::class, 'import'])->name('jurusan.import');
 
@@ -60,7 +60,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
         ->name('program-studi.downloadTemplate');
     Route::post('program-studi/import', [AdminProgramStudiController::class, 'import'])->name('program-studi.import');
     Route::resource('program-studi', AdminProgramStudiController::class)
-        ->only(['store']);
+        ->only(['store', 'destroy']);
 
     // # Dosen
     Route::get('dosen/download-template', [AdminDosenController::class, 'downloadTemplate'])->name('dosen.downloadTemplate');

@@ -124,7 +124,14 @@ class JurusanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $jurusan = Jurusan::find($id);
+
+        if ($jurusan->programStudi()->exists()) {
+            return redirect()->back()->with('message', 'Tidak dapat menghapus jurusan yang memiliki program studi.');
+        }
+        Jurusan::destroy($id);
+
+        return redirect()->back();
     }
 
     public function downloadTemplate()

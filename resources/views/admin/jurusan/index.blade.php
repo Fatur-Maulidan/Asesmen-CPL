@@ -6,10 +6,10 @@
 @endsection
 
 @section('main')
-    {{-- Flash message--}}
-    @if(session('message'))
-        <div class="alert alert-secondary" role="alert">
-            {{session('message')}}
+    {{--  Alert message  --}}
+    @if( session('message') )
+        <div class="alert alert-secondary mb-5" role="alert">
+            {{ session('message') }}
         </div>
     @endif
 
@@ -18,7 +18,7 @@
         <div class="col">
             <form role="search" method="GET" action="" autocomplete="off">
                 <input class="form-control search" type="search" id="search" name="search"
-                    placeholder="Cari"value="{{ request('search') }}">
+                    placeholder="Cari" value="{{ request('search') }}">
             </form>
         </div>
         <div class="col text-end">
@@ -305,6 +305,39 @@
         </div>
     </div>
 
+    {{-- Hapus Modal --}}
+    <div class="modal fade" id="hapusModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
+         aria-labelledby="hapusModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="hapusModalLabel">Konfirmasi Penghapusan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="text-center">
+                        <i class="bi bi-exclamation-triangle-fill text-warning fs-1"></i>
+                        <div>Anda yakin ingin hapus data?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Tidak</button>
+                        </div>
+                        <div class="col">
+                            <form action="" method="post" id="hapusForm">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-success w-100" data-bs-dismiss="modal">Ya</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Data jurusan --}}
     <div class="row gy-5">
         @forelse ($jurusan as $jrsn)
@@ -369,7 +402,7 @@
                                             <div class="mb-3">
                                                 <div class="fw-bold">Koordinator program studi</div>
                                                 <div>
-                                                    {{ $prodi->kaprodi != null ? $prodi->dosen->nama : 'Belum ada koordinator.' }}
+                                                    {{ $prodi->kaprodi != null ? $prodi->kaprodi->nama : 'Belum ada koordinator.' }}
                                                 </div>
                                             </div>
 
@@ -381,6 +414,11 @@
                                                     <li>Kurikulum 2021</li>
                                                 </ul>
                                             </div> --}}
+
+                                            <div>
+                                                <a href="#" class="btn-hapus-prodi" data-bs-toggle="modal"
+                                                   data-bs-target="#hapusModal" data-id="{{ $prodi->id }}">Hapus</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -394,6 +432,8 @@
                         <a href="#" class="btn-add-prodi" data-bs-toggle="modal"
                             data-bs-target="#tambahProgramStudiModal" data-id="{{ $jrsn->id }}">Tambah Program
                             Studi</a>
+                        <a href="#" class="btn-hapus-jurusan" data-bs-toggle="modal"
+                           data-bs-target="#hapusModal" data-id="{{ $jrsn->id }}">Hapus</a>
                     </div>
                 </div>
             </div>
@@ -582,6 +622,17 @@
                     }
                 });
             });
+
+            $('.btn-hapus-jurusan, .btn-hapus-prodi').on('click', function (e) {
+                e.preventDefault();
+
+                const id = $(this).data('id');
+                const route = $(this).hasClass('btn-hapus-jurusan')
+                    ? url + "/" + id
+                    : "{{ url('/') }}/admin/program-studi/" + id;
+
+                $('#hapusForm').attr('action', route);
+            })
         });
     </script>
 @endpush
