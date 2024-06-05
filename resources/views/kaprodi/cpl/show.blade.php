@@ -177,11 +177,11 @@
                 <div class="col d-flex">
                     <div class="me-4">
                         <div class="fw-bold">Diubah pada</div>
-                        <div id="tanggal-pengajuan">{{ $cpl->tanggal_pengajuan }}</div>
+                        <div id="tanggal-pengajuan">{{ $cpl->created_at }}</div>
                     </div>
                     <div class="me-4">
                         <div class="fw-bold">Diperbarui pada</div>
-                        <div id="tanggal-pembaruan">{{ $cpl->tanggal_pembaruan }}</div>
+                        <div id="tanggal-pembaruan">{{ $cpl->updated_at }}</div>
                     </div>
                     <div>
                         <div class="fw-bold">Diubah oleh</div>
@@ -318,37 +318,4 @@
 @endsection
 
 @push('scripts')
-    <script>
-        // $(document).ready(function() {
-        //     $(".btn-tp").click(function(e) {
-        //         e.preventDefault();
-        //         $(this).removeClass('border border-1');
-        //         $(this).addClass('border border-1');
-        //         let kode = $(this).data('kode');
-        //         let url = "{{ route('kaprodi.cpl.show', ['kurikulum' => 2022, 'cpl' => ':kode']) }}";
-        //         url = url.replace(':kode', kode);
-
-        //         $.ajax({
-        //             url: url,
-        //             type: "GET",
-        //             success: function(data) {
-        //                 console.log(data);
-        //                 // Update the placeholders with the new data
-        //                 $('#cpl-kode').text(data.cpl.kode);
-        //                 $('#tanggal-pengajuan').text(data.cpl.tanggal_pengajuan);
-        //                 $('#tanggal-pembaruan').text(data.cpl.tanggal_pembaruan);
-        //                 $('#cpl-deskripsi').text(data.cpl.deskripsi);
-
-        //                 $('#breadcrumb').html(
-        //                     `{{ Breadcrumbs::render('kaprodi.cpl.show', $kurikulum, ':kode') }}`
-        //                     .replace(':kode', data.cpl.kode));
-        //             },
-        //             error: function(xhr, status, error) {
-        //                 console.error("AJAX Error: ", status, error);
-        //                 $("#selected-cpl").html(`<p>Error fetching CPL data.</p>`);
-        //             }
-        //         });
-        //     });
-        // });
-    </script>
 @endpush

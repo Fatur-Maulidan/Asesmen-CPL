@@ -58,4 +58,15 @@ class IndikatorKinerja extends Model
     {
         return $this->hasMany(Rubrik::class, '08_MASTER_indikator_kinerja_id');
     }
+
+    public function getDataIndikatorKinerja($kurikulum) {
+        $dataIk = [];
+        $indikatorKinerja = $this->with('capaianPembelajaranLulusan')->get();
+        foreach($indikatorKinerja as $ik) {
+            if (($ik->capaianPembelajaranLulusan[0]->{'03_MASTER_kurikulum_id'} == $kurikulum) == true) {
+                $dataIk[] = $ik;
+            }
+        }
+        return $dataIk;
+    }
 }

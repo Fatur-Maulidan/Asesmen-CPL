@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.ik.index', $kurikulum) }}
+    {{ Breadcrumbs::render('kaprodi.ik.index', $kurikulum->tahun) }}
     <h1 class="fw-bold mb-0">
         {{ $title }}</h1>
 @endsection
@@ -50,7 +50,7 @@
                             <label for="domain" class="form-label fw-bold">Capaian Pembelajaran Induk</label>
                             <select class="form-select" id="domain" name="cpInduk">
                                 <option selected hidden>Pilih CP Induk</option>
-                                @foreach ($cpInduk as $cp)
+                                @foreach ($kurikulum->cpl as $cp)
                                     <option value="{{ $cp->kode }}">{{ $cp->kode }}</option>
                                 @endforeach
                             </select>

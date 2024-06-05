@@ -26,7 +26,7 @@
                 <div>
                     <label for="rubrik_maksimal" class="form-label fw-bold">Jumlah maksimal rubrik</label>
                     <select class="form-select" id="jumlah_maksimal_rubrik" name="jumlah_maksimal_rubrik">
-                        <option value="" selected>Pilih jumlah maksimal rubrik</option>
+                        <option value="" selected hidden>Pilih jumlah maksimal rubrik</option>
                         <option value="3">3</option>
                         <option value="5">5</option>
                     </select>
