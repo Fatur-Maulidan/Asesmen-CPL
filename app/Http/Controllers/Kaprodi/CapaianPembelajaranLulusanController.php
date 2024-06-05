@@ -65,10 +65,10 @@ class CapaianPembelajaranLulusanController extends Controller
         $kodeDomain = $this->kodeCP($request->input('domain'));
 
         $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->id, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
 
         $dataCPL = CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
-            ->where('03_MASTER_kurikulum_id', $kurikulum->id)
+            ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)
             ->get()
             ->count();
 
@@ -154,10 +154,10 @@ class CapaianPembelajaranLulusanController extends Controller
         }
 
         $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->id, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
 
         $dataCPL = CapaianPembelajaranLulusan::where('kode', $cpl)
-                ->where('03_MASTER_kurikulum_id', $kurikulum->id)->first();
+                ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)->first();
         
         $dataCPL->deskripsi = $request->input('deskripsi');
         $dataCPL->updated_at = date('Y-m-d H:i:s');
