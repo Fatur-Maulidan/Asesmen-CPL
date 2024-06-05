@@ -56,6 +56,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
     Route::post('jurusan/import', [AdminJurusanController::class, 'import'])->name('jurusan.import');
 
     // # Program studi
+    Route::get('program-studi/download-template', [AdminProgramStudiController::class, 'downloadTemplate'])
+        ->name('program-studi.downloadTemplate');
+    Route::post('program-studi/import', [AdminProgramStudiController::class, 'import'])->name('program-studi.import');
     Route::resource('program-studi', AdminProgramStudiController::class)
         ->only(['store']);
 

@@ -6,6 +6,13 @@
 @endsection
 
 @section('main')
+    {{-- Flash message--}}
+    @if(session('message'))
+        <div class="alert alert-secondary" role="alert">
+            {{session('message')}}
+        </div>
+    @endif
+
     {{-- Action buttons --}}
     <div class="row mb-4">
         <div class="col">
@@ -15,7 +22,9 @@
             </form>
         </div>
         <div class="col text-end">
-            {{-- Button trigger modal --}}
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importProgramStudiModal">
+                Import Program Studi
+            </button>
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importJurusanModal">
                 Import Jurusan
             </button>
@@ -42,6 +51,34 @@
         </div>
     </div>
 
+    {{-- Import Program Studi Modal --}}
+    <div class="modal fade" id="importProgramStudiModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="importProgramStudiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="importProgramStudiModalLabel">Import Program Studi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.program-studi.import') }}" method="POST" autocomplete="off"
+                          enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-5">
+                            <label for="formFileProgramStudi" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFileProgramStudi" name="formFileProgramStudi" accept=".xlsx">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('admin.program-studi.downloadTemplate') }}" class="btn btn-outline-success">Download
+                                Template</a>
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Import Jurusan Modal --}}
     <div class="modal fade" id="importJurusanModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="importJurusanModalLabel" aria-hidden="true">
@@ -56,8 +93,8 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="mb-5">
-                            <label for="formFile" class="form-label fw-bold">Upload File Excel</label>
-                            <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
+                            <label for="formFileJurusan" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFileJurusan" name="formFileJurusan" accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('admin.jurusan.downloadTemplate') }}" class="btn btn-outline-success">Download

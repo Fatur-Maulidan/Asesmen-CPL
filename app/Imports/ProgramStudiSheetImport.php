@@ -3,12 +3,13 @@
 namespace App\Imports;
 
 use App\Models\Jurusan;
+use App\Models\ProgramStudi;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class JurusanSheetImport implements ToModel, WithHeadingRow, SkipsOnError
+class ProgramStudiSheetImport implements ToModel, WithHeadingRow, SkipsOnError
 {
     use SkipsErrors;
 
@@ -19,9 +20,12 @@ class JurusanSheetImport implements ToModel, WithHeadingRow, SkipsOnError
      */
     public function model(array $row)
     {
-        return new Jurusan([
-            'nama' => $row['nama_jurusan'],
-            'golongan' => $row['golongan']
+        return new ProgramStudi([
+            'nomor' => $row['nomor'],
+            'nama' => $row['nama'],
+            'kode' => $row['kode'],
+            'jenjang_pendidikan' => $row['jenjang_pendidikan'],
+            '01_MASTER_jurusan_id' => Jurusan::where('nama', $row['jurusan'])->pluck('id')->first(),
         ]);
     }
 }

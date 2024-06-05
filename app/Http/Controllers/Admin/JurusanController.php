@@ -136,7 +136,7 @@ class JurusanController extends Controller
 
     public function import()
     {
-        Excel::import(new JurusanImport, request()->file('formFile'));
+        Excel::import(new JurusanImport, request()->file('formFileJurusan'));
 
         return redirect(route('admin.jurusan.index'))->with('success', 'All good!');
     }
