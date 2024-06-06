@@ -151,7 +151,7 @@
                                         </p>
                                     </div>
                                     <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                        <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $ik->kode]) }}"
+                                        <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}"
                                             class="me-3">Lihat
                                             detail</a>
                                         <a href="">Pemetaan terhadap Capaian Pembelajaran</a>

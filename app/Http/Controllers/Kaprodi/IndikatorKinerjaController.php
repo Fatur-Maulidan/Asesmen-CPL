@@ -40,7 +40,6 @@ class IndikatorKinerjaController extends Controller
      */
     public function index($kurikulum)
     {
-
         $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
         
@@ -119,39 +118,19 @@ class IndikatorKinerjaController extends Controller
      */
     public function show($kurikulum, $ik)
     {
-        $kaprodiNip = '199301062019031017';
-        $pemetaanIkCp = [];
-
-        $ik = IndikatorKinerja::where('kode', $ik)
-            ->with('capaianPembelajaranLulusan.kurikulum.programStudi')
-            ->with('rubrik')
-            ->get()
-            ->first();
-
-        $dataIk = IndikatorKinerja::get();
-        foreach($dataIk as $data){
-            // $data = IndikatorKinerja::leftJoin('13_master_peta_cp_ik as cpik', '08_master_indikator_kinerja.id', '=', 'cpik.08_MASTER_indikator_kinerja_id')
-            // ->select('08_master_indikator_kinerja.*', 'cpik.*')
-            // ->get();
-
-            $pemetaanIkCp[] = IndikatorKinerja::where('id',$data->id)->whereHas('capaianPembelajaranLulusan', function($query) use ($data, $kurikulum, $kaprodiNip) {
-                $query->where('08_master_indikator_kinerja_id', $data->id)
-                ->whereHas('kurikulum', function($query) use ($kurikulum, $kaprodiNip) {
-                    $query->where('tahun', $kurikulum)
-                    ->whereHas('programStudi', function($query) use ($kaprodiNip) {
-                        $query->where('koordinator_nip', $kaprodiNip);
-                    });
-                });
-            })->get()->first();
-        };
+        $dataIk = new IndikatorKinerja();
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
+        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
+        $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
             
         return view('kaprodi.ik.show', [
             'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'dataIk' => $pemetaanIkCp,
-            'ik' => $ik
+            'dataIk' => $dataIk,
+            'ik' => $this->indikatorKinerja[0]
         ]);
     }
 
@@ -227,6 +206,7 @@ class IndikatorKinerjaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        IndikatorKinerja::destroy($id);
+        return redirect()->route('kaprodi.ik.index')->with('success', 'Data berhasil dihapus');
     }
 }
