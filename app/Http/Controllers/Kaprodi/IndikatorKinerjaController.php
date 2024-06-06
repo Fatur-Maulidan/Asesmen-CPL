@@ -119,6 +119,7 @@ class IndikatorKinerjaController extends Controller
     public function show($kurikulum, $ik)
     {
         $dataIk = new IndikatorKinerja();
+
         $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
@@ -128,7 +129,7 @@ class IndikatorKinerjaController extends Controller
             'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
+            'kurikulum' => $this->kurikulum,
             'dataIk' => $dataIk,
             'ik' => $this->indikatorKinerja[0]
         ]);
@@ -136,14 +137,22 @@ class IndikatorKinerjaController extends Controller
 
     public function detail($kurikulum, $ik)
     {
+        $dataIk = new IndikatorKinerja();
+
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
+        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
+
+        $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id); 
+
         return view('kaprodi.ik.detail', [
             'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
-            'ik' => [
-                'kode' => 'SS-1.1'
-            ]
+            'kurikulum' => $this->kurikulum,
+            'ik' => $this->indikatorKinerja[0],
+            'dataCpl' => $this->indikatorKinerja[0]->capaianPembelajaranLulusan,
+            'dataIk' => $dataIk,
         ]);
     }
 
@@ -153,16 +162,31 @@ class IndikatorKinerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($kurikulum, $id)
+    public function edit($kurikulum, $ik)
     {
+        $dataIk = new IndikatorKinerja();
+
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
+        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
+
+        $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
+        $filteredDataCpl = $this->filterDataByKode(
+            $this->kurikulum->cpl, 
+            $this->subStringKodeCpl($this->indikatorKinerja[0]->capaianPembelajaranLulusan[0]->kode)
+        );
+        
         return view('kaprodi.ik.edit', [
             'title' => 'IK',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
-            'ik' => [
-                'kode' => 'SS-1.1'
-            ]
+            'kurikulum' => $this->kurikulum,
+            'dataIk' => $dataIk,
+            'filteredDataCpl' => $filteredDataCpl,
+            'subStrCpl' => $this->subStringKodeCpl($this->indikatorKinerja[0]->capaianPembelajaranLulusan[0]->kode),
+            'ik' => $this->indikatorKinerja[0],
+            'dataCpl' => $this->kurikulum->cpl,
+            'domainCpl' => ['Pengetahuan', 'Sikap', 'Keterampilan Umum', 'Keterampilan Khusus'],
         ]);
     }
 
@@ -175,8 +199,6 @@ class IndikatorKinerjaController extends Controller
      */
     public function update(Request $request, $kurikulum, $id)
     {
-        $kaprodiNip = '199301062019031017';
-
         $validation = Validator::make(
             $request->all(),
             $this->validator->rules(),
@@ -208,5 +230,18 @@ class IndikatorKinerjaController extends Controller
     {
         IndikatorKinerja::destroy($id);
         return redirect()->route('kaprodi.ik.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    // Substring Kode yang diambil hanya 2 huruf diawal
+    private function subStringKodeCpl($kode) {
+        return substr($kode, 0, 2);
+    }
+
+    private function filterDataByKode($dataCpl, $kode) {
+        $filteredData = $dataCpl->filter(function ($value) use ($kode) {
+            return strpos($value->kode, $kode) === 0;
+        });
+    
+        return $filteredData;
     }
 }

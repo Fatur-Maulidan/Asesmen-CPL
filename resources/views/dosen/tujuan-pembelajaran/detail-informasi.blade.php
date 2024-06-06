@@ -112,11 +112,11 @@
                     <div class="d-flex flex-row">
                         <div class="d-flex flex-column">
                             <div class="fw-bold">Diubah Pada</div>
-                            <div class="">{{ $tp->tanggal_pengajuan }}</div>
+                            <div class="">{{ $tp->created_at }}</div>
                         </div>
                         <div class="d-flex flex-column ms-4">
                             <div class="fw-bold">Diperbarui Pada</div>
-                            <div class="">{{ $tp->tanggal_pembaruan }}</div>
+                            <div class="">{{ $tp->updated_at }}</div>
                         </div>
                         <div class="d-flex flex-column ms-4">
                             <div class="fw-bold">Diubah Oleh</div>
