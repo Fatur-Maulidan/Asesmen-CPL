@@ -108,8 +108,10 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
 });
 
 // # Route untuk dosen
-Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kuliah'], 'as' => 'dosen.'], function () {
+Route::group(['prefix' => 'dosen', 'as' => 'dosen.'], function () { // 'middleware' => ['auth', 'can:view_mata_kuliah'],
     Route::prefix('/mata-kuliah')->group(function () {
+
+        // # Dashboard
         Route::get('{kodeMataKuliah}/dashboard', [DosenDashboardController::class, 'index'])
             ->name('dashboard.index');
 
@@ -119,6 +121,7 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
         Route::get('{kodeMataKuliah}/informasi-umum', [DosenMataKuliahController::class, 'informasiUmum'])
             ->name('mata-kuliah.informasi-umum');
 
+        // # Indikator Kinerja
         Route::prefix('{kodeMataKuliah}/indikator-kinerja')->group(function () {
             Route::get('/', [DosenIndikatorKinerjaController::class, 'index'])
                 ->name('mata-kuliah.indikator-kinerja');
@@ -127,6 +130,7 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
                 ->name('mata-kuliah.indikator-kinerja.detail-informasi');
         });
 
+        // # Tujuan Pembelajaran
         Route::prefix('{kodeMataKuliah}/tujuan-pembelajaran')->group(function () {
             Route::get('/', [DosenTujuanPembelajaranController::class, 'index'])
                 ->name('mata-kuliah.tujuan-pembelajaran');
@@ -144,6 +148,7 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
                 ->name('mata-kuliah.tujuan-pembelajaran.destroy');
         });
 
+        // # Rencana Asesmen
         Route::prefix('{kodeMataKuliah}/rencana-asesmen')->group(function () {
             Route::get('/', [DosenRencanaAsesmenController::class, 'index'])
                 ->name('mata-kuliah.rencana-asesmen');
@@ -155,6 +160,7 @@ Route::group(['prefix' => 'dosen', 'middleware' => ['auth', 'can:view_mata_kulia
                 ->name('mata-kuliah.rencana-asesmen.detail-informasi.ubah');
         });
 
+        // # Nilai Mahasiswa
         Route::get('nilai-mahasiswa/{kodeMataKuliah}', [DosenRencanaAsesmenController::class, 'nilaiMahasiswa'])
             ->name('mata-kuliah.nilai-mahasiswa');
     });

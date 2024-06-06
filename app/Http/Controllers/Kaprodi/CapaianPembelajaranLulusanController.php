@@ -40,7 +40,7 @@ class CapaianPembelajaranLulusanController extends Controller
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'dataCPL' => $this->kurikulum->cpl->sortBy('kode'),
-            'kurikulum' => $this->kurikulum->tahun
+            'kurikulum' => $this->kurikulum
         ]);
     }
 

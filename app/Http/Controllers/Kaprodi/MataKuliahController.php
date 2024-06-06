@@ -3,10 +3,21 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dosen;
+use App\Models\Kurikulum;
 use Illuminate\Http\Request;
 
 class MataKuliahController extends Controller
 {
+    protected $kaprodiNip;
+    protected $kaprodi;
+    protected $kurikulum;
+    
+    public function __construct() {
+        $this->kaprodiNip = '199301062019031017';
+        $this->kaprodi = new Dosen();
+        $this->kurikulum = new Kurikulum();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,11 +25,14 @@ class MataKuliahController extends Controller
      */
     public function index($kurikulum)
     {
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
+
         return view('kaprodi.mk.index', [
             'title' => 'Mata Kuliah',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum
+            'kurikulum' => $this->kurikulum
         ]);
     }
 

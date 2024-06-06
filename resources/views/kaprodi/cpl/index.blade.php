@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.cpl.index', $kurikulum) }}
+    {{ Breadcrumbs::render('kaprodi.cpl.index', $kurikulum->tahun) }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
@@ -38,7 +38,7 @@
     </div>
 
     {{-- Modal --}}
-    <form method="POST" action="{{ route('kaprodi.cpl.store', ['kurikulum' => $kurikulum]) }}">
+    <form method="POST" action="{{ route('kaprodi.cpl.store', ['kurikulum' => $kurikulum->tahun]) }}">
         @csrf
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -110,7 +110,7 @@
                                     <p class="mb-0">Belum ada pemetaan</p>
                                 </div>
                                 <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                    <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $cpl->kode]) }}"
+                                    <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->kode]) }}"
                                         class="me-3">Lihat
                                         detail</a>
                                     <a href="">Ubah pembobotan</a>
