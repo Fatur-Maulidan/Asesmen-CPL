@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MataKuliahRequest;
 use App\Imports\MataKuliahImport;
 use App\Models\Dosen;
 use App\Models\Kurikulum;
 use App\Models\MataKuliah;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MataKuliahController extends Controller
@@ -52,9 +52,20 @@ class MataKuliahController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MataKuliahRequest $request, $kurikulum)
     {
-        //
+        if ($request->ajax()) {
+            $kurikulum_id = Kurikulum::whereRelation('programStudi', 'id', $this->user->{'02_MASTER_program_studi_id'})
+                ->where('tahun', $kurikulum)->pluck('id')->first();
+            $validated = $request->validated();
+            $validated['03_MASTER_kurikulum_id'] = $kurikulum_id;
+
+            MataKuliah::create($validated);
+
+            return response()->json([
+                'message' => 'Data berhasil disimpan',
+            ], 201);
+        }
     }
 
     /**
