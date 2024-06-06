@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DosenController as AdminDosenController;
 use App\Http\Controllers\Admin\JurusanController as AdminJurusanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\ProgramStudiController as AdminProgramStudiController;
+use App\Http\Controllers\Admin\MahasiswaController as AdminMahasiswaController;
 
 use App\Http\Controllers\Kaprodi\KurikulumController as KaprodiKurikulumController;
 use App\Http\Controllers\Kaprodi\DashboardController as KaprodiDashboardController;
@@ -67,6 +68,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
     Route::post('dosen/import', [AdminDosenController::class, 'import'])->name('dosen.import');
     Route::patch('dosen/toggle-status/{dosen}', [AdminDosenController::class, 'toggleStatus'])->name('dosen.toggleStatus');
     Route::resource('dosen', AdminDosenController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    // # Mahasiswa
+    Route::get('mahasiswa/download-template', [AdminMahasiswaController::class, 'downloadTemplate'])->name('mahasiswa.downloadTemplate');
+    Route::post('mahasiswa/import', [AdminMahasiswaController::class, 'import'])->name('mahasiswa.import');
+    Route::patch('mahasiswa/toggle-status/{mahasiswa}', [AdminMahasiswaController::class, 'toggleStatus'])->name('mahasiswa.toggleStatus');
+    Route::resource('mahasiswa', AdminMahasiswaController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 });
 
 // # Route untuk kaprodi

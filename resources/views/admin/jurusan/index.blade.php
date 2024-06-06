@@ -376,17 +376,17 @@
                             Tidak ada program studi.
                         </div>
                     @else
-                        <div class="accordion" id="daftarProdi">
+                        <div class="accordion" id="daftarProdi{{ $jrsn->id }}">
                             @foreach ($jrsn->programStudi as $prodi)
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button bg-light fw-bold" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#prodi{{ $loop->iteration }}"
+                                            data-bs-toggle="collapse" data-bs-target="#prodi{{ $prodi->id }}"
                                             aria-expanded="true" aria-controls="prodi{{ $loop->iteration }}">
                                             {{ $prodi->jenjang_pendidikan . ' ' . $prodi->nama }}
                                         </button>
                                     </h2>
-                                    <div id="prodi{{ $loop->iteration }}" class="accordion-collapse collapse"
+                                    <div id="prodi{{ $prodi->id }}" class="accordion-collapse collapse"
                                         data-bs-parent="#daftarProdi">
                                         <div class="accordion-body">
                                             <div class="mb-3">

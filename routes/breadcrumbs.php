@@ -15,6 +15,10 @@ Breadcrumbs::for('admin.jurusan.index', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('admin.dosen.index', function (BreadcrumbTrail $trail) {
     $trail->push('Dosen', route('admin.dosen.index'));
 });
+
+Breadcrumbs::for('admin.mahasiswa.index', function (BreadcrumbTrail $trail) {
+    $trail->push('Mahasiswa', route('admin.mahasiswa.index'));
+});
 // --- end of Admin
 
 // --- Kaprodi
@@ -107,7 +111,7 @@ Breadcrumbs::for('dosen.dashboard.index', function (BreadcrumbTrail $trail, $kod
     $trail->push('Dashboard', route('dosen.dashboard.index', ['kodeMataKuliah' =>  $kodeMataKuliah]));
 });
 
-// Breadcrumb Dosen/Mata Kuliah/Informasi Umum 
+// Breadcrumb Dosen/Mata Kuliah/Informasi Umum
 Breadcrumbs::for('dosen.mata-kuliah.informasi-umum', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
     $trail->parent('dosen.mata-kuliah');
     $trail->push($kodeMataKuliah, route('dosen.mata-kuliah'));
