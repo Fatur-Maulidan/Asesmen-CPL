@@ -7,15 +7,21 @@ use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DosenRequest;
 use App\Models\Dosen;
+use App\Models\Kurikulum;
 use Illuminate\Http\Request;
 
 class DosenController extends Controller
 {
     protected $user;
+    protected $kaprodiNip;
+    protected $kaprodi;
+    protected $kurikulum;
 
     public function __construct()
     {
-        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('810317609391432000');
+        $this->kaprodiNip = '199301062019031017';
+        $this->kaprodi = new Dosen();
+        $this->kurikulum = new Kurikulum();
     }
 
     /**
@@ -25,11 +31,14 @@ class DosenController extends Controller
      */
     public function index(DosenDataTable $dataTable, $kurikulum)
     {
-        return $dataTable->with(['kaprodi' => true, 'jurusan_id' => $this->user->jurusan->id])->render('kaprodi.dosen.index', [
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
+
+        return $dataTable->with(['kaprodi' => true, 'jurusan_id' => $this->kaprodi->jurusan->id])->render('kaprodi.dosen.index', [
             'title' => 'Dosen',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
+            'kurikulum' => $this->kurikulum,
         ]);
     }
 
