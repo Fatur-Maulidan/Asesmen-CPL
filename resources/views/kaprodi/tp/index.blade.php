@@ -53,97 +53,38 @@
                 </thead>
                 <tbody>
                     <form action="">
-                        <tr>
-                            <td class="py-3 align-content-center ">TP-1</td>
-                            <td class="py-3">
-                                <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-                                    placeat
-                                    aliquam
-                                    mollitia, reprehenderit ratione modi minus recusandae animi fugiat eius!</p>
-                            </td>
-                            <td class="py-3 align-content-center ">
-                                <div class="d-flex">
-                                    <div class="form-check me-3">
-                                        <input class="form-check-input" type="radio" name="status[0]"
-                                            id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                            Tolak
-                                        </label>
+                        @for ($i = 0; $i < 4; $i++)
+                            <tr>
+                                <td class="py-3 align-content-center ">TP-1</td>
+                                <td class="py-3">
+                                    <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
+                                        placeat
+                                        aliquam
+                                        mollitia, reprehenderit ratione modi minus recusandae animi fugiat eius!</p>
+                                </td>
+                                <td class="py-3 align-content-center ">
+                                    <div class="d-flex">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="radio" name="status{{ $i }}"
+                                                id="tolak" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                Tolak
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="status{{ $i }}"
+                                                id="setujui" id="flexRadioDefault2">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                Setujui
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="status[0]"
-                                            id="flexRadioDefault2">
-                                        <label class="form-check-label" for="flexRadioDefault2">
-                                            Setujui
-                                        </label>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-content-center ">
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="1" disabled
-                                    placeholder="Masukkan alasan penolakan" style="resize: none"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 align-content-center ">TP-2</td>
-                            <td class="py-3">
-                                <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-                                    placeat
-                                    aliquam
-                                    mollitia, reprehenderit ratione modi minus recusandae animi fugiat eius!</p>
-                            </td>
-                            <td class="py-3 align-content-center">
-                                <div class="d-flex">
-                                    <div class="form-check me-3">
-                                        <input class="form-check-input" type="radio" name="status[1]"
-                                            id="flexRadioDefault3" checked>
-                                        <label class="form-check-label" for="flexRadioDefault3">
-                                            Tolak
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="status[1]"
-                                            id="flexRadioDefault4">
-                                        <label class="form-check-label" for="flexRadioDefault4">
-                                            Setujui
-                                        </label>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-content-center ">
-                                <textarea class="form-control" id="exampleFormControlTextarea2" placeholder="Masukkan alasan penolakan"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 align-content-center ">TP-3</td>
-                            <td class="py-3">
-                                <p class="mb-0">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-                                    placeat
-                                    aliquam
-                                    mollitia, reprehenderit ratione modi minus recusandae animi fugiat eius!</p>
-                            </td>
-                            <td class="py-3 align-content-center ">
-                                <div class="d-flex">
-                                    <div class="form-check me-3">
-                                        <input class="form-check-input" type="radio" name="status[2]"
-                                            id="flexRadioDefault5">
-                                        <label class="form-check-label" for="flexRadioDefault5">
-                                            Tolak
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="status[2]"
-                                            id="flexRadioDefault6" checked>
-                                        <label class="form-check-label" for="flexRadioDefault6">
-                                            Setujui
-                                        </label>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-content-center ">
-                                <textarea class="form-control" id="exampleFormControlTextarea3" placeholder="Masukkan alasan penolakan"></textarea>
-                            </td>
-                        </tr>
+                                </td>
+                                <td class="align-content-center ">
+                                    <textarea class="form-control" id="exampleFormControlTextarea2" placeholder="Masukkan alasan penolakan" disabled></textarea>
+                                </td>
+                            </tr>
+                        @endfor
                     </form>
                 </tbody>
             </table>
@@ -159,3 +100,17 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('input[type=radio]').change(function() {
+                if ($(this).attr('id') == 'tolak') {
+                    $(this).closest('tr').find('textarea').removeAttr('disabled');
+                } else {
+                    $(this).closest('tr').find('textarea').attr('disabled', 'disabled');
+                    $(this).closest('tr').find('textarea').val('');
+                }
+            });
+        });
+    </script>
+@endpush
