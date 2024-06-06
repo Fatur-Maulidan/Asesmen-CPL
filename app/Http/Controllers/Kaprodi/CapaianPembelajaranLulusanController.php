@@ -103,7 +103,7 @@ class CapaianPembelajaranLulusanController extends Controller
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum->tahun,
+            'kurikulum' => $this->kurikulum,
             'dataCPL' => $this->kurikulum->cpl,
             'cpl' => $cpl,
         ]);

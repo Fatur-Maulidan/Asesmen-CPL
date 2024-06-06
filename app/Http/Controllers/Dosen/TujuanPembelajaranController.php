@@ -54,8 +54,7 @@ class TujuanPembelajaranController extends Controller
         $tujuanPembelajaran = new TujuanPembelajaran([
             'kode' => "TP-".($dataTP + 1),
             'deskripsi' => $request->input('deskripsi'),
-            'tanggal_pengajuan' => date('Y-m-d H:i:s'),
-            'tanggal_pembaruan' => date('Y-m-d H:i:s')
+            'tanggal_diajukan' => date('Y-m-d H:i:s')
         ]);
 
         if($tujuanPembelajaran->save()) {
@@ -86,7 +85,7 @@ class TujuanPembelajaranController extends Controller
 
         $dataTP = TujuanPembelajaran::find($id);
         $dataTP->deskripsi = $request->input('deskripsi');
-        $dataTP->tanggal_pembaruan = date('Y-m-d H:i:s');
+        $dataTP->tanggal_diajukan = date('Y-m-d H:i:s');
 
         if($dataTP->save()) {
             return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil diperbaharui');

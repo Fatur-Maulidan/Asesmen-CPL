@@ -1,8 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.cpl.show', $kurikulum, $cpl['kode']) }}
-    <h1 class="fw-bold mb-0">{{ $cpl['kode'] }}</h1>
+    {{ Breadcrumbs::render('kaprodi.cpl.show', $kurikulum->tahun, $cpl->kode) }}
+    <h1 class="fw-bold mb-0">{{ $cpl->kode }}</h1>
 @endsection
 
 @section('main')
