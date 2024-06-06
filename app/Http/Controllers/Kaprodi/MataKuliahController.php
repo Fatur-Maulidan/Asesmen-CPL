@@ -3,10 +3,23 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
+use App\Imports\MataKuliahImport;
+use App\Models\Dosen;
+use App\Models\Kurikulum;
+use App\Models\MataKuliah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MataKuliahController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +31,8 @@ class MataKuliahController extends Controller
             'title' => 'Mata Kuliah',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum
+            'kurikulum' => $kurikulum,
+            'mata_kuliah' => MataKuliah::all()
         ]);
     }
 
@@ -95,5 +109,21 @@ class MataKuliahController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function downloadTemplate()
+    {
+        $file_path = public_path('files/templates/Template_Mata_Kuliah.xlsx');
+
+        return response()->download($file_path);
+    }
+
+    public function import($kurikulum)
+    {
+        $kurikulum_id = Kurikulum::whereRelation('programStudi', 'id', $this->user->{'02_MASTER_program_studi_id'})
+            ->where('tahun', $kurikulum)->pluck('id')->first();
+        Excel::import(new MataKuliahImport($kurikulum_id), request()->file('formFile'));
+
+        return redirect()->back();
     }
 }

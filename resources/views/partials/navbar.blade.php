@@ -57,8 +57,8 @@
                             Pembelajaran</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Route::is('kaprodi.mk.*')) active @endif"
-                            href="{{ route('kaprodi.mk.index', ['kurikulum' => $kurikulum]) }}">Mata Kuliah</a>
+                        <a class="nav-link @if (Route::is('kaprodi.mata-kuliah.*')) active @endif"
+                            href="{{ route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum]) }}">Mata Kuliah</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.mahasiswa.*')) active @endif"

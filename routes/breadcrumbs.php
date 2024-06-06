@@ -76,9 +76,9 @@ Breadcrumbs::for('kaprodi.tp.index', function (BreadcrumbTrail $trail, $kurikulu
 });
 
 // MK
-Breadcrumbs::for('kaprodi.mk.index', function (BreadcrumbTrail $trail, $kurikulum) {
+Breadcrumbs::for('kaprodi.mata-kuliah.index', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
-    $trail->push('Mata Kuliah', route('kaprodi.mk.index', ['kurikulum' => $kurikulum]));
+    $trail->push('Mata Kuliah', route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum]));
 });
 
 Breadcrumbs::for('kaprodi.mk.show', function (BreadcrumbTrail $trail, $kurikulum, $mk) {

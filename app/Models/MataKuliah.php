@@ -32,7 +32,7 @@ class MataKuliah extends Model
      *
      * @var array
      */
-    protected $fillable = ['kode', 'nama', 'deskripsi', '03_MASTER_kurikulum_id'];
+    protected $fillable = ['kode', 'nama', 'deskripsi', 'jumlah_sks', '03_MASTER_kurikulum_id'];
 
     /**
      * Indicates if the model should be timestamped.
