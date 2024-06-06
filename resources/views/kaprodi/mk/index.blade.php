@@ -97,7 +97,7 @@
         </div>
     </div>
 
-    {{-- Data CPL --}}
+    {{-- Data Mata Kuliah --}}
     <div class="row">
         <div class="col-12">
             <div class="accordion" id="daftarMataKuliah">
@@ -121,7 +121,7 @@
                                 <p class="mb-0">Belum ada pemetaan</p>
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum, 'mata_kuliah' => '1']) }}"
+                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum, 'mata_kuliah' => $mk->id]) }}"
                                    class="me-3">Lihat detail</a>
                             </div>
                         </div>

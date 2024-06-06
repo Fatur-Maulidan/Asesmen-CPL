@@ -104,7 +104,7 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
     Route::get('kurikulum/{kurikulum}/mata-kuliah/download-template', [KaprodiMataKuliahController::class, 'downloadTemplate'])->name('mata-kuliah.downloadTemplate');
     Route::post('kurikulum/{kurikulum}/mata-kuliah/import', [KaprodiMataKuliahController::class, 'import'])->name('mata-kuliah.import');
     Route::resource('kurikulum/{kurikulum}/mata-kuliah', KaprodiMataKuliahController::class)
-        ->only(['index', 'store', 'show']);
+        ->only(['index', 'store', 'show', 'update']);
 
     // # Mahasiswa
     Route::get('kurikulum/{kurikulum}/mahasiswa/download-template', [KaprodiMahasiswaController::class, 'downloadTemplate'])->name('mahasiswa.downloadTemplate');

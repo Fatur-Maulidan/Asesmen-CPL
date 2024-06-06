@@ -76,15 +76,16 @@ class MataKuliahController extends Controller
      */
     public function show($kurikulum, $id)
     {
+        $daftar_mata_kuliah = MataKuliah::all();
+        $mata_kuliah = MataKuliah::find($id);
+
         return view('kaprodi.mk.show', [
             'title' => 'Mata Kuliah',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $kurikulum,
-            'mk' => [
-                'kode' => '21IF001',
-                'nama' => 'Dasar Dasar Pemrograman'
-            ]
+            'daftar_mata_kuliah' => $daftar_mata_kuliah,
+            'detail_mata_kuliah' => $mata_kuliah
         ]);
     }
 
@@ -106,9 +107,16 @@ class MataKuliahController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MataKuliahRequest $request, $kurikulum, $id)
     {
-        //
+        $mata_kuliah = MataKuliah::find($id);
+        $validated = $request->validated();
+
+        $mata_kuliah->update($validated);
+
+        return response()->json([
+            'message' => 'Data berhasil disimpan',
+        ]);
     }
 
     /**

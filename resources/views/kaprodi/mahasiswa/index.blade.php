@@ -71,7 +71,7 @@
                     @endif
 
                     <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum]) }}"
-                        autocomplete="off">
+                        autocomplete="off" id="tambahMahasiswForm">
                         @csrf
 
                         <div class="mb-3">
@@ -189,6 +189,7 @@
                                 </div>
                             @enderror
                         </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <div class="row w-100">
@@ -196,10 +197,9 @@
                             <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-success w-100">Tambah</button>
+                            <button type="submit" class="btn btn-success w-100" form="tambahMahasiswaForm">Tambah</button>
                         </div>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>

@@ -75,10 +75,15 @@ Breadcrumbs::for('kaprodi.tp.index', function (BreadcrumbTrail $trail, $kurikulu
     $trail->push('Tujuan Pembelajaran', route('kaprodi.tp.index', ['kurikulum' => $kurikulum]));
 });
 
-// MK
+// Mata Kuliah
 Breadcrumbs::for('kaprodi.mata-kuliah.index', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
     $trail->push('Mata Kuliah', route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum]));
+});
+
+Breadcrumbs::for('kaprodi.mata-kuliah.show', function (BreadcrumbTrail $trail, $kurikulum, $nama_mata_kuliah, $kode_mata_kuliah) {
+    $trail->parent('kaprodi.mata-kuliah.index', $kurikulum);
+    $trail->push($nama_mata_kuliah, route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum, 'mata_kuliah' => $kode_mata_kuliah]));
 });
 
 Breadcrumbs::for('kaprodi.mk.show', function (BreadcrumbTrail $trail, $kurikulum, $mk) {

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\MataKuliah;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MataKuliahRequest extends FormRequest
 {
@@ -23,8 +25,12 @@ class MataKuliahRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route('mata_kuliah');
         return [
-            'kode' => 'bail|required|unique:06_MASTER_mata_kuliah',
+            'kode' => [
+                'bail', 'required',
+                Rule::unique('06_MASTER_mata_kuliah')->ignore($id),
+            ],
             'nama' => 'bail|required',
             'deskripsi' => 'bail|required',
             'jumlah_sks' => 'bail|required|numeric',
