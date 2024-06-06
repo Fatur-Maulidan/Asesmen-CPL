@@ -59,9 +59,16 @@ class IndikatorKinerja extends Model
         return $this->hasMany(Rubrik::class, '08_MASTER_indikator_kinerja_id');
     }
 
-    public function getDataIndikatorKinerja($kurikulum) {
+    // Fungsi ini digunakan untuk mendapatkan data
+        // Indikator Kinerja -> CPL berdasarkan kurikulum yang berjalan
+        // Indikator Kinerja -> Rubrik
+    public function getDataIndikatorKinerja($kurikulum, $kode = '') {
         $dataIk = [];
-        $indikatorKinerja = $this->with('capaianPembelajaranLulusan')->get();
+        
+        $indikatorKinerja = $this->with('capaianPembelajaranLulusan');
+        $indikatorKinerja = empty($kode) ? $indikatorKinerja : $indikatorKinerja->where('kode', $kode)->with('rubrik');
+        $indikatorKinerja = $indikatorKinerja->get();
+
         foreach($indikatorKinerja as $ik) {
             if (($ik->capaianPembelajaranLulusan[0]->{'03_MASTER_kurikulum_id'} == $kurikulum) == true) {
                 $dataIk[] = $ik;
