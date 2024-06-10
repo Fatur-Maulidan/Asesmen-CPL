@@ -41,15 +41,10 @@ class ProgramStudiController extends Controller
     public function store(ProgramStudiRequest $request)
     {
         $validated = $request->validated();
+        $validated['01_MASTER_jurusan_nomor'] = $validated['jurusan_nomor'];
+        $validated['04_MASTER_dosen_kode'] = $validated['koordinator_prodi'];
 
-        Master_02_ProgramStudi::create([
-            'nama' => $validated['nama_prodi'],
-            'jenjang_pendidikan' => $validated['jenjang_prodi'],
-            'nomor' => $validated['nomor_prodi'],
-            'kode' => $validated['kode_prodi'],
-            '01_MASTER_jurusan_id' => $validated['jurusan_id'],
-            'koordinator_nip' => $validated['koordinator_prodi'],
-        ]);
+        Master_02_ProgramStudi::create($validated);
 
         return response()->json([
             'message' => 'Data berhasil ditambah.'
@@ -93,12 +88,12 @@ class ProgramStudiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $nomor
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($nomor)
     {
-        Master_02_ProgramStudi::destroy($id);
+        Master_02_ProgramStudi::destroy($nomor);
 
         return redirect()->back();
     }

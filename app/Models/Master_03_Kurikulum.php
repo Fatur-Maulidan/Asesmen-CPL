@@ -77,7 +77,7 @@ class Master_03_Kurikulum extends Model
         return $this->hasMany(Master_06_Mahasiswa::class, '03_MASTER_kurikulum_id');
     }
 
-    // # Scope
+    // # Scopes
     public function scopeAktif($query)
     {
         return $query->where('status', StatusKurikulum::Aktif);

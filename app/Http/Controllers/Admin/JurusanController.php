@@ -19,7 +19,7 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusan = Master_01_Jurusan::with(['programStudi', 'programStudi.dosen:nip,nama']);
+        $jurusan = Master_01_Jurusan::with(['programStudi', 'programStudi.dosen:nip,nama', 'programStudi.kurikulumAktif']);
 
         if (request('filter') == 'rekayasa') {
             $jurusan->rekayasa();
@@ -30,7 +30,7 @@ class JurusanController extends Controller
         }
 
         return view('admin.jurusan.index', [
-            'title' => 'Master01Jurusan',
+            'title' => 'Jurusan',
             'nama' => 'John Tyler',
             'role' => 'Admin',
             'jurusan' => $jurusan->get(),
@@ -58,10 +58,7 @@ class JurusanController extends Controller
     {
         $validated = $request->validated();
 
-        Master_01_Jurusan::create([
-            'nama' => $validated['nama_jurusan'],
-            'golongan' => $validated['golongan_jurusan'],
-        ]);
+        Master_01_Jurusan::create($validated);
 
         return response()->json([
             'message' => 'Data berhasil ditambah.'
@@ -98,18 +95,15 @@ class JurusanController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $nomor
      * @return \Illuminate\Http\Response
      */
-    public function update(JurusanRequest $request, $id)
+    public function update(JurusanRequest $request, $nomor)
     {
-        $jurusan = Master_01_Jurusan::find($id);
+        $jurusan = Master_01_Jurusan::find($nomor);
         $validated = $request->validated();
 
-        $jurusan->update([
-            'nama' => $validated['nama_jurusan'],
-            'golongan' => $validated['golongan_jurusan'],
-        ]);
+        $jurusan->update($validated);
 
         return response()->json([
             'message' => 'Data berhasil diubah.'

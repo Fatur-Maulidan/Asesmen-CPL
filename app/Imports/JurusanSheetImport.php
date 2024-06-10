@@ -20,6 +20,7 @@ class JurusanSheetImport implements ToModel, WithHeadingRow, SkipsOnError
     public function model(array $row)
     {
         return new Master_01_Jurusan([
+            'nomor' => $row['nomor'],
             'nama' => $row['nama_jurusan'],
             'golongan' => $row['golongan']
         ]);
