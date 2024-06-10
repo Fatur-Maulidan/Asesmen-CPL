@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dosen;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\TujuanPembelajaranStoreRequest;
-use App\Models\TujuanPembelajaran;
+use App\Models\Master_13_TujuanPembelajaran;
 use Illuminate\Support\Facades\Validator;
 
 class TujuanPembelajaranController extends Controller
@@ -22,11 +22,11 @@ class TujuanPembelajaranController extends Controller
      */
     public function index($kodeMataKuliah)
     {
-        $dataTP = TujuanPembelajaran::all();
+        $dataTP = Master_13_TujuanPembelajaran::all();
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => 'John Doe',
-            'role' => 'Dosen',
+            'role' => 'Master04Dosen',
             'dataTP' => $dataTP,
             'kodeMataKuliah' => $kodeMataKuliah
         ]);
@@ -41,8 +41,8 @@ class TujuanPembelajaranController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make(
-            $request->all(), 
-            $this->validation->rules(), 
+            $request->all(),
+            $this->validation->rules(),
             $this->validation->message()
         );
 
@@ -50,8 +50,8 @@ class TujuanPembelajaranController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $dataTP = TujuanPembelajaran::get()->count();
-        $tujuanPembelajaran = new TujuanPembelajaran([
+        $dataTP = Master_13_TujuanPembelajaran::get()->count();
+        $tujuanPembelajaran = new Master_13_TujuanPembelajaran([
             'kode' => "TP-".($dataTP + 1),
             'deskripsi' => $request->input('deskripsi'),
             'tanggal_diajukan' => date('Y-m-d H:i:s')
@@ -74,8 +74,8 @@ class TujuanPembelajaranController extends Controller
     public function update(Request $request, $kodeMataKuliah, $id)
     {
         $validator = Validator::make(
-            $request->all(), 
-            $this->validation->rules(), 
+            $request->all(),
+            $this->validation->rules(),
             $this->validation->message()
         );
 
@@ -83,7 +83,7 @@ class TujuanPembelajaranController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $dataTP = TujuanPembelajaran::find($id);
+        $dataTP = Master_13_TujuanPembelajaran::find($id);
         $dataTP->deskripsi = $request->input('deskripsi');
         $dataTP->tanggal_diajukan = date('Y-m-d H:i:s');
 
@@ -102,7 +102,7 @@ class TujuanPembelajaranController extends Controller
      */
     public function destroy($kodeMataKuliah,$id)
     {
-        $dataTP = TujuanPembelajaran::find($id);
+        $dataTP = Master_13_TujuanPembelajaran::find($id);
         if($dataTP->delete()) {
             return redirect(route('dosen.mata-kuliah.tujuan-pembelajaran',['kodeMataKuliah' => $kodeMataKuliah]))->with('success', 'Tujuan Pembelajaran berhasil dihapus');
         } else {
@@ -111,12 +111,12 @@ class TujuanPembelajaranController extends Controller
     }
 
     public function detailInformasi($kodeMataKuliah, $id) {
-        $tp = TujuanPembelajaran::find($id);
-        $dataTP = TujuanPembelajaran::get();
+        $tp = Master_13_TujuanPembelajaran::find($id);
+        $dataTP = Master_13_TujuanPembelajaran::get();
         return view('dosen.tujuan-pembelajaran.detail-informasi', [
             'title' => 'Detail Informasi Tujuan Pembelajaran',
             'nama' => 'John Doe',
-            'role' => 'Dosen',
+            'role' => 'Master04Dosen',
             'tp' => $tp,
             'dataTP' => $dataTP,
             'kodeMataKuliah' => $kodeMataKuliah

@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Mahasiswa;
-use App\Models\ProgramStudi;
+use App\Models\Master_06_Mahasiswa;
+use App\Models\Master_02_ProgramStudi;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -23,7 +23,7 @@ class MahasiswaSheetImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        return new Mahasiswa([
+        return new Master_06_Mahasiswa([
             'nim' => $row['nim'],
             'nama' => $row['nama'],
             'jenis_kelamin' => $row['jenis_kelamin'],
@@ -31,7 +31,7 @@ class MahasiswaSheetImport implements ToModel, WithHeadingRow
             'kelas' => $row['kelas'],
             'tahun_angkatan' => $row['tahun_angkatan'],
             '02_MASTER_program_studi_id' => (self::$program_studi_id == null)
-                ? ProgramStudi::where('jenjang_pendidikan', explode(" ", $row['program_studi'], 2)[0])
+                ? Master_02_ProgramStudi::where('jenjang_pendidikan', explode(" ", $row['program_studi'], 2)[0])
                     ->where('nama', explode(" ", $row['program_studi'], 2)[1])->pluck('id')->first()
                 : self::$program_studi_id,
         ]);

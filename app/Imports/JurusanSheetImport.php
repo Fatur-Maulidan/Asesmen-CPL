@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\Jurusan;
+use App\Models\Master_01_Jurusan;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -19,7 +19,7 @@ class JurusanSheetImport implements ToModel, WithHeadingRow, SkipsOnError
      */
     public function model(array $row)
     {
-        return new Jurusan([
+        return new Master_01_Jurusan([
             'nama' => $row['nama_jurusan'],
             'golongan' => $row['golongan']
         ]);

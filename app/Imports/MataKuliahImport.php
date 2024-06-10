@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\MataKuliah;
+use App\Models\Master_07_MataKuliah;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
@@ -27,7 +27,7 @@ class MataKuliahImport implements ToModel, WithHeadingRow, SkipsOnError
      */
     public function model(array $row)
     {
-        return new MataKuliah([
+        return new Master_07_MataKuliah([
             'kode' => $row['kode'],
             'nama' => $row['nama'],
             'deskripsi' => $row['deskripsi'],

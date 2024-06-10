@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JurusanRequest;
 use App\Imports\JurusanImport;
-use App\Models\Dosen;
-use App\Models\Jurusan;
+use App\Models\Master_04_Dosen;
+use App\Models\Master_01_Jurusan;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -19,7 +19,7 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusan = Jurusan::with(['programStudi', 'programStudi.dosen:nip,nama']);
+        $jurusan = Master_01_Jurusan::with(['programStudi', 'programStudi.dosen:nip,nama']);
 
         if (request('filter') == 'rekayasa') {
             $jurusan->rekayasa();
@@ -30,11 +30,11 @@ class JurusanController extends Controller
         }
 
         return view('admin.jurusan.index', [
-            'title' => 'Jurusan',
+            'title' => 'Master01Jurusan',
             'nama' => 'John Tyler',
             'role' => 'Admin',
             'jurusan' => $jurusan->get(),
-            'dosen' => Dosen::get(['nip', 'kode', 'nama'])
+            'dosen' => Master_04_Dosen::get(['nip', 'kode', 'nama'])
         ]);
     }
 
@@ -58,7 +58,7 @@ class JurusanController extends Controller
     {
         $validated = $request->validated();
 
-        Jurusan::create([
+        Master_01_Jurusan::create([
             'nama' => $validated['nama_jurusan'],
             'golongan' => $validated['golongan_jurusan'],
         ]);
@@ -76,7 +76,7 @@ class JurusanController extends Controller
      */
     public function show($id)
     {
-        // $jurusan = Jurusan::find($id);
+        // $jurusan = Master01Jurusan::find($id);
 
         // return response()->json([
         //     'jurusan' => $jurusan
@@ -103,7 +103,7 @@ class JurusanController extends Controller
      */
     public function update(JurusanRequest $request, $id)
     {
-        $jurusan = Jurusan::find($id);
+        $jurusan = Master_01_Jurusan::find($id);
         $validated = $request->validated();
 
         $jurusan->update([
@@ -124,12 +124,12 @@ class JurusanController extends Controller
      */
     public function destroy($id)
     {
-        $jurusan = Jurusan::find($id);
+        $jurusan = Master_01_Jurusan::find($id);
 
         if ($jurusan->programStudi()->exists()) {
             return redirect()->back()->with('message', 'Tidak dapat menghapus jurusan yang memiliki program studi.');
         }
-        Jurusan::destroy($id);
+        Master_01_Jurusan::destroy($id);
 
         return redirect()->back();
     }

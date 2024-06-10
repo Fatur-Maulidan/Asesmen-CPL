@@ -5,9 +5,10 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * @method static static OptionOne()
- * @method static static OptionTwo()
- * @method static static OptionThree()
+ * @method static static Sikap()
+ * @method static static Pengetahuan()
+ * @method static static KeterampilanUmum()
+ * @method static static KeterampilanKhusus()
  */
 final class DomainCPL extends Enum
 {

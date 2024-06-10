@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MataKuliahRequest;
 use App\Imports\MataKuliahImport;
-use App\Models\Dosen;
-use App\Models\Kurikulum;
-use App\Models\MataKuliah;
+use App\Models\Master_04_Dosen;
+use App\Models\Master_03_Kurikulum;
+use App\Models\Master_07_MataKuliah;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -19,10 +19,10 @@ class MataKuliahController extends Controller
     protected $kurikulum;
 
     public function __construct() {
-        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
+        $this->user = Master_04_Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
         $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Dosen();
-        $this->kurikulum = new Kurikulum();
+        $this->kaprodi = new Master_04_Dosen();
+        $this->kurikulum = new Master_03_Kurikulum();
     }
     /**
      * Display a listing of the resource.
@@ -39,7 +39,7 @@ class MataKuliahController extends Controller
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             // 'kurikulum' => $kurikulum,
-            'mata_kuliah' => MataKuliah::all(),
+            'mata_kuliah' => Master_07_MataKuliah::all(),
             'kurikulum' => $this->kurikulum
         ]);
     }
@@ -63,12 +63,12 @@ class MataKuliahController extends Controller
     public function store(MataKuliahRequest $request, $kurikulum)
     {
         if ($request->ajax()) {
-            $kurikulum_id = Kurikulum::whereRelation('programStudi', 'id', $this->user->{'02_MASTER_program_studi_id'})
+            $kurikulum_id = Master_03_Kurikulum::whereRelation('programStudi', 'id', $this->user->{'02_MASTER_program_studi_id'})
                 ->where('tahun', $kurikulum)->pluck('id')->first();
             $validated = $request->validated();
             $validated['03_MASTER_kurikulum_id'] = $kurikulum_id;
 
-            MataKuliah::create($validated);
+            Master_07_MataKuliah::create($validated);
 
             return response()->json([
                 'message' => 'Data berhasil disimpan',
@@ -84,8 +84,8 @@ class MataKuliahController extends Controller
      */
     public function show($kurikulum, $id)
     {
-        $daftar_mata_kuliah = MataKuliah::all();
-        $mata_kuliah = MataKuliah::find($id);
+        $daftar_mata_kuliah = Master_07_MataKuliah::all();
+        $mata_kuliah = Master_07_MataKuliah::find($id);
 
         return view('kaprodi.mk.show', [
             'title' => 'Mata Kuliah',
@@ -117,7 +117,7 @@ class MataKuliahController extends Controller
      */
     public function update(MataKuliahRequest $request, $kurikulum, $id)
     {
-        $mata_kuliah = MataKuliah::find($id);
+        $mata_kuliah = Master_07_MataKuliah::find($id);
         $validated = $request->validated();
 
         $mata_kuliah->update($validated);
@@ -147,7 +147,7 @@ class MataKuliahController extends Controller
 
     public function import($kurikulum)
     {
-        $kurikulum_id = Kurikulum::whereRelation('programStudi', 'id', $this->user->{'02_MASTER_program_studi_id'})
+        $kurikulum_id = Master_03_Kurikulum::whereRelation('programStudi', 'id', $this->user->{'02_MASTER_program_studi_id'})
             ->where('tahun', $kurikulum)->pluck('id')->first();
         Excel::import(new MataKuliahImport($kurikulum_id), request()->file('formFile'));
 

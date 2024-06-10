@@ -7,8 +7,8 @@ use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MahasiswaRequest;
 use App\Imports\MahasiswaImport;
-use App\Models\Kurikulum;
-use App\Models\Mahasiswa;
+use App\Models\Master_03_Kurikulum;
+use App\Models\Master_06_Mahasiswa;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -47,9 +47,9 @@ class MahasiswaController extends Controller
     public function store(MahasiswaRequest $request, $kurikulum)
     {
         $validateData = $request->validated();
-        $kurikulumModel = new Kurikulum();
+        $kurikulumModel = new Master_03_Kurikulum();
 
-        $mahasiswaModel = new Mahasiswa([
+        $mahasiswaModel = new Master_06_Mahasiswa([
             'nim' => $validateData['nim'],
             'nama' => $validateData['nama'],
             'jenis_kelamin' => $validateData['jenis_kelamin'],
@@ -81,7 +81,7 @@ class MahasiswaController extends Controller
     public function show($nim)
     {
         if (request()->ajax()) {
-            $mahasiswa = Mahasiswa::find($nim);
+            $mahasiswa = Master_06_Mahasiswa::find($nim);
 
             return response()->json([
                 'mahasiswa' => $mahasiswa
@@ -109,7 +109,7 @@ class MahasiswaController extends Controller
      */
     public function update(MahasiswaRequest $request, $nim)
     {
-        $mahasiswa = Mahasiswa::find($nim);
+        $mahasiswa = Master_06_Mahasiswa::find($nim);
 
         if ($request->ajax()) {
             $validated = $request->validated();
@@ -130,14 +130,14 @@ class MahasiswaController extends Controller
      */
     public function destroy($nim)
     {
-        Mahasiswa::destroy($nim);
+        Master_06_Mahasiswa::destroy($nim);
 
         return redirect()->back();
     }
 
     public function toggleStatus($nim)
     {
-        $mahasiswa = Mahasiswa::find($nim);
+        $mahasiswa = Master_06_Mahasiswa::find($nim);
 
         $mahasiswa->update([
             'status' => ($mahasiswa->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::Nonaktif : StatusKeaktifan::Aktif

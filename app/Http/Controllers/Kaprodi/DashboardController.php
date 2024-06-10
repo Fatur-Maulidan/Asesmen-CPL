@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dosen;
-use App\Models\Kurikulum;
+use App\Models\Master_04_Dosen;
+use App\Models\Master_03_Kurikulum;
 use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
@@ -14,8 +14,8 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Dosen();
-        $this->kurikulum = new Kurikulum();
+        $this->kaprodi = new Master_04_Dosen();
+        $this->kurikulum = new Master_03_Kurikulum();
     }
     public function index($kurikulum)
     {

@@ -7,9 +7,9 @@ use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MahasiswaRequest;
 use App\Imports\MahasiswaImport;
-use App\Models\Dosen;
-use App\Models\Kurikulum;
-use App\Models\Mahasiswa;
+use App\Models\Master_04_Dosen;
+use App\Models\Master_03_Kurikulum;
+use App\Models\Master_06_Mahasiswa;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -23,11 +23,11 @@ class MahasiswaController extends Controller
 
     public function __construct()
     {
-        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
-        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('810317609391432000');
+        $this->user = Master_04_Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
+        $this->user = Master_04_Dosen::with('programStudi:id,koordinator_nip',)->find('810317609391432000');
         $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Dosen();
-        $this->kurikulum = new Kurikulum();
+        $this->kaprodi = new Master_04_Dosen();
+        $this->kurikulum = new Master_03_Kurikulum();
     }
 
     /**
@@ -67,9 +67,9 @@ class MahasiswaController extends Controller
     public function store(MahasiswaRequest $request, $kurikulum)
     {
         $validateData = $request->validated();
-        $kurikulumModel = new Kurikulum();
+        $kurikulumModel = new Master_03_Kurikulum();
 
-        $mahasiswaModel = new Mahasiswa([
+        $mahasiswaModel = new Master_06_Mahasiswa([
             'nim' => $validateData['nim'],
             'nama' => $validateData['nama'],
             'jenis_kelamin' => $validateData['jenis_kelamin'],
@@ -101,7 +101,7 @@ class MahasiswaController extends Controller
     public function show($kurikulum, $nim)
     {
         if (request()->ajax()) {
-            $mahasiswa = Mahasiswa::find($nim);
+            $mahasiswa = Master_06_Mahasiswa::find($nim);
 
             return response()->json([
                 'mahasiswa' => $mahasiswa
@@ -129,7 +129,7 @@ class MahasiswaController extends Controller
      */
     public function update(MahasiswaRequest $request, $kurikulum, $nim)
     {
-        $mahasiswa = Mahasiswa::find($nim);
+        $mahasiswa = Master_06_Mahasiswa::find($nim);
 
         if ($request->ajax()) {
             $validated = $request->validated();
@@ -150,14 +150,14 @@ class MahasiswaController extends Controller
      */
     public function destroy($kurikulum, $nim)
     {
-        Mahasiswa::destroy($nim);
+        Master_06_Mahasiswa::destroy($nim);
 
         return redirect()->back();
     }
 
     public function toggleStatus($kurikulum, $nim)
     {
-        $mahasiswa = Mahasiswa::find($nim);
+        $mahasiswa = Master_06_Mahasiswa::find($nim);
 
         $mahasiswa->update([
             'status' => ($mahasiswa->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::Nonaktif : StatusKeaktifan::Aktif

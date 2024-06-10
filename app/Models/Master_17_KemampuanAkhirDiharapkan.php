@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MataKuliah extends Model
+class Master_17_KemampuanAkhirDiharapkan extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '06_MASTER_mata_kuliah';
+    protected $table = '17_MASTER_kad';
 
     /**
      * The primary key associated with the table.
@@ -32,14 +32,14 @@ class MataKuliah extends Model
      *
      * @var array
      */
-    protected $fillable = ['kode', 'nama', 'deskripsi', 'jumlah_sks', '03_MASTER_kurikulum_id'];
+    protected $fillable = ['deskripsi', 'materi', 'minggu', 'persentase_kontribusi_tp', '13_MASTER_tujuan_pembelajaran_id'];
 
     /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
      */
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that should be cast.
@@ -48,9 +48,14 @@ class MataKuliah extends Model
      */
     protected $casts = [];
 
-    // Relationship
-    public function kurikulum()
+    // Relations
+    public function tujuanPembelajaran()
     {
-        return $this->belongsTo(Kurikulum::class, '03_MASTER_kurikulum_id');
+        return $this->belongsTo(Master_13_TujuanPembelajaran::class, '13_MASTER_tujuan_pembelajaran_id');
+    }
+
+    public function soal()
+    {
+        return $this->hasMany(Master_18_Soal::class, '17_MASTER_kad_id');
     }
 }

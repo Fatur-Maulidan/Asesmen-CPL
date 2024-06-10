@@ -7,8 +7,8 @@ use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DosenRequest;
 use App\Imports\DosenImport;
-use App\Models\Dosen;
-use App\Models\Jurusan;
+use App\Models\Master_04_Dosen;
+use App\Models\Master_01_Jurusan;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Stmt\Do_;
@@ -36,10 +36,10 @@ class DosenController extends Controller
         }
 
         return $dataTable->with('filter', $filter)->render('admin.dosen.index', [
-            'title' => 'Dosen',
+            'title' => 'Master04Dosen',
             'nama' => 'John Tyler',
             'role' => 'Admin',
-            'jurusan' => Jurusan::get(['id', 'nama'])
+            'jurusan' => Master_01_Jurusan::get(['id', 'nama'])
         ]);
     }
 
@@ -66,7 +66,7 @@ class DosenController extends Controller
             $validated['01_MASTER_jurusan_id'] = $validated['jurusan'];
             unset($validated['jurusan']);
 
-            Dosen::create($validated);
+            Master_04_Dosen::create($validated);
 
             return response()->json([
                 'message' => 'Data berhasil ditambah.'
@@ -83,7 +83,7 @@ class DosenController extends Controller
     public function show($nip)
     {
         if (request()->ajax()) {
-            $dosen = Dosen::find($nip);
+            $dosen = Master_04_Dosen::find($nip);
 
             return response()->json([
                 'dosen' => $dosen
@@ -111,7 +111,7 @@ class DosenController extends Controller
      */
     public function update(DosenRequest $request, $nip)
     {
-        $dosen = Dosen::find($nip);
+        $dosen = Master_04_Dosen::find($nip);
 
         if ($request->ajax()) {
             $validated = $request->validated();
@@ -132,14 +132,14 @@ class DosenController extends Controller
      */
     public function destroy($nip)
     {
-        Dosen::destroy($nip);
+        Master_04_Dosen::destroy($nip);
 
         return redirect()->back();
     }
 
     public function toggleStatus($nip)
     {
-        $dosen = Dosen::find($nip);
+        $dosen = Master_04_Dosen::find($nip);
 
         $dosen->update([
             'status' => ($dosen->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::Nonaktif : StatusKeaktifan::Aktif

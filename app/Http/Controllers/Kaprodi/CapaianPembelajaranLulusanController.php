@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\CapaianPembelajaranLulusanStoreRequest;
-use App\Models\CapaianPembelajaranLulusan;
+use App\Models\Master_08_CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Kurikulum;
-use App\Models\Dosen;
+use App\Models\Master_03_Kurikulum;
+use App\Models\Master_04_Dosen;
 
 class CapaianPembelajaranLulusanController extends Controller
 {
@@ -21,8 +21,8 @@ class CapaianPembelajaranLulusanController extends Controller
     {
         $this->validation = new CapaianPembelajaranLulusanStoreRequest();
         $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Dosen();
-        $this->kurikulum = new Kurikulum();
+        $this->kaprodi = new Master_04_Dosen();
+        $this->kurikulum = new Master_03_Kurikulum();
     }
 
     /**
@@ -67,12 +67,12 @@ class CapaianPembelajaranLulusanController extends Controller
         $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
 
-        $dataCPL = CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
+        $dataCPL = Master_08_CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
             ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)
             ->get()
             ->count();
 
-        $cpl = new CapaianPembelajaranLulusan([
+        $cpl = new Master_08_CapaianPembelajaranLulusan([
             'kode' => $kodeDomain . "-" . ($dataCPL + 1),
             'domain' => $request->input('domain'),
             'deskripsi' => $request->input('deskripsi'),
@@ -97,7 +97,7 @@ class CapaianPembelajaranLulusanController extends Controller
         $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
 
-        $cpl = CapaianPembelajaranLulusan::where('kode', $id)->first();
+        $cpl = Master_08_CapaianPembelajaranLulusan::where('kode', $id)->first();
 
         return view('kaprodi.cpl.show', [
             'title' => 'Capaian Pembelajaran',
@@ -142,7 +142,7 @@ class CapaianPembelajaranLulusanController extends Controller
     public function update(Request $request, $kurikulum, $cpl)
     {
         $kaprodiNip = '199301062019031017';
-        
+
         $validator = Validator::make(
             $request->all(),
             $this->validation->rules(),
@@ -156,9 +156,9 @@ class CapaianPembelajaranLulusanController extends Controller
         $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
 
-        $dataCPL = CapaianPembelajaranLulusan::where('kode', $cpl)
+        $dataCPL = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)
                 ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)->first();
-        
+
         $dataCPL->deskripsi = $request->input('deskripsi');
         $dataCPL->updated_at = date('Y-m-d H:i:s');
 

@@ -3,7 +3,7 @@
 namespace App\DataTables;
 
 use App\Enums\StatusKeaktifan;
-use App\Models\Mahasiswa;
+use App\Models\Master_06_Mahasiswa;
 use \Illuminate\Support\Facades\Route;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -23,7 +23,7 @@ class MahasiswaDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('status', function (Mahasiswa $mhs) {
+            ->addColumn('status', function (Master_06_Mahasiswa $mhs) {
                 if ($mhs->status->is(StatusKeaktifan::Aktif)) {
                     $button = '<button type="submit" class="btn btn-danger">Nonaktifkan</button>';
                 } else {
@@ -38,7 +38,7 @@ class MahasiswaDataTable extends DataTable
 
                 return $form;
             })
-            ->addColumn('tindakan', function (Mahasiswa $mhs) {
+            ->addColumn('tindakan', function (Master_06_Mahasiswa $mhs) {
                 $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#ubahMahasiswaModal" data-nim="' . $mhs->nim . '">Ubah</a>
                 <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusMahasiswaModal" data-nim="' . $mhs->nim . '">Hapus</a>';
 
@@ -51,10 +51,10 @@ class MahasiswaDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Mahasiswa $model
+     * @param \App\Models\Master_06_Mahasiswa $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Mahasiswa $model)
+    public function query(Master_06_Mahasiswa $model)
     {
         return $model->newQuery();
     }

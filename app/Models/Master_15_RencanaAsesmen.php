@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class KemampuanAkhir extends Model
+class Master_15_RencanaAsesmen extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '19_MASTER_kemampuan_akhir';
+    protected $table = '15_MASTER_rencana_asesmen';
 
     /**
      * The primary key associated with the table.
@@ -32,7 +32,7 @@ class KemampuanAkhir extends Model
      *
      * @var array
      */
-    protected $fillable = ['deskripsi', 'materi', 'minggu', 'kriteria', '16_MASTER_tujuan_pembelajaran_id'];
+    protected $fillable = ['kode', 'kategori', 'minggu', '11_MASTER_mk_register_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,14 +48,19 @@ class KemampuanAkhir extends Model
      */
     protected $casts = [];
 
-    // Relationship
-    public function tujuanPembelajaran()
+    // Relations
+    public function mataKuliahRegister()
     {
-        return $this->belongsTo(TujuanPembelajaran::class, '16_MASTER_tujuan_pembelajaran_id');
+        return $this->belongsTo(Master_15_RencanaAsesmen::class, '11_MASTER_mk_register_id');
     }
 
-    public function soal()
+    public function tujuanPembelajaran()
     {
-        return $this->hasMany(Soal::class, '19_MASTER_kemampuan_akhir');
+        return $this->belongsToMany(Master_13_TujuanPembelajaran::class, '16_MASTER_peta_ra_tp', '15_MASTER_rencana_asesmen_id', '13_MASTER_tujuan_pembelajaran_id');
+    }
+
+    public function mahasiswa()
+    {
+        return $this->belongsToMany(Master_06_Mahasiswa::class, '21_MASTER_nilai_mahasiswa', '15_MASTER_rencana_asesmen_id', '06_MASTER_mahasiswa_nim')->withPivot('nilai')->withTimestamps();
     }
 }

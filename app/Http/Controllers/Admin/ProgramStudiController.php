@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProgramStudiRequest;
 use App\Imports\JurusanImport;
 use App\Imports\ProgramStudiImport;
-use App\Models\ProgramStudi;
+use App\Models\Master_02_ProgramStudi;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -42,7 +42,7 @@ class ProgramStudiController extends Controller
     {
         $validated = $request->validated();
 
-        ProgramStudi::create([
+        Master_02_ProgramStudi::create([
             'nama' => $validated['nama_prodi'],
             'jenjang_pendidikan' => $validated['jenjang_prodi'],
             'nomor' => $validated['nomor_prodi'],
@@ -98,7 +98,7 @@ class ProgramStudiController extends Controller
      */
     public function destroy($id)
     {
-        ProgramStudi::destroy($id);
+        Master_02_ProgramStudi::destroy($id);
 
         return redirect()->back();
     }

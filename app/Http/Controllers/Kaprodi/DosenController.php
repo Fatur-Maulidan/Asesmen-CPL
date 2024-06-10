@@ -6,8 +6,8 @@ use App\DataTables\DosenDataTable;
 use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DosenRequest;
-use App\Models\Dosen;
-use App\Models\Kurikulum;
+use App\Models\Master_04_Dosen;
+use App\Models\Master_03_Kurikulum;
 use Illuminate\Http\Request;
 
 class DosenController extends Controller
@@ -19,10 +19,10 @@ class DosenController extends Controller
 
     public function __construct()
     {
-        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
+        $this->user = Master_04_Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
         $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Dosen();
-        $this->kurikulum = new Kurikulum();
+        $this->kaprodi = new Master_04_Dosen();
+        $this->kurikulum = new Master_03_Kurikulum();
     }
 
     /**
@@ -73,7 +73,7 @@ class DosenController extends Controller
     public function show($kurikulum, $nip)
     {
         if (request()->ajax()) {
-            $dosen = Dosen::find($nip);
+            $dosen = Master_04_Dosen::find($nip);
 
             return response()->json([
                 'dosen' => $dosen
@@ -101,7 +101,7 @@ class DosenController extends Controller
      */
     public function update(DosenRequest $request, $kurikulum, $nip)
     {
-        $dosen = Dosen::find($nip);
+        $dosen = Master_04_Dosen::find($nip);
 
         if ($request->ajax()) {
             $validated = $request->validated();
@@ -122,14 +122,14 @@ class DosenController extends Controller
      */
     public function destroy($kurikulum, $nip)
     {
-        Dosen::destroy($nip);
+        Master_04_Dosen::destroy($nip);
 
         return redirect()->back();
     }
 
     public function toggleStatus($nip)
     {
-        $dosen = Dosen::find($nip);
+        $dosen = Master_04_Dosen::find($nip);
 
         $dosen->update([
             'status' => ($dosen->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::Nonaktif : StatusKeaktifan::Aktif

@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\JenjangPendidikan;
 use Illuminate\Database\Eloquent\Model;
 
-class ProgramStudi extends Model
+class Master_02_ProgramStudi extends Model
 {
     /**
      * The table associated with the model.
@@ -19,21 +19,28 @@ class ProgramStudi extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'nomor';
+
+    /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = true;
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['nomor', 'nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_id', 'koordinator_nip'];
+    protected $fillable = ['nomor', 'nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_nomor', '04_MASTER_dosen_kode'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -51,29 +58,29 @@ class ProgramStudi extends Model
         'jenjang_pendidikan' => JenjangPendidikan::class
     ];
 
-    // Relationship
+    // # Relations
     public function jurusan()
     {
-        return $this->belongsTo(Jurusan::class, '01_MASTER_jurusan_id');
+        return $this->belongsTo(Master_01_Jurusan::class, '01_MASTER_jurusan_nomor');
     }
 
     public function kurikulum()
     {
-        return $this->hasMany(Kurikulum::class, '02_MASTER_program_studi_id');
+        return $this->hasMany(Master_03_Kurikulum::class, '02_MASTER_program_studi_nomor');
     }
 
     public function kaprodi()
     {
-        return $this->belongsTo(Dosen::class, 'koordinator_nip');
+        return $this->belongsTo(Master_04_Dosen::class, '04_MASTER_dosen_kode');
     }
 
     public function dosen()
     {
-        return $this->hasMany(Dosen::class, '02_MASTER_program_studi_id');
+        return $this->belongsToMany(Master_04_Dosen::class, '05_MASTER_prodi_dosen', '02_MASTER_program_studi_nomor', '04_MASTER_dosen_kode');
     }
 
     public function mahasiswa()
     {
-        return $this->hasMany(Mahasiswa::class, '02_MASTER_program_studi_id');
+        return $this->hasMany(Master_06_Mahasiswa::class, '02_MASTER_program_studi_nomor');
     }
 }

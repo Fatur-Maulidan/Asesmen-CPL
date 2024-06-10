@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\StatusKurikulum;
 use Illuminate\Database\Eloquent\Model;
 
-class Kurikulum extends Model
+class Master_03_Kurikulum extends Model
 {
     /**
      * The table associated with the model.
@@ -33,7 +33,7 @@ class Kurikulum extends Model
      *
      * @var array
      */
-    protected $fillable = ['tahun', 'tahun_berlaku', 'tahun_berakhir', 'status', 'konf_tenggat_waktu_tp', 'jumlah_maksimal_rubrik', 'nilai_rentang_rubrik', '02_MASTER_program_studi_id'];
+    protected $fillable = ['tahun', 'tahun_berlaku', 'tahun_berakhir', 'status', '02_MASTER_program_studi_nomor'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,27 +48,36 @@ class Kurikulum extends Model
      * @var array
      */
     protected $casts = [
-        'status' => StatusKurikulum::class,
-        'nilai_rentang_rubrik' => 'array'
+        'status' => StatusKurikulum::class
     ];
 
-    // Relationship
+    // # Relations
     public function programStudi()
     {
-        return $this->belongsTo(ProgramStudi::class, '02_MASTER_program_studi_id');
+        return $this->belongsTo(Master_02_ProgramStudi::class, '02_MASTER_program_studi_nomor');
     }
 
     public function mataKuliah()
     {
-        return $this->hasMany(MataKuliah::class, '03_MASTER_kurikulum_id');
+        return $this->hasMany(Master_07_MataKuliah::class, '03_MASTER_kurikulum_id');
     }
 
-    public function cpl()
+    public function capaianPembelajaranLulusan()
     {
-        return $this->hasMany(CapaianPembelajaranLulusan::class, '03_MASTER_kurikulum_id');
+        return $this->hasMany(Master_08_CapaianPembelajaranLulusan::class, '03_MASTER_kurikulum_id');
     }
 
-    // Scope
+    public function indikatorKinerja()
+    {
+        return $this->hasMany(Master_09_IndikatorKinerja::class, '03_MASTER_kurikulum_id');
+    }
+
+    public function mahasiswa()
+    {
+        return $this->hasMany(Master_06_Mahasiswa::class, '03_MASTER_kurikulum_id');
+    }
+
+    // # Scope
     public function scopeAktif($query)
     {
         return $query->where('status', StatusKurikulum::Aktif);
@@ -91,6 +100,7 @@ class Kurikulum extends Model
         }
     }
 
+    // # Methods
     /**
      * Mendapatkan ID Program Studi berdasarkan tahun kurikulumnya
      *
@@ -105,7 +115,7 @@ class Kurikulum extends Model
     public function getKurikulumByProdiId($prodiId, $kurikulum){
         return $this->with('cpl')
                     ->where('02_MASTER_program_studi_id', $prodiId)
-                    ->where('tahun', $kurikulum) 
+                    ->where('tahun', $kurikulum)
                     ->first();
     }
 }

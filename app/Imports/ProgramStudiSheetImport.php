@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Jurusan;
-use App\Models\ProgramStudi;
+use App\Models\Master_01_Jurusan;
+use App\Models\Master_02_ProgramStudi;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -20,12 +20,12 @@ class ProgramStudiSheetImport implements ToModel, WithHeadingRow, SkipsOnError
      */
     public function model(array $row)
     {
-        return new ProgramStudi([
+        return new Master_02_ProgramStudi([
             'nomor' => $row['nomor'],
             'nama' => $row['nama'],
             'kode' => $row['kode'],
             'jenjang_pendidikan' => $row['jenjang_pendidikan'],
-            '01_MASTER_jurusan_id' => Jurusan::where('nama', $row['jurusan'])->pluck('id')->first(),
+            '01_MASTER_jurusan_id' => Master_01_Jurusan::where('nama', $row['jurusan'])->pluck('id')->first(),
         ]);
     }
 }

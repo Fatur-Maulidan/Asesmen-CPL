@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\JurusanGolongan;
 use Illuminate\Database\Eloquent\Model;
 
-class Jurusan extends Model
+class Master_01_Jurusan extends Model
 {
     /**
      * The table associated with the model.
@@ -19,21 +19,28 @@ class Jurusan extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'nomor';
+
+    /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = true;
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['nama', 'golongan'];
+    protected $fillable = ['nomor', 'nama', 'golongan'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -51,18 +58,18 @@ class Jurusan extends Model
         'golongan' => JurusanGolongan::class,
     ];
 
-    // Relationship
+    // # Relations
     public function programStudi()
     {
-        return $this->hasMany(ProgramStudi::class, '01_MASTER_jurusan_id');
+        return $this->hasMany(Master_02_ProgramStudi::class, '01_MASTER_jurusan_nomor');
     }
 
     public function dosen()
     {
-        return $this->hasMany(Dosen::class, '01_MASTER_jurusan_id');
+        return $this->hasMany(Master_04_Dosen::class, '01_MASTER_jurusan_nomor');
     }
 
-    // Scope
+    // # Scopes
     public function scopeRekayasa($query)
     {
         return $query->where('golongan', 'Rekayasa');

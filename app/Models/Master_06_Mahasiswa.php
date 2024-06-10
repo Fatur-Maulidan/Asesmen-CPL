@@ -6,14 +6,14 @@ use App\Enums\JenisKelamin;
 use App\Enums\StatusKeaktifan;
 use Illuminate\Database\Eloquent\Model;
 
-class Mahasiswa extends Model
+class Master_06_Mahasiswa extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '05_MASTER_mahasiswa';
+    protected $table = '06_MASTER_mahasiswa';
 
     /**
      * The primary key associated with the table.
@@ -41,7 +41,7 @@ class Mahasiswa extends Model
      *
      * @var array
      */
-    protected $fillable = ['nim', 'nama', 'jenis_kelamin', 'email', 'kelas', 'tahun_angkatan', 'status', '02_MASTER_program_studi_id'];
+    protected $fillable = ['nim', 'nama', 'email', 'jenis_kelamin', 'kelas', 'tahun_angkatan', 'status', '02_MASTER_program_studi_nomor', '03_MASTER_kurikulum_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -60,24 +60,24 @@ class Mahasiswa extends Model
         'status' => StatusKeaktifan::class,
     ];
 
-    // Relationship
+    // # Relations
     public function programStudi()
     {
-        return $this->belongsTo(ProgramStudi::class, '02_MASTER_program_studi_id');
+        return $this->belongsTo(Master_02_ProgramStudi::class, '02_MASTER_program_studi_nomor');
+    }
+
+    public function kurikulum()
+    {
+        return $this->belongsTo(Master_03_Kurikulum::class, '03_MASTER_kurikulum_id');
     }
 
     public function mataKuliahRegister()
     {
-        return $this->belongsToMany(MataKuliahRegister::class, '14_MASTER_perkuliahan', '05_MASTER_mahasiswa_nim', '10_MASTER_mk_register_id')->using(Perkuliahan::class);
-    }
-
-    public function dosen()
-    {
-        return $this->belongsToMany(Dosen::class, '14_MASTER_perkuliahan', '05_MASTER_mahasiswa_nim', '04_MASTER_dosen_nip')->using(Perkuliahan::class);
+        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '20_MASTER_mahasiswa_perkuliahan', '06_MASTER_mahasiswa_nim', '11_MASTER_mk_register_id');
     }
 
     public function rencanaAsesmen()
     {
-        return $this->belongsToMany(RencanaAsesmen::class, '18_MASTER_nilai_mahasiswa', '05_MASTER_mahasiswa_nim', '09_MASTER_rencana_asesmen_id')->using(NilaiMahasiswa::class)->withTimestamps();
+        return $this->belongsToMany(Master_15_RencanaAsesmen::class, '21_MASTER_nilai_mahasiswa', '06_MASTER_mahasiswa_nim', '15_MASTER_rencana_asesmen_id')->withPivot('nilai')->withTimestamps();
     }
 }

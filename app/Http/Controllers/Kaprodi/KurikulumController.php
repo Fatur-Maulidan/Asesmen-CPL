@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Enums\StatusKurikulum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\KurikulumRequest;
-use App\Models\Dosen;
-use App\Models\Kurikulum;
-use App\Models\Mahasiswa;
+use App\Models\Master_04_Dosen;
+use App\Models\Master_03_Kurikulum;
+use App\Models\Master_06_Mahasiswa;
 use Illuminate\Http\Request;
 
 class KurikulumController extends Controller
@@ -16,7 +16,7 @@ class KurikulumController extends Controller
 
     public function __construct()
     {
-        $this->user = Dosen::with('programStudi:id,koordinator_nip')->find('199301062019031017');
+        $this->user = Master_04_Dosen::with('programStudi:id,koordinator_nip')->find('199301062019031017');
     }
 
     /**
@@ -26,8 +26,8 @@ class KurikulumController extends Controller
      */
     public function index()
     {
-        $kurikulum = Kurikulum::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
-        // $mahasiswa = Mahasiswa::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
+        $kurikulum = Master_03_Kurikulum::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
+        // $mahasiswa = Master06Mahasiswa::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
 
         if (request('filter') == 'aktif') {
             $kurikulum->aktif();
@@ -87,7 +87,7 @@ class KurikulumController extends Controller
             $nilai[$i + 1] = $temp[$i + 1];
         }
 
-        Kurikulum::create([
+        Master_03_Kurikulum::create([
             'tahun' => $validated['tahun'],
             'tahun_berlaku' => $validated['tahun'],
             'status' => StatusKurikulum::Peninjauan,

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\MataKuliah;
+use App\Models\Master_07_MataKuliah;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

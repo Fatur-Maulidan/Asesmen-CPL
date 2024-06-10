@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Referensi extends Model
+class Master_07_MataKuliah extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '11_MASTER_referensi';
+    protected $table = '07_MASTER_mata_kuliah';
 
     /**
      * The primary key associated with the table.
@@ -32,7 +32,7 @@ class Referensi extends Model
      *
      * @var array
      */
-    protected $fillable = ['judul', 'penerbit', 'tahun_terbit'];
+    protected $fillable = ['kode', 'nama', 'deskripsi', '03_MASTER_kurikulum_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,14 +48,14 @@ class Referensi extends Model
      */
     protected $casts = [];
 
-    // Relationship
-    public function mataKuliahRegister()
+    // # Relations
+    public function kurikulum()
     {
-        return $this->belongsToMany(MataKuliahRegister::class, '15_MASTER_referensi_utama', '11_MASTER_referensi_id', '10_MASTER_mk_register_id');
+        return $this->belongsTo(Master_03_Kurikulum::class, '03_MASTER_kurikulum_id');
     }
 
-    function pengarang()
+    public function mataKuliahRegister()
     {
-        return $this->belongsToMany(Pengarang::class, '23_MASTER_pengarang_referensi', '11_MASTER_referensi_id', '23_MASTER_pengarang_id')->using(PengarangReferensi::class);
+        return $this->hasMany(Master_11_MataKuliahRegister::class, '07_MASTER_mata_kuliah_id');
     }
 }

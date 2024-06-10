@@ -4,35 +4,35 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pengarang extends Model
+class Master_18_Soal extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '22_MASTER_pengarang';
+    protected $table = '18_MASTER_soal';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = null;
 
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = true;
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['nama'];
+    protected $fillable = ['pertanyaan', 'bentuk_evaluasi'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,9 +48,9 @@ class Pengarang extends Model
      */
     protected $casts = [];
 
-    // Relationship
-    function referensi()
+    // Relations
+    public function kemampuanAkhirDiharapkan()
     {
-        return $this->belongsToMany(Referensi::class, '23_MASTER_pengarang_referensi', '23_MASTER_pengarang_id', '11_MASTER_referensi_id')->using(PengarangReferensi::class);
+        return $this->belongsTo(Master_17_KemampuanAkhirDiharapkan::class, '17_MASTER_kad_id');
     }
 }

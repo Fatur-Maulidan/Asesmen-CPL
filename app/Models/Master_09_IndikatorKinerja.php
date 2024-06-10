@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class IndikatorKinerja extends Model
+class Master_09_IndikatorKinerja extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '08_MASTER_indikator_kinerja';
+    protected $table = '09_MASTER_indikator_kinerja';
 
     /**
      * The primary key associated with the table.
@@ -32,7 +32,7 @@ class IndikatorKinerja extends Model
      *
      * @var array
      */
-    protected $fillable = ['kode', 'deskripsi'];
+    protected $fillable = ['kode', 'deskripsi', '03_MASTER_kurikulum_id', '08_MASTER_capaian_pembelajaran_lulusan_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,23 +48,34 @@ class IndikatorKinerja extends Model
      */
     protected $casts = [];
 
-    // Relationship
+    // # Relations
+    public function kurikulum()
+    {
+        return $this->belongsTo(Master_03_Kurikulum::class, '03_MASTER_kurikulum_id');
+    }
+
     public function capaianPembelajaranLulusan()
     {
-        return $this->belongsToMany(CapaianPembelajaranLulusan::class, '13_MASTER_peta_cp_ik', '08_MASTER_indikator_kinerja_id', '07_MASTER_capaian_pembelajaran_lulusan_id')->using(PetaCpIk::class);
+        return $this->belongsTo(Master_08_CapaianPembelajaranLulusan::class, '08_MASTER_capaian_pembelajaran_lulusan_id');
     }
 
     public function rubrik()
     {
-        return $this->hasMany(Rubrik::class, '08_MASTER_indikator_kinerja_id');
+        return $this->hasMany(Master_10_Rubrik::class, '09_MASTER_indikator_kinerja_id');
     }
 
+    public function mataKuliahRegister()
+    {
+        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '12_MASTER_peta_ik_mk', '09_MASTER_indikator_kinerja_id', '11_MASTER_mk_register_id')->using(Master_12_PetaIkMk::class);
+    }
+
+    // # Methods
     // Fungsi ini digunakan untuk mendapatkan data
         // Indikator Kinerja -> CPL berdasarkan kurikulum yang berjalan
-        // Indikator Kinerja -> Rubrik
+        // Indikator Kinerja -> Master10Rubrik
     public function getDataIndikatorKinerja($kurikulum, $kode = '') {
         $dataIk = [];
-        
+
         $indikatorKinerja = $this->with('capaianPembelajaranLulusan');
         $indikatorKinerja = empty($kode) ? $indikatorKinerja : $indikatorKinerja->where('kode', $kode)->with('rubrik');
         $indikatorKinerja = $indikatorKinerja->get();

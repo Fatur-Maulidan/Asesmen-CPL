@@ -7,7 +7,7 @@ use App\Enums\RoleDosen;
 use App\Enums\StatusKeaktifan;
 use Illuminate\Database\Eloquent\Model;
 
-class Dosen extends Model
+class Master_04_Dosen extends Model
 {
     /**
      * The table associated with the model.
@@ -21,7 +21,7 @@ class Dosen extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'nip';
+    protected $primaryKey = 'kode';
 
     /**
      * The "type" of the primary key ID.
@@ -42,7 +42,7 @@ class Dosen extends Model
      *
      * @var array
      */
-    protected $fillable = ['nip', 'kode', 'nama', 'email', 'jenis_kelamin', 'role', 'status', 'kata_sandi', '01_MASTER_jurusan_id', '02_MASTER_program_studi_id'];
+    protected $fillable = ['kode', 'nip', 'nama', 'email', 'jenis_kelamin', 'status', '01_MASTER_jurusan_nomor'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -58,36 +58,31 @@ class Dosen extends Model
      */
     protected $casts = [
         'jenis_kelamin' => JenisKelamin::class,
-        'role' => RoleDosen::class,
         'status' => StatusKeaktifan::class,
     ];
 
-    // Relationship
+    // # Relations
     public function jurusan()
     {
-        return $this->belongsTo(Jurusan::class, '01_MASTER_jurusan_id');
+        return $this->belongsTo(Master_01_Jurusan::class, '01_MASTER_jurusan_nomor');
     }
 
     public function kaprodi()
     {
-        return $this->hasOne(ProgramStudi::class, 'koordinator_nip');
+        return $this->hasOne(Master_02_ProgramStudi::class, '04_MASTER_dosen_kode');
     }
 
     public function programStudi()
     {
-        return $this->belongsTo(ProgramStudi::class, '02_MASTER_program_studi_id');
+        return $this->belongsToMany(Master_02_ProgramStudi::class, '05_MASTER_prodi_dosen', '04_MASTER_dosen_kode', '02_MASTER_program_studi_nomor');
     }
 
     public function mataKuliahRegister()
     {
-        return $this->belongsToMany(MataKuliahRegister::class, '14_MASTER_perkuliahan', '04_MASTER_dosen_nip', '10_MASTER_mk_register_id')->using(Perkuliahan::class);
+        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '19_MASTER_pengampu', '04_MASTER_dosen_kode', '11_MASTER_mk_register_id');
     }
 
-    public function mahasiswa()
-    {
-        return $this->belongsToMany(Mahasiswa::class, '14_MASTER_perkuliahan', '04_MASTER_dosen_nip', '05_MASTER_mahasiswa_nim')->using(Perkuliahan::class);
-    }
-
+    // # Methods
     public function getProdiIdByDosenNip($nip){
         return $this->with('programStudi:id,koordinator_nip')->find($nip);
     }

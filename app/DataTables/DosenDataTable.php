@@ -4,7 +4,7 @@ namespace App\DataTables;
 
 use App\Enums\RoleDosen;
 use App\Enums\StatusKeaktifan;
-use App\Models\Dosen;
+use App\Models\Master_04_Dosen;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -24,13 +24,13 @@ class DosenDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             // ->addColumn('action', 'dosen.action');
-            ->addColumn('jurusan', function (Dosen $dosen) {
+            ->addColumn('jurusan', function (Master_04_Dosen $dosen) {
                 return $dosen->jurusan->nama;
             })
-            ->addColumn('program_studi', function (Dosen $dosen) {
+            ->addColumn('program_studi', function (Master_04_Dosen $dosen) {
                 return $dosen->programStudi->jenjang_pendidikan . ' ' . $dosen->programStudi->nama;
             })
-            ->addColumn('status', function (Dosen $dosen) {
+            ->addColumn('status', function (Master_04_Dosen $dosen) {
                 if ($dosen->status->is(StatusKeaktifan::Aktif)) {
                     $button = '<button type="submit" class="btn btn-danger">Nonaktifkan</button>';
                 } else {
@@ -45,7 +45,7 @@ class DosenDataTable extends DataTable
 
                 return $form;
             })
-            ->addColumn('tindakan', function (Dosen $dosen) {
+            ->addColumn('tindakan', function (Master_04_Dosen $dosen) {
                 $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#tambahDosenModal" data-id="' . $dosen->nip . '">Ubah</a>
                 <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusDosenModal" data-id="' . $dosen->nip . '">Hapus</a>';
 
@@ -57,10 +57,10 @@ class DosenDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Dosen $model
+     * @param \App\Models\Master_04_Dosen $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Dosen $model)
+    public function query(Master_04_Dosen $model)
     {
         $query = $model->newQuery();
 
