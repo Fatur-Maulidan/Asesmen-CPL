@@ -14,12 +14,12 @@
             <label class="btn btn-outline-primary rounded-pill px-3" data-filter="Semua" for="option1">Semua</label>
 
             <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="SS" for="option2">Sikap
-                (SS)</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="SP" for="option2">Sikap
+                (SP)</label>
 
             <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
             <label class="btn btn-outline-primary rounded-pill px-3" data-filter="PP" for="option3">Pengetahuan
-                (P)</label>
+                (PP)</label>
 
             <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
             <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KU" for="option4">Keterampilan Umum
@@ -70,7 +70,8 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="col">
-                                <button type="button" class="btn btn-danger w-100">Batal</button>
+                                <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal"
+                                    aria-label="Close">Batal</button>
                             </div>
                             <div class="col">
                                 <button type="submit" class="btn btn-success w-100">Tambah</button>
@@ -86,12 +87,12 @@
     <div class="row">
         <div class="col-12">
             <div class="accordion accordion-flush" id="accordionExample">
-                @if ($dataCPL->isEmpty())
+                @if ($data_cpl->isEmpty())
                     <div class="text-center">
                         <p class="fs-4">Belum Ada Data Capaian Pembelajaran</p>
                     </div>
                 @else
-                    @foreach ($dataCPL as $index => $cpl)
+                    @foreach ($data_cpl as $index => $cpl)
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"

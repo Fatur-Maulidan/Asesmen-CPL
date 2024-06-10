@@ -15,16 +15,16 @@
                     <h2 class="accordion-header">
                         <button class="accordion-button fw-bold bg-light" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Sikap (S)<span class="badge text-bg-primary ms-2">{{ countCPL('SS', $dataCPL) }}</span>
+                            Sikap (SP)<span class="badge text-bg-primary ms-2">{{ countCPL('SP', $data_cpl) }}</span>
                         </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse <?php echo strpos($cpl->kode, 'SS') === 0 ? 'show' : ''; ?>"
+                    <div id="collapseOne" class="accordion-collapse collapse <?php echo strpos($cpl->kode, 'SP') === 0 ? 'show' : ''; ?>"
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            @foreach ($dataCPL as $data)
+                            @foreach ($data_cpl as $data)
                                 @if ($data->domain == 'Sikap')
                                     <div class="mb-3">
-                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $data->kode]) }}"
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->kode]) }}"
                                             class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
                                             data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
                                     </div>
@@ -37,16 +37,16 @@
                     <h2 class="accordion-header">
                         <button class="accordion-button fw-bold bg-light collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Pengetahuan (P)<span class="badge text-bg-primary ms-2">{{ countCPL('PP', $dataCPL) }}</span>
+                            Pengetahuan (PP)<span class="badge text-bg-primary ms-2">{{ countCPL('PP', $data_cpl) }}</span>
                         </button>
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse <?php echo strpos($cpl->kode, 'PP') === 0 ? 'show' : ''; ?>"
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            @foreach ($dataCPL as $data)
+                            @foreach ($data_cpl as $data)
                                 @if ($data->domain == 'Pengetahuan')
                                     <div class="mb-3">
-                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $data->kode]) }}"
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->kode]) }}"
                                             class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
                                             data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
                                     </div>
@@ -60,16 +60,16 @@
                         <button class="accordion-button fw-bold bg-light collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                             KU (Keterampilan Umum)<span
-                                class="badge text-bg-primary ms-2">{{ countCPL('KU', $dataCPL) }}</span>
+                                class="badge text-bg-primary ms-2">{{ countCPL('KU', $data_cpl) }}</span>
                         </button>
                     </h2>
                     <div id="collapseThree" class="accordion-collapse collapse <?php echo strpos($cpl->kode, 'KU') === 0 ? 'show' : ''; ?>"
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            @foreach ($dataCPL as $data)
+                            @foreach ($data_cpl as $data)
                                 @if ($data->domain == 'Keterampilan Umum')
                                     <div class="mb-3">
-                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $data->kode]) }}"
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->kode]) }}"
                                             class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
                                             data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
                                     </div>
@@ -83,16 +83,16 @@
                         <button class="accordion-button fw-bold bg-light collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                             KK (Keterampilan Khusus)<span
-                                class="badge text-bg-primary ms-2">{{ countCPL('KK', $dataCPL) }}</span>
+                                class="badge text-bg-primary ms-2">{{ countCPL('KK', $data_cpl) }}</span>
                         </button>
                     </h2>
                     <div id="collapseFour" class="accordion-collapse collapse <?php echo strpos($cpl->kode, 'KK') === 0 ? 'show' : ''; ?>"
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            @foreach ($dataCPL as $data)
+                            @foreach ($data_cpl as $data)
                                 @if ($data->domain == 'Keterampilan Khusus')
                                     <div class="mb-3">
-                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $data->kode]) }}"
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->kode]) }}"
                                             class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
                                             data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
                                     </div>
@@ -109,7 +109,7 @@
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <form method="POST"
-                    action="{{ route('kaprodi.cpl.update', ['kurikulum' => $kurikulum, 'cpl' => $cpl->kode]) }}">
+                    action="{{ route('kaprodi.cpl.update', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->kode]) }}">
                     @csrf
                     @method('PATCH')
                     <div class="modal-content">
@@ -189,7 +189,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('kaprodi.cpl.edit', ['kurikulum' => $kurikulum, 'cpl' => 'ss-1']) }}"
+                    <a href="{{ route('kaprodi.cpl.edit', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->kode]) }}"
                         class="btn btn-outline-primary ">Ubah Pemetaannya pada MK</a>
                     {{-- Button trigger modal --}}
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
