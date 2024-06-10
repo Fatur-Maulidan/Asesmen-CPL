@@ -86,4 +86,11 @@ class Master_04_Dosen extends Model
     public function getProdiIdByDosenNip($nip){
         return $this->with('programStudi:id,koordinator_nip')->find($nip);
     }
+
+    // Method ini digunakan untuk mengambil mata kuliah yang diampu oleh seorang dosen
+    public function getMataKuliahRegister($nip){
+        return $this->where('nip',$nip)->with(['mataKuliahRegister' => function($query) {
+            $query->distinct('06_MASTER_mata_kuliah_id');
+        }])->first();
+    }
 }

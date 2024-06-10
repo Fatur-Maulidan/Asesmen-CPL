@@ -12,9 +12,9 @@
 @section('main')
     <div class="d-flex flex-column">
         <div class="d-flex flex-row">
-            <h3 class="fw-bold me-2">21IF1001</h3>
+            <h3 class="fw-bold me-2">{{ $mataKuliah->kode }}</h3>
             <h3 class="">/</h3>
-            <h3 class="ms-2">Dasar - Dasar Pemgrograman</h3>
+            <h3 class="ms-2">{{ $mataKuliah->nama }}</h3>
         </div>
 
         <hr class="hr" />
@@ -22,11 +22,11 @@
         <div class="d-flex flex-row mb-4">
             <div class="d-flex flex-column">
                 <div class="fw-bold">Diubah pada</div>
-                <div class="">01 / Januari / 2024 01:18</div>
+                <div class="">{{ $mataKuliah->created_at }}</div>
             </div>
             <div class="d-flex flex-column ms-4">
                 <div class="fw-bold">Diperbarui Pada</div>
-                <div class="">01 / Januari / 2024 01:18</div>
+                <div class="">{{ $mataKuliah->updated_at }}</div>
             </div>
             <div class="d-flex flex-column ms-4">
                 <div class="fw-bold">Diubah Oleh</div>
@@ -36,18 +36,18 @@
 
         <div class="d-flex flex-column mb-4">
             <div class="fw-bold">Deskripsi</div>
-            <div class="">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusantium voluptate magnam
-                dolorem libero repellat quo cupiditate assumenda, recusandae maxime sequi!</div>
+            <div class="">{{ $mataKuliah->deskripsi }}</div>
         </div>
 
         <div class="d-flex flex-row mb-4">
             <div class="d-flex flex-column">
                 <div class="fw-bold">Program Studi</div>
-                <div class="">D3 Teknik Informatika</div>
+                <div class="">{{ $mataKuliah->kurikulum->programStudi->jenjang_pendidikan }} -
+                    {{ $mataKuliah->kurikulum->programStudi->nama }}</div>
             </div>
             <div class="d-flex flex-column ms-4">
                 <div class="fw-bold">Kurikulum</div>
-                <div class="">2021</div>
+                <div class="">{{ $mataKuliah->kurikulum->tahun }}</div>
             </div>
         </div>
 
@@ -74,15 +74,17 @@
         <div class="d-flex flex-row mb-4">
             <div class="d-flex flex-column">
                 <div class="fw-bold">Tahun Akademik</div>
-                <div class="">2021/2022</div>
+                <div class="">{{ $mataKuliah->mataKuliahRegister[0]->tahun_akademik }}</div>
             </div>
             <div class="d-flex flex-column ms-4">
                 <div class="fw-bold">Semester</div>
-                <div class="">1/Ganjil</div>
+                <div class="">
+                    {{ $mataKuliah->mataKuliahRegister[0]->semester }}/{{ $mataKuliah->mataKuliahRegister[0]->semester % 2 == 0 ? 'Genap' : 'Ganjil' }}
+                </div>
             </div>
             <div class="d-flex flex-column ms-4">
                 <div class="fw-bold">Jumlah SKS</div>
-                <div class="">4</div>
+                <div class="">{{ $mataKuliah->jumlah_sks }}</div>
             </div>
         </div>
 

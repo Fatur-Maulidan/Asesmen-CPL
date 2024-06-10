@@ -3,10 +3,27 @@
 namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dosen;
+use App\Models\MataKuliah;
+use App\Models\Perkuliahan;
 use Illuminate\Http\Request;
 
 class MataKuliahController extends Controller
 {
+    protected $mataKuliah;
+    protected $dosenNip;
+    protected $dosen;
+    protected $perkuliahan;
+    protected $tahun;
+    public function __construct()
+    {
+        $this->tahun = 2024;
+        $this->mataKuliah = new MataKuliah();
+        $this->dosenNip = '196012261992031001';
+        $this->dosen = new Dosen();
+        $this->perkuliahan = new Perkuliahan();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,10 +31,14 @@ class MataKuliahController extends Controller
      */
     public function index()
     {
+        $this->dosen  = $this->dosen->getMataKuliahRegister($this->dosenNip);
+        $this->mataKuliah = $this->mataKuliah->getMataKuliahByDosen($this->dosen->mataKuliahRegister);
         return view('dosen.mata-kuliah.index', [
             'title' => 'Mata Kuliah',
             'nama' => 'John Doe',
-            'role' => 'Dosen'
+            'role' => 'Dosen',
+            'title'=> 'Home',
+            'mataKuliah' => $this->mataKuliah,
         ]);
     }
 
@@ -28,67 +49,13 @@ class MataKuliahController extends Controller
      */
     public function informasiUmum($kodeMataKuliah)
     {
+        $this->mataKuliah = MataKuliah::where('kode', $kodeMataKuliah)->with('mataKuliahRegister')->with('kurikulum.programStudi')->first();
         return view('dosen.mata-kuliah.informasi-umum', [
             'title' => 'Informasi Umum Mata Kuliah',
             'nama' => 'John Doe',
             'role' => 'Dosen',
-            'kodeMataKuliah' => $kodeMataKuliah
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            'kodeMataKuliah' => $kodeMataKuliah,
+            'mataKuliah' => $this->mataKuliah,
+        ]);  
     }
 }

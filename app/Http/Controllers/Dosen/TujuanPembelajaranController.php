@@ -26,7 +26,7 @@ class TujuanPembelajaranController extends Controller
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => 'John Doe',
-            'role' => 'Master04Dosen',
+            'role' => 'Dosen',
             'dataTP' => $dataTP,
             'kodeMataKuliah' => $kodeMataKuliah
         ]);
@@ -87,7 +87,7 @@ class TujuanPembelajaranController extends Controller
         $dataTP->deskripsi = $request->input('deskripsi');
         $dataTP->tanggal_diajukan = date('Y-m-d H:i:s');
 
-        if($dataTP->save()) {
+        if($dataTp->save()) {
             return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil diperbaharui');
         } else {
             return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal diperbaharui');
@@ -118,7 +118,7 @@ class TujuanPembelajaranController extends Controller
             'nama' => 'John Doe',
             'role' => 'Master04Dosen',
             'tp' => $tp,
-            'dataTP' => $dataTP,
+            'dataTp' => $dataTP,
             'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }

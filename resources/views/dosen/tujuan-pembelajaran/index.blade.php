@@ -1,12 +1,9 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    <nav aria-label="breadcrumb mb-4">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item active" aria-current="page">{{ Breadcrumbs::render() }}</li>
-        </ol>
-    </nav>
-    <h1>{{ $title }}</h1>
+    {{ Breadcrumbs::render('dosen.mata-kuliah.tujuan-pembelajaran', $kodeMataKuliah) }}
+    <h1 class="fw-bold mb-0">
+        {{ $title }}</h1>
 @endsection
 
 @section('main')
@@ -83,40 +80,48 @@
     </div>
     <div class="d-flex flex-column">
         <div class="accordion accordion-flush" id="accordionFlushExample">
-            @foreach ($dataTP as $index => $tp)
-                <div class="accordion-item">
-                    <h2 class="accordion-header d-flex flex-row" id="flush-headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapse{{ $index }}" aria-expanded="false"
-                            aria-controls="flush-collapse{{ $index }}">
-                            {{ $tp['kode'] }}
-                            <div class="{{ checkStatusTP($tp['status_validasi']) }}">{{ $tp['status_validasi'] }}</div>
-                        </button>
-                    </h2>
-                    <div id="flush-collapse{{ $index }}" class="accordion-collapse collapse"
-                        aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-                            <div class="d-flex flex-column mb-3">
-                                <div class="fw-bold">Deskripsi</div>
-                                <div class="">{{ $tp['deskripsi'] }}</div>
+            @if ($dataTp->isEmpty())
+                <div class="text-center">
+                    <p class="fs-4">Belum Ada Tujuan Pembelajaran</p>
+                </div>
+            @else
+                @foreach ($dataTp as $index => $tp)
+                    <div class="accordion-item">
+                        <h2 class="accordion-header d-flex flex-row" id="flush-headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapse{{ $index }}" aria-expanded="false"
+                                aria-controls="flush-collapse{{ $index }}">
+                                {{ $tp->kode }}
+                                <div class="{{ checkStatusTP($tp->tanggal_divalidasi, $tp->alasan_penolakan)['class'] }}">
+                                    {{ checkStatusTP($tp->tanggal_divalidasi, $tp->alasan_penolakan)['text'] }}</div>
+                            </button>
+                        </h2>
+                        <div id="flush-collapse{{ $index }}" class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <div class="d-flex flex-column mb-3">
+                                    <div class="fw-bold">Deskripsi</div>
+                                    <div class="">{{ $tp->deskripsi }}</div>
+                                </div>
+                                <div class="">
+                                    <div class="fw-bold">Indikator Kinerja</div>
+                                    <ul>
+                                        @for ($j = 1; $j <= 3; $j++)
+                                            <li>{{ 'SS-1.' . $j }}</li>
+                                        @endfor
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="">
-                                <div class="fw-bold">Indikator Kinerja</div>
-                                <ul>
-                                    @for ($j = 1; $j <= 3; $j++)
-                                        <li>{{ 'SS-1.' . $j }}</li>
-                                    @endfor
-                                </ul>
+                            <div class="d-flex flex-row align-items-center px-3 rounded-sm border border-1"
+                                style="height:60px">
+                                <a
+                                    href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $tp->id]) }}">Lihat
+                                    Detail</a>
                             </div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center px-3 rounded-sm border border-1" style="height:60px">
-                            <a
-                                href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $tp->id]) }}">Lihat
-                                Detail</a>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            @endif
         </div>
     </div>
 @endsection

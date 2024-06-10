@@ -21,7 +21,7 @@ if (!function_exists('isNavbarRole')) {
         $dosen = [
             [
                 'title' => 'Dashboard',
-                'link' => 'admin.dashboard.index',
+                'link' => 'dosen.mata-kuliah.dashboard',
             ],
             [
                 'title' => 'Informasi Umum',
@@ -278,14 +278,24 @@ if (!function_exists('getDosen')) {
 }
 
 if (!function_exists('checkStatusTP')) {
-    function checkStatusTP($status)
+    function checkStatusTP($status, $alasan)
     {
-        if ($status == 'Disetujui') {
-            return 'badge text-bg-success ms-3';
-        } elseif ($status == 'Menunggu Validasi') {
-            return 'badge text-bg-warning ms-3';
-        } elseif ($status == 'Ditolak') {
-            return 'badge text-bg-danger ms-3';
+        if ($status == null && $alasan == null) {
+            return [
+                'class' => 'badge text-bg-warning ms-3',
+                'text' => 'Menunggu Persetujuan',
+            ];
+        }
+        else if ($status != null && $alasan == null) {
+            return [
+                'class'=> 'badge text-bg-success ms-3',
+                'text'=> 'Disetujui',
+            ];
+        }  else {
+            return [
+                'class'=> 'badge text-bg-danger ms-3',
+                'text'=> 'Ditolak',
+            ];
         }
     }
 }
