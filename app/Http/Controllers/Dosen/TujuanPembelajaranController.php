@@ -22,12 +22,12 @@ class TujuanPembelajaranController extends Controller
      */
     public function index($kodeMataKuliah)
     {
-        $dataTP = TujuanPembelajaran::all();
+        $dataTp = TujuanPembelajaran::all();
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => 'John Doe',
             'role' => 'Dosen',
-            'dataTP' => $dataTP,
+            'dataTp' => $dataTp,
             'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }
@@ -83,11 +83,11 @@ class TujuanPembelajaranController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $dataTP = TujuanPembelajaran::find($id);
-        $dataTP->deskripsi = $request->input('deskripsi');
-        $dataTP->tanggal_diajukan = date('Y-m-d H:i:s');
+        $dataTp = TujuanPembelajaran::find($id);
+        $dataTp->deskripsi = $request->input('deskripsi');
+        $dataTp->tanggal_diajukan = date('Y-m-d H:i:s');
 
-        if($dataTP->save()) {
+        if($dataTp->save()) {
             return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil diperbaharui');
         } else {
             return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal diperbaharui');
@@ -112,13 +112,13 @@ class TujuanPembelajaranController extends Controller
 
     public function detailInformasi($kodeMataKuliah, $id) {
         $tp = TujuanPembelajaran::find($id);
-        $dataTP = TujuanPembelajaran::get();
+        $dataTp = TujuanPembelajaran::get();
         return view('dosen.tujuan-pembelajaran.detail-informasi', [
             'title' => 'Detail Informasi Tujuan Pembelajaran',
             'nama' => 'John Doe',
             'role' => 'Dosen',
             'tp' => $tp,
-            'dataTP' => $dataTP,
+            'dataTp' => $dataTp,
             'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }

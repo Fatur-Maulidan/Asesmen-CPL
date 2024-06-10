@@ -1,12 +1,9 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    <nav aria-label="breadcrumb mb-4">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item active" aria-current="page">{{ Breadcrumbs::render() }}</li>
-        </ol>
-    </nav>
-    <h1>{{ $title }}</h1>
+    {{ Breadcrumbs::render('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', $kodeMataKuliah, $tp->kode) }}
+    <h1 class="fw-bold mb-0">
+        {{ $title }}</h1>
 @endsection
 
 @section('main')
@@ -97,11 +94,12 @@
 
     <div class="d-flex flex-row justify-content-center">
         <div class="d-flex flex-column pt-3 px-4 border border-1 rounded" style="width: 30%; height:100vh;">
-            @foreach ($dataTP as $index => $data)
+            @foreach ($dataTp as $index => $data)
                 <div id="{{ $tp['kode'] }}"
-                    class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2 btn-tp {{ $data['kode'] == $tp['kode'] ? 'border border-1' : '' }}">
-                    <div class="">{{ $data['kode'] }}</div>
-                    <div class="{{ checkStatusTP($data['status_validasi']) }}">{{ $data['status_validasi'] }}</div>
+                    class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2 btn-tp {{ $data->kode == $tp->kode ? 'border border-1' : '' }}">
+                    <div class="">{{ $data->kode }}</div>
+                    <div class="{{ checkStatusTP($data->tanggal_divalidasi, $data->alasan_penolakan)['class'] }}">
+                        {{ checkStatusTP($data->tanggal_divalidasi, $data->alasan_penolakan)['text'] }}</div>
                 </div>
             @endforeach
         </div>
