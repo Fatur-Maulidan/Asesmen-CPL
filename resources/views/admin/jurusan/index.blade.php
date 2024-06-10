@@ -6,16 +6,25 @@
 @endsection
 
 @section('main')
+    {{--  Alert message  --}}
+    @if( session('message') )
+        <div class="alert alert-secondary mb-5" role="alert">
+            {{ session('message') }}
+        </div>
+    @endif
+
     {{-- Action buttons --}}
     <div class="row mb-4">
         <div class="col">
             <form role="search" method="GET" action="" autocomplete="off">
                 <input class="form-control search" type="search" id="search" name="search"
-                    placeholder="Cari"value="{{ request('search') }}">
+                    placeholder="Cari" value="{{ request('search') }}">
             </form>
         </div>
         <div class="col text-end">
-            {{-- Button trigger modal --}}
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importProgramStudiModal">
+                Import Program Studi
+            </button>
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importJurusanModal">
                 Import Jurusan
             </button>
@@ -42,6 +51,34 @@
         </div>
     </div>
 
+    {{-- Import Program Studi Modal --}}
+    <div class="modal fade" id="importProgramStudiModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="importProgramStudiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="importProgramStudiModalLabel">Import Program Studi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('admin.program-studi.import') }}" method="POST" autocomplete="off"
+                          enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-5">
+                            <label for="formFileProgramStudi" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFileProgramStudi" name="formFileProgramStudi" accept=".xlsx">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('admin.program-studi.downloadTemplate') }}" class="btn btn-outline-success">Download
+                                Template</a>
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Import Jurusan Modal --}}
     <div class="modal fade" id="importJurusanModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="importJurusanModalLabel" aria-hidden="true">
@@ -56,8 +93,8 @@
                         enctype="multipart/form-data">
                         @csrf
                         <div class="mb-5">
-                            <label for="formFile" class="form-label fw-bold">Upload File Excel</label>
-                            <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
+                            <label for="formFileJurusan" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFileJurusan" name="formFileJurusan" accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('admin.jurusan.downloadTemplate') }}" class="btn btn-outline-success">Download
@@ -268,6 +305,39 @@
         </div>
     </div>
 
+    {{-- Hapus Modal --}}
+    <div class="modal fade" id="hapusModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
+         aria-labelledby="hapusModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="hapusModalLabel">Konfirmasi Penghapusan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="text-center">
+                        <i class="bi bi-exclamation-triangle-fill text-warning fs-1"></i>
+                        <div>Anda yakin ingin hapus data?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Tidak</button>
+                        </div>
+                        <div class="col">
+                            <form action="" method="post" id="hapusForm">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-success w-100" data-bs-dismiss="modal">Ya</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Data jurusan --}}
     <div class="row gy-5">
         @forelse ($jurusan as $jrsn)
@@ -306,17 +376,17 @@
                             Tidak ada program studi.
                         </div>
                     @else
-                        <div class="accordion" id="daftarProdi">
+                        <div class="accordion" id="daftarProdi{{ $jrsn->id }}">
                             @foreach ($jrsn->programStudi as $prodi)
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button bg-light fw-bold" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#prodi{{ $loop->iteration }}"
+                                            data-bs-toggle="collapse" data-bs-target="#prodi{{ $prodi->id }}"
                                             aria-expanded="true" aria-controls="prodi{{ $loop->iteration }}">
                                             {{ $prodi->jenjang_pendidikan . ' ' . $prodi->nama }}
                                         </button>
                                     </h2>
-                                    <div id="prodi{{ $loop->iteration }}" class="accordion-collapse collapse"
+                                    <div id="prodi{{ $prodi->id }}" class="accordion-collapse collapse"
                                         data-bs-parent="#daftarProdi">
                                         <div class="accordion-body">
                                             <div class="mb-3">
@@ -332,7 +402,7 @@
                                             <div class="mb-3">
                                                 <div class="fw-bold">Koordinator program studi</div>
                                                 <div>
-                                                    {{ $prodi->kaprodi != null ? $prodi->dosen->nama : 'Belum ada koordinator.' }}
+                                                    {{ $prodi->kaprodi != null ? $prodi->kaprodi->nama : 'Belum ada koordinator.' }}
                                                 </div>
                                             </div>
 
@@ -344,6 +414,11 @@
                                                     <li>Kurikulum 2021</li>
                                                 </ul>
                                             </div> --}}
+
+                                            <div>
+                                                <a href="#" class="btn-hapus-prodi" data-bs-toggle="modal"
+                                                   data-bs-target="#hapusModal" data-id="{{ $prodi->id }}">Hapus</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -357,6 +432,8 @@
                         <a href="#" class="btn-add-prodi" data-bs-toggle="modal"
                             data-bs-target="#tambahProgramStudiModal" data-id="{{ $jrsn->id }}">Tambah Program
                             Studi</a>
+                        <a href="#" class="btn-hapus-jurusan" data-bs-toggle="modal"
+                           data-bs-target="#hapusModal" data-id="{{ $jrsn->id }}">Hapus</a>
                     </div>
                 </div>
             </div>
@@ -545,6 +622,17 @@
                     }
                 });
             });
+
+            $('.btn-hapus-jurusan, .btn-hapus-prodi').on('click', function (e) {
+                e.preventDefault();
+
+                const id = $(this).data('id');
+                const route = $(this).hasClass('btn-hapus-jurusan')
+                    ? url + "/" + id
+                    : "{{ url('/') }}/admin/program-studi/" + id;
+
+                $('#hapusForm').attr('action', route);
+            })
         });
     </script>
 @endpush

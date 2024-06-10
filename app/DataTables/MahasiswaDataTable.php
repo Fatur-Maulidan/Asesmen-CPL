@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Enums\StatusKeaktifan;
 use App\Models\Mahasiswa;
+use \Illuminate\Support\Facades\Route;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -29,7 +30,7 @@ class MahasiswaDataTable extends DataTable
                     $button = '<button type="submit" class="btn btn-success">Aktifkan</button>';
                 }
 
-                $form = '<form action="' . route('kaprodi.mahasiswa.toggleStatus', ['kurikulum' => $this->kurikulum, 'mahasiswa' => $mhs->nim]) . '" method="post">
+                $form = '<form action="' . $this->getRoute($mhs->nim, $this->kurikulum) . '" method="post">
                     ' . csrf_field() . '
                     ' . method_field('patch') . '
                     ' . $button . '
@@ -39,7 +40,7 @@ class MahasiswaDataTable extends DataTable
             })
             ->addColumn('tindakan', function (Mahasiswa $mhs) {
                 $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#ubahMahasiswaModal" data-nim="' . $mhs->nim . '">Ubah</a>
-                <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusDosenModal" data-nim="' . $mhs->nim . '">Hapus</a>';
+                <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusMahasiswaModal" data-nim="' . $mhs->nim . '">Hapus</a>';
 
                 return $content;
             })
@@ -112,5 +113,16 @@ class MahasiswaDataTable extends DataTable
     protected function filename()
     {
         return 'Mahasiswa_' . date('YmdHis');
+    }
+
+    private function getRoute($nim, $kurikulum)
+    {
+        if (Route::is('admin.mahasiswa.*')) {
+            $route = route('admin.mahasiswa.toggleStatus', ['mahasiswa' => $nim]);
+        } else if (Route::is('kaprodi.mahasiswa.*')) {
+            $route = route('kaprodi.mahasiswa.toggleStatus', ['kurikulum' => $kurikulum, 'mahasiswa' => $nim]);
+        }
+
+        return $route;
     }
 }

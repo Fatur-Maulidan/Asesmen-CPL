@@ -15,6 +15,10 @@ Breadcrumbs::for('admin.jurusan.index', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('admin.dosen.index', function (BreadcrumbTrail $trail) {
     $trail->push('Dosen', route('admin.dosen.index'));
 });
+
+Breadcrumbs::for('admin.mahasiswa.index', function (BreadcrumbTrail $trail) {
+    $trail->push('Mahasiswa', route('admin.mahasiswa.index'));
+});
 // --- end of Admin
 
 // --- Kaprodi
@@ -75,10 +79,15 @@ Breadcrumbs::for('kaprodi.tp.index', function (BreadcrumbTrail $trail, $kurikulu
     $trail->push('Tujuan Pembelajaran', route('kaprodi.tp.index', ['kurikulum' => $kurikulum]));
 });
 
-// MK
-Breadcrumbs::for('kaprodi.mk.index', function (BreadcrumbTrail $trail, $kurikulum) {
+// Mata Kuliah
+Breadcrumbs::for('kaprodi.mata-kuliah.index', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
-    $trail->push('Mata Kuliah', route('kaprodi.mk.index', ['kurikulum' => $kurikulum]));
+    $trail->push('Mata Kuliah', route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum]));
+});
+
+Breadcrumbs::for('kaprodi.mata-kuliah.show', function (BreadcrumbTrail $trail, $kurikulum, $nama_mata_kuliah, $kode_mata_kuliah) {
+    $trail->parent('kaprodi.mata-kuliah.index', $kurikulum);
+    $trail->push($nama_mata_kuliah, route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum, 'mata_kuliah' => $kode_mata_kuliah]));
 });
 
 Breadcrumbs::for('kaprodi.mk.show', function (BreadcrumbTrail $trail, $kurikulum, $mk) {
@@ -111,7 +120,7 @@ Breadcrumbs::for('dosen.mata-kuliah.dashboard', function (BreadcrumbTrail $trail
     $trail->push('Dashboard', route('dosen.mata-kuliah.dashboard', ['kodeMataKuliah' =>  $kodeMataKuliah]));
 });
 
-// Breadcrumb Dosen/Mata Kuliah/Informasi Umum 
+// Breadcrumb Dosen/Mata Kuliah/Informasi Umum
 Breadcrumbs::for('dosen.mata-kuliah.informasi-umum', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
     $trail->parent('dosen.mata-kuliah');
     $trail->push($kodeMataKuliah, route('dosen.mata-kuliah'));

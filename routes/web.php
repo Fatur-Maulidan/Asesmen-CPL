@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DosenController as AdminDosenController;
 use App\Http\Controllers\Admin\JurusanController as AdminJurusanController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\ProgramStudiController as AdminProgramStudiController;
+use App\Http\Controllers\Admin\MahasiswaController as AdminMahasiswaController;
 
 use App\Http\Controllers\Kaprodi\KurikulumController as KaprodiKurikulumController;
 use App\Http\Controllers\Kaprodi\DashboardController as KaprodiDashboardController;
@@ -51,19 +52,28 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
 
     // # Jurusan
     Route::resource('jurusan', AdminJurusanController::class)
-        ->only(['index', 'store', 'update']);
+        ->only(['index', 'store', 'update', 'destroy']);
     Route::get('jurusan/download-template', [AdminJurusanController::class, 'downloadTemplate'])->name('jurusan.downloadTemplate');
     Route::post('jurusan/import', [AdminJurusanController::class, 'import'])->name('jurusan.import');
 
     // # Program studi
+    Route::get('program-studi/download-template', [AdminProgramStudiController::class, 'downloadTemplate'])
+        ->name('program-studi.downloadTemplate');
+    Route::post('program-studi/import', [AdminProgramStudiController::class, 'import'])->name('program-studi.import');
     Route::resource('program-studi', AdminProgramStudiController::class)
-        ->only(['store']);
+        ->only(['store', 'destroy']);
 
     // # Dosen
     Route::get('dosen/download-template', [AdminDosenController::class, 'downloadTemplate'])->name('dosen.downloadTemplate');
     Route::post('dosen/import', [AdminDosenController::class, 'import'])->name('dosen.import');
     Route::patch('dosen/toggle-status/{dosen}', [AdminDosenController::class, 'toggleStatus'])->name('dosen.toggleStatus');
     Route::resource('dosen', AdminDosenController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+
+    // # Mahasiswa
+    Route::get('mahasiswa/download-template', [AdminMahasiswaController::class, 'downloadTemplate'])->name('mahasiswa.downloadTemplate');
+    Route::post('mahasiswa/import', [AdminMahasiswaController::class, 'import'])->name('mahasiswa.import');
+    Route::patch('mahasiswa/toggle-status/{mahasiswa}', [AdminMahasiswaController::class, 'toggleStatus'])->name('mahasiswa.toggleStatus');
+    Route::resource('mahasiswa', AdminMahasiswaController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 });
 
 // # Route untuk kaprodi
@@ -91,8 +101,10 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
         ->only(['index', 'show', 'edit',]);
 
     // # Mata kuliah
-    Route::resource('kurikulum/{kurikulum}/mk', KaprodiMataKuliahController::class)
-        ->only(['index', 'show']);
+    Route::get('kurikulum/{kurikulum}/mata-kuliah/download-template', [KaprodiMataKuliahController::class, 'downloadTemplate'])->name('mata-kuliah.downloadTemplate');
+    Route::post('kurikulum/{kurikulum}/mata-kuliah/import', [KaprodiMataKuliahController::class, 'import'])->name('mata-kuliah.import');
+    Route::resource('kurikulum/{kurikulum}/mata-kuliah', KaprodiMataKuliahController::class)
+        ->only(['index', 'store', 'show', 'update']);
 
     // # Mahasiswa
     Route::get('kurikulum/{kurikulum}/mahasiswa/download-template', [KaprodiMahasiswaController::class, 'downloadTemplate'])->name('mahasiswa.downloadTemplate');

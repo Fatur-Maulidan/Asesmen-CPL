@@ -1,15 +1,14 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.mahasiswa.index', $kurikulum->tahun) }}
+    {{ Breadcrumbs::render('admin.mahasiswa.index') }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
 @section('main')
-    {{-- Filter buttons --}}
+    {{-- Buttons --}}
     <div class="row mb-5">
         <div class="col text-end">
-            {{-- Button trigger modal --}}
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importMahasiswaModal">
                 Import Mahasiswa
             </button>
@@ -19,9 +18,9 @@
         </div>
     </div>
 
-    {{-- Import Jurusan Modal --}}
+    {{-- Import Mahasiswa Modal --}}
     <div class="modal fade" id="importMahasiswaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="importMahasiswaModalLabel" aria-hidden="true">
+         aria-labelledby="importMahasiswaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -29,16 +28,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.mahasiswa.import', ['kurikulum' => $kurikulum]) }}" method="POST"
-                        autocomplete="off" enctype="multipart/form-data">
+                    <form action="{{ route('admin.mahasiswa.import') }}" method="POST"
+                          autocomplete="off" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-5">
                             <label for="formFile" class="form-label fw-bold">Upload File Excel</label>
                             <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('kaprodi.mahasiswa.downloadTemplate', ['kurikulum' => $kurikulum]) }}"
-                                class="btn btn-outline-success">Download
+                            <a href="{{ route('admin.mahasiswa.downloadTemplate') }}"
+                               class="btn btn-outline-success">Download
                                 Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
                         </div>
@@ -50,7 +49,7 @@
 
     {{-- Tambah Mahasiswa Modal --}}
     <div class="modal fade" id="tambahMahasiswaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="tambahMahasiswaModalLabel" aria-hidden="true">
+         aria-labelledby="tambahMahasiswaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -70,37 +69,37 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum]) }}"
-                        autocomplete="off" id="tambahMahasiswForm">
+                    <form method="POST" action="{{ route('admin.mahasiswa.store') }}"
+                          autocomplete="off" id="tambahMahasiswaForm">
                         @csrf
 
                         <div class="mb-3">
                             <label for="nim" class="form-label fw-bold">NIM</label>
                             <input type="text" class="form-control @error('nim') is-invalid @enderror" name="nim"
-                                id="nim" placeholder="NIM mahasiswa" value="{{ old('nim') }}">
+                                   id="nim" placeholder="NIM mahasiswa" value="{{ old('nim') }}">
                             @error('nim')
-                                <div class="invalid-feedback">
-                                    <ul>
-                                        @foreach ($errors->get('nim') as $error)
-                                            <li> {{ $error }} </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            <div class="invalid-feedback">
+                                <ul>
+                                    @foreach ($errors->get('nim') as $error)
+                                        <li> {{ $error }} </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
                             <label for="nama" class="form-label fw-bold">Nama</label>
                             <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
-                                id="nama" placeholder="Nama mahasiswa" value="{{ old('nama') }}">
+                                   id="nama" placeholder="Nama mahasiswa" value="{{ old('nama') }}">
                             @error('nama')
-                                <div class="invalid-feedback">
-                                    <ul>
-                                        @foreach ($errors->get('nama') as $error)
-                                            <li> {{ $error }} </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            <div class="invalid-feedback">
+                                <ul>
+                                    @foreach ($errors->get('nama') as $error)
+                                        <li> {{ $error }} </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                             @enderror
                         </div>
 
@@ -108,73 +107,71 @@
                             <div class="fw-bold mb-2">Jenis Kelamin</div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="jenis_kelamin"
-                                    value="{{ \App\Enums\JenisKelamin::LakiLaki }}" id="jk_laki_tambah"
-                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::LakiLaki) {{ 'checked' }} @endif>
+                                       value="{{ \App\Enums\JenisKelamin::LakiLaki }}" id="jk_laki_tambah"
+                                @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::LakiLaki) {{ 'checked' }} @endif>
                                 <label class="form-check-label" for="jk_laki_tambah">
                                     Laki-Laki
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="jenis_kelamin"
-                                    value="{{ \App\Enums\JenisKelamin::Perempuan }}" id="jk_perempuan_tambah"
-                                    @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::Perempuan) {{ 'checked' }} @endif>
+                                       value="{{ \App\Enums\JenisKelamin::Perempuan }}" id="jk_perempuan_tambah"
+                                @if (old('jenis_kelamin') == \App\Enums\JenisKelamin::Perempuan) {{ 'checked' }} @endif>
                                 <label class="form-check-label" for="jk_perempuan_tambah">
                                     Perempuan
                                 </label>
                             </div>
                             @error('jenis_kelamin')
-                                <div class="invalid-feedback">
-                                    <ul>
-                                        @foreach ($errors->get('jenis_kelamin') as $error)
-                                            <li> {{ $error }} </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            <div class="invalid-feedback">
+                                <ul>
+                                    @foreach ($errors->get('jenis_kelamin') as $error)
+                                        <li> {{ $error }} </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
                             <label for="email" class="form-label fw-bold">Email</label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                name="email" id="email" placeholder="Email mahasiswa"
-                                value="{{ old('email') }}">
+                                   name="email" id="email" placeholder="Email mahasiswa"
+                                   value="{{ old('email') }}">
                             @error('email')
-                                <div class="invalid-feedback">
-                                    <ul>
-                                        @foreach ($errors->get('email') as $error)
-                                            <li> {{ $error }} </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            <div class="invalid-feedback">
+                                <ul>
+                                    @foreach ($errors->get('email') as $error)
+                                        <li> {{ $error }} </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
                             <label for="" class="fw-bold">Tahun masuk</label>
                             <select class="form-select @error('tahun_angkatan') is-invalid @enderror"
-                                name="tahun_angkatan" aria-label="Default select example" required>
+                                    name="tahun_angkatan" aria-label="Default select example" required>
                                 <option selected>Pilih tahun masuk</option>
                                 @for ($i = 2020; $i < date('Y'); $i++)
-                                    <option value="{{ $i }}"
-                                        @if (old('tahun_angkatan') == $i) {{ 'selected' }} @endif>{{ $i }}
-                                    </option>
+                                    <option value="{{ $i }}" @if (old('tahun_angkatan') == $i) {{ 'selected' }} @endif>{{ $i }}</option>
                                 @endfor
                             </select>
                             @error('tahun_angkatan')
-                                <div class="invalid-feedback">
-                                    <ul>
-                                        @foreach ($errors->get('tahun_angkatan') as $error)
-                                            <li> {{ $error }} </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            <div class="invalid-feedback">
+                                <ul>
+                                    @foreach ($errors->get('tahun_angkatan') as $error)
+                                        <li> {{ $error }} </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                             @enderror
                         </div>
 
                         <div>
                             <label for="" class="fw-bold">Kelas</label>
                             <select class="form-select @error('kelas') is-invalid @enderror" name="kelas"
-                                aria-label="Default select example" required>
+                                    aria-label="Default select example" required>
                                 <option selected>Pilih kelas</option>
                                 <option value="A" @if (old('kelas') == 'A') {{ 'selected' }} @endif>A
                                 </option>
@@ -182,13 +179,13 @@
                                 </option>
                             </select>
                             @error('kelas')
-                                <div class="invalid-feedback">
-                                    <ul>
-                                        @foreach ($errors->get('kelas') as $error)
-                                            <li> {{ $error }} </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            <div class="invalid-feedback">
+                                <ul>
+                                    @foreach ($errors->get('kelas') as $error)
+                                        <li> {{ $error }} </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                             @enderror
                         </div>
                     </form>
@@ -209,7 +206,7 @@
 
     {{-- Ubah Mahasiswa Modal --}}
     <div class="modal fade" id="ubahMahasiswaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="ubahMahasiswaModalLabel" aria-hidden="true">
+         aria-labelledby="ubahMahasiswaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -223,14 +220,14 @@
                         <div class="mb-3">
                             <label for="nim_ubah" class="form-label fw-bold">NIM</label>
                             <input type="text" class="form-control" id="nim_ubah" name="nim"
-                                placeholder="NIM mahasiswa" value="">
+                                   placeholder="NIM mahasiswa" value="">
                             <div id="nim_ubah_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="nama_ubah" class="form-label fw-bold">Nama</label>
                             <input type="text" class="form-control" id="nama_ubah" name="nama"
-                                placeholder="Nama mahasiswa" value="">
+                                   placeholder="Nama mahasiswa" value="">
                             <div id="nama_ubah_feedback" class="text-danger"></div>
                         </div>
 
@@ -239,12 +236,12 @@
                             <div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="jenis_kelamin"
-                                        value="{{ \App\Enums\JenisKelamin::LakiLaki }}" id="jk_laki_ubah">
+                                           value="{{ \App\Enums\JenisKelamin::LakiLaki }}" id="jk_laki_ubah">
                                     <label class="form-check-label" for="jk_laki_ubah">Laki-Laki</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="jenis_kelamin"
-                                        value="{{ \App\Enums\JenisKelamin::Perempuan }}" id="jk_perempuan_ubah">
+                                           value="{{ \App\Enums\JenisKelamin::Perempuan }}" id="jk_perempuan_ubah">
                                     <label class="form-check-label" for="jk_perempuan_ubah">Perempuan</label>
                                 </div>
                             </div>
@@ -254,7 +251,7 @@
                         <div class="mb-3">
                             <label for="email_ubah" class="form-label fw-bold">Email</label>
                             <input type="email_ubah" class="form-control" id="email_ubah" name="email"
-                                placeholder="Email mahasiswa" value="">
+                                   placeholder="Email mahasiswa" value="">
                             <div id="email_ubah_feedback" class="text-danger"></div>
                         </div>
 
@@ -274,12 +271,12 @@
                             <div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="kelas" value="A"
-                                        id="kelas_A">
+                                           id="kelas_A">
                                     <label class="form-check-label" for="kelas_A">A</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="kelas" value="B"
-                                        id="kelas_B">
+                                           id="kelas_B">
                                     <label class="form-check-label" for="kelas_B">B</label>
                                 </div>
                             </div>
@@ -291,12 +288,12 @@
                             <div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="status"
-                                        value="{{ \App\Enums\StatusKeaktifan::Aktif }}" id="aktif">
+                                           value="{{ \App\Enums\StatusKeaktifan::Aktif }}" id="aktif">
                                     <label class="form-check-label" for="aktif">Aktif</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="status"
-                                        value="{{ \App\Enums\StatusKeaktifan::Nonaktif }}" id="nonaktif">
+                                           value="{{ \App\Enums\StatusKeaktifan::Nonaktif }}" id="nonaktif">
                                     <label class="form-check-label" for="nonaktif">Nonaktif</label>
                                 </div>
                             </div>
@@ -320,7 +317,7 @@
 
     {{-- Hapus Modal --}}
     <div class="modal fade" id="hapusMahasiswaModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
-        aria-labelledby="hapusMahasiswaModalLabel" tabindex="-1">
+         aria-labelledby="hapusMahasiswaModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">

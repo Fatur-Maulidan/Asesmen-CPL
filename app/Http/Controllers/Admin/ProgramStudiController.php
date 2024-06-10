@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProgramStudiRequest;
+use App\Imports\JurusanImport;
+use App\Imports\ProgramStudiImport;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramStudiController extends Controller
 {
@@ -33,7 +36,7 @@ class ProgramStudiController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(ProgramStudiRequest $request)
     {
@@ -95,6 +98,23 @@ class ProgramStudiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        ProgramStudi::destroy($id);
+
+        return redirect()->back();
+    }
+
+    public function downloadTemplate()
+    {
+        $file_path = public_path('files/templates/Template_Program_Studi.xlsx');
+
+        return response()->download($file_path);
+    }
+
+    public function import()
+    {
+        $import = new ProgramStudiImport();
+        $import->import(request()->file('formFileProgramStudi'));
+
+        return redirect(route('admin.jurusan.index'));
     }
 }

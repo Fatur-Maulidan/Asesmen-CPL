@@ -8,78 +8,88 @@
 @section('main')
     <div class="row mb-5">
         <div class="col text-end">
-            {{-- Button trigger modal --}}
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            {{-- Buttons --}}
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importMataKuliahModal">
+                Import Mata Kuliah
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahMataKuliahModal">
                 Tambah Mata Kuliah
             </button>
         </div>
     </div>
 
-    {{-- Modal --}}
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    {{-- Import Mata Kuliah Modal --}}
+    <div class="modal fade" id="importMataKuliahModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="importMataKuliahModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Tambah Mata Kuliah</h1>
+                    <h1 class="modal-title fs-5 fw-bold" id="importMataKuliahModalLabel">Import Mata Kuliah</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="">
+                    <form action="{{ route('kaprodi.mata-kuliah.import', ['kurikulum' => $kurikulum]) }}" method="POST" autocomplete="off"
+                          enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-5">
+                            <label for="formFile" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('kaprodi.mata-kuliah.downloadTemplate', ['kurikulum' => $kurikulum]) }}" class="btn btn-outline-success">Download
+                                Template</a>
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Tambah Mata Kuliah Modal --}}
+    <div class="modal fade" id="tambahMataKuliahModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="tambahMataKuliahModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="tambahMataKuliahModalLabel">Tambah Mata Kuliah</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('kaprodi.mata-kuliah.store', ['kurikulum' => $kurikulum]) }}" method="post" autocomplete="off" id="tambahMataKuliahForm">
+                        @csrf
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput1"
-                                placeholder="Nama mata kuliah">
+                            <label for="kode" class="form-label fw-bold">Kode</label>
+                            <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode mata kuliah">
+                            <div id="kode_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="exampleFormControlInput2" class="form-label fw-bold">Kode</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput2"
-                                placeholder="Kode mata kuliah">
+                            <label for="nama" class="form-label fw-bold">Nama</label>
+                            <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama mata kuliah">
+                            <div id="nama_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <label for="deskripsi" class="form-label fw-bold">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
+                            <div id="deskripsi_feedback" class="text-danger"></div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput3" class="form-label fw-bold">Jumlah SKS</label>
-                            <input type="number" class="form-control" id="exampleFormControlInput3"
-                                placeholder="Jumlah SKS mata kuliah">
+                        <div class="">
+                            <label for="jumlah_sks" class="form-label fw-bold">Jumlah SKS</label>
+                            <input type="number" class="form-control" id="jumlah_sks" name="jumlah_sks" placeholder="Jumlah SKS mata kuliah">
+                            <div id="jumlah_sks_feedback" class="text-danger"></div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="domain" class="form-label fw-bold">Sifat Pengambilan</label>
-                            <select class="form-select" id="domain">
-                                <option selected>Pilih sifat pegambilan</option>
-                                <option value="1">Sikap (S)</option>
-                                <option value="2">Pengetahuan (P)</option>
-                                <option value="3">Keterampilan Umum (KU)</option>
-                                <option value="4">Keterampilan Khusus (KK)</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="domain" class="form-label fw-bold">Metode Pembelajaran</label>
-                            <select class="form-select" id="domain">
-                                <option selected>Pilih sifat pegambilan</option>
-                                <option value="1">Sikap (S)</option>
-                                <option value="2">Pengetahuan (P)</option>
-                                <option value="3">Keterampilan Umum (KU)</option>
-                                <option value="4">Keterampilan Khusus (KK)</option>
-                            </select>
-                        </div>
-
                     </form>
                 </div>
                 <div class="modal-footer">
                     <div class="row w-100">
                         <div class="col">
-                            <button type="button" class="btn btn-danger w-100">Batal</button>
+                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-success w-100">Tambah</button>
+                            <button type="submit" class="btn btn-success w-100" form="tambahMataKuliahForm">Tambah</button>
                         </div>
                     </div>
                 </div>
@@ -87,109 +97,114 @@
         </div>
     </div>
 
-    {{-- Data CPL --}}
+    {{-- Data Mata Kuliah --}}
     <div class="row">
         <div class="col-12">
-            <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            21IF001 - Dasar Dasar Pemrograman
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
+            <div class="accordion" id="daftarMataKuliah">
+                @forelse($mata_kuliah as $mk)
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordion{{ $loop->iteration }}" aria-expanded="true" aria-controls="{{ $loop->iteration }}">
+                                {{ $mk->kode . ' ' . $mk->nama }}
+                            </button>
+                        </h2>
+                        <div id="accordion{{ $loop->iteration }}" class="accordion-collapse collapse" data-bs-parent="#daftarMataKuliah">
+                            <div class="accordion-body">
+                                <p class="fw-bold mb-1">Deskripsi</p>
+                                <p class="mb-4">{{ $mk->deskripsi }}</p>
 
-                            <p class="fw-bold mb-1">Capaian Pembelajaran</p>
-                            <p class="mb-4">Belum ada pemetaan</p>
+                                <p class="fw-bold mb-1">Capaian Pembelajaran</p>
+                                <p class="mb-4">Belum ada pemetaan</p>
 
-                            <p class="fw-bold mb-1">Indikator Kinerja</p>
-                            <p class="mb-0">Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="{{ route('kaprodi.mk.show', ['kurikulum' => $kurikulum, 'mk' => '1']) }}"
-                                class="me-3">Lihat
-                                detail</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            21IF002 - Pengantar Tenkologi Informasi dan Komputer
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
-
-                            <p class="fw-bold mb-1">Capaian Pembelajaran</p>
-                            <p class="mb-4">Belum ada pemetaan</p>
-
-                            <p class="fw-bold mb-1">Indikator Kinerja</p>
-                            <p class="mb-0">Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="" class="me-3">Lihat detail</a>
+                                <p class="fw-bold mb-1">Indikator Kinerja</p>
+                                <p class="mb-0">Belum ada pemetaan</p>
+                            </div>
+                            <div class="accordion-footer bg-light mb-0 p-3 border-top ">
+                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum, 'mata_kuliah' => $mk->id]) }}"
+                                   class="me-3">Lihat detail</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            21IF003 - Proyek 1 : Pemanfaatan Aplikasi Perkantoran
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
-
-                            <p class="fw-bold mb-1">Capaian Pembelajaran</p>
-                            <p class="mb-4">Belum ada pemetaan</p>
-
-                            <p class="fw-bold mb-1">Indikator Kinerja</p>
-                            <p class="mb-0">Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="" class="me-3">Lihat detail</a>
-                        </div>
+                @empty
+                    <div class="alert alert-secondary" role="alert">
+                        Tidak ada data.
                     </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            21IF004 - Komputasi Kognitif
-                        </button>
-                    </h2>
-                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <p class="fw-bold mb-1">Deskripsi</p>
-                            <p class="mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi laboriosam
-                                debitis tempore dicta, sint beatae maxime? Ut natus ullam consequuntur!</p>
-
-                            <p class="fw-bold mb-1">Capaian Pembelajaran</p>
-                            <p class="mb-4">Belum ada pemetaan</p>
-
-                            <p class="fw-bold mb-1">Indikator Kinerja</p>
-                            <p class="mb-0">Belum ada pemetaan</p>
-                        </div>
-                        <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                            <a href="" class="me-3">Lihat detail</a>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            const tambahMataKuliahModal = document.getElementById('tambahMataKuliahModal');
+            const tambahMataKuliahModalInstance = new bootstrap.Modal('#tambahMataKuliahModal');
+
+            tambahMataKuliahModal.addEventListener('hidden.bs.modal', event => {
+                $('#kode').val('');
+                $('#nama').val('');
+                $('#deskripsi').html('');
+                $('#jumlah_sks').val('');
+
+                $('#kode_feedback').html('');
+                $('#nama_feedback').html('');
+                $('#deskripsi_feedback').html('');
+                $('#jumlah_sks_feedback').html('');
+            });
+
+            $('#tambahMataKuliahForm').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "post",
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function(res) {
+                        console.log(res)
+                        tambahMataKuliahModalInstance.hide();
+                        location.reload();
+                    },
+                    error: function(err) {
+                        // when status code is 422, it's a validation issue
+                        if (err.status == 422) {
+                            console.log(err.responseJSON);
+
+                            if ('kode' in err.responseJSON.errors) {
+                                $('#kode_feedback').html(err.responseJSON.errors
+                                    .kode[0]);
+                            } else {
+                                $('#kode_feedback').html('');
+                            }
+
+                            if ('nama' in err.responseJSON.errors) {
+                                $('#nama_feedback').html(err.responseJSON.errors
+                                    .nama[0]);
+                            } else {
+                                $('#nama_feedback').html('');
+                            }
+
+                            if ('deskripsi' in err.responseJSON.errors) {
+                                $('#deskripsi_feedback').html(err.responseJSON.errors
+                                    .deskripsi[0]);
+                            } else {
+                                $('#deskripsi_feedback').html('');
+                            }
+
+                            if ('jumlah_sks' in err.responseJSON.errors) {
+                                $('#jumlah_sks_feedback').html(err.responseJSON.errors
+                                    .jumlah_sks[0]);
+                            } else {
+                                $('#jumlah_sks_feedback').html('');
+                            }
+                        } else if (err.status == 500) {
+                            console.log(err);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

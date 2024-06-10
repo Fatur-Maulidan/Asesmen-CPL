@@ -19,6 +19,7 @@ class DosenController extends Controller
 
     public function __construct()
     {
+        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
         $this->kaprodiNip = '199301062019031017';
         $this->kaprodi = new Dosen();
         $this->kurikulum = new Kurikulum();

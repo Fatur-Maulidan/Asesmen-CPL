@@ -1,50 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Kaprodi;
+namespace App\Http\Controllers\Admin;
 
 use App\DataTables\MahasiswaDataTable;
 use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MahasiswaRequest;
 use App\Imports\MahasiswaImport;
-use App\Models\Dosen;
 use App\Models\Kurikulum;
 use App\Models\Mahasiswa;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
-    protected $user;
-    protected $kaprodiNip;
-    protected $kaprodi;
-    protected $kurikulum;
-
-    public function __construct()
-    {
-        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
-        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('810317609391432000');
-        $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Dosen();
-        $this->kurikulum = new Kurikulum();
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kurikulum, MahasiswaDataTable $dataTable)
+    public function index(MahasiswaDataTable $dataTable)
     {
-        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
-
-        return $dataTable->with('kurikulum', $this->kurikulum)->render('kaprodi.mahasiswa.index', [
+        return $dataTable->render('admin.mahasiswa.index', [
             'title' => 'Mahasiswa',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum
+            'nama' => 'John Tyler',
+            'role' => 'Admin'
         ]);
     }
 
@@ -98,7 +78,7 @@ class MahasiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kurikulum, $nim)
+    public function show($nim)
     {
         if (request()->ajax()) {
             $mahasiswa = Mahasiswa::find($nim);
@@ -127,7 +107,7 @@ class MahasiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MahasiswaRequest $request, $kurikulum, $nim)
+    public function update(MahasiswaRequest $request, $nim)
     {
         $mahasiswa = Mahasiswa::find($nim);
 
@@ -148,14 +128,14 @@ class MahasiswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($kurikulum, $nim)
+    public function destroy($nim)
     {
         Mahasiswa::destroy($nim);
 
         return redirect()->back();
     }
 
-    public function toggleStatus($kurikulum, $nim)
+    public function toggleStatus($nim)
     {
         $mahasiswa = Mahasiswa::find($nim);
 
@@ -173,10 +153,10 @@ class MahasiswaController extends Controller
         return response()->download($file_path);
     }
 
-    public function import($kurikulum)
+    public function import()
     {
-        Excel::import(new MahasiswaImport($this->user->programStudi->id), request()->file('formFile'));
+        Excel::import(new MahasiswaImport(), request()->file('formFile'));
 
-        return redirect(route('kaprodi.mahasiswa.index', ['kurikulum' => $kurikulum]))->with('success', 'All good!');
+        return redirect(route('admin.mahasiswa.index'));
     }
 }

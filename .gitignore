@@ -15,3 +15,4 @@ yarn-error.log
 /.vscode
 /resources/certificates
 /config/database.php
+webpack.mix.js
