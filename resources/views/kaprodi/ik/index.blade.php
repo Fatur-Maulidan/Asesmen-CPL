@@ -50,7 +50,7 @@
                             <label for="domain" class="form-label fw-bold">Capaian Pembelajaran Induk</label>
                             <select class="form-select" id="domain" name="cpInduk">
                                 <option selected hidden>Pilih CP Induk</option>
-                                @foreach ($kurikulum->cpl as $cp)
+                                @foreach ($kurikulum->capaianPembelajaranLulusan as $cp)
                                     <option value="{{ $cp->kode }}">{{ $cp->kode }}</option>
                                 @endforeach
                             </select>
@@ -111,12 +111,12 @@
     <div class="row">
         <div class="col-12">
             <div class="accordion accordion-flush" id="accordionExample">
-                @if (empty($dataIk))
+                @if (empty($data_ik))
                     <div class="text-center">
                         <p class="fs-4">Belum Ada Indikator Kinerja</p>
                     </div>
                 @else
-                    @foreach ($dataIk as $index => $ik)
+                    @foreach ($data_ik as $index => $ik)
                         @if ($ik != null)
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
@@ -134,15 +134,9 @@
 
                                         <p class="fw-bold mb-1">Capaian Pembelajaran</p>
                                         <p>
-                                            @if ($ik->capaianPembelajaranLulusan->isEmpty())
-                                                Belum ada pemetaan
-                                            @else
-                                                @foreach ($ik->capaianPembelajaranLulusan as $cpl)
-                                                    <li>
-                                                        {{ $cpl->kode }}
-                                                    </li>
-                                                @endforeach
-                                            @endif
+                                            <li>
+                                                {{ $ik->capaianPembelajaranLulusan->kode }}
+                                            </li>
                                         </p>
 
                                         <p class="fw-bold mb-1">Mata Kuliah</p>

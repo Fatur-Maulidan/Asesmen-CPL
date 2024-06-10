@@ -73,18 +73,13 @@ class Master_09_IndikatorKinerja extends Model
     // Fungsi ini digunakan untuk mendapatkan data
         // Indikator Kinerja -> CPL berdasarkan kurikulum yang berjalan
         // Indikator Kinerja -> Master10Rubrik
-    public function getDataIndikatorKinerja($kurikulum, $kode = '') {
-        $dataIk = [];
+    public function getDataIndikatorKinerja($kurikulum, $idCpl = '', $kode = '') {
 
         $indikatorKinerja = $this->with('capaianPembelajaranLulusan');
         $indikatorKinerja = empty($kode) ? $indikatorKinerja : $indikatorKinerja->where('kode', $kode)->with('rubrik');
-        $indikatorKinerja = $indikatorKinerja->get();
+        $indikatorKinerja = empty($idCpl) ? $indikatorKinerja : $indikatorKinerja->where('08_MASTER_capaian_pembelajaran_lulusan_id', $idCpl);
+        $indikatorKinerja = $indikatorKinerja->where('03_MASTER_kurikulum_id',$kurikulum)->get();
 
-        foreach($indikatorKinerja as $ik) {
-            if (($ik->capaianPembelajaranLulusan[0]->{'03_MASTER_kurikulum_id'} == $kurikulum) == true) {
-                $dataIk[] = $ik;
-            }
-        }
-        return $dataIk;
+        return $indikatorKinerja;
     }
 }

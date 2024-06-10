@@ -83,8 +83,8 @@ class Master_04_Dosen extends Model
     }
 
     // # Methods
-    public function getProdiIdByDosenNip($nip){
-        return $this->with('programStudi:id,koordinator_nip')->find($nip);
+    public function getProdiKodeByDosenNip($nip){
+        return $this->with('kaprodi')->where('nip',$nip)->first();
     }
 
     // Method ini digunakan untuk mengambil mata kuliah yang diampu oleh seorang dosen

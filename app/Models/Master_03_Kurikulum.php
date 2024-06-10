@@ -112,10 +112,10 @@ class Master_03_Kurikulum extends Model
         return $this->where('tahun', $tahunAkademikVal)->pluck('02_MASTER_program_studi_id')[0];
     }
 
-    public function getKurikulumByProdiId($prodiId, $kurikulum){
-        return $this->with('cpl')
-                    ->where('02_MASTER_program_studi_id', $prodiId)
+    public function getKurikulumByNomorProdi($nomorProdi, $kurikulum){
+        return $this->where('02_MASTER_program_studi_nomor', $nomorProdi)
                     ->where('tahun', $kurikulum)
+                    ->with('capaianPembelajaranLulusan')
                     ->first();
     }
 }

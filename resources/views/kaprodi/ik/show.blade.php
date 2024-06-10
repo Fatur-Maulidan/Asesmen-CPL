@@ -14,7 +14,7 @@
                     @foreach ($dataIk as $data)
                         @if ($data != null)
                             <div class="mb-3">
-                                <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}"
+                                <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum->tahun, 'ik' => $data->kode]) }}"
                                     class="btn btn-light w-100 text-start {{ $data->kode == $ik->kode ? 'active' : '' }}">
                                     {{ $data->kode }}
                                 </a>
@@ -30,7 +30,7 @@
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <form method="POST"
-                    action="{{ route('kaprodi.ik.update', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}">
+                    action="{{ route('kaprodi.ik.update', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->id]) }}">
                     @csrf
                     @method('PATCH')
                     <div class="modal-content">
@@ -80,13 +80,19 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('kaprodi.ik.detail', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}"
-                        class="btn btn-outline-primary ">Pemetaannya pada CPL</a>
-                    <button class="btn btn-danger">Hapus</button>
-                    {{-- Button trigger modal --}}
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        Ubah
-                    </button>
+                    {{-- <a href="{{ route('kaprodi.ik.detail', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}"
+                        class="btn btn-outline-primary ">Pemetaannya pada CPL</a> --}}
+                    <form action="{{ route('kaprodi.ik.destroy', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->id]) }}"
+                        method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger">Hapus</button>
+                        {{-- Button trigger modal --}}
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                            Ubah
+                        </button>
+                    </form>
                 </div>
             </div>
             <div class="row">
