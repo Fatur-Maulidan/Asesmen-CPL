@@ -17,10 +17,17 @@ use Maatwebsite\Excel\Facades\Excel;
 class MahasiswaController extends Controller
 {
     protected $user;
+    protected $kaprodiNip;
+    protected $kaprodi;
+    protected $kurikulum;
 
     public function __construct()
     {
         $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
+        $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('810317609391432000');
+        $this->kaprodiNip = '199301062019031017';
+        $this->kaprodi = new Dosen();
+        $this->kurikulum = new Kurikulum();
     }
 
     /**
@@ -30,11 +37,14 @@ class MahasiswaController extends Controller
      */
     public function index($kurikulum, MahasiswaDataTable $dataTable)
     {
-        return $dataTable->with('kurikulum', $kurikulum)->render('kaprodi.mahasiswa.index', [
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
+
+        return $dataTable->with('kurikulum', $this->kurikulum)->render('kaprodi.mahasiswa.index', [
             'title' => 'Mahasiswa',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum
+            'kurikulum' => $this->kurikulum
         ]);
     }
 

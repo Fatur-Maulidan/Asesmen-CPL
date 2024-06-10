@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.ik.edit', $kurikulum, $ik['kode']) }}
+    {{ Breadcrumbs::render('kaprodi.ik.edit', $kurikulum->tahun, $ik->kode) }}
     <h1 class="fw-bold mb-0">Ubah Pemetaan {{ $ik['kode'] }} pada Capaian Pembelajaran</h1>
 @endsection
 
@@ -11,29 +11,14 @@
         <div class="col-3">
             <div class="card">
                 <div class="card-body">
-                    <div class="mb-3">
-                        <a href="" class="btn btn-light w-100 text-start active">IK-1</a>
-                    </div>
-
-                    <div class="mb-3">
-                        <a href="" class="btn btn-light w-100 text-start">IK-2</a>
-                    </div>
-
-                    <div class="mb-3">
-                        <a href="" class="btn btn-light w-100 text-start">IK-3</a>
-                    </div>
-
-                    <div class="mb-3">
-                        <a href="" class="btn btn-light w-100 text-start">IK-4</a>
-                    </div>
-
-                    <div class="mb-3">
-                        <a href="" class="btn btn-light w-100 text-start">IK-5</a>
-                    </div>
-
-                    <div class="mb-3">
-                        <a href="" class="btn btn-light w-100 text-start">IK-6</a>
-                    </div>
+                    @foreach ($dataIk as $data)
+                        <div class="mb-3">
+                            <a href="{{ route('kaprodi.ik.edit', ['kurikulum' => $kurikulum->tahun, 'ik' => $data->kode]) }}"
+                                class="btn btn-light w-100 text-start {{ $data->kode == $ik->kode ? 'active' : '' }}">
+                                {{ $data->kode }}
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -74,203 +59,56 @@
             <div class="row">
                 <div class="col">
                     <div class="fw-bold">Deskripsi</div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad officiis praesentium hic nihil vel non
-                        recusandae tempora id cum repellat!</p>
+                    <p>{{ $ik->deskripsi }}</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="fw-bold mb-3">Centang butir CPL yang relevan dengan isi dari indikator kinerja</div>
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold bg-light" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Sikap (S)
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckDefault">
-                                            <label class="form-check-label fw-bold" for="flexCheckDefault">
-                                                S-1
-                                            </label>
+                    <div class="accordion accordion-flush" id="accordionExample">
+                        @foreach ($domainCpl as $indexDomain => $domain)
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button fw-bold bg-light collapsed" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapse{{ $indexDomain }}"
+                                        aria-expanded="false" aria-controls="collapse{{ $indexDomain }}" disabled>
+                                        {{ $domain }}
+                                    </button>
+                                </h2>
+                                @foreach ($dataCpl as $index => $cpl)
+                                    @if ($cpl->domain == $domain)
+                                        <div id="collapse{{ $indexDomain }}"
+                                            class="accordion-collapse collapse <?php echo $ik->capaianPembelajaranLulusan[0]->domain == $domain ? 'show' : ''; ?>"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value=""
+                                                            id="flexCheckDefault" <?php
+                                                            foreach ($ik->capaianPembelajaranLulusan as $cplIk) {
+                                                                if ($cplIk->kode == $cpl->kode) {
+                                                                    echo 'checked';
+                                                                }
+                                                            }
+                                                            ?>>
+                                                        <label class="form-check-label fw-bold" for="flexCheckDefault">
+                                                            {{ $cpl->kode }}
+                                                        </label>
+                                                    </div>
+                                                    <p>
+                                                        {{ $cpl->deskripsi }}
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ipsum assumenda
-                                            perferendis id! Quidem ipsa nulla esse, voluptates facilis ipsum.</p>
-                                    </div>
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckChecked" checked>
-                                            <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                S-2
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum id libero rem
-                                            cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                    </div>
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckChecked" checked>
-                                            <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                S-3
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum id libero rem
-                                            cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                    </div>
-                                </div>
+                                    @endif
+                                @endforeach
                             </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold bg-light collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
-                                    aria-controls="collapseTwo">
-                                    Pengetahuan (P)
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckDefault">
-                                            <label class="form-check-label fw-bold" for="flexCheckDefault">
-                                                P-1
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ipsum assumenda
-                                            perferendis id! Quidem ipsa nulla esse, voluptates facilis ipsum.</p>
-                                    </div>
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckChecked" checked>
-                                            <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                P-2
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum id libero rem
-                                            cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                    </div>
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckChecked" checked>
-                                            <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                P-3
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum id libero rem
-                                            cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold bg-light collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false"
-                                    aria-controls="collapseThree">
-                                    KU (Keterampilan Umum)
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckDefault">
-                                            <label class="form-check-label fw-bold" for="flexCheckDefault">
-                                                KU-1
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ipsum assumenda
-                                            perferendis id! Quidem ipsa nulla esse, voluptates facilis ipsum.</p>
-                                    </div>
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckChecked" checked>
-                                            <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                KU-2
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum id libero rem
-                                            cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                    </div>
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckChecked" checked>
-                                            <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                KU-3
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum id libero rem
-                                            cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold bg-light collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false"
-                                    aria-controls="collapseFour">
-                                    KK (Keterampilan Khusus)
-                                </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckDefault">
-                                            <label class="form-check-label fw-bold" for="flexCheckDefault">
-                                                KK-1
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ipsum assumenda
-                                            perferendis id! Quidem ipsa nulla esse, voluptates facilis ipsum.</p>
-                                    </div>
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckChecked" checked>
-                                            <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                KK-2
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum id libero rem
-                                            cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                    </div>
-                                    <div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckChecked" checked>
-                                            <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                KK-3
-                                            </label>
-                                        </div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum id libero rem
-                                            cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

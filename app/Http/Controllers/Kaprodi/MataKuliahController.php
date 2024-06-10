@@ -14,12 +14,16 @@ use Maatwebsite\Excel\Facades\Excel;
 class MataKuliahController extends Controller
 {
     protected $user;
+    protected $kaprodiNip;
+    protected $kaprodi;
+    protected $kurikulum;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->user = Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
+        $this->kaprodiNip = '199301062019031017';
+        $this->kaprodi = new Dosen();
+        $this->kurikulum = new Kurikulum();
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -27,12 +31,16 @@ class MataKuliahController extends Controller
      */
     public function index($kurikulum)
     {
+        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
+
         return view('kaprodi.mk.index', [
             'title' => 'Mata Kuliah',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
-            'mata_kuliah' => MataKuliah::all()
+            // 'kurikulum' => $kurikulum,
+            'mata_kuliah' => MataKuliah::all(),
+            'kurikulum' => $this->kurikulum
         ]);
     }
 

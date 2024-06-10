@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.ik.index', $kurikulum) }}
+    {{ Breadcrumbs::render('kaprodi.ik.index', $kurikulum->tahun) }}
     <h1 class="fw-bold mb-0">
         {{ $title }}</h1>
 @endsection
@@ -37,7 +37,7 @@
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <form method="POST" action="{{ route('kaprodi.ik.store', ['kurikulum' => $kurikulum]) }}">
+            <form method="POST" action="{{ route('kaprodi.ik.store', ['kurikulum' => $kurikulum->tahun]) }}">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -50,7 +50,7 @@
                             <label for="domain" class="form-label fw-bold">Capaian Pembelajaran Induk</label>
                             <select class="form-select" id="domain" name="cpInduk">
                                 <option selected hidden>Pilih CP Induk</option>
-                                @foreach ($cpInduk as $cp)
+                                @foreach ($kurikulum->cpl as $cp)
                                     <option value="{{ $cp->kode }}">{{ $cp->kode }}</option>
                                 @endforeach
                             </select>
@@ -151,7 +151,7 @@
                                         </p>
                                     </div>
                                     <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                        <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $ik->kode]) }}"
+                                        <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}"
                                             class="me-3">Lihat
                                             detail</a>
                                         <a href="">Pemetaan terhadap Capaian Pembelajaran</a>

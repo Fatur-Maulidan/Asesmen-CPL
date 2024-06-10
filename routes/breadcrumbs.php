@@ -22,6 +22,10 @@ Breadcrumbs::for('admin.mahasiswa.index', function (BreadcrumbTrail $trail) {
 // --- end of Admin
 
 // --- Kaprodi
+Breadcrumbs::for('kaprodi.dashboard.index', function (BreadcrumbTrail $trail, $kurikulum) {
+    $trail->push('Home', route('kaprodi.dashboard.index'));
+});
+
 // Kurikulum
 Breadcrumbs::for('kaprodi.kurikulum.index', function (BreadcrumbTrail $trail) {
     $trail->push('Home', route('kaprodi.kurikulum.index'));

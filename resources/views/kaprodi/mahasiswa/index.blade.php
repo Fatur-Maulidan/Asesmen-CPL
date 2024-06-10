@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.mahasiswa.index', $kurikulum) }}
+    {{ Breadcrumbs::render('kaprodi.mahasiswa.index', $kurikulum->tahun) }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
@@ -155,7 +155,9 @@
                                 name="tahun_angkatan" aria-label="Default select example" required>
                                 <option selected>Pilih tahun masuk</option>
                                 @for ($i = 2020; $i < date('Y'); $i++)
-                                    <option value="{{ $i }}" @if (old('tahun_angkatan') == $i) {{ 'selected' }} @endif>{{ $i }}</option>
+                                    <option value="{{ $i }}"
+                                        @if (old('tahun_angkatan') == $i) {{ 'selected' }} @endif>{{ $i }}
+                                    </option>
                                 @endfor
                             </select>
                             @error('tahun_angkatan')

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.ik.show', $kurikulum, $ik->kode) }}
+    {{ Breadcrumbs::render('kaprodi.ik.show', $kurikulum->tahun, $ik->kode) }}
     <h1 class="fw-bold mb-0">{{ $ik->kode }}</h1>
 @endsection
 
@@ -14,7 +14,7 @@
                     @foreach ($dataIk as $data)
                         @if ($data != null)
                             <div class="mb-3">
-                                <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $data->kode]) }}"
+                                <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}"
                                     class="btn btn-light w-100 text-start {{ $data->kode == $ik->kode ? 'active' : '' }}">
                                     {{ $data->kode }}
                                 </a>
@@ -30,7 +30,7 @@
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <form method="POST"
-                    action="{{ route('kaprodi.ik.update', ['kurikulum' => $kurikulum, 'ik' => $ik->id]) }}">
+                    action="{{ route('kaprodi.ik.update', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}">
                     @csrf
                     @method('PATCH')
                     <div class="modal-content">
@@ -80,7 +80,7 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('kaprodi.ik.detail', ['kurikulum' => $kurikulum, 'ik' => $ik->id]) }}"
+                    <a href="{{ route('kaprodi.ik.detail', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}"
                         class="btn btn-outline-primary ">Pemetaannya pada CPL</a>
                     <button class="btn btn-danger">Hapus</button>
                     {{-- Button trigger modal --}}
@@ -128,3 +128,13 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        Swal.fire({
+            title: 'Error!',
+            text: 'Do you want to continue',
+            icon: 'error',
+            confirmButtonText: 'Cool'
+        })
+    </script>
