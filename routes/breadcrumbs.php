@@ -52,6 +52,11 @@ Breadcrumbs::for('kaprodi.cpl.show', function (BreadcrumbTrail $trail, $kurikulu
     $trail->push($kode_cpl, route('kaprodi.cpl.show', ['kurikulum' => $kurikulum, 'cpl' => $kode_cpl]));
 });
 
+Breadcrumbs::for('kaprodi.cpl.edit', function (BreadcrumbTrail $trail, $kurikulum, $kode_cpl) {
+    $trail->parent('kaprodi.cpl.index', $kurikulum);
+    $trail->push($kode_cpl, route('kaprodi.cpl.edit', ['kurikulum' => $kurikulum, 'cpl' => $kode_cpl]));
+});
+
 // IK
 Breadcrumbs::for('kaprodi.ik.index', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
