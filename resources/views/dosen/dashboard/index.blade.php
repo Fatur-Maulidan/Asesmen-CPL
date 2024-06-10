@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render() }}
+    {{ Breadcrumbs::render('dosen.mata-kuliah.dashboard', $kodeMataKuliah) }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 

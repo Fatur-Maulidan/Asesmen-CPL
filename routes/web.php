@@ -111,12 +111,12 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
 Route::group(['prefix' => 'dosen', 'as' => 'dosen.'], function () { // 'middleware' => ['auth', 'can:view_mata_kuliah'],
     Route::prefix('/mata-kuliah')->group(function () {
 
-        // # Dashboard
-        Route::get('{kodeMataKuliah}/dashboard', [DosenDashboardController::class, 'index'])
-            ->name('dashboard.index');
-
         Route::get('/', [DosenMataKuliahController::class, 'index'])
             ->name('mata-kuliah');
+
+        // # Dashboard
+        Route::get('{kodeMataKuliah}/dashboard', [DosenDashboardController::class, 'index'])
+            ->name('mata-kuliah.dashboard');
 
         Route::get('{kodeMataKuliah}/informasi-umum', [DosenMataKuliahController::class, 'informasiUmum'])
             ->name('mata-kuliah.informasi-umum');
