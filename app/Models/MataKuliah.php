@@ -53,4 +53,23 @@ class MataKuliah extends Model
     {
         return $this->belongsTo(Kurikulum::class, '03_MASTER_kurikulum_id');
     }
+
+    public function dosen()
+    {
+        return $this->belongsToMany(Dosen::class, '08_MASTER_dosen_nip',);
+    }
+
+    public function mataKuliahRegister() 
+    {
+        return $this->hasMany(MataKuliahRegister::class, '06_MASTER_mata_kuliah_id');
+    }
+
+    // Method ini digunakan untuk mendapatkan informasi yang terdapat pada Mata Kuliah Register
+    public function getMataKuliahByDosen($mataKuliahRegister) {
+        $dataMataKuliah = [];
+        foreach ($mataKuliahRegister as $mataKuliah) {
+            $dataMataKuliah[] = $this->where('id',$mataKuliah->{'06_MASTER_mata_kuliah_id'})->with('mataKuliahRegister')->first();
+        }
+        return $dataMataKuliah;
+    }
 }

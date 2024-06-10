@@ -76,4 +76,9 @@ class MataKuliahRegister extends Model
     {
         return $this->belongsToMany(TujuanPembelajaran::class, '17_MASTER_peta_ik_mk_tp', '10_MASTER_mk_register_id', '16_MASTER_tujuan_pembelajaran_id')->using(PetaIkMkTp::class);
     }
+
+    public function mataKuliah()
+    {
+        return $this->belongsTo(MataKuliah::class, '06_MASTER_mata_kuliah_id');
+    }
 }
