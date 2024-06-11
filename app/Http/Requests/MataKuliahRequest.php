@@ -29,7 +29,7 @@ class MataKuliahRequest extends FormRequest
         return [
             'kode' => [
                 'bail', 'required',
-                Rule::unique('06_MASTER_mata_kuliah')->ignore($id),
+                Rule::unique('07_MASTER_mata_kuliah')->ignore($id),
             ],
             'nama' => 'bail|required',
             'deskripsi' => 'bail|required',

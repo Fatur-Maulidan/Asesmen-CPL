@@ -27,7 +27,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @if (Route::is('admin.mahasiswa.*')) active @endif"
-                       href="{{ route('admin.mahasiswa.index') }}">Mahasiswa</a>
+                        href="{{ route('admin.mahasiswa.index') }}">Mahasiswa</a>
                 </li>
             </ul>
         @elseif($role == 'Koordinator Program Studi')
@@ -58,7 +58,8 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.mata-kuliah.*')) active @endif"
-                            href="{{ route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum]) }}">Mata Kuliah</a>
+                            href="{{ route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum->tahun]) }}">Mata
+                            Kuliah</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.mahasiswa.*')) active @endif"

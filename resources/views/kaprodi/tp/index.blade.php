@@ -4,17 +4,23 @@
     {{ Breadcrumbs::render('kaprodi.tp.index', $kurikulum->tahun) }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
-
+<style>
+    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear {
+        display: none;
+    }
+</style>
 @section('main')
     <div class="row mb-4">
         <div class="col-12">
-            <form action="" class="d-flex">
+            <form action="" class="d-flex flex-row">
                 <div class="row">
                     <div class="col-auto">
-                        <select class="form-select me-3">
-                            <option value="1">21IF001 - Dasar Dasar Pemrograman</option>
-                            <option value="2">21IF002 - Pengantar</option>
-                            <option value="3">21IF003 - Proyek 1</option>
+                        <select class="form-select me-3" name="filter" id="mata-kuliah" style="width:100%;">
+                            @foreach ($data_mata_kuliah as $mata_kuliah)
+                                <option value="{{ $mata_kuliah->nama }}"
+                                    {{ $selected_mata_kuliah->nama == $mata_kuliah->nama ? 'selected' : '' }}>
+                                    {{ $mata_kuliah->nama }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col">
@@ -30,9 +36,8 @@
     </div>
     <div class="row">
         <div class="col-6">
-            <div class="fw-bold">21IF001 - Dasar Dasar Pemrograman</div>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque voluptates quaerat atque cumque quas culpa
-                reprehenderit molestiae fugiat cupiditate dicta.</p>
+            <div class="fw-bold">{{ $selected_mata_kuliah->kode }} - {{ $selected_mata_kuliah->nama }}</div>
+            <p>{{ $selected_mata_kuliah->deskripsi }}</p>
         </div>
         <div class="col-6">
             <div class="fw-bold">IK-1</div>
@@ -109,6 +114,26 @@
                 } else {
                     $(this).closest('tr').find('textarea').attr('disabled', 'disabled');
                     $(this).closest('tr').find('textarea').val('');
+                }
+            });
+        });
+
+        $('#mata-kuliah').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: true
+        });
+
+        const url = "{{ url()->current() }}";
+
+        $(document).ready(function() {
+            $('#mata-kuliah').change(function() {
+                var selectedMataKuliah = $(this).val();
+                if (selectedMataKuliah) {
+                    location.href = url + '?mata_kuliah=' + encodeURIComponent(selectedMataKuliah);
+                } else {
+                    location.href = url;
                 }
             });
         });

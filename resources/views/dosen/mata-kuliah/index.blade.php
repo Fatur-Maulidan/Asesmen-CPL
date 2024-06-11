@@ -25,7 +25,7 @@
     </div>
 
     <div class="row overflow-auto ">
-        @foreach ($mataKuliah as $mk)
+        @foreach ($mata_kuliah as $mk)
             <div class="col-4">
                 <div class="card">
                     <div class="card-header d-flex flex-column">
@@ -33,7 +33,7 @@
                             <div class="d-flex flex-column">
                                 <div class="d-flex flex-row align-items-center">
                                     <?php $kodeMataKuliah = '21IF100' . $index; ?>
-                                    <div class="fs-5 fw-bold me-2">{{ $mk->kode }}</div>
+                                    <div class="fs-5 fw-bold me-2">{{ $mk->mataKuliah->kode }}</div>
                                     <div class="badge text-bg-success">Berjalan</div>
                                 </div>
                                 <div class="">{{ $mk->nama }}</div>
@@ -47,11 +47,11 @@
                     <div class="card-body d-flex flex-column justify-content-center">
                         <div class="d-flex flex-column mb-3">
                             <div class="fw-bold">Tahun Akademik</div>
-                            <div class="">{{ $mk->mataKuliahRegister[0]->tahun_akademik }}</div>
+                            <div class="">{{ $mk->tahun_akademik }}</div>
                         </div>
                         <div class="d-flex flex-column mb-3">
                             <div class="fw-bold">Semester</div>
-                            <div class="">{{ $mk->mataKuliahRegister[0]->semester }}</div>
+                            <div class="">{{ $mk->semester }}</div>
                         </div>
                         <div class="d-flex flex-column mb-3">
                             <div class="fw-bold">Kelas Terdaftar</div>
@@ -64,10 +64,10 @@
                         </div>
                     </div>
                     <div class="card-footer text-body-secondary py-3">
-                        <a href="{{ route('dosen.mata-kuliah.informasi-umum', ['kodeMataKuliah' => $mk->kode]) }}"
+                        <a href="{{ route('dosen.mata-kuliah.informasi-umum', ['kodeMataKuliah' => $mk->mataKuliah->kode]) }}"
                             class="d-block">Lihat
                             Detailnya</a>
-                        <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mk->kode]) }}"
+                        <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mk->mataKuliah->kode]) }}"
                             class="d-block">Lihat Tujuan
                             Pembelajaran</a>
                         <a href="" class="d-block">Lihat Asesmen Pembelajaran</a>

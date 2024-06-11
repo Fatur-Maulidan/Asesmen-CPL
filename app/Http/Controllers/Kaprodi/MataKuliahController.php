@@ -8,6 +8,7 @@ use App\Imports\MataKuliahImport;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_07_MataKuliah;
+use App\Models\Master_09_IndikatorKinerja;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -17,12 +18,14 @@ class MataKuliahController extends Controller
     protected $kaprodiNip;
     protected $kaprodi;
     protected $kurikulum;
+    protected $indikatorKinerja;
 
     public function __construct() {
         $this->user = Master_04_Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
         $this->kaprodiNip = '199301062019031017';
         $this->kaprodi = new Master_04_Dosen();
         $this->kurikulum = new Master_03_Kurikulum();
+        $this->indikatorKinerja = new Master_09_IndikatorKinerja();
     }
     /**
      * Display a listing of the resource.
@@ -31,9 +34,9 @@ class MataKuliahController extends Controller
      */
     public function index($kurikulum)
     {
-        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
-
+        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        
         return view('kaprodi.mk.index', [
             'title' => 'Mata Kuliah',
             'nama' => 'Jhon Doe',
@@ -82,18 +85,24 @@ class MataKuliahController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kurikulum, $id)
+    public function show($kurikulum, $kode)
     {
-        $daftar_mata_kuliah = Master_07_MataKuliah::all();
-        $mata_kuliah = Master_07_MataKuliah::find($id);
+        $mataKuliah = new Master_07_MataKuliah;
 
+        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $daftarMataKuliah = Master_07_MataKuliah::where('03_MASTER_kurikulum_id',$this->kurikulum->id)->get();
+        $mataKuliah = $mataKuliah->getMataKuliahByKodeAndKurikulum($kode, $this->kurikulum->id);
+
+        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id);
         return view('kaprodi.mk.show', [
             'title' => 'Mata Kuliah',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
-            'daftar_mata_kuliah' => $daftar_mata_kuliah,
-            'detail_mata_kuliah' => $mata_kuliah
+            'kurikulum' => $this->kurikulum,
+            'daftar_mata_kuliah' => $daftarMataKuliah,
+            'detail_mata_kuliah' => $mataKuliah,
+            'indikator_kinerja' => $this->indikatorKinerja
         ]);
     }
 
@@ -117,13 +126,21 @@ class MataKuliahController extends Controller
      */
     public function update(MataKuliahRequest $request, $kurikulum, $id)
     {
-        $mata_kuliah = Master_07_MataKuliah::find($id);
         $validated = $request->validated();
 
-        $mata_kuliah->update($validated);
+        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $mataKuliah = Master_07_MataKuliah::find($id);
 
-        return response()->json([
-            'message' => 'Data berhasil disimpan',
+        $mataKuliah->update($validated);
+
+        // return response()->json([
+        //     'message' => 'Data berhasil disimpan',
+        // ]);
+
+        return redirect()->route('kaprodi.mata-kuliah.show', [
+            'kurikulum' => $kurikulum,
+            'mata_kuliah' => $mataKuliah->kode 
         ]);
     }
 
