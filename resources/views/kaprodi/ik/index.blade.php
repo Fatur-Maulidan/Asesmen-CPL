@@ -11,19 +11,21 @@
     <div class="row mb-5">
         <div class="col-auto">
             <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option1">Semua</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="Semua" for="option1">Semua</label>
 
             <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option2">Sikap (SS)</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="SP" for="option2">Sikap (SS)</label>
 
             <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Pengetahuan (P)</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="PP" for="option3">Pengetahuan (P)</label>
 
             <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option4">Keterampilan Umum (KU)</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KU" for="option4">Keterampilan Umum
+                (KU)</label>
 
             <input type="radio" class="btn-check" name="options" id="option5" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" for="option5">Keterampilan Khusus (KK)</label>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KK" for="option5">Keterampilan Khusus
+                (KK)</label>
         </div>
         <div class="col text-end">
             {{-- Button trigger modal --}}
@@ -95,7 +97,8 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="col">
-                                <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-danger w-100"
+                                    data-bs-dismiss="modal">Batal</button>
                             </div>
                             <div class="col">
                                 <button type="submit" class="btn btn-success w-100">Tambah</button>
@@ -159,3 +162,22 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('input[name="options"]').change(function() {
+                let filterValue = $('label[for="' + $(this).attr('id') + '"]').data('filter');
+                if (filterValue === 'Semua') {
+                    $('.accordion-item').show();
+                } else {
+                    $('.accordion-item').hide();
+                    $('.accordion-item').each(function() {
+                        if ($(this).find('button').text().includes(filterValue)) {
+                            $(this).show();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush
