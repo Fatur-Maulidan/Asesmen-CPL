@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Master_04_Dosen;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class DosenRequest extends FormRequest
 {
@@ -23,14 +25,15 @@ class DosenRequest extends FormRequest
      */
     public function rules()
     {
+        $kode = $this->segment(count($this->segments()));
         return [
+            'kode' => ['bail', 'required', Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')],
+            'nip' => ['bail', 'required', Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')],
             'nama' => 'bail|required',
-            'nip' => 'bail|required',
-            'kode' => 'bail|required',
             'jenis_kelamin' => 'bail|required',
-            'email' => 'bail|required|email',
-            'jurusan' => 'sometimes|bail|required',
-            'role' => 'sometimes|bail|required',
+            'email' => ['bail', 'required', 'email', Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')],
+            'jurusan' => 'bail|required',
+            'program_studi' => 'sometimes|bail|required|array',
         ];
     }
 }

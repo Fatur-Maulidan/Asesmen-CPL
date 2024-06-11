@@ -50,8 +50,8 @@ return [
 
     StatusKurikulum::class => [
         StatusKurikulum::Aktif => 'Aktif',
-        StatusKurikulum::Nonaktif => 'Nonaktif',
-        StatusKurikulum::Peninjauan => 'Peninjauan',
+        StatusKurikulum::Berjalan => 'Berjalan',
+        StatusKurikulum::Pengelolaan => 'Pengelolaan',
     ],
 
     StatusMataKuliah::class => [

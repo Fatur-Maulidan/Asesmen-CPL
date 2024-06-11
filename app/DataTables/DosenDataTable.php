@@ -28,7 +28,12 @@ class DosenDataTable extends DataTable
                 return $dosen->jurusan->nama;
             })
             ->addColumn('program_studi', function (Master_04_Dosen $dosen) {
-                return $dosen->programStudi->jenjang_pendidikan . ' ' . $dosen->programStudi->nama;
+                $prodi_dosen = '';
+                foreach ($dosen->programStudi as $prodi) {
+                    $prodi_dosen .= '<li>' . $prodi->jenjang_pendidikan . ' ' . $prodi->nama . '</li>';
+                }
+
+                return '<ul class="mb-0 p-0">' . $prodi_dosen . '</ul>';
             })
             ->addColumn('status', function (Master_04_Dosen $dosen) {
                 if ($dosen->status->is(StatusKeaktifan::Aktif)) {
@@ -37,7 +42,7 @@ class DosenDataTable extends DataTable
                     $button = '<button type="submit" class="btn btn-success">Aktifkan</button>';
                 }
 
-                $form = '<form action="' . route('admin.dosen.toggleStatus', ['dosen' => $dosen->nip]) . '" method="post">
+                $form = '<form action="' . route('admin.dosen.toggleStatus', ['dosen' => $dosen->kode]) . '" method="post">
                     ' . csrf_field() . '
                     ' . method_field('PATCH') . '
                     ' . $button . '
@@ -46,12 +51,13 @@ class DosenDataTable extends DataTable
                 return $form;
             })
             ->addColumn('tindakan', function (Master_04_Dosen $dosen) {
-                $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#tambahDosenModal" data-id="' . $dosen->nip . '">Ubah</a>
-                <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusDosenModal" data-id="' . $dosen->nip . '">Hapus</a>';
+                $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#tambahDosenModal" data-kode="' . $dosen->kode . '">Ubah</a>
+                <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusDosenModal" data-kode="' .
+                    $dosen->kode . '">Hapus</a>';
 
                 return $content;
             })
-            ->rawColumns(['status', 'tindakan']);
+            ->rawColumns(['program_studi', 'status', 'tindakan']);
     }
 
     /**
@@ -69,16 +75,8 @@ class DosenDataTable extends DataTable
         }
 
         if ($this->filter) {
-            if ($this->filter['role']) {
-                $query->where('role', $this->filter['role']);
-            }
-
             if ($this->filter['jurusan']) {
-                $query->where('01_MASTER_jurusan_id', $this->filter['jurusan']);
-            }
-
-            if ($this->filter['status']) {
-                $query->where('status', $this->filter['status']);
+                $query->where('01_MASTER_jurusan_nomor', $this->filter['jurusan']);
             }
         }
 
@@ -121,11 +119,10 @@ class DosenDataTable extends DataTable
             //     ->printable(false)
             //     ->width(60)
             //     ->addClass('text-center'),
-            Column::make('nip')->title('NIP'),
             Column::make('kode'),
+            Column::make('nip')->title('NIP'),
             Column::make('nama'),
             Column::make('email'),
-            Column::make('role'),
             Column::make('jurusan'),
             Column::make('program_studi'),
             Column::make('status'),

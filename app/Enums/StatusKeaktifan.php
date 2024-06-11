@@ -7,7 +7,7 @@ use BenSampo\Enum\Enum;
 
 /**
  * @method static static Aktif()
- * @method static static TidakAktif()
+ * @method static static Nonaktif()
  */
 final class StatusKeaktifan extends Enum implements LocalizedEnum
 {
