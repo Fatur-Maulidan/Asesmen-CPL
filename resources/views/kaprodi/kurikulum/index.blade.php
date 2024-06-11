@@ -30,13 +30,13 @@
                 @if (request('filter') == 'aktif') checked @endif>
             <label class="btn btn-outline-primary rounded-pill px-3" for="aktif">Aktif</label>
 
-            <input type="radio" class="btn-check" name="status" id="nonaktif" autocomplete="off" value="nonaktif"
-                @if (request('filter') == 'nonaktif') checked @endif>
-            <label class="btn btn-outline-primary rounded-pill px-3" for="nonaktif">Nonaktif</label>
+            <input type="radio" class="btn-check" name="status" id="berjalan" autocomplete="off" value="berjalan"
+                @if (request('filter') == 'berjalan') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="berjalan">Berjalan</label>
 
-            <input type="radio" class="btn-check" name="status" id="peninjauan" autocomplete="off" value="peninjauan"
-                @if (request('filter') == 'peninjauan') checked @endif>
-            <label class="btn btn-outline-primary rounded-pill px-3" for="peninjauan">Peninjauan</label>
+            <input type="radio" class="btn-check" name="status" id="pengelolaan" autocomplete="off" value="pengelolaan"
+                @if (request('filter') == 'pengelolaan') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="pengelolaan">Pengelolaan</label>
         </div>
     </div>
 
@@ -49,7 +49,7 @@
                         <div class="d-inline">
                             <span class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</span>
                             <span
-                                class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Nonaktif)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}
+                                class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Berjalan)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}
                             </span>
                         </div>
                         <a href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum->tahun]) }}"
@@ -60,8 +60,9 @@
                     <div class="card-body">
                         <h6 class="card-title fw-bold ">Mahasiswa Aktif</h6>
                         <ul class="mb-0">
-                            <li>Mahasiswa tahun masuk 20XX</li>
-                            <li>Mahasiswa tahun masuk 20XX</li>
+                            @foreach($kurikulum->angkatan_mahasiswa_terdaftar as $angkatan)
+                                <li>Mahasiswa angkatan {{ $angkatan }}</li>
+                            @endforeach
                         </ul>
                     </div>
                     <div class="card-footer text-body-secondary py-3">
@@ -96,11 +97,11 @@
                     case 'aktif':
                         location.href = url + '?filter=aktif'
                         break;
-                    case 'nonaktif':
-                        location.href = url + '?filter=nonaktif'
+                    case 'berjalan':
+                        location.href = url + '?filter=berjalan'
                         break;
-                    case 'peninjauan':
-                        location.href = url + '?filter=peninjauan'
+                    case 'pengelolaan':
+                        location.href = url + '?filter=pengelolaan'
                         break;
                 }
             });

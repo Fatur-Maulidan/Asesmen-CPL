@@ -83,14 +83,14 @@ class Master_03_Kurikulum extends Model
         return $query->where('status', StatusKurikulum::Aktif);
     }
 
-    public function scopeNonaktif($query)
+    public function scopeBerjalan($query)
     {
-        return $query->where('status', StatusKurikulum::Nonaktif);
+        return $query->where('status', StatusKurikulum::Berjalan);
     }
 
-    public function scopePeninjauan($query)
+    public function scopePengelolaan($query)
     {
-        return $query->where('status', StatusKurikulum::Peninjauan());
+        return $query->where('status', StatusKurikulum::Pengelolaan);
     }
 
     public function scopeSearch($query)
@@ -117,5 +117,12 @@ class Master_03_Kurikulum extends Model
                     ->where('tahun', $kurikulum)
                     ->with('capaianPembelajaranLulusan')
                     ->first();
+    }
+
+    // # Accessor
+    // Retrieve distinct angkatan_mahasiswa_terdaftar values
+    public function getAngkatanMahasiswaTerdaftarAttribute()
+    {
+        return $this->mahasiswa->pluck('tahun_angkatan')->unique()->sort()->values()->all();
     }
 }
