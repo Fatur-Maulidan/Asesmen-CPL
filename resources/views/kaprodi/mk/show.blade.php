@@ -6,6 +6,7 @@
 @endsection
 
 @section('main')
+    <?php $modal = ''; ?>
     <div class="row">
         {{-- Sidebar --}}
         @include('kaprodi.mk.sidebar')
@@ -336,7 +337,8 @@
                             </div>
                             <div class="col">
                                 <button type="button" class="btn btn-primary w-100"
-                                    data-bs-target="#tahunAkademikBaruModal2" data-bs-toggle="modal">Lanjut</button>
+                                    data-bs-target="#tahunAkademikBaruModal2" data-bs-toggle="modal"
+                                    id="tahunAkademikBaru2">Lanjut</button>
                             </div>
                         </div>
                     </div>
@@ -407,7 +409,7 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="col">
-                                <button type="button" class="btn btn-danger w-100" data-bs-target="#staticBackdrop"
+                                <button type="button" class="btn btn-danger w-100" id="modalButton"
                                     data-bs-toggle="modal">Tidak</button>
                             </div>
                             <div class="col">
@@ -437,12 +439,14 @@
                     {{--                    </div> --}}
                 </div>
                 <div class="col-auto">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#pembobotanModal"
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#pembobotanModal" id="pembobotan"
                         class="btn btn-outline-primary ">Pembobotan</button>
                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#tahunAkademikBaruModal1">Tahun Akademik Baru</button>
+                        data-bs-target="#tahunAkademikBaruModal1" id="tahunAkademikBaru1">Tahun Akademik
+                        Baru</button>
                     {{-- Button trigger modal --}}
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
+                        id="ubah">
                         Ubah
                     </button>
                 </div>
@@ -542,6 +546,7 @@
 
 @push('scripts')
     <script>
+        var modal = '';
         $(document).ready(function() {
             $('#editForm').on('submit', function(e) {
                 e.preventDefault();
@@ -559,6 +564,25 @@
                         console.log(err);
                     }
                 });
+            });
+        });
+
+        $(document).ready(function() {
+            $('#pembobotan').on('click', function() {
+                modal = "pembobotanModal";
+                $('#modalButton').attr('data-bs-target', '#' + modal);
+            });
+            $('#tahunAkademikBaru1').on('click', function() {
+                modal = "tahunAkademikBaruModal1";
+                $('#modalButton').attr('data-bs-target', '#' + modal);
+            });
+            $('#tahunAkademikBaru2').on('click', function() {
+                modal = "tahunAkademikBaruModal2";
+                $('#modalButton').attr('data-bs-target', '#' + modal);
+            });
+            $('#ubah').on('click', function() {
+                modal = "editModal";
+                $('#modalButton').attr('data-bs-target', '#' + modal);
             });
         });
     </script>
