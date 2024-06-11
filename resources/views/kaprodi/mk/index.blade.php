@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.mk.index', $kurikulum->tahun) }}
+    {{ Breadcrumbs::render('kaprodi.mata-kuliah.index', $kurikulum->tahun) }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
@@ -20,7 +20,7 @@
 
     {{-- Import Mata Kuliah Modal --}}
     <div class="modal fade" id="importMataKuliahModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="importMataKuliahModalLabel" aria-hidden="true">
+        aria-labelledby="importMataKuliahModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -28,15 +28,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.mata-kuliah.import', ['kurikulum' => $kurikulum]) }}" method="POST" autocomplete="off"
-                          enctype="multipart/form-data">
+                    <form action="{{ route('kaprodi.mata-kuliah.import', ['kurikulum' => $kurikulum]) }}" method="POST"
+                        autocomplete="off" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-5">
                             <label for="formFile" class="form-label fw-bold">Upload File Excel</label>
                             <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('kaprodi.mata-kuliah.downloadTemplate', ['kurikulum' => $kurikulum]) }}" class="btn btn-outline-success">Download
+                            <a href="{{ route('kaprodi.mata-kuliah.downloadTemplate', ['kurikulum' => $kurikulum]) }}"
+                                class="btn btn-outline-success">Download
                                 Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
                         </div>
@@ -56,17 +57,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.mata-kuliah.store', ['kurikulum' => $kurikulum]) }}" method="post" autocomplete="off" id="tambahMataKuliahForm">
+                    <form action="{{ route('kaprodi.mata-kuliah.store', ['kurikulum' => $kurikulum]) }}" method="post"
+                        autocomplete="off" id="tambahMataKuliahForm">
                         @csrf
                         <div class="mb-3">
                             <label for="kode" class="form-label fw-bold">Kode</label>
-                            <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode mata kuliah">
+                            <input type="text" class="form-control" id="kode" name="kode"
+                                placeholder="Kode mata kuliah">
                             <div id="kode_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="nama" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama mata kuliah">
+                            <input type="text" class="form-control" id="nama" name="nama"
+                                placeholder="Nama mata kuliah">
                             <div id="nama_feedback" class="text-danger"></div>
                         </div>
 
@@ -78,7 +82,8 @@
 
                         <div class="">
                             <label for="jumlah_sks" class="form-label fw-bold">Jumlah SKS</label>
-                            <input type="number" class="form-control" id="jumlah_sks" name="jumlah_sks" placeholder="Jumlah SKS mata kuliah">
+                            <input type="number" class="form-control" id="jumlah_sks" name="jumlah_sks"
+                                placeholder="Jumlah SKS mata kuliah">
                             <div id="jumlah_sks_feedback" class="text-danger"></div>
                         </div>
                     </form>
@@ -89,7 +94,8 @@
                             <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-success w-100" form="tambahMataKuliahForm">Tambah</button>
+                            <button type="submit" class="btn btn-success w-100"
+                                form="tambahMataKuliahForm">Tambah</button>
                         </div>
                     </div>
                 </div>
@@ -100,16 +106,18 @@
     {{-- Data Mata Kuliah --}}
     <div class="row">
         <div class="col-12">
-            <div class="accordion" id="daftarMataKuliah">
+            <div class="accordion accordion-flush" id="daftarMataKuliah">
                 @forelse($mata_kuliah as $mk)
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#accordion{{ $loop->iteration }}" aria-expanded="true" aria-controls="{{ $loop->iteration }}">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordion{{ $loop->iteration }}" aria-expanded="false"
+                                aria-controls="{{ $loop->iteration }}">
                                 {{ $mk->kode . ' ' . $mk->nama }}
                             </button>
                         </h2>
-                        <div id="accordion{{ $loop->iteration }}" class="accordion-collapse collapse" data-bs-parent="#daftarMataKuliah">
+                        <div id="accordion{{ $loop->iteration }}" class="accordion-collapse collapse"
+                            data-bs-parent="#daftarMataKuliah">
                             <div class="accordion-body">
                                 <p class="fw-bold mb-1">Deskripsi</p>
                                 <p class="mb-4">{{ $mk->deskripsi }}</p>
@@ -121,8 +129,8 @@
                                 <p class="mb-0">Belum ada pemetaan</p>
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum, 'mata_kuliah' => $mk->id]) }}"
-                                   class="me-3">Lihat detail</a>
+                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mk->kode]) }}"
+                                    class="me-3">Lihat detail</a>
                             </div>
                         </div>
                     </div>
@@ -138,7 +146,7 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const tambahMataKuliahModal = document.getElementById('tambahMataKuliahModal');
             const tambahMataKuliahModalInstance = new bootstrap.Modal('#tambahMataKuliahModal');
 
