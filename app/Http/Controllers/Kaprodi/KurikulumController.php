@@ -16,7 +16,7 @@ class KurikulumController extends Controller
 
     public function __construct()
     {
-        $this->user = Master_04_Dosen::with('programStudi:id,koordinator_nip')->find('199301062019031017');
+        $this->user = new Master_04_Dosen();
     }
 
     /**
@@ -26,8 +26,9 @@ class KurikulumController extends Controller
      */
     public function index()
     {
-        $kurikulum = Master_03_Kurikulum::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
-        // $mahasiswa = Master06Mahasiswa::where('02_MASTER_program_studi_id', $this->user->programStudi->id);
+        // dd($this->user->kaprodi);
+        $this->user = $this->user->getProdiKodeByDosenNip('199301062019031017');
+        $kurikulum = Master_03_Kurikulum::where('02_MASTER_program_studi_nomor', $this->user->kaprodi->nomor);
 
         if (request('filter') == 'aktif') {
             $kurikulum->aktif();
@@ -43,7 +44,7 @@ class KurikulumController extends Controller
             'title' => 'Home',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'data_kurikulum' => $kurikulum->get(),
+            'kurikulum' => $kurikulum->get(),
             // 'mahasiswa_terdaftar' => $mahasiswa
         ]);
     }

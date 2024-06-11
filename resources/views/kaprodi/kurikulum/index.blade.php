@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.kurikulum.index', $kurikulum->tahun) }}
+    {{ Breadcrumbs::render('kaprodi.kurikulum.index') }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
@@ -42,14 +42,15 @@
 
     {{-- Data kurikulum --}}
     <div class="row gy-5">
-        @forelse ($data_kurikulum as $kurikulum)
+        @forelse ($kurikulum as $kurikulum)
             <div class="col-4">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center py-3">
                         <div class="d-inline">
                             <span class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</span>
                             <span
-                                class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Nonaktif)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}</span>
+                                class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Nonaktif)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}
+                            </span>
                         </div>
                         <a href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum->tahun]) }}"
                             class="link-secondary">

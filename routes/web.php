@@ -92,7 +92,7 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
 
     // # Indikator Kinerja
     Route::resource('kurikulum/{kurikulum}/ik', KaprodiIndikatorKinerjaController::class)
-        ->only(['index', 'show', 'store', 'edit', 'update']);
+        ->only(['index', 'show', 'store', 'edit', 'update', 'destroy']);
     Route::get('kurikulum/{kurikulum}/ik/{ik}/detail', [KaprodiIndikatorKinerjaController::class, 'detail'])
         ->name('ik.detail');
 
