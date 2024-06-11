@@ -25,7 +25,7 @@ class ProgramStudiSheetImport implements ToModel, WithHeadingRow, SkipsOnError
             'nama' => $row['nama'],
             'kode' => $row['kode'],
             'jenjang_pendidikan' => $row['jenjang_pendidikan'],
-            '01_MASTER_jurusan_id' => Master_01_Jurusan::where('nama', $row['jurusan'])->pluck('id')->first(),
+            '01_MASTER_jurusan_nomor' => Master_01_Jurusan::where('nama', $row['jurusan'])->pluck('nomor')->first(),
         ]);
     }
 }

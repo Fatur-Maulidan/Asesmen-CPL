@@ -11,47 +11,46 @@
         <div class="col-auto">
             <form action="" method="GET">
                 <div class="row align-items-end">
-                    <div class="col-auto">
-                        <div>
-                            <label for="filter_role" class="form-label fw-bold">Filter berdasarkan role</label>
-                            <select class="form-select" id="filter_role" name="role">
-                                <option value="">Pilih role</option>
-                                <option value="{{ \App\Enums\RoleDosen::Dosen }}"
-                                    @if (request('role') == \App\Enums\RoleDosen::Dosen) selected @endif>Dosen</option>
-                                <option value="{{ \App\Enums\RoleDosen::P2MPP }}"
-                                    @if (request('role') == \App\Enums\RoleDosen::P2MPP) selected @endif>P2MPP</option>
-                                <option value="{{ \App\Enums\RoleDosen::KoorProgramStudi }}"
-                                    @if (request('role') == \App\Enums\RoleDosen::KoorProgramStudi) selected @endif>Koordinator Program Studi
-                                </option>
-                            </select>
-                        </div>
-                    </div>
+                    {{--<div class="col-auto">--}}
+                    {{--    <div>--}}
+                    {{--        <label for="filter_role" class="form-label fw-bold">Filter berdasarkan role</label>--}}
+                    {{--        <select class="form-select" id="filter_role" name="role">--}}
+                    {{--            <option value="">Pilih role</option>--}}
+                    {{--            <option value="{{ \App\Enums\RoleDosen::Dosen }}"--}}
+                    {{--                @if (request('role') == \App\Enums\RoleDosen::Dosen) selected @endif>Dosen</option>--}}
+                    {{--            <option value="{{ \App\Enums\RoleDosen::P2MPP }}"--}}
+                    {{--                @if (request('role') == \App\Enums\RoleDosen::P2MPP) selected @endif>P2MPP</option>--}}
+                    {{--            <option value="{{ \App\Enums\RoleDosen::KoorProgramStudi }}"--}}
+                    {{--                @if (request('role') == \App\Enums\RoleDosen::KoorProgramStudi) selected @endif>Koordinator Program Studi--}}
+                    {{--            </option>--}}
+                    {{--        </select>--}}
+                    {{--    </div>--}}
+                    {{--</div>--}}
                     <div class="col-auto">
                         <div>
                             <label for="filter_jurusan" class="form-label fw-bold">Filter berdasarkan jurusan</label>
                             <select class="form-select" id="filter_jurusan" name="jurusan">
                                 <option value="">Pilih jurusan</option>
                                 @foreach ($jurusan as $jrsn)
-                                    <option value="{{ $jrsn->id }}" @if (request('jurusan') == $jrsn->id) selected @endif>
-                                        {{ $jrsn->nama }}</option>
+                                    <option value="{{ $jrsn->nomor }}" @if (request('jurusan') == $jrsn->nomor) selected @endif>{{ $jrsn->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
+                    {{--<div class="col-auto">--}}
+                    {{--    <div>--}}
+                    {{--        <label for="filter_status" class="form-label fw-bold">Filter berdasarkan status</label>--}}
+                    {{--        <select class="form-select" id="filter_status" name="status">--}}
+                    {{--            <option value="">Pilih status</option>--}}
+                    {{--            <option value="{{ \App\Enums\StatusKeaktifan::Aktif }}"--}}
+                    {{--                @if (request('status') == \App\Enums\StatusKeaktifan::Aktif) selected @endif>Aktif</option>--}}
+                    {{--            <option value="{{ \App\Enums\StatusKeaktifan::Nonaktif }}"--}}
+                    {{--                @if (request('status') == \App\Enums\StatusKeaktifan::Nonaktif) selected @endif>Nonaktif</option>--}}
+                    {{--        </select>--}}
+                    {{--    </div>--}}
+                    {{--</div>--}}
                     <div class="col-auto">
-                        <div>
-                            <label for="filter_status" class="form-label fw-bold">Filter berdasarkan status</label>
-                            <select class="form-select" id="filter_status" name="status">
-                                <option value="">Pilih status</option>
-                                <option value="{{ \App\Enums\StatusKeaktifan::Aktif }}"
-                                    @if (request('status') == \App\Enums\StatusKeaktifan::Aktif) selected @endif>Aktif</option>
-                                <option value="{{ \App\Enums\StatusKeaktifan::Nonaktif }}"
-                                    @if (request('status') == \App\Enums\StatusKeaktifan::Nonaktif) selected @endif>Nonaktif</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-outline-primary">Filter</button>
+                        <button type="submit" class="btn btn-outline-primary">Filter</button>
                     </div>
                 </div>
             </form>
@@ -107,25 +106,26 @@
                     <form action="" method="POST" autocomplete="off" id="tambahDosenForm">
                         @csrf
                         <div id="method_spoofing"></div>
+
                         <div class="mb-3">
-                            <label for="nama" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" id="nama" name="nama"
-                                placeholder="Nama Dosen">
-                            <div id="nama_feedback" class="text-danger"></div>
+                            <label for="kode" class="form-label fw-bold">Kode dosen</label>
+                            <input type="text" class="form-control" id="kode" name="kode"
+                                   placeholder="Kode dosen">
+                            <div id="kode_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="nip" class="form-label fw-bold">NIP</label>
                             <input type="text" class="form-control" id="nip" name="nip"
-                                placeholder="Nomor Induk Pegawai">
+                                   placeholder="Nomor Induk Pegawai">
                             <div id="nip_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="kode" class="form-label fw-bold">Kode dosen</label>
-                            <input type="text" class="form-control" id="kode" name="kode"
-                                placeholder="Kode dosen">
-                            <div id="kode_feedback" class="text-danger"></div>
+                            <label for="nama" class="form-label fw-bold">Nama</label>
+                            <input type="text" class="form-control" id="nama" name="nama"
+                                placeholder="Nama Dosen">
+                            <div id="nama_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
@@ -155,40 +155,24 @@
                         <div class="mb-3">
                             <label for="jurusan" class="form-label fw-bold">Jurusan</label>
                             <select class="form-select" id="jurusan" name="jurusan">
-                                <option selected>Pilih jurusan</option>
+                                <option value="" selected>Pilih jurusan</option>
                                 @foreach ($jurusan as $jrsn)
-                                    <option value="{{ $jrsn->id }}">{{ $jrsn->nama }}</option>
+                                    <option value="{{ $jrsn->nomor }}">{{ $jrsn->nama }}</option>
+                                @endforeach
+                            </select>
+                            <div id="jurusan_feedback" class="text-danger"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="program_studi" class="form-label fw-bold">Program studi</label>
+                            <select class="form-select" id="program_studi" name="program_studi[]" multiple>
+                                <option value="">Pilih program studi</option>
+                                @foreach ($prodi as $p)
+                                    <option value="{{ $p->nomor }}">{{ $p->jenjang_pendidikan . ' ' .$p->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="mb-3">
-                            <div class="fw-bold mb-2">Role</div>
-                            <div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="role"
-                                        value="{{ \App\Enums\RoleDosen::Dosen }}" id="role_dosen">
-                                    <label class="form-check-label" for="role_dosen">
-                                        Dosen
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="role"
-                                        value="{{ \App\Enums\RoleDosen::KoorProgramStudi }}" id="role_kaprodi">
-                                    <label class="form-check-label" for="role_kaprodi">
-                                        Koordinator Program Studi
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="role"
-                                        value="{{ \App\Enums\RoleDosen::P2MPP }}" id="role_p2mpp">
-                                    <label class="form-check-label" for="role_p2mpp">
-                                        P2MPP
-                                    </label>
-                                </div>
-                            </div>
-                            <div id="role_feedback" class="text-danger"></div>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -294,26 +278,24 @@
     {{ $dataTable->scripts() }}
     <script>
         $(document).ready(function() {
-            const tambahDosenModal = document.getElementById('tambahDosennModal');
+            const tambahDosenModal = document.getElementById('tambahDosenModal');
             const tambahDosenModalInstance = new bootstrap.Modal('#tambahDosenModal');
 
             tambahDosenModal.addEventListener('hidden.bs.modal', event => {
-                $('#nama').val('');
-                $('#nip').val('');
                 $('#kode').val('');
+                $('#nip').val('');
+                $('#nama').val('');
                 $('#jk_laki').prop('checked', false);
                 $('#jk_perempuan').prop('checked', false);
                 $('#email').val('');
-                $('#role_dosen').prop('checked', false);
-                $('#role_kaprodi').prop('checked', false);
-                $('#role_p2mpp').prop('checked', false);
+                $('#jurusan').prop('selectedIndex', 0);
 
                 $('#nama_feedback').html('');
                 $('#nip_feedback').html('');
                 $('#kode_feedback').html('');
                 $('#jenis_kelamin_feedback').html('');
                 $('#email_feedback').html('');
-                $('#role_feedback').html('');
+                $('#jurusan_feedback').html('');
             });
 
             $('#btn-tambah').on('click', function() {
@@ -376,11 +358,11 @@
                                 $('#email_feedback').html('');
                             }
 
-                            if ('role' in err.responseJSON.errors) {
-                                $('#role_feedback').html(err.responseJSON.errors
-                                    .role[0]);
+                            if ('jurusan' in err.responseJSON.errors) {
+                                $('#jurusan_feedback').html(err.responseJSON.errors
+                                    .jurusan[0]);
                             } else {
-                                $('#role_feedback').html('');
+                                $('#jurusan_feedback').html('');
                             }
                         } else if (err.status == 500) {
                             console.log(err);
@@ -392,15 +374,15 @@
             $(document).on('click', '.btn-hapus', function(e) {
                 e.preventDefault();
 
-                const id = $(this).data('id');
-                $('#hapusDosenForm').attr('action', "{{ url()->current() }}/" + id);
+                const kode = $(this).data('kode');
+                $('#hapusDosenForm').attr('action', "{{ url()->current() }}/" + kode);
             });
 
             $(document).on('click', '.btn-ubah', function(e) {
                 e.preventDefault();
 
-                const id = $(this).data('id');
-                const url = "{{ url()->current() }}/" + id;
+                const kode = $(this).data('kode');
+                const url = "{{ url()->current() }}/" + kode;
 
                 $.ajax({
                     type: "get",
@@ -409,21 +391,21 @@
                     success: function(res) {
                         console.log(res);
 
-                        $('#nama').val(res.dosen.nama);
-                        $('#nip').val(res.dosen.nip);
                         $('#kode').val(res.dosen.kode);
-                        $('#jurusan').val(res.dosen['01_MASTER_jurusan_id']).change();
-                        (res.dosen.jenis_kelamin ==
-                            '{{ \App\Enums\JenisKelamin::LakiLaki }}') ? $('#jk_laki').prop(
-                            'checked', true): $('#jk_perempuan').prop('checked', true);
+                        $('#nip').val(res.dosen.nip);
+                        $('#nama').val(res.dosen.nama);
+                        (res.dosen.jenis_kelamin == '{{ \App\Enums\JenisKelamin::LakiLaki }}')
+                            ? $('#jk_laki').prop('checked', true)
+                            : $('#jk_perempuan').prop('checked', true);
                         $('#email').val(res.dosen.email);
-                        if (res.dosen.role == '{{ \App\Enums\RoleDosen::Dosen }}') {
-                            $('#role_dosen').prop('checked', true);
-                        } else if (res.dosen.role == '{{ \App\Enums\RoleDosen::P2MPP }}') {
-                            $('#role_p2mpp').prop('checked', true);
-                        } else {
-                            $('#role_kaprodi').prop('checked', true);
+                        $('#jurusan').val(res.dosen['01_MASTER_jurusan_nomor']).change();
+                        let prodi = [];
+                        if (res.dosen.program_studi) {
+                            res.dosen.program_studi.forEach(function (element, index) {
+                                prodi.push(element.nomor);
+                            });
                         }
+                        $('#program_studi').val(prodi).change();
                     },
                     error: function(err) {
                         console.log(err);
@@ -431,9 +413,15 @@
                 });
 
                 $('#tambahDosenModalLabel').html('Ubah Dosen');
-                $('#tambahDosenForm').attr('action', "{{ url()->current() }}/" + id);
+                $('#tambahDosenForm').attr('action', "{{ url()->current() }}/" + kode);
                 $('#method_spoofing').html('{{ method_field('patch') }}');
                 $('#btn-submit').html('Ubah');
+            });
+
+            $('#program_studi').select2({
+                theme: "bootstrap-5",
+                closeOnSelect: false,
+                dropdownParent: $('#tambahDosenModal')
             });
         });
     </script>

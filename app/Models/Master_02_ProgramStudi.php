@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\JenjangPendidikan;
+use App\Enums\StatusKeaktifan;
 use Illuminate\Database\Eloquent\Model;
 
 class Master_02_ProgramStudi extends Model
@@ -82,5 +83,11 @@ class Master_02_ProgramStudi extends Model
     public function mahasiswa()
     {
         return $this->hasMany(Master_06_Mahasiswa::class, '02_MASTER_program_studi_nomor');
+    }
+
+    // # Methods
+    public function kurikulumAktif()
+    {
+        return $this->kurikulum()->aktif();
     }
 }

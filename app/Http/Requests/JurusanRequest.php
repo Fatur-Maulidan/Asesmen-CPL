@@ -24,8 +24,9 @@ class JurusanRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama_jurusan' => 'bail|required',
-            'golongan_jurusan' => 'bail|required'
+            'nomor' => 'bail|required|unique:01_MASTER_jurusan|digits:2',
+            'nama' => 'bail|required',
+            'golongan' => 'bail|required'
         ];
     }
 }

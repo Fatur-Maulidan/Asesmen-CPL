@@ -42,9 +42,6 @@
 
     {{-- DataTable --}}
     <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
-    <script>
-        import Swal from 'sweetalert2';
-    </script>
     {{-- Custom Js --}}
     @stack('scripts')
 </body>

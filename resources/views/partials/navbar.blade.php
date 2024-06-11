@@ -25,10 +25,10 @@
                     <a class="nav-link @if (Route::is('admin.dosen.*')) active @endif"
                         href="{{ route('admin.dosen.index') }}">Dosen</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link @if (Route::is('admin.mahasiswa.*')) active @endif"
-                        href="{{ route('admin.mahasiswa.index') }}">Mahasiswa</a>
-                </li>
+                {{-- <li class="nav-item"> --}}
+                {{--    <a class="nav-link @if (Route::is('admin.mahasiswa.*')) active @endif" --}}
+                {{--       href="{{ route('admin.mahasiswa.index') }}">Mahasiswa</a> --}}
+                {{-- </li> --}}
             </ul>
         @elseif($role == 'Koordinator Program Studi')
             <ul class="nav nav-underline mt-4">

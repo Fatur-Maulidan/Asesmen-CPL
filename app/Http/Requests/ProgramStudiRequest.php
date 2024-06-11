@@ -24,12 +24,12 @@ class ProgramStudiRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama_prodi' => 'bail|required',
-            'jenjang_prodi' => 'bail|required',
-            'nomor_prodi' => 'bail|required',
-            'kode_prodi' => 'bail|required',
+            'nomor' => 'bail|required',
+            'nama' => 'bail|required',
+            'kode' => 'bail|required',
+            'jenjang_pendidikan' => 'bail|required',
             'koordinator_prodi' => 'bail|nullable',
-            'jurusan_id' => 'bail|required',
+            'jurusan_nomor' => 'bail|required',
         ];
     }
 }

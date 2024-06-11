@@ -7,6 +7,7 @@ use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DosenRequest;
 use App\Imports\DosenImport;
+use App\Models\Master_02_ProgramStudi;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_01_Jurusan;
 use Illuminate\Http\Request;
@@ -23,23 +24,16 @@ class DosenController extends Controller
     public function index(DosenDataTable $dataTable)
     {
         $filter = [];
-        if (request('role')) {
-            $filter['role'] = request('role');
-        }
-
         if (request('jurusan')) {
             $filter['jurusan'] = request('jurusan');
         }
 
-        if (request('status')) {
-            $filter['status'] = request('status');
-        }
-
         return $dataTable->with('filter', $filter)->render('admin.dosen.index', [
-            'title' => 'Master04Dosen',
+            'title' => 'Dosen',
             'nama' => 'John Tyler',
             'role' => 'Admin',
-            'jurusan' => Master_01_Jurusan::get(['id', 'nama'])
+            'jurusan' => Master_01_Jurusan::get(['nomor', 'nama']),
+            'prodi' => Master_02_ProgramStudi::orderBy('jenjang_pendidikan')->get(['nomor', 'nama', 'jenjang_pendidikan']),
         ]);
     }
 
@@ -63,10 +57,11 @@ class DosenController extends Controller
     {
         if ($request->ajax()) {
             $validated = $request->validated();
-            $validated['01_MASTER_jurusan_id'] = $validated['jurusan'];
+            $validated['01_MASTER_jurusan_nomor'] = $validated['jurusan'];
             unset($validated['jurusan']);
 
-            Master_04_Dosen::create($validated);
+            $dosen = Master_04_Dosen::create($validated);
+            $dosen->programStudi()->sync($validated['program_studi']);
 
             return response()->json([
                 'message' => 'Data berhasil ditambah.'
@@ -80,10 +75,10 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($nip)
+    public function show($kode)
     {
         if (request()->ajax()) {
-            $dosen = Master_04_Dosen::find($nip);
+            $dosen = Master_04_Dosen::with('programStudi:nomor,nama,jenjang_pendidikan')->find($kode);
 
             return response()->json([
                 'dosen' => $dosen
@@ -109,14 +104,28 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(DosenRequest $request, $nip)
+    public function update(DosenRequest $request, $kode)
     {
-        $dosen = Master_04_Dosen::find($nip);
+        $dosen = Master_04_Dosen::find($kode);
 
         if ($request->ajax()) {
             $validated = $request->validated();
+            $validated['01_MASTER_jurusan_nomor'] = $validated['jurusan'];
+            unset($validated['jurusan']);
+
+            $old_prodi = [];
+            foreach ($dosen->programStudi as $prodi) {
+                array_push($old_prodi, $prodi->nomor);
+            }
+
+            if ($old_prodi != $validated['program_studi']) {
+                foreach ($old_prodi as $prodi) {
+                    $dosen->programStudi()->detach($prodi);
+                }
+            }
 
             $dosen->update($validated);
+            $dosen->programStudi()->sync($validated['program_studi']);
 
             return response()->json([
                 'message' => 'Data berhasil diubah.'
@@ -130,9 +139,9 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($nip)
+    public function destroy($kode)
     {
-        Master_04_Dosen::destroy($nip);
+        Master_04_Dosen::destroy($kode);
 
         return redirect()->back();
     }

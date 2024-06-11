@@ -6,12 +6,12 @@ use BenSampo\Enum\Enum;
 
 /**
  * @method static static Aktif()
- * @method static static Nonaktif()
- * @method static static Peninjauan()
+ * @method static static Berjalan()
+ * @method static static Pengelolaan()
  */
 final class StatusKurikulum extends Enum
 {
     const Aktif =   'Aktif';
-    const Nonaktif =   'Nonaktif';
-    const Peninjauan = 'Peninjauan';
+    const Berjalan =   'Berjalan';
+    const Pengelolaan = 'Pengelolaan';
 }
