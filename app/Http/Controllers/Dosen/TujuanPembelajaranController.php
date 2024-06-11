@@ -83,9 +83,9 @@ class TujuanPembelajaranController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $dataTP = Master_13_TujuanPembelajaran::find($id);
-        $dataTP->deskripsi = $request->input('deskripsi');
-        $dataTP->tanggal_diajukan = date('Y-m-d H:i:s');
+        $dataTp = Master_13_TujuanPembelajaran::find($id);
+        $dataTp->deskripsi = $request->input('deskripsi');
+        $dataTp->tanggal_diajukan = date('Y-m-d H:i:s');
 
         if($dataTp->save()) {
             return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil diperbaharui');
