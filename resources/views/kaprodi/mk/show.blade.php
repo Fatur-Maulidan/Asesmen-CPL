@@ -16,17 +16,22 @@
             aria-labelledby="pembobotanModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div>
-                            <div class="text-muted fs-6">Proses 1 dari 2</div>
-                            <h1 class="modal-title fs-5 fw-bold" id="pembobotanModalLabel">Pemetaan Mata Kuliah dengan
-                                Indikator
-                                Kinerja</h1>
+                    <form method="POST"
+                        action="{{ route('kaprodi.mata-kuliah.pemetaan', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $detail_mata_kuliah->id]) }}"
+                        autocomplete="off">
+                        @csrf
+                        @method('PATCH')
+                        <div class="modal-header">
+                            <div>
+                                <div class="text-muted fs-6">Proses 1 dari 2</div>
+                                <h1 class="modal-title fs-5 fw-bold" id="pembobotanModalLabel">Pemetaan Mata Kuliah dengan
+                                    Indikator
+                                    Kinerja</h1>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="">
+                        <div class="modal-body">
+
                             <div class="mb-3">
                                 <div class="fw-bold mb-3">Pilih Indikator Kinerja yang revelan dengan Mata Kuliah</div>
                                 <div class="accordion accordion-flush" id="ikList">
@@ -47,17 +52,14 @@
                                                         <div>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    value="" id="flexCheckDefault">
+                                                                    name="checkbox[]" value="{{ $ik->kode }}"
+                                                                    id="flexCheckDefault">
                                                                 <label class="form-check-label fw-bold"
                                                                     for="flexCheckDefault">
-                                                                    S-1
+                                                                    {{ $ik->kode }}
                                                                 </label>
                                                             </div>
-                                                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui
-                                                                ipsum
-                                                                assumenda
-                                                                perferendis id! Quidem ipsa nulla esse, voluptates facilis
-                                                                ipsum.
+                                                            <p>{{ $ik->deskripsi }}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -81,7 +83,8 @@
                                                         <div>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    value="" id="flexCheckDefault">
+                                                                    name="checkbox[]" value="{{ $ik->kode }}"
+                                                                    id="flexCheckDefault">
                                                                 <label class="form-check-label fw-bold"
                                                                     for="flexCheckDefault">
                                                                     {{ $ik->kode }}
@@ -111,7 +114,8 @@
                                                         <div>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    value="" id="flexCheckDefault">
+                                                                    name="checkbox[]" value="{{ $ik->kode }}"
+                                                                    id="flexCheckDefault">
                                                                 <label class="form-check-label fw-bold"
                                                                     for="flexCheckDefault">
                                                                     {{ $ik->kode }}
@@ -141,7 +145,8 @@
                                                         <div>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    value="" id="flexCheckDefault">
+                                                                    name="checkbox[]" value="{{ $ik->kode }}"
+                                                                    id="flexCheckDefault">
                                                                 <label class="form-check-label fw-bold"
                                                                     for="flexCheckDefault">
                                                                     {{ $ik->kode }}
@@ -157,19 +162,19 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="row w-100">
-                            <div class="col">
-                                <button type="button" class="btn btn-danger w-100" data-bs-target="#exampleModalToggle2"
-                                    data-bs-toggle="modal">Batal</button>
-                            </div>
-                            <div class="col">
-                                <button type="button" class="btn btn-primary w-100">Berikutnya</button>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row w-100">
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger w-100"
+                                        data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Batal</button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary w-100">Petakan</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

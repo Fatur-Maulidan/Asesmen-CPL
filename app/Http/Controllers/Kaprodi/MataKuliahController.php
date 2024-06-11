@@ -9,6 +9,8 @@ use App\Models\Master_04_Dosen;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_07_MataKuliah;
 use App\Models\Master_09_IndikatorKinerja;
+use App\Models\Master_11_MataKuliahRegister;
+use App\Models\Master_12_PetaIkMk;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -142,6 +144,35 @@ class MataKuliahController extends Controller
             'kurikulum' => $kurikulum,
             'mata_kuliah' => $mataKuliah->kode 
         ]);
+    }
+
+    public function pemetaan(Request $request, $kurikulum, $id)
+    {
+        $indikatorKinerja = new Master_09_IndikatorKinerja();
+        $jenis = "Praktik";
+        $mataKuliah = Master_07_MataKuliah::find($id);
+        $mataKuliahRegister = Master_11_MataKuliahRegister::where('07_MASTER_mata_kuliah_id', $mataKuliah->id)->where('jenis',$jenis)->first();
+        
+        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
+        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+
+        foreach($request->input('checkbox') as $ik){
+            $petaIkMk[] = [
+                '11_MASTER_mk_register_id' => $mataKuliahRegister->id,
+                '09_MASTER_indikator_kinerja_id' => $indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,'', $ik)->first()->id,
+            ];
+        }
+        if(Master_12_PetaIkMk::insert($petaIkMk)){
+            return redirect()->route('kaprodi.mata-kuliah.show', [
+                'kurikulum' => $kurikulum,
+                'mata_kuliah' => $mataKuliah->kode 
+            ])->with('success', 'Data berhasil disimpan');
+        } else {
+            return redirect()->route('kaprodi.mata-kuliah.show', [
+                'kurikulum'=> $kurikulum,
+                'mata_kuliah'=> $mataKuliah->kode
+            ])->with('error', 'Data gagal disimpan');
+        }
     }
 
     /**

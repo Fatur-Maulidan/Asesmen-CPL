@@ -103,6 +103,7 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
     // # Mata kuliah
     Route::get('kurikulum/{kurikulum}/mata-kuliah/download-template', [KaprodiMataKuliahController::class, 'downloadTemplate'])->name('mata-kuliah.downloadTemplate');
     Route::post('kurikulum/{kurikulum}/mata-kuliah/import', [KaprodiMataKuliahController::class, 'import'])->name('mata-kuliah.import');
+    Route::patch('kurikulum/{kurikulum}/mata-kuliah/{mata_kuliah}/pemetaan', [KaprodiMataKuliahController::class, 'pemetaan'])->name('mata-kuliah.pemetaan');
     Route::resource('kurikulum/{kurikulum}/mata-kuliah', KaprodiMataKuliahController::class)
         ->only(['index', 'store', 'show', 'update']);
 
