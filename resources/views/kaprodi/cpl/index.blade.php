@@ -86,7 +86,7 @@
     {{-- Data CPL --}}
     <div class="row">
         <div class="col-12">
-            <div class="accordion accordion-flush" id="accordionExample">
+            <div class="accordion" id="accordionExample">
                 @if ($data_cpl->isEmpty())
                     <div class="text-center">
                         <p class="fs-4">Belum Ada Data Capaian Pembelajaran</p>
@@ -95,26 +95,76 @@
                     @foreach ($data_cpl as $index => $cpl)
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse{{ $index }}" aria-expanded="false"
+                                <button class="accordion-button {{ $loop->index === 0 ? '' : 'collapsed' }}"
+                                    type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse{{ $index }}"
+                                    aria-expanded="{{ $loop->index === 0 ? 'true' : 'false' }}"
                                     aria-controls="collapse{{ $index }}">
-                                    {{ $cpl->kode }}
+                                    {{ $cpl->kode }} - {{ $cpl->deskripsi }}
                                 </button>
                             </h2>
-                            <div id="collapse{{ $index }}" class="accordion-collapse collapse"
+                            <div id="collapse{{ $index }}"
+                                class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    <p class="fw-bold mb-1">Deskripsi</p>
-                                    <p class="mb-4">{{ $cpl->deskripsi }}</p>
-
                                     <p class="fw-bold mb-1">Mata Kuliah</p>
-                                    <p class="mb-0">Belum ada pemetaan</p>
+                                    @if ($cpl->indikatorKinerja->isEmpty())
+                                        <p class="mb-0">Belum ada pemetaan</p>
+                                    @else
+                                        @php
+                                            $mataKuliahDitampilkan = false;
+                                            $indikatorKinerjaDitampilkan = false;
+                                        @endphp
+
+                                        @foreach ($cpl->indikatorKinerja as $ik)
+                                            @if ($ik->mataKuliahRegister->isEmpty())
+                                                @if ($mataKuliahDitampilkan === false)
+                                                    @php
+                                                        $mataKuliahDitampilkan = true;
+                                                    @endphp
+                                                @endif
+                                            @else
+                                                @foreach ($ik->mataKuliahRegister as $mkr)
+                                                    @if ($mataKuliahDitampilkan === false)
+                                                        <p class="mb-0">{{ $mkr->mataKuliah->nama }}</p>
+                                                        @php
+                                                            $mataKuliahDitampilkan = true;
+                                                        @endphp
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+
+                                        @foreach ($cpl->indikatorKinerja as $ik)
+                                            @if ($ik->mataKuliahRegister->isEmpty())
+                                                @if ($indikatorKinerjaDitampilkan === false)
+                                                    <p class="mb-0">Indikator Kinerja yang belum dipetakan</p>
+                                                    @php
+                                                        $indikatorKinerjaDitampilkan = true;
+                                                        $mataKuliahDitampilkan = true;
+                                                    @endphp
+                                                @endif
+                                                <ul>
+                                                    <li>{{ $ik->kode }}</li>
+                                                </ul>
+                                            @else
+                                                <ul>
+                                                    <li>{{ $ik->kode }}</li>
+                                                </ul>
+                                            @endif
+                                        @endforeach
+                                        </ul>
+                                    @endif
+
+
+
+                                    {{-- <p class="fw-bold mb-1">Indikator Kinerja yang belum Dipetakan</p> --}}
                                 </div>
                                 <div class="accordion-footer bg-light mb-0 p-3 border-top ">
                                     <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->kode]) }}"
                                         class="me-3">Lihat
                                         detail</a>
-                                    <a href="">Ubah pembobotan</a>
+                                    {{-- <a href="">Ubah pembobotan</a> --}}
                                 </div>
                             </div>
                         </div>

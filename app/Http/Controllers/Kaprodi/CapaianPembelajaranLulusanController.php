@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master_07_MataKuliah;
 use Illuminate\Http\Request;
 use App\Http\Requests\CapaianPembelajaranLulusanStoreRequest;
 use App\Models\Master_08_CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_04_Dosen;
+use App\Models\Master_09_IndikatorKinerja;
 
 class CapaianPembelajaranLulusanController extends Controller
 {
@@ -16,6 +18,9 @@ class CapaianPembelajaranLulusanController extends Controller
     protected $kaprodiNip;
     protected $kaprodi;
     protected $kurikulum;
+    protected $indikatorKinerja;
+    protected $mataKuliah;
+    protected $dataIndikatorKinerja = [];
 
     public function __construct()
     {
@@ -23,6 +28,8 @@ class CapaianPembelajaranLulusanController extends Controller
         $this->kaprodiNip = '199301062019031017';
         $this->kaprodi = new Master_04_Dosen();
         $this->kurikulum = new Master_03_Kurikulum();
+        $this->indikatorKinerja = new Master_09_IndikatorKinerja();
+        $this->mataKuliah = new Master_07_MataKuliah(); 
     }
 
     /**
@@ -32,9 +39,28 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function index($kurikulum)
     {
+        $dataCpl = [];
+        $dataIk = [];
+        $dataMkRegister = [];
+        $dataMk = [];
         $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
-
+        
+        // foreach($this->kurikulum->capaianPembelajaranLulusan as $cpl){
+        //     $dataCpl[] = $cpl;
+        //     foreach($cpl->indikatorKinerja as $ik){
+        //         $dataIk[] = $ik;
+        //         foreach($ik->mataKuliahRegister as $mataKuliahRegister){
+        //             $dataMkRegister[] = $mataKuliahRegister;
+        //             $dataMk[] = $mataKuliahRegister->mataKuliah;
+        //         }
+        //     }
+        // }
+        // dd($dataCpl, $dataIk, $dataMkRegister, $dataMk);
+        // foreach($this->kurikulum->capaianPembelajaranLulusan as $cpl) {
+        //     $this->dataIndikatorKinerja[] = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $cpl->id);
+        // }
+        // dd($this->dataIndikatorKinerja[11]);
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
