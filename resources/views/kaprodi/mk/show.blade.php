@@ -1,84 +1,71 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.mata-kuliah.show', $kurikulum, $detail_mata_kuliah['kode'] . ' - ' . $detail_mata_kuliah['nama'], $detail_mata_kuliah['kode']) }}
+    {{ Breadcrumbs::render('kaprodi.mata-kuliah.show', $kurikulum->tahun, $detail_mata_kuliah->kode . ' - ' . $detail_mata_kuliah->nama, $detail_mata_kuliah->kode) }}
     <h1 class="fw-bold mb-0">{{ $detail_mata_kuliah['kode'] . ' - ' . $detail_mata_kuliah['nama'] }}</h1>
 @endsection
 
 @section('main')
+    <?php $modal = ''; ?>
     <div class="row">
         {{-- Sidebar --}}
         @include('kaprodi.mk.sidebar')
 
         {{-- Pembobotan Modal --}}
-        <div class="modal modal-lg fade" id="pembobotanModal" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="pembobotanModalLabel" aria-hidden="true">
+        <div class="modal modal-lg fade" id="pembobotanModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="pembobotanModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div>
-                            <div class="text-muted fs-6">Proses 1 dari 2</div>
-                            <h1 class="modal-title fs-5 fw-bold" id="pembobotanModalLabel">Pemetaan Mata Kuliah dengan
-                                Indikator
-                                Kinerja</h1>
+                    <form method="POST"
+                        action="{{ route('kaprodi.mata-kuliah.pemetaan', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $detail_mata_kuliah->id]) }}"
+                        autocomplete="off">
+                        @csrf
+                        @method('PATCH')
+                        <div class="modal-header">
+                            <div>
+                                <div class="text-muted fs-6">Proses 1 dari 2</div>
+                                <h1 class="modal-title fs-5 fw-bold" id="pembobotanModalLabel">Pemetaan Mata Kuliah dengan
+                                    Indikator
+                                    Kinerja</h1>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="">
+                        <div class="modal-body">
+
                             <div class="mb-3">
                                 <div class="fw-bold mb-3">Pilih Indikator Kinerja yang revelan dengan Mata Kuliah</div>
-                                <div class="accordion" id="ikList">
+                                <div class="accordion accordion-flush" id="ikList">
+
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <button class="accordion-button fw-bold bg-light" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#ikSikap" aria-expanded="true"
+                                            <button class="accordion-button fw-bold bg-light collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#ikSikap" aria-expanded="false"
                                                 aria-controls="ikSikap">
-                                                Sikap (S)
+                                                Sikap (SP)
                                             </button>
                                         </h2>
-                                        <div id="ikSikap" class="accordion-collapse collapse show"
-                                            data-bs-parent="#ikList">
-                                            <div class="accordion-body">
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckDefault">
-                                                        <label class="form-check-label fw-bold" for="flexCheckDefault">
-                                                            S-1
-                                                        </label>
+                                        @foreach ($indikator_kinerja as $ik)
+                                            @if ($ik->capaianPembelajaranLulusan->domain == 'Sikap')
+                                                <div id="ikSikap" class="accordion-collapse collapse"
+                                                    data-bs-parent="#ikList">
+                                                    <div class="accordion-body">
+                                                        <div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="checkbox[]" value="{{ $ik->kode }}"
+                                                                    id="flexCheckDefault">
+                                                                <label class="form-check-label fw-bold"
+                                                                    for="flexCheckDefault">
+                                                                    {{ $ik->kode }}
+                                                                </label>
+                                                            </div>
+                                                            <p>{{ $ik->deskripsi }}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ipsum
-                                                        assumenda
-                                                        perferendis id! Quidem ipsa nulla esse, voluptates facilis ipsum.
-                                                    </p>
                                                 </div>
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckChecked" checked>
-                                                        <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                            S-2
-                                                        </label>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum
-                                                        id libero rem
-                                                        cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                                </div>
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckChecked" checked>
-                                                        <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                            S-3
-                                                        </label>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum
-                                                        id libero rem
-                                                        cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            @endif
+                                        @endforeach
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -88,48 +75,28 @@
                                                 Pengetahuan (P)
                                             </button>
                                         </h2>
-                                        <div id="ikPengetahuan" class="accordion-collapse collapse"
-                                            data-bs-parent="#ikList">
-                                            <div class="accordion-body">
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckDefault">
-                                                        <label class="form-check-label fw-bold" for="flexCheckDefault">
-                                                            S-1
-                                                        </label>
+                                        @foreach ($indikator_kinerja as $ik)
+                                            @if ($ik->capaianPembelajaranLulusan->domain == 'Pengetahuan')
+                                                <div id="ikPengetahuan" class="accordion-collapse collapse"
+                                                    data-bs-parent="#ikList">
+                                                    <div class="accordion-body">
+                                                        <div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="checkbox[]" value="{{ $ik->kode }}"
+                                                                    id="flexCheckDefault">
+                                                                <label class="form-check-label fw-bold"
+                                                                    for="flexCheckDefault">
+                                                                    {{ $ik->kode }}
+                                                                </label>
+                                                            </div>
+                                                            <p>{{ $ik->deskripsi }}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ipsum
-                                                        assumenda
-                                                        perferendis id! Quidem ipsa nulla esse, voluptates facilis ipsum.
-                                                    </p>
                                                 </div>
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckChecked" checked>
-                                                        <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                            S-2
-                                                        </label>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum
-                                                        id libero rem
-                                                        cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                                </div>
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckChecked" checked>
-                                                        <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                            S-3
-                                                        </label>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum
-                                                        id libero rem
-                                                        cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            @endif
+                                        @endforeach
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -139,48 +106,28 @@
                                                 Keterampilan Umum (KU)
                                             </button>
                                         </h2>
-                                        <div id="ikKeterampilanUmum" class="accordion-collapse collapse"
-                                            data-bs-parent="#ikList">
-                                            <div class="accordion-body">
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckDefault">
-                                                        <label class="form-check-label fw-bold" for="flexCheckDefault">
-                                                            S-1
-                                                        </label>
+                                        @foreach ($indikator_kinerja as $ik)
+                                            @if ($ik->capaianPembelajaranLulusan->domain == 'Keterampilan Umum')
+                                                <div id="ikKeterampilanUmum" class="accordion-collapse collapse"
+                                                    data-bs-parent="#ikList">
+                                                    <div class="accordion-body">
+                                                        <div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="checkbox[]" value="{{ $ik->kode }}"
+                                                                    id="flexCheckDefault">
+                                                                <label class="form-check-label fw-bold"
+                                                                    for="flexCheckDefault">
+                                                                    {{ $ik->kode }}
+                                                                </label>
+                                                            </div>
+                                                            <p>{{ $ik->deskripsi }}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ipsum
-                                                        assumenda
-                                                        perferendis id! Quidem ipsa nulla esse, voluptates facilis ipsum.
-                                                    </p>
                                                 </div>
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckChecked" checked>
-                                                        <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                            S-2
-                                                        </label>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum
-                                                        id libero rem
-                                                        cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                                </div>
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckChecked" checked>
-                                                        <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                            S-3
-                                                        </label>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum
-                                                        id libero rem
-                                                        cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            @endif
+                                        @endforeach
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -190,64 +137,44 @@
                                                 Keterampilan Khusus (KK)
                                             </button>
                                         </h2>
-                                        <div id="ikKeterampilanKhusus" class="accordion-collapse collapse"
-                                            data-bs-parent="#ikList">
-                                            <div class="accordion-body">
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckDefault">
-                                                        <label class="form-check-label fw-bold" for="flexCheckDefault">
-                                                            S-1
-                                                        </label>
+                                        @foreach ($indikator_kinerja as $ik)
+                                            @if ($ik->capaianPembelajaranLulusan->domain == 'Keterampilan Khusus')
+                                                <div id="ikKeterampilanKhusus" class="accordion-collapse collapse"
+                                                    data-bs-parent="#ikList">
+                                                    <div class="accordion-body">
+                                                        <div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="checkbox[]" value="{{ $ik->kode }}"
+                                                                    id="flexCheckDefault">
+                                                                <label class="form-check-label fw-bold"
+                                                                    for="flexCheckDefault">
+                                                                    {{ $ik->kode }}
+                                                                </label>
+                                                            </div>
+                                                            <p>{{ $ik->deskripsi }}
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ipsum
-                                                        assumenda
-                                                        perferendis id! Quidem ipsa nulla esse, voluptates facilis ipsum.
-                                                    </p>
                                                 </div>
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckChecked" checked>
-                                                        <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                            S-2
-                                                        </label>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum
-                                                        id libero rem
-                                                        cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                                </div>
-                                                <div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            id="flexCheckChecked" checked>
-                                                        <label class="form-check-label fw-bold" for="flexCheckChecked">
-                                                            S-3
-                                                        </label>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo harum
-                                                        id libero rem
-                                                        cumque incidunt dicta assumenda corporis praesentium quo?</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            @endif
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="row w-100">
-                            <div class="col">
-                                <button type="button" class="btn btn-danger w-100" data-bs-target="#exampleModalToggle2"
-                                    data-bs-toggle="modal">Batal</button>
-                            </div>
-                            <div class="col">
-                                <button type="button" class="btn btn-primary w-100">Berikutnya</button>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row w-100">
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger w-100"
+                                        data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Batal</button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary w-100">Petakan</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -256,24 +183,30 @@
         <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="editModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
+
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5 fw-bold" id="editModalLabel">Ubah Mata Kuliah</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('kaprodi.mata-kuliah.update', ['kurikulum' => $kurikulum, 'mata_kuliah' => $detail_mata_kuliah->id]) }}" method="post" id="editForm" autocomplete="off">
-                            @csrf
-                            @method('PATCH')
+                    <form method="POST"
+                        action="{{ route('kaprodi.mata-kuliah.update', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $detail_mata_kuliah->id]) }}">
+                        @csrf
+                        @method('PATCH')
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 fw-bold" id="editModalLabel">Ubah Mata Kuliah</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
                             <div class="mb-3">
                                 <label for="kode" class="form-label fw-bold">Kode</label>
-                                <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode mata kuliah" value="{{ $detail_mata_kuliah->kode }}">
+                                <input type="text" class="form-control" id="kode" name="kode"
+                                    placeholder="Kode mata kuliah" value="{{ $detail_mata_kuliah->kode }}">
                                 <div id="kode_feedback" class="text-danger"></div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="nama" class="form-label fw-bold">Nama</label>
-                                <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama mata kuliah" value="{{ $detail_mata_kuliah->nama }}">
+                                <input type="text" class="form-control" id="nama" name="nama"
+                                    placeholder="Nama mata kuliah" value="{{ $detail_mata_kuliah->nama }}">
                                 <div id="nama_feedback" class="text-danger"></div>
                             </div>
 
@@ -285,22 +218,24 @@
 
                             <div class="">
                                 <label for="jumlah_sks" class="form-label fw-bold">Jumlah SKS</label>
-                                <input type="number" class="form-control" id="jumlah_sks" name="jumlah_sks" placeholder="Jumlah SKS mata kuliah" value="{{ $detail_mata_kuliah->jumlah_sks }}">
+                                <input type="number" class="form-control" id="jumlah_sks" name="jumlah_sks"
+                                    placeholder="Jumlah SKS mata kuliah" value="{{ $detail_mata_kuliah->jumlah_sks }}">
                                 <div id="jumlah_sks_feedback" class="text-danger"></div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="row w-100">
-                            <div class="col">
-                                <button type="button" class="btn btn-danger w-100" data-bs-target="#exampleModalToggle2"
-                                    data-bs-toggle="modal">Batal</button>
-                            </div>
-                            <div class="col">
-                                <button type="submit" class="btn btn-success w-100 btn-ubah" form="editForm">Ubah</button>
+
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row w-100">
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger w-100"
+                                        data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Batal</button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" class="btn btn-success w-100 btn-ubah">Ubah</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -407,7 +342,8 @@
                             </div>
                             <div class="col">
                                 <button type="button" class="btn btn-primary w-100"
-                                    data-bs-target="#tahunAkademikBaruModal2" data-bs-toggle="modal">Lanjut</button>
+                                    data-bs-target="#tahunAkademikBaruModal2" data-bs-toggle="modal"
+                                    id="tahunAkademikBaru2">Lanjut</button>
                             </div>
                         </div>
                     </div>
@@ -478,7 +414,7 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="col">
-                                <button type="button" class="btn btn-danger w-100" data-bs-target="#staticBackdrop"
+                                <button type="button" class="btn btn-danger w-100" id="modalButton"
                                     data-bs-toggle="modal">Tidak</button>
                             </div>
                             <div class="col">
@@ -500,20 +436,22 @@
                     </div>
                     <div class="me-4">
                         <div class="fw-bold">Diperbarui pada</div>
-                        <div>{{ $detail_mata_kuliah->updated_at->format('d-F-Y H:i') }}</div>
+                        {{-- <div>{{ $detail_mata_kuliah->updated_at->format('d-F-Y H:i') }}</div> --}}
                     </div>
-{{--                    <div>--}}
-{{--                        <div class="fw-bold">Diubah oleh</div>--}}
-{{--                        <div>Jhon Doe</div>--}}
-{{--                    </div>--}}
+                    {{--                    <div> --}}
+                    {{--                        <div class="fw-bold">Diubah oleh</div> --}}
+                    {{--                        <div>Jhon Doe</div> --}}
+                    {{--                    </div> --}}
                 </div>
                 <div class="col-auto">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#pembobotanModal"
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#pembobotanModal" id="pembobotan"
                         class="btn btn-outline-primary ">Pembobotan</button>
                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#tahunAkademikBaruModal1">Tahun Akademik Baru</button>
+                        data-bs-target="#tahunAkademikBaruModal1" id="tahunAkademikBaru1">Tahun Akademik
+                        Baru</button>
                     {{-- Button trigger modal --}}
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
+                        id="ubah">
                         Ubah
                     </button>
                 </div>
@@ -537,74 +475,74 @@
             <div class="row">
                 <div class="col">
                     <div class="fw-bold mb-3">Dosen pengampu berdasarkan tahun akademik</div>
-{{--                    <div class="accordion" id="accordionExample2">--}}
-{{--                        <div class="accordion-item">--}}
-{{--                            <h2 class="accordion-header">--}}
-{{--                                <button class="accordion-button fw-bold bg-light" type="button"--}}
-{{--                                    data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true"--}}
-{{--                                    aria-controls="collapseOne2">--}}
-{{--                                    Tahun akademik 2021 / 2022--}}
-{{--                                </button>--}}
-{{--                            </h2>--}}
-{{--                            <div id="collapseOne2" class="accordion-collapse collapse show"--}}
-{{--                                data-bs-parent="#accordionExample2">--}}
-{{--                                <div class="accordion-body">--}}
-{{--                                    <div>--}}
-{{--                                        <div class="fw-bold">Dosen pengampu</div>--}}
-{{--                                        <ul class="mb-0">--}}
-{{--                                            <li>KO009N - Santi Sundari</li>--}}
-{{--                                            <li>KO052N - Yadhi Aditya P.</li>--}}
-{{--                                            <li>KO060N - Ade Hodijah</li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="accordion-item">--}}
-{{--                            <h2 class="accordion-header">--}}
-{{--                                <button class="accordion-button fw-bold bg-light collapsed" type="button"--}}
-{{--                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo2" aria-expanded="false"--}}
-{{--                                    aria-controls="collapseTwo2">--}}
-{{--                                    Tahun akademik 2022 / 2023--}}
-{{--                                </button>--}}
-{{--                            </h2>--}}
-{{--                            <div id="collapseTwo2" class="accordion-collapse collapse"--}}
-{{--                                data-bs-parent="#accordionExample2">--}}
-{{--                                <div class="accordion-body">--}}
-{{--                                    <div>--}}
-{{--                                        <div class="fw-bold">Dosen pengampu</div>--}}
-{{--                                        <ul class="mb-0">--}}
-{{--                                            <li>KO009N - Santi Sundari</li>--}}
-{{--                                            <li>KO052N - Yadhi Aditya P.</li>--}}
-{{--                                            <li>KO060N - Ade Hodijah</li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="accordion-item">--}}
-{{--                            <h2 class="accordion-header">--}}
-{{--                                <button class="accordion-button fw-bold bg-light collapsed" type="button"--}}
-{{--                                    data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false"--}}
-{{--                                    aria-controls="collapseThree2">--}}
-{{--                                    Tahun akademik 2023 / 2024--}}
-{{--                                </button>--}}
-{{--                            </h2>--}}
-{{--                            <div id="collapseThree2" class="accordion-collapse collapse"--}}
-{{--                                data-bs-parent="#accordionExample2">--}}
-{{--                                <div class="accordion-body">--}}
-{{--                                    <div>--}}
-{{--                                        <div class="fw-bold">Dosen pengampu</div>--}}
-{{--                                        <ul class="mb-0">--}}
-{{--                                            <li>KO009N - Santi Sundari</li>--}}
-{{--                                            <li>KO052N - Yadhi Aditya P.</li>--}}
-{{--                                            <li>KO060N - Ade Hodijah</li>--}}
-{{--                                        </ul>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="accordion" id="accordionExample2"> --}}
+                    {{--                        <div class="accordion-item"> --}}
+                    {{--                            <h2 class="accordion-header"> --}}
+                    {{--                                <button class="accordion-button fw-bold bg-light" type="button" --}}
+                    {{--                                    data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" --}}
+                    {{--                                    aria-controls="collapseOne2"> --}}
+                    {{--                                    Tahun akademik 2021 / 2022 --}}
+                    {{--                                </button> --}}
+                    {{--                            </h2> --}}
+                    {{--                            <div id="collapseOne2" class="accordion-collapse collapse show" --}}
+                    {{--                                data-bs-parent="#accordionExample2"> --}}
+                    {{--                                <div class="accordion-body"> --}}
+                    {{--                                    <div> --}}
+                    {{--                                        <div class="fw-bold">Dosen pengampu</div> --}}
+                    {{--                                        <ul class="mb-0"> --}}
+                    {{--                                            <li>KO009N - Santi Sundari</li> --}}
+                    {{--                                            <li>KO052N - Yadhi Aditya P.</li> --}}
+                    {{--                                            <li>KO060N - Ade Hodijah</li> --}}
+                    {{--                                        </ul> --}}
+                    {{--                                    </div> --}}
+                    {{--                                </div> --}}
+                    {{--                            </div> --}}
+                    {{--                        </div> --}}
+                    {{--                        <div class="accordion-item"> --}}
+                    {{--                            <h2 class="accordion-header"> --}}
+                    {{--                                <button class="accordion-button fw-bold bg-light collapsed" type="button" --}}
+                    {{--                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo2" aria-expanded="false" --}}
+                    {{--                                    aria-controls="collapseTwo2"> --}}
+                    {{--                                    Tahun akademik 2022 / 2023 --}}
+                    {{--                                </button> --}}
+                    {{--                            </h2> --}}
+                    {{--                            <div id="collapseTwo2" class="accordion-collapse collapse" --}}
+                    {{--                                data-bs-parent="#accordionExample2"> --}}
+                    {{--                                <div class="accordion-body"> --}}
+                    {{--                                    <div> --}}
+                    {{--                                        <div class="fw-bold">Dosen pengampu</div> --}}
+                    {{--                                        <ul class="mb-0"> --}}
+                    {{--                                            <li>KO009N - Santi Sundari</li> --}}
+                    {{--                                            <li>KO052N - Yadhi Aditya P.</li> --}}
+                    {{--                                            <li>KO060N - Ade Hodijah</li> --}}
+                    {{--                                        </ul> --}}
+                    {{--                                    </div> --}}
+                    {{--                                </div> --}}
+                    {{--                            </div> --}}
+                    {{--                        </div> --}}
+                    {{--                        <div class="accordion-item"> --}}
+                    {{--                            <h2 class="accordion-header"> --}}
+                    {{--                                <button class="accordion-button fw-bold bg-light collapsed" type="button" --}}
+                    {{--                                    data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false" --}}
+                    {{--                                    aria-controls="collapseThree2"> --}}
+                    {{--                                    Tahun akademik 2023 / 2024 --}}
+                    {{--                                </button> --}}
+                    {{--                            </h2> --}}
+                    {{--                            <div id="collapseThree2" class="accordion-collapse collapse" --}}
+                    {{--                                data-bs-parent="#accordionExample2"> --}}
+                    {{--                                <div class="accordion-body"> --}}
+                    {{--                                    <div> --}}
+                    {{--                                        <div class="fw-bold">Dosen pengampu</div> --}}
+                    {{--                                        <ul class="mb-0"> --}}
+                    {{--                                            <li>KO009N - Santi Sundari</li> --}}
+                    {{--                                            <li>KO052N - Yadhi Aditya P.</li> --}}
+                    {{--                                            <li>KO060N - Ade Hodijah</li> --}}
+                    {{--                                        </ul> --}}
+                    {{--                                    </div> --}}
+                    {{--                                </div> --}}
+                    {{--                            </div> --}}
+                    {{--                        </div> --}}
+                    {{--                    </div> --}}
                 </div>
             </div>
         </div>
@@ -613,6 +551,7 @@
 
 @push('scripts')
     <script>
+        var modal = '';
         $(document).ready(function() {
             $('#editForm').on('submit', function(e) {
                 e.preventDefault();
@@ -630,6 +569,25 @@
                         console.log(err);
                     }
                 });
+            });
+        });
+
+        $(document).ready(function() {
+            $('#pembobotan').on('click', function() {
+                modal = "pembobotanModal";
+                $('#modalButton').attr('data-bs-target', '#' + modal);
+            });
+            $('#tahunAkademikBaru1').on('click', function() {
+                modal = "tahunAkademikBaruModal1";
+                $('#modalButton').attr('data-bs-target', '#' + modal);
+            });
+            $('#tahunAkademikBaru2').on('click', function() {
+                modal = "tahunAkademikBaruModal2";
+                $('#modalButton').attr('data-bs-target', '#' + modal);
+            });
+            $('#ubah').on('click', function() {
+                modal = "editModal";
+                $('#modalButton').attr('data-bs-target', '#' + modal);
             });
         });
     </script>

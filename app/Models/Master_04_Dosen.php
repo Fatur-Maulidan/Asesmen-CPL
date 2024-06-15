@@ -87,10 +87,18 @@ class Master_04_Dosen extends Model
         return $this->with('kaprodi')->where('nip',$nip)->first();
     }
 
+    public function getDosenByNip($nip){
+        return $this->where('nip',$nip)->first();
+    }
+
     // Method ini digunakan untuk mengambil mata kuliah yang diampu oleh seorang dosen
-    public function getMataKuliahRegister($nip){
-        return $this->where('nip',$nip)->with(['mataKuliahRegister' => function($query) {
-            $query->distinct('06_MASTER_mata_kuliah_id');
-        }])->first();
+    // public function getMataKuliahRegister($nip){
+    //     return $this->where('nip',$nip)->with(['mataKuliahRegister' => function($query) {
+    //         $query->distinct('06_MASTER_mata_kuliah_id');
+    //     }])->first();
+    // }
+
+    public function getMataKuliahRegister($kurikulum){
+        return $this->where('03_MASTER_kurikulum_id',$kurikulum)->with('mataKuliahRegister')->get();
     }
 }
