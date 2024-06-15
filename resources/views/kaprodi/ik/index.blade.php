@@ -113,7 +113,7 @@
     {{-- Data CPL --}}
     <div class="row">
         <div class="col-12">
-            <div class="accordion accordion-flush" id="accordionExample">
+            <div class="accordion" id="accordionExample">
                 @if (empty($data_ik))
                     <div class="text-center">
                         <p class="fs-4">Belum Ada Indikator Kinerja</p>

@@ -86,7 +86,7 @@
     {{-- Data CPL --}}
     <div class="row">
         <div class="col-12">
-            <div class="accordion accordion-flush" id="accordionExample">
+            <div class="accordion" id="accordionExample">
                 @if ($data_cpl->isEmpty())
                     <div class="text-center">
                         <p class="fs-4">Belum Ada Data Capaian Pembelajaran</p>

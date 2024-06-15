@@ -17,6 +17,7 @@ class KurikulumController extends Controller
     public function __construct()
     {
         $this->user = new Master_04_Dosen();
+        $this->user = $this->user->getProdiKodeByDosenNip('199301062019031017');
     }
 
     /**
@@ -26,7 +27,6 @@ class KurikulumController extends Controller
      */
     public function index()
     {
-        $this->user = $this->user->getProdiKodeByDosenNip('199301062019031017');
         $kurikulum = Master_03_Kurikulum::with('mahasiswa')
             ->where('02_MASTER_program_studi_nomor', $this->user->kaprodi->nomor);
 
@@ -59,7 +59,7 @@ class KurikulumController extends Controller
             'title' => 'Tambah Kurikulum Baru',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'program_studi_id' => $this->user->programStudi->id
+            'program_studi_nomor' => $this->user->kaprodi->nomor
         ]);
     }
 
