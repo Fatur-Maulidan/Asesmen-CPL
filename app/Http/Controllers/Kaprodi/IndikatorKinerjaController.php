@@ -49,7 +49,7 @@ class IndikatorKinerjaController extends Controller
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $this->kurikulum,
-            'data_ik' => $this->indikatorKinerja
+            'data_ik' => $this->indikatorKinerja->sortBy('kode'),
         ]);
     }
 
@@ -117,12 +117,9 @@ class IndikatorKinerjaController extends Controller
 
         $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
-        // dd('test');
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,'',$ik);
         
         $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
-        // dd($this->indikatorKinerja);
-        // dd($this->indikatorKinerja);
 
         return view('kaprodi.ik.show', [
             'title' => 'IK',
@@ -170,7 +167,6 @@ class IndikatorKinerjaController extends Controller
         $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
-
         $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
         $filteredDataCpl = $this->filterDataByKode(
             $this->kurikulum->cpl,

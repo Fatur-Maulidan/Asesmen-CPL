@@ -113,7 +113,7 @@
     {{-- Data CPL --}}
     <div class="row">
         <div class="col-12">
-            <div class="accordion accordion-flush" id="accordionExample">
+            <div class="accordion" id="accordionExample">
                 @if (empty($data_ik))
                     <div class="text-center">
                         <p class="fs-4">Belum Ada Indikator Kinerja</p>
@@ -123,18 +123,18 @@
                         @if ($ik != null)
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed fw-bold" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
-                                        aria-expanded="false" aria-controls="collapse{{ $index }}">
-                                        {{ $ik->kode }}
+                                    <button class="accordion-button {{ $loop->index === 0 ? '' : 'collapsed' }}"
+                                        type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse{{ $index }}"
+                                        aria-expanded="{{ $loop->index === 0 ? 'true' : 'false' }}"
+                                        aria-controls="collapse{{ $index }}">
+                                        {{ $ik->kode }} - {{ $ik->deskripsi }}
                                     </button>
                                 </h2>
-                                <div id="collapse{{ $index }}" class="accordion-collapse collapse"
+                                <div id="collapse{{ $index }}"
+                                    class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <p class="fw-bold mb-1">Deskripsi</p>
-                                        <p class="mb-4">{{ $ik->deskripsi }}</p>
-
                                         <p class="fw-bold mb-1">Capaian Pembelajaran</p>
                                         <p>
                                             <li>
@@ -151,7 +151,7 @@
                                         <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}"
                                             class="me-3">Lihat
                                             detail</a>
-                                        <a href="">Pemetaan terhadap Capaian Pembelajaran</a>
+                                        {{-- <a href="">Pemetaan terhadap Capaian Pembelajaran</a> --}}
                                     </div>
                                 </div>
                             </div>

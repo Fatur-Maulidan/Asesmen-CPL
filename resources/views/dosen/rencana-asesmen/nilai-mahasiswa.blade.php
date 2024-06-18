@@ -34,7 +34,7 @@
             </thead>
             <tbody>
                 <?php
-                $mahasiswa = mahasiswa();
+                $mahasiswa = getMahasiswa();
                 $count = countMahasiswa($mahasiswa);
                 ?>
                 @foreach ($mahasiswa as $mhs)
