@@ -80,4 +80,6 @@ class Master_06_Mahasiswa extends Model
     {
         return $this->belongsToMany(Master_15_RencanaAsesmen::class, '21_MASTER_nilai_mahasiswa', '06_MASTER_mahasiswa_nim', '15_MASTER_rencana_asesmen_id')->withPivot('nilai')->withTimestamps();
     }
+
+    // # Scopes
 }

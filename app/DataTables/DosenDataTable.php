@@ -71,7 +71,7 @@ class DosenDataTable extends DataTable
         $query = $model->newQuery();
 
         if ($this->kaprodi) {
-            $query->where('01_MASTER_jurusan_id', $this->jurusan_id);
+            $query->where('01_MASTER_jurusan_nomor', $this->jurusan_nomor);
         }
 
         if ($this->filter) {

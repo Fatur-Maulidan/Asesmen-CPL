@@ -106,7 +106,7 @@
     {{-- Data Mata Kuliah --}}
     <div class="row">
         <div class="col-12">
-            <div class="accordion accordion-flush" id="daftarMataKuliah">
+            <div class="accordion" id="daftarMataKuliah">
                 @forelse($mata_kuliah as $mk)
                     <div class="accordion-item">
                         <h2 class="accordion-header">

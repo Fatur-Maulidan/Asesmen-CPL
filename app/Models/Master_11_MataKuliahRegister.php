@@ -83,6 +83,11 @@ class Master_11_MataKuliahRegister extends Model
         return $this->belongsToMany(Master_06_Mahasiswa::class, '20_MASTER_mahasiswa_perkuliahan', '11_MASTER_mk_register_id', '06_MASTER_mahasiswa_nim');
     }
 
+    public function referensi()
+    {
+        return $this->belongsToMany(Master_22_Referensi::class, '25_MASTER_referensi_utama', '23_MASTER_mk_register_id', '22_MASTER_referensi_id');
+    }
+
     public function getMataKuliahByIdMataKuliahRegister($id){
         return $this->where('07_MASTER_mata_kuliah_id', $id)->first();
     }
