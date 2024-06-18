@@ -44,8 +44,7 @@ class CapaianPembelajaranLulusanController extends Controller
         $dataCPL = collect();
         
          // Mengambil data kaprodi dan kurikulum
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         
          // Iterasi melalui CPL
         foreach ($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode') as $cpl) {
@@ -137,8 +136,7 @@ class CapaianPembelajaranLulusanController extends Controller
         $kodeDomain = $this->kodeCP($request->input('domain'));
         // dd($request->input('domain'));
 
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $dataCpl = Master_08_CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
             ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)
             ->get()
@@ -166,8 +164,7 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function show($kurikulum, $cpl)
     {
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $cpl = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)->with('indikatorKinerja.mataKuliahRegister.mataKuliah')->first();
 
         // dd($cpl);
@@ -190,8 +187,7 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function edit($kurikulum, $cpl)
     {
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $cpl = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)->first();
         return view('kaprodi.cpl.edit', [
             'title' => 'CPL',
@@ -214,8 +210,7 @@ class CapaianPembelajaranLulusanController extends Controller
     {
         $validator = $request->validated();
 
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
 
         $dataCPL = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)
                 ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)->first();

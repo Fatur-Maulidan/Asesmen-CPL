@@ -19,8 +19,7 @@ class DashboardController extends Controller
     }
     public function index($kurikulum)
     {
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         
         return view('kaprodi.kurikulum.dashboard', [
             'title' => 'Dashboard',

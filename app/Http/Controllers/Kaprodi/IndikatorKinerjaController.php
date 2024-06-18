@@ -40,8 +40,8 @@ class IndikatorKinerjaController extends Controller
      */
     public function index($kurikulum)
     {
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        // dd($kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id);
 
         return view('kaprodi.ik.index', [
@@ -73,8 +73,7 @@ class IndikatorKinerjaController extends Controller
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         
         $this->capaianPembelajaranLulusan = $this->capaianPembelajaranLulusan
             ->getCplIdByKurikulum($request->input('cpInduk'),$this->kurikulum->id);
@@ -115,8 +114,7 @@ class IndikatorKinerjaController extends Controller
     {
         $dataIk = new Master_09_IndikatorKinerja();
 
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,'',$ik);
         
         $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
@@ -135,8 +133,7 @@ class IndikatorKinerjaController extends Controller
     {
         $dataIk = new Master_09_IndikatorKinerja();
 
-        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
 
         $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
@@ -164,8 +161,7 @@ class IndikatorKinerjaController extends Controller
     {
         $dataIk = new Master_09_IndikatorKinerja();
 
-        $this->kaprodi = $this->kaprodi->getProdiIdByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByProdiId($this->kaprodi->programStudi->id, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
         $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
         $filteredDataCpl = $this->filterDataByKode(

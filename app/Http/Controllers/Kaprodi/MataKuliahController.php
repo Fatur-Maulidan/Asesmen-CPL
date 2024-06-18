@@ -36,8 +36,7 @@ class MataKuliahController extends Controller
      */
     public function index($kurikulum)
     {
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         
         return view('kaprodi.mk.index', [
             'title' => 'Mata Kuliah',
@@ -91,8 +90,7 @@ class MataKuliahController extends Controller
     {
         $mataKuliah = new Master_07_MataKuliah;
 
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $daftarMataKuliah = Master_07_MataKuliah::where('03_MASTER_kurikulum_id',$this->kurikulum->id)->get();
         $mataKuliah = $mataKuliah->getMataKuliahByKodeAndKurikulum($kode, $this->kurikulum->id);
 
@@ -130,8 +128,7 @@ class MataKuliahController extends Controller
     {
         $validated = $request->validated();
 
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $mataKuliah = Master_07_MataKuliah::find($id);
 
         $mataKuliah->update($validated);
@@ -153,8 +150,7 @@ class MataKuliahController extends Controller
         $mataKuliah = Master_07_MataKuliah::find($id);
         $mataKuliahRegister = Master_11_MataKuliahRegister::where('07_MASTER_mata_kuliah_id', $mataKuliah->id)->where('jenis',$jenis)->first();
         
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
 
         foreach($request->input('checkbox') as $ik){
             $petaIkMk[] = [

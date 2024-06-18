@@ -31,8 +31,7 @@ class TujuanPembelajaranController extends Controller
      */
     public function index($kurikulum)
     {
-        $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $this->mataKuliah = $this->mataKuliah->getMataKuliahByKurikulum($this->kurikulum->id);
         $selectedMataKuliah = new Master_07_MataKuliah;
         $mataKuliah = request('mata_kuliah') ?? $this->mataKuliah[0]->nama;
