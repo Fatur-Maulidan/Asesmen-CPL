@@ -125,4 +125,10 @@ class Master_03_Kurikulum extends Model
     {
         return $this->mahasiswa->pluck('tahun_angkatan')->unique()->sort()->values()->all();
     }
+
+    public function getDataIfKurikulumProgramStudiIsExist($kaprodiNip, $kurikulum){
+        $kaprodi = new Master_04_Dosen();
+        $kaprodi = $kaprodi->getProdiKodeByDosenNip($kaprodiNip);
+        return $this->getKurikulumByNomorProdi($kaprodi->programStudi->first()->nomor, $kurikulum);
+    }
 }
