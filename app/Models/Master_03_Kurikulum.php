@@ -85,7 +85,7 @@ class Master_03_Kurikulum extends Model
 
     public function scopeNonaktif($query)
     {
-        return $query->where('status', StatusKurikulum::Nonaktif);
+        return $query->where('status', StatusKurikulum::Berjalan);
     }
 
     public function scopePeninjauan($query)
@@ -115,7 +115,7 @@ class Master_03_Kurikulum extends Model
     public function getKurikulumByNomorProdi($nomorProdi, $kurikulum){
         return $this->where('02_MASTER_program_studi_nomor', $nomorProdi)
                     ->where('tahun', $kurikulum)
-                    ->with('capaianPembelajaranLulusan')
+                    ->with('capaianPembelajaranLulusan.indikatorKinerja.mataKuliahRegister.mataKuliah')
                     ->first();
     }
 }
