@@ -40,48 +40,11 @@ class CapaianPembelajaranLulusanController extends Controller
      */
 
     public function index($kurikulum)
-    {
-        $dataCPL = collect();
-        
-         // Mengambil data kaprodi dan kurikulum
+    {   
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         
-         // Iterasi melalui CPL
-        foreach ($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode') as $cpl) {
-            $cplData = [
-                'kode' => $cpl->kode,
-                'deskripsi' => $cpl->deskripsi,
-                'mataKuliahRegister' => collect(),
-                'indikatorKinerjaBelumDipetakan' => collect()
-            ];
+        $dataCPL = $this->getDataCPL($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode'));
         
-             // Iterasi melalui IK
-            foreach ($cpl->indikatorKinerja as $ik) {
-                 $mapped = false; // Flag untuk cek apakah IK sudah dipetakan
-                 // Iterasi melalui MKRegister
-                foreach ($ik->mataKuliahRegister as $mkr) {
-                     $mapped = true; // Jika ada MKRegister, berarti IK sudah dipetakan
-                    $mataKuliahNama = $mkr->mataKuliah->nama;
-                     // Jika mataKuliah belum ada di array, inisialisasi dengan nama mata kuliah
-                    if (!isset($cplData['mataKuliahRegister'][$mataKuliahNama])) {
-                        $cplData['mataKuliahRegister'][$mataKuliahNama] = [
-                            'mataKuliah' => $mkr->mataKuliah,
-                            'indikatorKinerja' => collect()
-                        ];
-                    }
-                     // Tambahkan indikator kinerja ke mata kuliah yang sesuai
-                    $cplData['mataKuliahRegister'][$mataKuliahNama]['indikatorKinerja']->push($ik);
-                }
-                 // Jika IK belum dipetakan, tambahkan ke indikatorKinerjaBelumDipetakan
-                if (!$mapped) {
-                    $cplData['indikatorKinerjaBelumDipetakan']->push($ik);
-                }
-            }
-        
-             // Menambahkan data CPL yang telah diubah struktur ke dalam koleksi
-            $dataCPL->push($cplData);
-        }
-        // dd($dataCPL);
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
@@ -90,38 +53,6 @@ class CapaianPembelajaranLulusanController extends Controller
             'kurikulum' => $this->kurikulum,
         ]);
     }
-    
-    
-
-    // public function index($kurikulum)
-    // {
-    //     $dataMk = collect();
-    //     $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
-    //     $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
-    //     // foreach($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode') as $cpl){
-    //     //     foreach($cpl->indikatorKinerja as $ik){
-    //     //         foreach($ik->mataKuliahRegister as $mkr){
-    //     //             $dataMk->push($mkr->mataKuliah);
-    //     //         }
-    //     //     }
-    //     // }
-    //     // dd($dataMk->unique('nama'));
-    //     // dd('test');
-    //     $this->mataKuliah = Master_11_MataKuliahRegister::with('indikatorKinerja.capaianPembelajaranLulusan')
-    //             ->with('mataKuliah')
-    //             ->distinct('07_MASTER_mata_kuliah_id')
-    //             ->get();
-    //     dd($this->mataKuliah);
-
-    //     return view('kaprodi.cpl.index', [
-    //         'title' => 'Capaian Pembelajaran',
-    //         'nama' => 'Jhon Doe',
-    //         'role' => 'Koordinator Program Studi',
-    //         'data_cpl' => $this->kurikulum->capaianPembelajaranLulusan->sortBy('kode'),
-    //         'kurikulum' => $this->kurikulum,
-    //         // 'dataMk' =>$dataMk->unique('nama'),
-    //     ]);
-    // }
 
     /**
      * Store a newly created resource in storage.
@@ -166,14 +97,14 @@ class CapaianPembelajaranLulusanController extends Controller
     {
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $cpl = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)->with('indikatorKinerja.mataKuliahRegister.mataKuliah')->first();
-
-        // dd($cpl);
+        $dataCPL = $this->getDataCPL($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode'));
+        
         return view('kaprodi.cpl.show', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $this->kurikulum,
-            'data_cpl' => $this->kurikulum->capaianPembelajaranLulusan,
+            'data_cpl' => $dataCPL,
             'cpl' => $cpl,
         ]);
     }
@@ -225,6 +156,7 @@ class CapaianPembelajaranLulusanController extends Controller
         }
     }
 
+    // Fungsi ini digunakan untuk mengambil inisial dari domain CPL
     private function kodeCP($domain)
     {
         $wordCount = str_word_count($domain);
@@ -236,6 +168,10 @@ class CapaianPembelajaranLulusanController extends Controller
         return $this->checkIfWordLessThanTwo($kode);
     }
 
+    /* 
+        Fungsi ini digunakan untuk mengembalikan apabila hasil inisial 
+        dari domain CPL kurang dari 2 huruf 
+    */
     private function checkIfWordLessThanTwo($kode){
         if($kode === "P"){
             $kode = $kode . $kode;
@@ -243,5 +179,43 @@ class CapaianPembelajaranLulusanController extends Controller
             $kode = $kode . "P";
         }
         return $kode;
+    }
+    /* 
+        Fungsi ini digunakan untuk mengambil data CPL dan mengubah struktur data CPL
+        yang awalnya CPL -> IK -> MKRegister -> MK 
+        menjadi CPL -> MKRegister -> MK -> IK
+    */ 
+    private function getDataCPL($dataCpl) {
+        $dataCPL = collect();
+
+        foreach ($dataCpl as $cpl) {
+            $cplData = collect([
+                'kode' => $cpl->kode,
+                'domain' => $cpl->domain,
+                'deskripsi' => $cpl->deskripsi,
+                'mataKuliahRegister' => collect(),
+                'indikatorKinerjaBelumDipetakan' => collect()
+            ]);
+        
+            foreach ($cpl->indikatorKinerja as $ik) {
+                $mapped = false;
+                foreach ($ik->mataKuliahRegister as $mkr) {
+                    $mapped = true;
+                    $mataKuliahNama = $mkr->mataKuliah->nama;
+                    if (!isset($cplData['mataKuliahRegister'][$mataKuliahNama])) {
+                        $cplData['mataKuliahRegister'][$mataKuliahNama] = [
+                            'mataKuliah' => $mkr->mataKuliah,
+                            'indikatorKinerja' => collect()
+                        ];
+                    }
+                    $cplData['mataKuliahRegister'][$mataKuliahNama]['indikatorKinerja']->push($ik);
+                }
+                if (!$mapped) {
+                    $cplData['indikatorKinerjaBelumDipetakan']->push($ik);
+                }
+            }
+            $dataCPL->push($cplData);
+        }
+        return $dataCPL;
     }
 }
