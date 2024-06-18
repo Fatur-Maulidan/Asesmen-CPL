@@ -305,7 +305,7 @@ if (!function_exists('countCPL')) {
     {
         $count = 0;
         foreach ($dataCPL as $cpl) {
-            if (strpos($cpl->kode, $prefix) === 0) $count++;
+            if (strpos($cpl->get('kode'), $prefix) === 0) $count++;
         }
         return $count;
     }

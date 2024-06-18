@@ -22,11 +22,11 @@
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             @foreach ($data_cpl as $data)
-                                @if ($data->domain == 'Sikap')
+                                @if ($data->get('domain') == 'Sikap')
                                     <div class="mb-3">
-                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->kode]) }}"
-                                            class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
-                                            data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->get('kode')]) }}"
+                                            class="btn text-start w-100 btn-tp <?php echo $data->get('kode') == $cpl->kode ? 'border border-1' : ''; ?>"
+                                            data-kode="{{ $data->get('kode') }}">{{ $data->get('kode') }}</a>
                                     </div>
                                 @endif
                             @endforeach
@@ -44,11 +44,11 @@
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             @foreach ($data_cpl as $data)
-                                @if ($data->domain == 'Pengetahuan')
+                                @if ($data->get('domain') == 'Pengetahuan')
                                     <div class="mb-3">
-                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->kode]) }}"
-                                            class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
-                                            data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->get('kode')]) }}"
+                                            class="btn text-start w-100 btn-tp <?php echo $data->get('kode') == $cpl->kode ? 'border border-1' : ''; ?>"
+                                            data-kode="{{ $data->get('kode') }}">{{ $data->get('kode') }}</a>
                                     </div>
                                 @endif
                             @endforeach
@@ -67,11 +67,11 @@
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             @foreach ($data_cpl as $data)
-                                @if ($data->domain == 'Keterampilan Umum')
+                                @if ($data->get('domain') == 'Keterampilan Umum')
                                     <div class="mb-3">
-                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->kode]) }}"
-                                            class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
-                                            data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->get('kode')]) }}"
+                                            class="btn text-start w-100 btn-tp <?php echo $data->get('kode') == $cpl->kode ? 'border border-1' : ''; ?>"
+                                            data-kode="{{ $data->get('kode') }}">{{ $data->get('kode') }}</a>
                                     </div>
                                 @endif
                             @endforeach
@@ -90,11 +90,11 @@
                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             @foreach ($data_cpl as $data)
-                                @if ($data->domain == 'Keterampilan Khusus')
+                                @if ($data->get('domain') == 'Keterampilan Khusus')
                                     <div class="mb-3">
-                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->kode]) }}"
-                                            class="btn text-start w-100 btn-tp <?php echo $data->kode == $cpl->kode ? 'border border-1' : ''; ?>"
-                                            data-kode="{{ $data->kode }}">{{ $data->kode }}</a>
+                                        <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $data->get('kode')]) }}"
+                                            class="btn text-start w-100 btn-tp <?php echo $data->get('kode') == $cpl->kode ? 'border border-1' : ''; ?>"
+                                            data-kode="{{ $data->get('kode') }}">{{ $data->get('kode') }}</a>
                                     </div>
                                 @endif
                             @endforeach
@@ -208,26 +208,32 @@
                 <div class="col">
                     <div class="fw-bold mb-3">Mata Kuliah yang dibebani</div>
                     <div class="accordion" id="accordionExample2">
-                        @foreach ($cpl->indikatorKinerja as $index => $ik)
+                        @if (empty($cpl->indikatorKinerja))
+                            <div class="text-center">
+                                <p class="fs-4">Belum Ada Indikator Kinerja</p>
+                            </div>
+                        @endif
+                        @foreach ($data_mk as $index => $mk)
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button fw-bold bg-light {{ $index == 0 ? '' : 'collapsed' }}"
+                                    <button
+                                        class="accordion-button fw-bold bg-light {{ $loop->index === 0 ? '' : 'collapsed' }}"
                                         type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapse{{ $index }}"
-                                        aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
-                                        aria-controls="collapse{{ $index }}">
-                                        21IF001 - Dasar Dasar Pemrograman
+                                        data-bs-target="#collapse{{ $loop->index }}"
+                                        aria-expanded="{{ $loop->index === 0 ? 'true' : 'false' }}"
+                                        aria-controls="collapse{{ $loop->index }}">
+                                        {{ $mk['mataKuliah']->kode }} -
+                                        {{ $mk['mataKuliah']->nama }}
                                     </button>
                                 </h2>
-                                <div id="collapse{{ $index }}"
-                                    class="accordion-collapse collapse {{ $index == 0 ? 'show' : '' }}"
+                                <div id="collapse{{ $loop->index }}"
+                                    class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
                                     data-bs-parent="#accordionExample2">
                                     <div class="accordion-body">
                                         <div class="mb-4">
                                             <div class="fw-bold">Tingkat Relevansi</div>
                                             <div>1</div>
                                         </div>
-
                                         <div class="mb-4">
                                             <div class="fw-bold">Bobot Relevansi</div>
                                             <div>11%</div>
@@ -241,86 +247,37 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($dataIkTp as $ikTp)
-                                                    @foreach ($ikTp['TP'] as $key => $tp)
+                                                @foreach ($mk['indikatorKinerja'] as $indexIk => $ik)
+                                                    <tr>
+                                                        @if ($indexIk === 0)
+                                                            <td class="col-md-6"
+                                                                rowspan={{ count($ik['tujuanPembelajaran']) + 1 }}>
+                                                                <p class="fw-bold">{{ $ik['indikatorKinerja']->kode }}</p>
+                                                                <p>{{ $ik['indikatorKinerja']->deskripsi }}</p>
+                                                            </td>
+                                                        @endif
+                                                    </tr>
+                                                    @foreach ($ik['tujuanPembelajaran'] as $tp)
                                                         <tr>
-                                                            @if ($key === 0)
-                                                                <td rowspan="{{ count($ikTp['TP']) }}">
-                                                                    <p class="fw-bold">
-                                                                        {{ $ikTp['IK'] }}</p>
-                                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing
-                                                                        elit. Ea
-                                                                        iure vel dolore officia necessitatibus earum
-                                                                        laboriosam
-                                                                        vero doloribus provident odit repellendus unde
-                                                                        autem, nulla
-                                                                        perspiciatis corrupti nesciunt velit molestiae quis
-                                                                        dignissimos cum
-                                                                        amet nostrum consequatur omnis maxime. Nulla illum
-                                                                        delectus
-                                                                        cupiditate, facere magni fuga nobis quod quibusdam
-                                                                        molestias cum! Minima.
-                                                                    </p>
-                                                                    {{-- </td>
-                                                            @else
-                                                                <td></td> --}}
-                                                            @endif
                                                             <td>
-                                                                <p class="fw-bold">{{ $tp }}</p>
-                                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                                    Ea
-                                                                    iure vel dolore officia necessitatibus earum laboriosam
-                                                                    vero doloribus provident odit repellendus unde autem,
-                                                                    nulla
-                                                                    perspiciatis corrupti nesciunt velit molestiae quis
-                                                                    dignissimos cum
-                                                                    amet nostrum consequatur omnis maxime. Nulla illum
-                                                                    delectus
-                                                                    cupiditate, facere magni fuga nobis quod quibusdam
-                                                                    molestias cum! Minima.
-                                                                </p>
+                                                                <p class="fw-bold">{{ $tp['kode'] }}</p>
+                                                                <p>{{ $tp['deskripsi'] }}</p>
                                                             </td>
                                                         </tr>
                                                     @endforeach
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        {{-- <div class="row">
-                                            <div class="col">
-                                                <div class="mb-4">
-                                                    <div class="fw-bold">Indikator Kinerja yang digunakan</div>
-                                                    <ul class="mb-0">
-                                                        <li>IK-1</li>
-                                                        <li>IK-2</li>
-                                                        <li>IK-3</li>
-                                                        <li>IK-4</li>
-                                                        <li>IK-5</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <div>
-                                                    <div class="fw-bold">Tujuan Pembelajaran yang digunakan</div>
-                                                    <ul class="mb-0">
-                                                        <li>TP-1</li>
-                                                        <li>TP-2</li>
-                                                        <li>TP-3</li>
-                                                        <li>TP-4</li>
-                                                        <li>TP-5</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-                                    </div>
+                                                @break
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @push('scripts')
