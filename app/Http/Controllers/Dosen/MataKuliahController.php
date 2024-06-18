@@ -39,8 +39,7 @@ class MataKuliahController extends Controller
      */
     public function index()
     {
-        
-        $this->dosen  = $this->dosen->getDosenByNip($this->dosenNip)->with('programStudi')->first();
+        $this->dosen  = $this->dosen->getDosenByNip($this->dosenNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->dosen->programStudi->first()->nomor, $this->tahunKurikulum);
         // $mataKuliahRegister = Master_07_MataKuliah::where('03_MASTER_kurikulum_id', $this->kurikulum->id)->with('mataKuliahRegister.dosen')->get();
         $this->mataKuliah = Master_11_MataKuliahRegister::whereHas('dosen', function($query) {
@@ -65,7 +64,7 @@ class MataKuliahController extends Controller
      */
     public function informasiUmum($kodeMataKuliah)
     {
-        $this->mataKuliah = MataKuliah::where('kode', $kodeMataKuliah)->with('mataKuliahRegister')->with('kurikulum.programStudi')->first();
+        $this->mataKuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)->with('mataKuliahRegister')->with('kurikulum.programStudi')->first();
         return view('dosen.mata-kuliah.informasi-umum', [
             'title' => 'Informasi Umum Mata Kuliah',
             'nama' => 'John Doe',
