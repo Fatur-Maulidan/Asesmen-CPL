@@ -143,9 +143,34 @@
                                         </p>
 
                                         <p class="fw-bold mb-1">Mata Kuliah</p>
-                                        <p class="mb-0">
-                                            Belum ada Pemetaan
-                                        </p>
+                                        @php
+                                            $mataKuliahDitampilkan = true;
+                                        @endphp
+                                        @if ($ik->mataKuliahRegister->isEmpty())
+                                            <p>
+                                                Belum ada mata kuliah terkait
+                                            </p>
+                                        @else
+                                            <ul>
+                                                @php
+                                                    // Collect all unique mataKuliah
+                                                    $uniqueMataKuliah = collect();
+
+                                                    foreach ($ik->mataKuliahRegister as $mkr) {
+                                                        $uniqueMataKuliah->push($mkr->mataKuliah);
+                                                    }
+
+                                                    $uniqueMataKuliah = $uniqueMataKuliah->unique('kode');
+                                                @endphp
+
+                                                @foreach ($uniqueMataKuliah as $mataKuliah)
+                                                    <li>
+                                                        {{ $mataKuliah->kode }} - {{ $mataKuliah->nama }}
+                                                    </li>
+                                                @endforeach
+
+                                            </ul>
+                                        @endif
                                     </div>
                                     <div class="accordion-footer bg-light mb-0 p-3 border-top ">
                                         <a href="{{ route('kaprodi.ik.show', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->kode]) }}"
