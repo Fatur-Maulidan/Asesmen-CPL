@@ -22,12 +22,12 @@ class TujuanPembelajaranController extends Controller
      */
     public function index($kodeMataKuliah)
     {
-        $dataTP = Master_13_TujuanPembelajaran::all();
+        $dataTp = Master_13_TujuanPembelajaran::all();
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => 'John Doe',
             'role' => 'Dosen',
-            'dataTP' => $dataTP,
+            'dataTp' => $dataTp,
             'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }
@@ -50,9 +50,9 @@ class TujuanPembelajaranController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $dataTP = Master_13_TujuanPembelajaran::get()->count();
+        $dataTp = Master_13_TujuanPembelajaran::get()->count();
         $tujuanPembelajaran = new Master_13_TujuanPembelajaran([
-            'kode' => "TP-".($dataTP + 1),
+            'kode' => "TP-".($dataTp + 1),
             'deskripsi' => $request->input('deskripsi'),
             'tanggal_diajukan' => date('Y-m-d H:i:s')
         ]);
@@ -102,8 +102,8 @@ class TujuanPembelajaranController extends Controller
      */
     public function destroy($kodeMataKuliah,$id)
     {
-        $dataTP = Master_13_TujuanPembelajaran::find($id);
-        if($dataTP->delete()) {
+        $dataTp = Master_13_TujuanPembelajaran::find($id);
+        if($dataTp->delete()) {
             return redirect(route('dosen.mata-kuliah.tujuan-pembelajaran',['kodeMataKuliah' => $kodeMataKuliah]))->with('success', 'Tujuan Pembelajaran berhasil dihapus');
         } else {
             return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal dihapus');
@@ -112,13 +112,13 @@ class TujuanPembelajaranController extends Controller
 
     public function detailInformasi($kodeMataKuliah, $id) {
         $tp = Master_13_TujuanPembelajaran::find($id);
-        $dataTP = Master_13_TujuanPembelajaran::get();
+        $dataTp = Master_13_TujuanPembelajaran::get();
         return view('dosen.tujuan-pembelajaran.detail-informasi', [
             'title' => 'Detail Informasi Tujuan Pembelajaran',
             'nama' => 'John Doe',
-            'role' => 'Master04Dosen',
+            'role' => 'Dosen',
             'tp' => $tp,
-            'dataTp' => $dataTP,
+            'dataTp' => $dataTp,
             'kodeMataKuliah' => $kodeMataKuliah
         ]);
     }
