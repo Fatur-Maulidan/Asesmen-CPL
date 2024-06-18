@@ -88,7 +88,7 @@ class Master_04_Dosen extends Model
     }
 
     public function getDosenByNip($nip){
-        return $this->where('nip',$nip)->first();
+        return $this->where('nip',$nip)->with('programStudi')->first();
     }
 
     // Method ini digunakan untuk mengambil mata kuliah yang diampu oleh seorang dosen
