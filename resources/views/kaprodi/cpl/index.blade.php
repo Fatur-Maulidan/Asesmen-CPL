@@ -100,68 +100,148 @@
                                     data-bs-target="#collapse{{ $index }}"
                                     aria-expanded="{{ $loop->index === 0 ? 'true' : 'false' }}"
                                     aria-controls="collapse{{ $index }}">
-                                    {{ $cpl->kode }} - {{ $cpl->deskripsi }}
+                                    {{ $cpl['kode'] }} - {{ $cpl['deskripsi'] }}
                                 </button>
                             </h2>
                             <div id="collapse{{ $index }}"
                                 class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    <p class="fw-bold mb-1">Mata Kuliah</p>
-                                    @if ($cpl->indikatorKinerja->isEmpty())
-                                        <p class="mb-0">Belum ada pemetaan</p>
+                                    <p class="mb-0 fw-bold">Indikator Kinerja</p>
+                                    @php
+                                        $mataKuliahDitampilkan = false;
+                                    @endphp
+                                    @if ($cpl['indikatorKinerjaBelumDipetakan']->isEmpty())
+                                        <p class="mb-0">Belum ada pemetaan Indikator Kinerja</p>
+                                    @else
+                                        @foreach ($cpl['mataKuliahRegister'] as $mkRegister)
+                                            @if ($mataKuliahDitampilkan === false)
+                                                Nama Mata Kuliah: {{ $mkRegister['mataKuliah']->nama }}<br>
+                                                @php
+                                                    $mataKuliahDitampilkan = true;
+                                                @endphp
+                                            @endif
+                                            @foreach ($mkRegister['indikatorKinerja'] as $ik)
+                                                <ul>
+                                                    <li>
+                                                        {{ $ik->kode }}
+                                                    </li>
+                                                </ul>
+                                            @endforeach
+                                            @php
+                                                $mataKuliahDitampilkan = false;
+                                            @endphp
+                                        @endforeach
+                                    @endif
+                                    @if ($cpl['indikatorKinerjaBelumDipetakan']->isNotEmpty())
+                                        <br>
+                                        <p class="fw-bold">Indikator Kinerja yang belum dipetakan</p>
+                                        @foreach ($cpl['indikatorKinerjaBelumDipetakan'] as $ik)
+                                            <ul>
+                                                <li>
+                                                    {{ $ik->kode }}
+                                                </li>
+                                            </ul>
+                                        @endforeach
+                                    @endif
+
+
+
+                                    {{-- @if ($cpl->indikatorKinerja->isEmpty())
+                                        <p class="mb-0">Belum ada pemetaan Indikator Kinerja</p>
                                     @else
                                         @php
                                             $mataKuliahDitampilkan = false;
                                             $indikatorKinerjaDitampilkan = false;
                                         @endphp
-
                                         @foreach ($cpl->indikatorKinerja as $ik)
-                                            @if ($ik->mataKuliahRegister->isEmpty())
-                                                @if ($mataKuliahDitampilkan === false)
-                                                    @php
-                                                        $mataKuliahDitampilkan = true;
-                                                    @endphp
-                                                @endif
-                                            @else
+                                            @if (!$ik->mataKuliahRegister->isEmpty())
                                                 @foreach ($ik->mataKuliahRegister as $mkr)
-                                                    @if ($mataKuliahDitampilkan === false)
-                                                        <p class="mb-0">{{ $mkr->mataKuliah->nama }}</p>
-                                                        @php
-                                                            $mataKuliahDitampilkan = true;
-                                                        @endphp
-                                                    @endif
+                                                    @foreach ($dataMk as $mk)
+                                                        @if ($mataKuliahDitampilkan === false && $mkr->mataKuliah->kode === $mk->kode)
+                                                            <p class="mb-0">{{ $mkr->mataKuliah->nama }}</p>
+                                                            @php
+                                                                $mataKuliahDitampilkan = true;
+                                                            @endphp
+                                                        @endif
+                                                        @foreach ($cpl->indikatorKinerja as $ik)
+                                                            @if ($ik->mataKuliahRegister->isNotEmpty() && $ik->mataKuliahRegister->contains('id', $mkr->{'11_MASTER_mk_register_id'}))
+                                                                <ul>
+                                                                    <li>{{ $ik->kode }}</li>
+                                                                </ul>
+                                                            @elseif (!$ik->mataKuliahRegister->contains('id', $mkr->{'11_MASTER_mk_register_id'}))
+                                                                @if ($indikatorKinerjaDitampilkan === false)
+                                                                    <p class="mt-2 fw-bold">Indikator Kinerja yang belum
+                                                                        dipetakan</p>
+                                                                    @php
+                                                                        $indikatorKinerjaDitampilkan = true;
+                                                                    @endphp
+                                                                @endif
+                                                                <ul>
+                                                                    <li>{{ $ik->kode }}</li>
+                                                                </ul>
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
                                                 @endforeach
                                             @endif
                                         @endforeach
+                                    @endif --}}
+
+
+                                    {{-- @if ($cpl->indikatorKinerja->isEmpty())
+                                        <p class="mb-0">Belum ada pemetaan</p>
+                                    @else
+                                        @php
+                                            $mataKuliahDitampilkan = [];
+                                            $indikatorKinerjaDitampilkan = false;
+                                        @endphp
 
                                         @foreach ($cpl->indikatorKinerja as $ik)
                                             @if ($ik->mataKuliahRegister->isEmpty())
-                                                @if ($indikatorKinerjaDitampilkan === false)
-                                                    <p class="mb-0">Indikator Kinerja yang belum dipetakan</p>
+                                                @if (empty($mataKuliahDitampilkan))
+                                                    <p class="mb-0">Belum ada pemetaan</p>
                                                     @php
-                                                        $indikatorKinerjaDitampilkan = true;
-                                                        $mataKuliahDitampilkan = true;
+                                                        $mataKuliahDitampilkan = ['none'];
                                                     @endphp
                                                 @endif
-                                                <ul>
-                                                    <li>{{ $ik->kode }}</li>
-                                                </ul>
                                             @else
-                                                <ul>
-                                                    <li>{{ $ik->kode }}</li>
-                                                </ul>
+                                                @foreach ($ik->mataKuliahRegister->sortBy('mataKuliah.nama') as $mkr)
+                                                    @if (!in_array($mkr->mataKuliah->nama, $mataKuliahDitampilkan))
+                                                        <p class="mb-0">
+                                                            {{ $mkr->mataKuliah->nama }}
+                                                        </p>
+                                                        @php
+                                                            $mataKuliahDitampilkan[] = $mkr->mataKuliah->nama;
+                                                        @endphp
+                                                    @endif
+                                                    @foreach ($cpl->indikatorKinerja as $ik)
+                                                        @if ($ik->mataKuliahRegister->isNotEmpty() && $ik->mataKuliahRegister->contains('id', $mkr->{'11_MASTER_mk_register_id'}))
+                                                            <ul>
+                                                                <li>{{ $ik->kode }}</li>
+                                                            </ul>
+                                                        @elseif (!$ik->mataKuliahRegister->contains('id', $mkr->{'11_MASTER_mk_register_id'}))
+                                                            @if ($indikatorKinerjaDitampilkan === false)
+                                                                <p class="mt-2 fw-bold">Indikator Kinerja yang belum
+                                                                    dipetakan</p>
+                                                                @php
+                                                                    $indikatorKinerjaDitampilkan = true;
+                                                                @endphp
+                                                            @endif
+                                                            <ul>
+                                                                <li>{{ $ik->kode }}</li>
+                                                            </ul>
+                                                        @endif
+                                                    @endforeach
+                                                @endforeach
                                             @endif
                                         @endforeach
-                                        </ul>
-                                    @endif
-
-
+                                    @endif --}}
 
                                     {{-- <p class="fw-bold mb-1">Indikator Kinerja yang belum Dipetakan</p> --}}
                                 </div>
                                 <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                    <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->kode]) }}"
+                                    <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl['kode']]) }}"
                                         class="me-3">Lihat
                                         detail</a>
                                     {{-- <a href="">Ubah pembobotan</a> --}}

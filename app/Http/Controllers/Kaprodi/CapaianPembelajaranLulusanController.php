@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Master_07_MataKuliah;
+use App\Models\Master_11_MataKuliahRegister;
 use Illuminate\Http\Request;
 use App\Http\Requests\CapaianPembelajaranLulusanStoreRequest;
 use App\Models\Master_08_CapaianPembelajaranLulusan;
@@ -37,38 +38,91 @@ class CapaianPembelajaranLulusanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index($kurikulum)
     {
-        $dataCpl = [];
-        $dataIk = [];
-        $dataMkRegister = [];
-        $dataMk = [];
+        $dataCPL = collect();
+        
+         // Mengambil data kaprodi dan kurikulum
         $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
         
-        // foreach($this->kurikulum->capaianPembelajaranLulusan as $cpl){
-        //     $dataCpl[] = $cpl;
-        //     foreach($cpl->indikatorKinerja as $ik){
-        //         $dataIk[] = $ik;
-        //         foreach($ik->mataKuliahRegister as $mataKuliahRegister){
-        //             $dataMkRegister[] = $mataKuliahRegister;
-        //             $dataMk[] = $mataKuliahRegister->mataKuliah;
-        //         }
-        //     }
-        // }
-        // dd($dataCpl, $dataIk, $dataMkRegister, $dataMk);
-        // foreach($this->kurikulum->capaianPembelajaranLulusan as $cpl) {
-        //     $this->dataIndikatorKinerja[] = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $cpl->id);
-        // }
-        // dd($this->dataIndikatorKinerja[11]);
+         // Iterasi melalui CPL
+        foreach ($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode') as $cpl) {
+            $cplData = [
+                'kode' => $cpl->kode,
+                'deskripsi' => $cpl->deskripsi,
+                'mataKuliahRegister' => collect(),
+                'indikatorKinerjaBelumDipetakan' => collect()
+            ];
+        
+             // Iterasi melalui IK
+            foreach ($cpl->indikatorKinerja as $ik) {
+                 $mapped = false; // Flag untuk cek apakah IK sudah dipetakan
+                 // Iterasi melalui MKRegister
+                foreach ($ik->mataKuliahRegister as $mkr) {
+                     $mapped = true; // Jika ada MKRegister, berarti IK sudah dipetakan
+                    $mataKuliahNama = $mkr->mataKuliah->nama;
+                     // Jika mataKuliah belum ada di array, inisialisasi dengan nama mata kuliah
+                    if (!isset($cplData['mataKuliahRegister'][$mataKuliahNama])) {
+                        $cplData['mataKuliahRegister'][$mataKuliahNama] = [
+                            'mataKuliah' => $mkr->mataKuliah,
+                            'indikatorKinerja' => collect()
+                        ];
+                    }
+                     // Tambahkan indikator kinerja ke mata kuliah yang sesuai
+                    $cplData['mataKuliahRegister'][$mataKuliahNama]['indikatorKinerja']->push($ik);
+                }
+                 // Jika IK belum dipetakan, tambahkan ke indikatorKinerjaBelumDipetakan
+                if (!$mapped) {
+                    $cplData['indikatorKinerjaBelumDipetakan']->push($ik);
+                }
+            }
+        
+             // Menambahkan data CPL yang telah diubah struktur ke dalam koleksi
+            $dataCPL->push($cplData);
+        }
+        // dd($dataCPL);
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'data_cpl' => $this->kurikulum->capaianPembelajaranLulusan->sortBy('kode'),
-            'kurikulum' => $this->kurikulum
+            'data_cpl' => $dataCPL,
+            'kurikulum' => $this->kurikulum,
         ]);
     }
+    
+    
+
+    // public function index($kurikulum)
+    // {
+    //     $dataMk = collect();
+    //     $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
+    //     $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
+    //     // foreach($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode') as $cpl){
+    //     //     foreach($cpl->indikatorKinerja as $ik){
+    //     //         foreach($ik->mataKuliahRegister as $mkr){
+    //     //             $dataMk->push($mkr->mataKuliah);
+    //     //         }
+    //     //     }
+    //     // }
+    //     // dd($dataMk->unique('nama'));
+    //     // dd('test');
+    //     $this->mataKuliah = Master_11_MataKuliahRegister::with('indikatorKinerja.capaianPembelajaranLulusan')
+    //             ->with('mataKuliah')
+    //             ->distinct('07_MASTER_mata_kuliah_id')
+    //             ->get();
+    //     dd($this->mataKuliah);
+
+    //     return view('kaprodi.cpl.index', [
+    //         'title' => 'Capaian Pembelajaran',
+    //         'nama' => 'Jhon Doe',
+    //         'role' => 'Koordinator Program Studi',
+    //         'data_cpl' => $this->kurikulum->capaianPembelajaranLulusan->sortBy('kode'),
+    //         'kurikulum' => $this->kurikulum,
+    //         // 'dataMk' =>$dataMk->unique('nama'),
+    //     ]);
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -114,8 +168,9 @@ class CapaianPembelajaranLulusanController extends Controller
     {
         $this->kaprodi = $this->kaprodi->getProdiKodeByDosenNip($this->kaprodiNip);
         $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->kaprodi->programStudi->first()->nomor, $kurikulum);
-        $cpl = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)->first();
-        
+        $cpl = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)->with('indikatorKinerja.mataKuliahRegister.mataKuliah')->first();
+
+        // dd($cpl);
         return view('kaprodi.cpl.show', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
