@@ -208,108 +208,114 @@
                 <div class="col">
                     <div class="fw-bold mb-3">Mata Kuliah yang dibebani</div>
                     <div class="accordion" id="accordionExample2">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold bg-light" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true"
-                                    aria-controls="collapseOne2">
-                                    21IF001 - Dasar Dasar Pemrograman
-                                </button>
-                            </h2>
-                            <div id="collapseOne2" class="accordion-collapse collapse show"
-                                data-bs-parent="#accordionExample2">
-                                <div class="accordion-body">
-                                    <div class="mb-4">
-                                        <div class="fw-bold">Tingkat Relevansi</div>
-                                        <div>1</div>
-                                    </div>
+                        @foreach ($cpl->indikatorKinerja as $index => $ik)
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button fw-bold bg-light {{ $index == 0 ? '' : 'collapsed' }}"
+                                        type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse{{ $index }}"
+                                        aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
+                                        aria-controls="collapse{{ $index }}">
+                                        21IF001 - Dasar Dasar Pemrograman
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ $index }}"
+                                    class="accordion-collapse collapse {{ $index == 0 ? 'show' : '' }}"
+                                    data-bs-parent="#accordionExample2">
+                                    <div class="accordion-body">
+                                        <div class="mb-4">
+                                            <div class="fw-bold">Tingkat Relevansi</div>
+                                            <div>1</div>
+                                        </div>
 
-                                    <div class="mb-4">
-                                        <div class="fw-bold">Bobot Relevansi</div>
-                                        <div>11%</div>
-                                    </div>
+                                        <div class="mb-4">
+                                            <div class="fw-bold">Bobot Relevansi</div>
+                                            <div>11%</div>
+                                        </div>
+                                        <?php $dataIkTp = getDataIkTp(); ?>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Indikator Kinerja</th>
+                                                    <th scope="col">Tujuan Pembelajaran</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($dataIkTp as $ikTp)
+                                                    @foreach ($ikTp['TP'] as $key => $tp)
+                                                        <tr>
+                                                            @if ($key === 0)
+                                                                <td rowspan="{{ count($ikTp['TP']) }}">
+                                                                    <p class="fw-bold">
+                                                                        {{ $ikTp['IK'] }}</p>
+                                                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing
+                                                                        elit. Ea
+                                                                        iure vel dolore officia necessitatibus earum
+                                                                        laboriosam
+                                                                        vero doloribus provident odit repellendus unde
+                                                                        autem, nulla
+                                                                        perspiciatis corrupti nesciunt velit molestiae quis
+                                                                        dignissimos cum
+                                                                        amet nostrum consequatur omnis maxime. Nulla illum
+                                                                        delectus
+                                                                        cupiditate, facere magni fuga nobis quod quibusdam
+                                                                        molestias cum! Minima.
+                                                                    </p>
+                                                                    {{-- </td>
+                                                            @else
+                                                                <td></td> --}}
+                                                            @endif
+                                                            <td>
+                                                                <p class="fw-bold">{{ $tp }}</p>
+                                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                                    Ea
+                                                                    iure vel dolore officia necessitatibus earum laboriosam
+                                                                    vero doloribus provident odit repellendus unde autem,
+                                                                    nulla
+                                                                    perspiciatis corrupti nesciunt velit molestiae quis
+                                                                    dignissimos cum
+                                                                    amet nostrum consequatur omnis maxime. Nulla illum
+                                                                    delectus
+                                                                    cupiditate, facere magni fuga nobis quod quibusdam
+                                                                    molestias cum! Minima.
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        {{-- <div class="row">
+                                            <div class="col">
+                                                <div class="mb-4">
+                                                    <div class="fw-bold">Indikator Kinerja yang digunakan</div>
+                                                    <ul class="mb-0">
+                                                        <li>IK-1</li>
+                                                        <li>IK-2</li>
+                                                        <li>IK-3</li>
+                                                        <li>IK-4</li>
+                                                        <li>IK-5</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
 
-                                    <div>
-                                        <div class="fw-bold">Tujuan Pembelajaran yang digunakan</div>
-                                        <ul class="mb-0">
-                                            <li>TP-1</li>
-                                            <li>TP-2</li>
-                                            <li>TP-3</li>
-                                            <li>TP-4</li>
-                                            <li>TP-5</li>
-                                        </ul>
+                                            <div class="col">
+                                                <div>
+                                                    <div class="fw-bold">Tujuan Pembelajaran yang digunakan</div>
+                                                    <ul class="mb-0">
+                                                        <li>TP-1</li>
+                                                        <li>TP-2</li>
+                                                        <li>TP-3</li>
+                                                        <li>TP-4</li>
+                                                        <li>TP-5</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold bg-light collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo2" aria-expanded="false"
-                                    aria-controls="collapseTwo2">
-                                    21IF002 - Pengantar Teknologi Informasi dan Komputer
-                                </button>
-                            </h2>
-                            <div id="collapseTwo2" class="accordion-collapse collapse"
-                                data-bs-parent="#accordionExample2">
-                                <div class="accordion-body">
-                                    <div class="mb-4">
-                                        <div class="fw-bold">Tingkat Relevansi</div>
-                                        <div>1</div>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <div class="fw-bold">Bobot Relevansi</div>
-                                        <div>11%</div>
-                                    </div>
-
-                                    <div>
-                                        <div class="fw-bold">Tujuan Pembelajaran yang digunakan</div>
-                                        <ul class="mb-0">
-                                            <li>TP-1</li>
-                                            <li>TP-2</li>
-                                            <li>TP-3</li>
-                                            <li>TP-4</li>
-                                            <li>TP-5</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold bg-light collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false"
-                                    aria-controls="collapseThree2">
-                                    21IF003 - Proyek 1 : Pemanfaatan Aplikasi Perkantoran
-                                </button>
-                            </h2>
-                            <div id="collapseThree2" class="accordion-collapse collapse"
-                                data-bs-parent="#accordionExample2">
-                                <div class="accordion-body">
-                                    <div class="mb-4">
-                                        <div class="fw-bold">Tingkat Relevansi</div>
-                                        <div>1</div>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <div class="fw-bold">Bobot Relevansi</div>
-                                        <div>11%</div>
-                                    </div>
-
-                                    <div>
-                                        <div class="fw-bold">Tujuan Pembelajaran yang digunakan</div>
-                                        <ul class="mb-0">
-                                            <li>TP-1</li>
-                                            <li>TP-2</li>
-                                            <li>TP-3</li>
-                                            <li>TP-4</li>
-                                            <li>TP-5</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

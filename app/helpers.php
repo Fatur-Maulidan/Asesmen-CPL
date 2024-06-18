@@ -316,3 +316,34 @@ if (!function_exists('rubrik')) {
         return ["Kurang Sekali", "Kurang", "Cukup", "Baik", "Sangat Baik"];
     }
 }
+
+if (!function_exists('getDataIkTp')){
+    function getDataIkTp() {
+        return [
+            [
+                'IK' => 'IK-1',
+                'TP' => [
+                    'TP-1',
+                    'TP-2',
+                ],
+            ],
+            [
+                'IK' => 'IK-2',
+                'TP' => [
+                    'TP-1',
+                    'TP-2',
+                    'TP-3',
+                ],
+            ],
+            [
+                'IK' => 'IK-3',
+                'TP' => [
+                    'TP-1',
+                    'TP-2',
+                    'TP-3',
+                    'TP-4'
+                ],
+            ],
+        ];
+    }
+}
