@@ -32,14 +32,13 @@
             </ul>
         @elseif($role == 'Koordinator Program Studi')
             <ul class="nav nav-underline mt-4">
-                @if (Route::is('kaprodi.kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard'))
+                @if (Route::is('kaprodi.kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard.*'))
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('kaprodi.kurikulum.index') }}">Kurikulum</a>
                     </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link @if (url()->current() == route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum->tahun])) active @endif"
-                            href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum->tahun]) }}">Dashboard</a>
+                        <a class="nav-link @if (Route::is('kaprodi.kurikulum.dashboard.*')) active @endif" href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.cpl.*')) active @endif"

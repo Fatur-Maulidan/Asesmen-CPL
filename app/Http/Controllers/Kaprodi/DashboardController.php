@@ -17,11 +17,23 @@ class DashboardController extends Controller
         $this->kaprodi = new Master_04_Dosen();
         $this->kurikulum = new Master_03_Kurikulum();
     }
-    public function index($kurikulum)
+    public function indexCpl($kurikulum)
     {
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        
-        return view('kaprodi.kurikulum.dashboard', [
+
+        return view('kaprodi.kurikulum.dashboard_cpl', [
+            'title' => 'Dashboard',
+            'nama' => 'Jhon Doe',
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $this->kurikulum
+        ]);
+    }
+
+    public function indexMk($kurikulum)
+    {
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+
+        return view('kaprodi.kurikulum.dashboard_mk', [
             'title' => 'Dashboard',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',

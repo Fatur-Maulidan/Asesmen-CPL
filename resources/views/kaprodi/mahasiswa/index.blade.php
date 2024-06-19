@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('kaprodi.mahasiswa.index', $kurikulum) }}
+    {{ Breadcrumbs::render('kaprodi.mahasiswa.index', $kurikulum->tahun) }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
@@ -29,7 +29,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.mahasiswa.import', ['kurikulum' => $kurikulum]) }}" method="POST"
+                    <form action="{{ route('kaprodi.mahasiswa.import', ['kurikulum' => $kurikulum->tahun]) }}" method="POST"
                         autocomplete="off" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-5">
@@ -37,7 +37,7 @@
                             <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('kaprodi.mahasiswa.downloadTemplate', ['kurikulum' => $kurikulum]) }}"
+                            <a href="{{ route('kaprodi.mahasiswa.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}"
                                 class="btn btn-outline-success">Download
                                 Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
@@ -70,7 +70,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum]) }}"
+                    <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum->tahun]) }}"
                         autocomplete="off" id="tambahMahasiswForm">
                         @csrf
 

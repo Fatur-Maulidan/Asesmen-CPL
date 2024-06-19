@@ -52,7 +52,7 @@
                                 class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Berjalan)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}
                             </span>
                         </div>
-                        <a href="{{ route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum->tahun]) }}"
+                        <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}"
                             class="link-secondary">
                             <i class="bi bi-arrow-right-circle" style="font-size: 1.5rem;"></i>
                         </a>
