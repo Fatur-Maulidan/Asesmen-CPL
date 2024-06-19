@@ -55,7 +55,7 @@ class Master_13_TujuanPembelajaran extends Model
     // Relations
     public function mataKuliahRegister()
     {
-        return $this->belongsTo(Master_11_MataKuliahRegister::class, '11_MASTER_mk_register_id');
+        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '11_MASTER_mk_register_id');
     }
 
     public function petaIkMk()

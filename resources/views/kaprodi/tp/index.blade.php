@@ -38,8 +38,6 @@
         <div class="col-6">
             <div class="fw-bold">{{ $selected_mata_kuliah->kode }} - {{ $selected_mata_kuliah->nama }}</div>
             <p>{{ $selected_mata_kuliah->deskripsi }}</p>
-        </div>
-        <div class="col-6">
             <div class="fw-bold">IK-1</div>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro vero iste exercitationem dignissimos
                 consequuntur optio expedita ut voluptatem architecto error.</p>
