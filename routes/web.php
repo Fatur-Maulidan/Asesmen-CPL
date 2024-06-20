@@ -99,8 +99,8 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
         ->name('ik.detail');
 
     // # Tujuan Pembelajaran
-    Route::resource('kurikulum/{kurikulum}/tp', KaprodiTujuanPembelajaranController::class)
-        ->only(['index', 'show', 'edit',]);
+    Route::get('kurikulum/{kurikulum}/tp', [KaprodiTujuanPembelajaranController::class, 'index'])->name('tp.index');
+    Route::get('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'validasi'])->name('tp.validasi');
 
     // # Mata kuliah
     Route::get('kurikulum/{kurikulum}/mata-kuliah/download-template', [KaprodiMataKuliahController::class, 'downloadTemplate'])->name('mata-kuliah.downloadTemplate');

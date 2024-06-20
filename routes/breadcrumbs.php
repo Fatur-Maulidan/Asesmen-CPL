@@ -89,6 +89,11 @@ Breadcrumbs::for('kaprodi.tp.index', function (BreadcrumbTrail $trail, $kurikulu
     $trail->push('Tujuan Pembelajaran', route('kaprodi.tp.index', ['kurikulum' => $kurikulum]));
 });
 
+Breadcrumbs::for('kaprodi.tp.validasi', function (BreadcrumbTrail $trail, $kurikulum) {
+    $trail->parent('kaprodi.tp.index', $kurikulum);
+    $trail->push('Validasi Tujuan Pembelajaran', route('kaprodi.tp.validasi', ['kurikulum' => $kurikulum]));
+});
+
 // Mata Kuliah
 Breadcrumbs::for('kaprodi.mata-kuliah.index', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->parent('kaprodi.kurikulum.dashboard.cpl', $kurikulum);

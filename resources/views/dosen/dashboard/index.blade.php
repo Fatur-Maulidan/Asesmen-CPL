@@ -6,102 +6,187 @@
 @endsection
 
 @section('main')
-    <div class="d-flex flex-row">
-        {{-- Pilihan Dashboard --}}
-        <div class="d-flex flex-column">
-            <div class="">Pilihan Dashboard</div>
-            <div class="d-flex flex-row">
-                <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-                <label class="btn btn-outline-primary rounded-pill px-3" for="option1">Capaian Pembelajaran</label>
-            </div>
-            <div class="d-flex flex-row">
-                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-                <label class="btn btn-outline-primary rounded-pill px-3" for="option2">Mata Kuliah</label>
+    <div class="row">
+        {{-- Side Option --}}
+        <div class="col-2">
+            <label for="" class="fw-bold mb-3">Dashboard</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="dashboard_type" id="dashboard_mk" checked>
+                <label class="form-check-label" for="dashboard_mk">
+                    <a href="#" class="text-decoration-none link-dark">Mata Kuliah</a>
+                </label>
             </div>
         </div>
-        {{-- Pilihan Dashboard --}}
 
-        {{-- if options 1 is checked --}}
-        {{-- Grafik --}}
-        <div class="d-flex flex-column">
-            <div class="row mb-4">
-                <div class="col-auto">
-                    <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option1">Semua</label>
+        {{-- Content --}}
+        <div class="col-10">
+            {{-- CP pada MK >>> --}}
+            <div class="mb-4">
+                <div class="row mb-4">
+                    <div class="fw-bold mb-2">Capaian Pembelajaran pada Mata Kuliah</div>
+                    <div class="col-auto">
+                        <label for="tahun" class="fw-bold mb-2">Angkatan mahasiswa</label>
+                        <select class="form-select me-3" name="tahun" id="tahun">
+                            <option>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                        </select>
+                    </div>
+                </div>
 
-                    <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option2">Sikap (SS)</label>
+                <div class="row">
+                    <div class="col-8">
+                        <img src="{{ asset('images/kaprodi-dashboard-cpl-mk.png') }}" class="w-100">
+                    </div>
+                    <div class="col-4 overflow-y-auto" style="max-height: 340px">
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-1</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
 
-                    <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Keterampilan Umum (KU)</label>
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-2</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
 
-                    <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Keterampilan Khusus (KK)</label>
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-3</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
 
-                    <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Keterampilan Umum (KU)</label>
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-4</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-5</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-6</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-7</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-8</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            {{-- Graph --}}
-            @for ($i = 1; $i <= 3; $i++)
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <img class="img-fluid" src="{{ asset('images/graph.png') }}" alt="Graph">
+            {{--  <<< end  --}}
+
+            {{-- IK pada MK >>> --}}
+            <div class="mb-4">
+                <div class="fw-bold mb-2">Indikator Kinerja pada Mata Kuliah</div>
+                <div class="row">
+                    <div class="col-8">
+                        <img src="{{ asset('images/kaprodi-dashboard-mk-ik-mk.png') }}" class="w-100">
                     </div>
-                    <div class="col-md-6 overflow-auto" style="max-height: 400px;">
-                        @for ($i = 1; $i <= 10; $i++)
-                            <div class="mb-3">
-                                <div class="fw-bold">SS-{{ $i }}</div>
-                                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita sed reprehenderit at
-                                    quasi
-                                    dolorem ratione maiores unde nihil accusantium! Laborum!</div>
-                            </div>
-                        @endfor
+                    <div class="col-4 overflow-y-auto" style="max-height: 340px">
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-1</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-2</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-3</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-4</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-5</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-6</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-7</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">KK-8</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
                     </div>
-                </div>
-            @endfor
-            {{-- End Graph --}}
-        </div>
-
-        {{-- if options 2 is checked --}}
-        <div class="d-flex flex-column">
-            <div class="row mb-4">
-                <div class="col-auto">
-                    <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option1">Semua</label>
-
-                    <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option2">Sikap (SS)</label>
-
-                    <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Keterampilan Umum (KU)</label>
-
-                    <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Keterampilan Khusus (KK)</label>
-
-                    <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-                    <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Keterampilan Umum (KU)</label>
                 </div>
             </div>
-            {{-- Graph --}}
-            @for ($i = 1; $i <= 3; $i++)
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <img class="img-fluid" src="{{ asset('images/graph.png') }}" alt="Graph">
+            {{--  <<< end  --}}
+
+            {{-- TP pada MK >>> --}}
+            <div class="mb-4">
+                <div class="fw-bold mb-2">Tujuan Pembelajaran pada Mata Kuliah</div>
+                <div class="row">
+                    <div class="col-8">
+                        <img src="{{ asset('images/kaprodi-dashboard-mk-tp-mk.png') }}" class="w-100">
                     </div>
-                    <div class="col-md-6 overflow-auto" style="max-height: 400px;">
-                        @for ($i = 1; $i <= 10; $i++)
-                            <div class="mb-3">
-                                <div class="fw-bold">SS-{{ $i }}</div>
-                                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita sed reprehenderit at
-                                    quasi
-                                    dolorem ratione maiores unde nihil accusantium! Laborum!</div>
-                            </div>
-                        @endfor
+                    <div class="col-4 overflow-y-auto" style="max-height: 340px">
+                        <div class="mb-3">
+                            <div class="fw-bold">TP-1</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">TP-2</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">TP-3</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">TP-4</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">TP-5</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">TP-6</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">TP-7</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="fw-bold">TP-8</div>
+                            <div class="">Mampu menerapkan pengetahuan matematika, sains dan teknologi informasi untuk memperoleh pemahaman yang komprehensif tentang prinsip prinsip rekayasa.</div>
+                        </div>
                     </div>
                 </div>
-            @endfor
-            {{-- End Graph --}}
+            </div>
+            {{--  <<< end  --}}
         </div>
     </div>
+
 @endsection
