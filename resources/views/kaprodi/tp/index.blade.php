@@ -9,9 +9,9 @@
 @section('main')
     <div class="d-flex justify-content-end mb-4">
         <a href="{{ route('kaprodi.tp.validasi', ['kurikulum' => $kurikulum->tahun]) }}" class="btn btn-warning me-2">Validasi Tujuan Pembelajaran</a>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambah-tujuan-pembelajaran">
-            Tambah Tujuan Pembelajaran
-        </button>
+        {{--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambah-tujuan-pembelajaran">--}}
+        {{--    Tambah Tujuan Pembelajaran--}}
+        {{--</button>--}}
     </div>
     <div class="modal fade" id="tambah-tujuan-pembelajaran" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
