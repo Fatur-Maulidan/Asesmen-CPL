@@ -3,10 +3,19 @@
 namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master_07_MataKuliah;
+use App\Models\Master_09_IndikatorKinerja;
 use Illuminate\Http\Request;
 
 class IndikatorKinerjaController extends Controller
 {
+    protected $mataKuliah;
+    protected $indikatorKinerja;
+
+    public function __construct()
+    {
+        $this->mataKuliah = new Master_07_MataKuliah();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,12 +23,31 @@ class IndikatorKinerjaController extends Controller
      */
     public function index($kodeMataKuliah)
     {
-        // dd($kodeMataKuliah);
+        $dataIk = collect();
+        $this->mataKuliah = $this->mataKuliah->where('kode', $kodeMataKuliah)->with('mataKuliahRegister.indikatorKinerja')->first();
+        foreach($this->mataKuliah->mataKuliahRegister as $mkr){
+            foreach($mkr->indikatorKinerja as $ik){
+                if(!$dataIk->contains('kode', $ik->kode)){
+                    $dataIk->put($ik->kode, [
+                        'kode' => $ik->kode,
+                        'deskripsi' => $ik->deskripsi,
+                        'tujuanPembelajaran' => collect()
+                    ]);
+                }
+                $ik->load('tujuanPembelajaran');
+
+                foreach ($ik->tujuanPembelajaran as $tp) {
+                    $dataIk[$ik->kode]['tujuanPembelajaran']->push($tp);
+                }
+            }
+        }
+
         return view('dosen.indikator-kinerja.index', [
             'title' => 'Indekator Kinerja',
             'nama' => 'John Doe',
             'role' => 'Dosen',
-            'kodeMataKuliah' => $kodeMataKuliah
+            'kodeMataKuliah' => $kodeMataKuliah,
+            'data_ik' => $dataIk->sortBy('kode')
         ]);
     }
 

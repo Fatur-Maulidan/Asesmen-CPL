@@ -58,7 +58,11 @@ class Master_09_IndikatorKinerja extends Model
     {
         return $this->belongsTo(Master_08_CapaianPembelajaranLulusan::class, '08_MASTER_capaian_pembelajaran_lulusan_id');
     }
-
+    public function tujuanPembelajaran()
+    {
+        return $this->hasMany(Master_13_TujuanPembelajaran::class, '11_MASTER_mk_register_id');
+    }
+    
     public function rubrik()
     {
         return $this->hasMany(Master_10_Rubrik::class, '09_MASTER_indikator_kinerja_id');

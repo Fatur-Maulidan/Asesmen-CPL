@@ -9,29 +9,28 @@
 @section('main')
     <div class="d-flex flex-column">
         <div class="accordion accordion-flush" id="accordionFlushExample">
-            @for ($i = 1; $i <= 4; $i++)
+            @foreach ($data_ik as $index => $ik)
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingOne">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapse{{ $i }}" aria-expanded="false"
-                            aria-controls="flush-collapse{{ $i }}">
-                            {{ 'SS-1.' . $i }}
+                            data-bs-target="#flush-collapse{{ $index }}" aria-expanded="false"
+                            aria-controls="flush-collapse{{ $index }}">
+                            {{ $ik['kode'] }} - {{ $ik['deskripsi'] }}
                         </button>
                     </h2>
-                    <div id="flush-collapse{{ $i }}" class="accordion-collapse collapse"
+                    <div id="flush-collapse{{ $index }}" class="accordion-collapse collapse"
                         aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body">
-                            <div class="d-flex flex-column mb-3">
-                                <div class="fw-bold">Deskripsi</div>
-                                <div class="">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic beatae
-                                    recusandae architecto consequuntur. Tempora eos quidem hic ex itaque. Quod.</div>
-                            </div>
                             <div class="">
                                 <div class="fw-bold">Tujuan Pembelajaran</div>
                                 <ul>
-                                    @for ($j = 1; $j <= 3; $j++)
-                                        <li>{{ 'TP-' . $j }}</li>
-                                    @endfor
+                                    @if ($ik['tujuanPembelajaran']->isEmpty())
+                                        <li>Tidak ada tujuan pembelajaran</li>
+                                    @else
+                                        @foreach ($ik['tujuanPembelajaran'] as $tp)
+                                            <li>{{ $tp->kode }}</li>
+                                        @endforeach
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -43,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-            @endfor
+            @endforeach
         </div>
     </div>
 @endsection

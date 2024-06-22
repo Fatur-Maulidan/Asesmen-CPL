@@ -58,14 +58,14 @@ class Master_13_TujuanPembelajaran extends Model
         return $this->belongsToMany(Master_11_MataKuliahRegister::class, '11_MASTER_mk_register_id');
     }
 
-    public function petaIkMk()
-    {
-        return $this->belongsToMany(Master_12_PetaIkMk::class, '14_MASTER_peta_ik_tp', '13_MASTER_tujuan_pembelajaran_id', '12_MASTER_peta_ik_mk_id')->withPivot('bobot_tp');
-    }
+    // public function petaIkMk()
+    // {
+    //     return $this->belongsToMany(Master_12_PetaIkMk::class, '14_MASTER_peta_ik_tp', '13_MASTER_tujuan_pembelajaran_id', '12_MASTER_peta_ik_mk_id')->withPivot('bobot_tp');
+    // }
 
     public function petaIkTp()
     {
-        return $this->belongsToMany(Master_12_PetaIkMk::class, '14_MASTER_peta_ik_tp', '13_MASTER_tujuan_pembelajaran_id', '12_MASTER_peta_ik_mk_id')->withPivot('bobot_tp');
+        return $this->belongsToMany(Master_14_PetaIkTp::class, '14_MASTER_peta_ik_tp', '13_MASTER_tujuan_pembelajaran_id', '12_MASTER_peta_ik_mk_id')->withPivot('bobot_tp');
     }
 
     public function rencanaAsesmen()
