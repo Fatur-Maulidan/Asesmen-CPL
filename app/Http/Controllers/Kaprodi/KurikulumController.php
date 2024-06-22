@@ -16,8 +16,7 @@ class KurikulumController extends Controller
 
     public function __construct()
     {
-        $this->user = new Master_04_Dosen();
-        $this->user = $this->user->getProdiKodeByDosenNip('199301062019031017');
+        $this->user = Master_04_Dosen::with('kaprodi')->find('KO042N');
     }
 
     /**
@@ -55,13 +54,10 @@ class KurikulumController extends Controller
      */
     public function create()
     {
-        $this->user = $this->user->getProdiKodeByDosenNip('199301062019031017')->first();
-        // dd($this->user->programStudi);
         return view('kaprodi.kurikulum.create', [
             'title' => 'Tambah Kurikulum Baru',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'program_studi_id' => $this->user->programStudi[0]->nomor,
             'program_studi_nomor' => $this->user->kaprodi->nomor
         ]);
     }

@@ -31,9 +31,14 @@ Breadcrumbs::for('kaprodi.kurikulum.index', function (BreadcrumbTrail $trail) {
     $trail->push('Home', route('kaprodi.kurikulum.index'));
 });
 
-Breadcrumbs::for('kaprodi.kurikulum.dashboard', function (BreadcrumbTrail $trail, $kurikulum) {
+Breadcrumbs::for('kaprodi.kurikulum.dashboard.cpl', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->parent('kaprodi.kurikulum.index');
-    $trail->push('Kurikulum ' . $kurikulum, route('kaprodi.kurikulum.dashboard', ['kurikulum' => $kurikulum]));
+    $trail->push('Kurikulum ' . $kurikulum, route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum]));
+});
+
+Breadcrumbs::for('kaprodi.kurikulum.dashboard.mk', function (BreadcrumbTrail $trail, $kurikulum) {
+    $trail->parent('kaprodi.kurikulum.index');
+    $trail->push('Kurikulum ' . $kurikulum, route('kaprodi.kurikulum.dashboard.mk', ['kurikulum' => $kurikulum]));
 });
 
 Breadcrumbs::for('kaprodi.kurikulum.create', function (BreadcrumbTrail $trail) {
@@ -43,7 +48,7 @@ Breadcrumbs::for('kaprodi.kurikulum.create', function (BreadcrumbTrail $trail) {
 
 // CPL
 Breadcrumbs::for('kaprodi.cpl.index', function (BreadcrumbTrail $trail, $kurikulum) {
-    $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
+    $trail->parent('kaprodi.kurikulum.dashboard.cpl', $kurikulum);
     $trail->push('Capaian Pembelajaran', route('kaprodi.cpl.index', ['kurikulum' => $kurikulum]));
 });
 
@@ -59,7 +64,7 @@ Breadcrumbs::for('kaprodi.cpl.edit', function (BreadcrumbTrail $trail, $kurikulu
 
 // IK
 Breadcrumbs::for('kaprodi.ik.index', function (BreadcrumbTrail $trail, $kurikulum) {
-    $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
+    $trail->parent('kaprodi.kurikulum.dashboard.cpl', $kurikulum);
     $trail->push('Indikator Kinerja', route('kaprodi.ik.index', ['kurikulum' => $kurikulum]));
 });
 
@@ -80,13 +85,18 @@ Breadcrumbs::for('kaprodi.ik.edit', function (BreadcrumbTrail $trail, $kurikulum
 
 // TP
 Breadcrumbs::for('kaprodi.tp.index', function (BreadcrumbTrail $trail, $kurikulum) {
-    $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
+    $trail->parent('kaprodi.kurikulum.dashboard.cpl', $kurikulum);
     $trail->push('Tujuan Pembelajaran', route('kaprodi.tp.index', ['kurikulum' => $kurikulum]));
+});
+
+Breadcrumbs::for('kaprodi.tp.validasi', function (BreadcrumbTrail $trail, $kurikulum) {
+    $trail->parent('kaprodi.tp.index', $kurikulum);
+    $trail->push('Validasi Tujuan Pembelajaran', route('kaprodi.tp.validasi', ['kurikulum' => $kurikulum]));
 });
 
 // Mata Kuliah
 Breadcrumbs::for('kaprodi.mata-kuliah.index', function (BreadcrumbTrail $trail, $kurikulum) {
-    $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
+    $trail->parent('kaprodi.kurikulum.dashboard.cpl', $kurikulum);
     $trail->push('Mata Kuliah', route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum]));
 });
 
@@ -102,13 +112,13 @@ Breadcrumbs::for('kaprodi.mk.show', function (BreadcrumbTrail $trail, $kurikulum
 
 // Mahasiswa
 Breadcrumbs::for('kaprodi.mahasiswa.index', function (BreadcrumbTrail $trail, $kurikulum) {
-    $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
+    $trail->parent('kaprodi.kurikulum.dashboard.cpl', $kurikulum);
     $trail->push('Mahasiswa', route('kaprodi.mahasiswa.index', ['kurikulum' => $kurikulum]));
 });
 
 // Dosen
 Breadcrumbs::for('kaprodi.dosen.index', function (BreadcrumbTrail $trail, $kurikulum) {
-    $trail->parent('kaprodi.kurikulum.dashboard', $kurikulum);
+    $trail->parent('kaprodi.kurikulum.dashboard.cpl', $kurikulum);
     $trail->push('Dosen', route('kaprodi.dosen.index', ['kurikulum' => $kurikulum]));
 });
 

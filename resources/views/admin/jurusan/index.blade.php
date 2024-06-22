@@ -427,10 +427,10 @@
                                                 </ul>
                                             </div>
 
-                                            <div>
-                                                <a href="#" class="btn-hapus-prodi" data-bs-toggle="modal"
-                                                   data-bs-target="#hapusModal" data-nomor="{{ $prodi->nomor }}">Hapus</a>
-                                            </div>
+                                            {{--<div>--}}
+                                            {{--    <a href="#" class="btn-hapus-prodi" data-bs-toggle="modal"--}}
+                                            {{--       data-bs-target="#hapusModal" data-nomor="{{ $prodi->nomor }}">Hapus</a>--}}
+                                            {{--</div>--}}
                                         </div>
                                     </div>
                                 </div>
@@ -444,8 +444,8 @@
                         <a href="#" class="btn-add-prodi" data-bs-toggle="modal"
                             data-bs-target="#tambahProgramStudiModal" data-nomor="{{ $jrsn->nomor }}">Tambah Program
                             Studi</a>
-                        <a href="#" class="btn-hapus-jurusan" data-bs-toggle="modal"
-                           data-bs-target="#hapusModal" data-nomor="{{ $jrsn->nomor }}">Hapus</a>
+                        {{--<a href="#" class="btn-hapus-jurusan" data-bs-toggle="modal"--}}
+                        {{--   data-bs-target="#hapusModal" data-nomor="{{ $jrsn->nomor }}">Hapus</a>--}}
                     </div>
                 </div>
             </div>

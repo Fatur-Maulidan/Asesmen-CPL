@@ -70,10 +70,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
     Route::resource('dosen', AdminDosenController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 
     // # Mahasiswa
-//    Route::get('mahasiswa/download-template', [AdminMahasiswaController::class, 'downloadTemplate'])->name('mahasiswa.downloadTemplate');
-//    Route::post('mahasiswa/import', [AdminMahasiswaController::class, 'import'])->name('mahasiswa.import');
-//    Route::patch('mahasiswa/toggle-status/{mahasiswa}', [AdminMahasiswaController::class, 'toggleStatus'])->name('mahasiswa.toggleStatus');
-//    Route::resource('mahasiswa', AdminMahasiswaController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    //    Route::get('mahasiswa/download-template', [AdminMahasiswaController::class, 'downloadTemplate'])->name('mahasiswa.downloadTemplate');
+    //    Route::post('mahasiswa/import', [AdminMahasiswaController::class, 'import'])->name('mahasiswa.import');
+    //    Route::patch('mahasiswa/toggle-status/{mahasiswa}', [AdminMahasiswaController::class, 'toggleStatus'])->name('mahasiswa.toggleStatus');
+    //    Route::resource('mahasiswa', AdminMahasiswaController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 });
 
 // # Route untuk kaprodi
@@ -83,8 +83,10 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
         ->only(['index', 'create', 'store']);
 
     // # Dashboard
-    Route::get('kurikulum/{kurikulum}', [KaprodiDashboardController::class, 'index'])
-        ->name('kurikulum.dashboard');
+    Route::get('kurikulum/{kurikulum}/dashboard-cpl', [KaprodiDashboardController::class, 'indexCpl'])
+        ->name('kurikulum.dashboard.cpl');
+    Route::get('kurikulum/{kurikulum}/dashboard-mk', [KaprodiDashboardController::class, 'indexMk'])
+        ->name('kurikulum.dashboard.mk');
 
     // # CPL
     Route::resource('kurikulum/{kurikulum}/cpl', KaprodiCPLController::class)
@@ -97,8 +99,8 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
         ->name('ik.detail');
 
     // # Tujuan Pembelajaran
-    Route::resource('kurikulum/{kurikulum}/tp', KaprodiTujuanPembelajaranController::class)
-        ->only(['index', 'show', 'edit',]);
+    Route::get('kurikulum/{kurikulum}/tp', [KaprodiTujuanPembelajaranController::class, 'index'])->name('tp.index');
+    Route::get('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'validasi'])->name('tp.validasi');
 
     // # Mata kuliah
     Route::get('kurikulum/{kurikulum}/mata-kuliah/download-template', [KaprodiMataKuliahController::class, 'downloadTemplate'])->name('mata-kuliah.downloadTemplate');

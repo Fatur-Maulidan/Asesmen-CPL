@@ -147,5 +147,4 @@
             </hr>
         @endfor
     </div>
-    </div>
 @endsection

@@ -189,8 +189,8 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('kaprodi.cpl.edit', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->kode]) }}"
-                        class="btn btn-outline-primary ">Ubah Pemetaannya pada MK</a>
+                    {{--<a href="{{ route('kaprodi.cpl.edit', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->kode]) }}"--}}
+                    {{--    class="btn btn-outline-primary ">Ubah Pemetaannya pada MK</a>--}}
                     {{-- Button trigger modal --}}
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                         data-bs-target="#staticBackdrop">

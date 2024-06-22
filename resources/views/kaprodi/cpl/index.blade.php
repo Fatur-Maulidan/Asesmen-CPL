@@ -7,7 +7,6 @@
 
 @section('main')
     {{-- Filter buttons --}}
-
     <div class="row mb-5">
         <div class="col-auto">
             <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>

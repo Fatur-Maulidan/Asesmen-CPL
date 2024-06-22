@@ -13,10 +13,13 @@ use Illuminate\Http\Request;
 class DosenController extends Controller
 {
     protected $user;
+    protected $kurikulum;
 
     public function __construct()
     {
         $this->user = Master_04_Dosen::with('kaprodi')->find('KO042N');
+        $this->kurikulum = Master_03_Kurikulum::where('02_MASTER_program_studi_nomor', $this->user->kaprodi->nomor)
+            ->where('tahun', request('kurikulum'))->first();
     }
 
     /**
@@ -31,7 +34,7 @@ class DosenController extends Controller
             'title' => 'Dosen',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
-            'kurikulum' => $kurikulum,
+            'kurikulum' => $this->kurikulum,
         ]);
     }
 

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('dosen.mata-kuliah.dashboard', $kodeMataKuliah) }}
+    {{ Breadcrumbs::render('kaprodi.kurikulum.dashboard.mk', $kurikulum->tahun) }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
@@ -9,11 +9,17 @@
     <div class="row">
         {{-- Side Option --}}
         <div class="col-2">
-            <label for="" class="fw-bold mb-3">Dashboard</label>
+            <label for="" class="fw-bold mb-3">Pilihan dashboard</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="dashboard_type" id="dashboard_cpl">
+                <label class="form-check-label" for="dashboard_cpl">
+                    <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}" class="text-decoration-none link-dark">Capaian Pembelajaran</a>
+                </label>
+            </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="dashboard_type" id="dashboard_mk" checked>
                 <label class="form-check-label" for="dashboard_mk">
-                    <a href="#" class="text-decoration-none link-dark">Mata Kuliah</a>
+                    <a href="{{ route('kaprodi.kurikulum.dashboard.mk', ['kurikulum' => $kurikulum->tahun]) }}" class="text-decoration-none link-dark">Mata Kuliah</a>
                 </label>
             </div>
         </div>
@@ -24,6 +30,14 @@
             <div class="mb-4">
                 <div class="row mb-4">
                     <div class="fw-bold mb-2">Capaian Pembelajaran pada Mata Kuliah</div>
+                    <div class="col-auto">
+                        <label for="cpl" class="fw-bold mb-2">Mata kuliah</label>
+                        <select class="form-select me-3" name="cpl" id="cpl">
+                            <option>21IF001 - Dasar Dasar Pemrograman</option>
+                            <option>21IF002 - Pengantar Teknologi Informasi</option>
+                            <option>21IF003 - Komunikasi Data Jaringan</option>
+                        </select>
+                    </div>
                     <div class="col-auto">
                         <label for="tahun" class="fw-bold mb-2">Angkatan mahasiswa</label>
                         <select class="form-select me-3" name="tahun" id="tahun">
