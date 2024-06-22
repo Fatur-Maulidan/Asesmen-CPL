@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Master_14_PetaIkTp extends Model
+class Master_14_PetaIkTp extends Pivot
 {
     /**
      * The table associated with the model.
@@ -19,19 +20,19 @@ class Master_14_PetaIkTp extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = null;
 
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = true;
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['12_MASTER_tujuan_pembelajaran_id', '11_MASTER_peta_ik_mk_id', 'bobot_tp'];
+    protected $fillable = ['13_MASTER_tujuan_pembelajaran_id', '12_MASTER_peta_ik_mk_id', 'bobot_tp'];
 }

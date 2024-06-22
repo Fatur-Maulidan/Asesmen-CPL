@@ -24,10 +24,10 @@
                 <div class="fw-bold">Diperbarui Pada</div>
                 <div class="">{{ $mata_kuliah->updated_at->translatedFormat('d F Y H:i') }}</div>
             </div>
-            <div class="d-flex flex-column ms-4">
-                <div class="fw-bold">Diubah Oleh</div>
-                <div class="">{{ $nama }}</div>
-            </div>
+            {{--<div class="d-flex flex-column ms-4">--}}
+            {{--    <div class="fw-bold">Diubah Oleh</div>--}}
+            {{--    <div class="">{{ $nama }}</div>--}}
+            {{--</div>--}}
         </div>
 
         <div class="d-flex flex-column mb-4">

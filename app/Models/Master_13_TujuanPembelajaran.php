@@ -63,11 +63,6 @@ class Master_13_TujuanPembelajaran extends Model
         return $this->belongsToMany(Master_12_PetaIkMk::class, '14_MASTER_peta_ik_tp', '13_MASTER_tujuan_pembelajaran_id', '12_MASTER_peta_ik_mk_id')->withPivot('bobot_tp');
     }
 
-    public function petaIkTp()
-    {
-        return $this->belongsToMany(Master_12_PetaIkMk::class, '14_MASTER_peta_ik_tp', '13_MASTER_tujuan_pembelajaran_id', '12_MASTER_peta_ik_mk_id')->withPivot('bobot_tp');
-    }
-
     public function rencanaAsesmen()
     {
         return $this->belongsToMany(Master_15_RencanaAsesmen::class, '16_MASTER_peta_ra_tp', '13_MASTER_tujuan_pembelajaran_id', '15_MASTER_rencana_asesmen_id');

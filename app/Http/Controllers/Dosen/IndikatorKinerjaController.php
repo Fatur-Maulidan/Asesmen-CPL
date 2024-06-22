@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_07_MataKuliah;
+use App\Models\Master_09_IndikatorKinerja;
 use Illuminate\Http\Request;
 
 class IndikatorKinerjaController extends Controller
@@ -98,9 +99,30 @@ class IndikatorKinerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($kodeMataKuliah, $kodeIk)
     {
-        //
+        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+            ->with('mataKuliahRegister.indikatorKinerja', 'mataKuliahRegister.tujuanPembelajaran.petaIkMk')
+            ->first();
+
+        $ik = Master_09_IndikatorKinerja::with('mataKuliahRegister')
+            ->where('kode', $kodeIk)
+            ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)
+            ->first();
+
+        //dd($ik->mataKuliahRegister[0]->pivot->tujuanPembelajaran);
+
+        //$link_ik = Master_09_IndikatorKinerja::where('03_MASTER_kurikulum_id', $this->kurikulum->id)->get();
+
+        return view('dosen.indikator-kinerja.show', [
+            'title' => 'Detail Indikator Kinerja',
+            'nama' => $this->user->nama,
+            'role' => 'Dosen',
+            'kurikulum' => $this->kurikulum,
+            'mata_kuliah' => $mata_kuliah,
+            'ik' => $ik,
+            //'link_ik' => $link_ik
+        ]);
     }
 
     /**

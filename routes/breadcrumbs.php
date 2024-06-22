@@ -150,9 +150,9 @@ Breadcrumbs::for('dosen.mata-kuliah.indikator-kinerja.index', function (Breadcru
 });
 
 // Breadcrumb Dosen/mata Kuliah/Indikator Kinerja/Detail Informasi
-Breadcrumbs::for('dosen.mata-kuliah.indikator-kinerja.detail-informasi', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
-    $trail->parent('dosen.mata-kuliah.indikator-kinerja', $kodeMataKuliah);
-    $trail->push('Detail Informasi Indikator Kinerja', route('dosen.mata-kuliah.indikator-kinerja.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah]));
+Breadcrumbs::for('dosen.mata-kuliah.indikator-kinerja.show', function (BreadcrumbTrail $trail, $kodeMataKuliah, $kodeIk): void {
+    $trail->parent('dosen.mata-kuliah.indikator-kinerja.index', $kodeMataKuliah);
+    $trail->push('Detail Informasi Indikator Kinerja', route('dosen.mata-kuliah.indikator-kinerja.show', ['kodeMataKuliah' => $kodeMataKuliah, 'kodeIk' => $kodeIk]));
 });
 
 // Breadcrumb Dosen/mata Kuliah/Tujuan Pembelajaran

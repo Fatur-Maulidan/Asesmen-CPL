@@ -140,7 +140,7 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.'], function () { // 'middlewa
             Route::get('/', [DosenIndikatorKinerjaController::class, 'index'])
                 ->name('mata-kuliah.indikator-kinerja.index');
 
-            Route::get('detail-informasi', [DosenIndikatorKinerjaController::class, 'show'])
+            Route::get('{kodeIk}', [DosenIndikatorKinerjaController::class, 'show'])
                 ->name('mata-kuliah.indikator-kinerja.show');
         });
 

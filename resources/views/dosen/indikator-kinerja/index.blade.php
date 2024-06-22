@@ -27,15 +27,16 @@
                                 <div class="">
                                     <div class="fw-bold">Tujuan Pembelajaran</div>
                                     <ul class="mb-0">
-{{--                                        @php print_r($ik); @endphp--}}
-                                        @foreach ($ik['tp'] as $tp)
+                                        @forelse ($ik['tp'] as $tp)
                                             <li>{{ $tp['kode'] }}</li>
-                                        @endforeach
+                                        @empty
+                                            <li>Belum ada pemetaan.</li>
+                                        @endforelse
                                     </ul>
                                 </div>
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top">
-                                <a href="{{ route('dosen.mata-kuliah.indikator-kinerja.show', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Lihat
+                                <a href="{{ route('dosen.mata-kuliah.indikator-kinerja.show', ['kodeMataKuliah' => $mata_kuliah->kode, 'kodeIk' => $ik['kode']]) }}">Lihat
                                     Detail</a>
                             </div>
                         </div>
