@@ -11,9 +11,9 @@
         {{-- Sidebar --}}
         @include('kaprodi.mk.sidebar')
 
-        {{-- Pembobotan Modal --}}
-        <div class="modal modal-lg fade" id="pembobotanModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="pembobotanModalLabel" aria-hidden="true">
+        {{-- pemetaan Modal --}}
+        <div class="modal modal-lg fade" id="pemetaanModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="pemetaanModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <form method="POST"
@@ -24,7 +24,7 @@
                         <div class="modal-header">
                             <div>
                                 <div class="text-muted fs-6">Proses 1 dari 2</div>
-                                <h1 class="modal-title fs-5 fw-bold" id="pembobotanModalLabel">Pemetaan Mata Kuliah dengan
+                                <h1 class="modal-title fs-5 fw-bold" id="pemetaanModalLabel">Pemetaan Mata Kuliah dengan
                                     Indikator
                                     Kinerja</h1>
                             </div>
@@ -53,7 +53,8 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="checkbox[]" value="{{ $ik->kode }}"
-                                                                    id="flexCheckDefault">
+                                                                    id="flexCheckDefault"
+                                                                    {{ in_array($ik->kode, $selected_data_ik) ? 'checked' : '' }}>
                                                                 <label class="form-check-label fw-bold"
                                                                     for="flexCheckDefault">
                                                                     {{ $ik->kode }}
@@ -84,7 +85,8 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="checkbox[]" value="{{ $ik->kode }}"
-                                                                    id="flexCheckDefault">
+                                                                    id="flexCheckDefault"
+                                                                    {{ in_array($ik->kode, $selected_data_ik) ? 'checked' : '' }}>
                                                                 <label class="form-check-label fw-bold"
                                                                     for="flexCheckDefault">
                                                                     {{ $ik->kode }}
@@ -115,7 +117,8 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="checkbox[]" value="{{ $ik->kode }}"
-                                                                    id="flexCheckDefault">
+                                                                    id="flexCheckDefault"
+                                                                    {{ in_array($ik->kode, $selected_data_ik) ? 'checked' : '' }}>
                                                                 <label class="form-check-label fw-bold"
                                                                     for="flexCheckDefault">
                                                                     {{ $ik->kode }}
@@ -146,7 +149,8 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="checkbox[]" value="{{ $ik->kode }}"
-                                                                    id="flexCheckDefault">
+                                                                    id="flexCheckDefault"
+                                                                    {{ in_array($ik->kode, $selected_data_ik) ? 'checked' : '' }}>
                                                                 <label class="form-check-label fw-bold"
                                                                     for="flexCheckDefault">
                                                                     {{ $ik->kode }}
@@ -444,8 +448,8 @@
                     {{--                    </div> --}}
                 </div>
                 <div class="col-auto">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#pembobotanModal" id="pembobotan"
-                        class="btn btn-outline-primary ">Pembobotan</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#pemetaanModal" id="pemetaan"
+                        class="btn btn-outline-primary ">Pemetaan</button>
                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#tahunAkademikBaruModal1" id="tahunAkademikBaru1">Tahun Akademik
                         Baru</button>
@@ -573,8 +577,8 @@
         });
 
         $(document).ready(function() {
-            $('#pembobotan').on('click', function() {
-                modal = "pembobotanModal";
+            $('#pemetaan').on('click', function() {
+                modal = "pemetaanModal";
                 $('#modalButton').attr('data-bs-target', '#' + modal);
             });
             $('#tahunAkademikBaru1').on('click', function() {

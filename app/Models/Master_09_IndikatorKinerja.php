@@ -77,7 +77,7 @@ class Master_09_IndikatorKinerja extends Model
         $indikatorKinerja = $this->with('capaianPembelajaranLulusan');
         $indikatorKinerja = empty($kode) ? $indikatorKinerja : $indikatorKinerja->where('kode', $kode)->with('rubrik');
         $indikatorKinerja = empty($idCpl) ? $indikatorKinerja : $indikatorKinerja->where('08_MASTER_capaian_pembelajaran_lulusan_id', $idCpl);
-        $indikatorKinerja = $indikatorKinerja->with('mataKuliahRegister.tujuanPembelajaran')->whereHas('mataKuliahRegister', function($query) use ($kurikulum) {
+        $indikatorKinerja = $indikatorKinerja->with('mataKuliahRegister')->whereHas('mataKuliahRegister', function($query) use ($kurikulum) {
             $query->where('03_MASTER_kurikulum_id', $kurikulum);
         });
         $indikatorKinerja = $indikatorKinerja->where('03_MASTER_kurikulum_id',$kurikulum)->with('capaianPembelajaranLulusan')->get();

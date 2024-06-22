@@ -47,6 +47,7 @@ class TujuanPembelajaranController extends Controller
 
         foreach($this->indikatorKinerja as $ik){
             foreach($ik->mataKuliahRegister as $mkr){
+                // dd($mkr->pivot->get());
                 foreach($mkr->tujuanPembelajaran as $tp){
                     if($mkr->mataKuliah->kode === $selectedMataKuliah->kode){
                         if(!$dataIk->has($ik->kode)){
@@ -62,7 +63,7 @@ class TujuanPembelajaranController extends Controller
                 }
             }
         }
-        
+        dd($dataIk);
         return view('kaprodi.tp.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => 'Jhon Doe',

@@ -88,12 +88,22 @@ class MataKuliahController extends Controller
      */
     public function show($kurikulum, $kode)
     {
+        $dataIkChecked = collect();
         $mataKuliah = new Master_07_MataKuliah;
 
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $daftarMataKuliah = Master_07_MataKuliah::where('03_MASTER_kurikulum_id',$this->kurikulum->id)->get();
         $mataKuliah = $mataKuliah->getMataKuliahByKodeAndKurikulum($kode, $this->kurikulum->id);
 
+        foreach($mataKuliah->mataKuliahRegister as $mkr) {
+            foreach($mkr->indikatorKinerja as $ik){
+                if(!$dataIkChecked->contains($ik)){
+                    $dataIkChecked->push($ik);
+                }
+            }
+        }
+
+        // dd($dataIkChecked->unique('kode')->pluck('kode')->toArray());
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id);
         return view('kaprodi.mk.show', [
             'title' => 'Mata Kuliah',
@@ -102,7 +112,8 @@ class MataKuliahController extends Controller
             'kurikulum' => $this->kurikulum,
             'daftar_mata_kuliah' => $daftarMataKuliah,
             'detail_mata_kuliah' => $mataKuliah,
-            'indikator_kinerja' => $this->indikatorKinerja
+            'indikator_kinerja' => $this->indikatorKinerja,
+            'selected_data_ik' => $dataIkChecked->unique('kode')->pluck('kode')->toArray()
         ]);
     }
 
