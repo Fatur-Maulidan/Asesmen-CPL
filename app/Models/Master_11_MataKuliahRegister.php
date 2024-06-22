@@ -60,7 +60,7 @@ class Master_11_MataKuliahRegister extends Model
 
     public function indikatorKinerja()
     {
-        return $this->belongsToMany(Master_09_IndikatorKinerja::class, '12_MASTER_peta_ik_mk', '11_MASTER_mk_register_id', '09_MASTER_indikator_kinerja_id')->using(Master_12_PetaIkMk::class);
+        return $this->belongsToMany(Master_09_IndikatorKinerja::class, '12_MASTER_peta_ik_mk', '11_MASTER_mk_register_id', '09_MASTER_indikator_kinerja_id')->using(Master_12_PetaIkMk::class)->withPivot('id');
     }
 
     public function tujuanPembelajaran()

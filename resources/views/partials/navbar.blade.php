@@ -69,35 +69,47 @@
                             href="{{ route('kaprodi.dosen.index', ['kurikulum' => $kurikulum->tahun]) }}">Dosen</a>
                     </li>
                     <li class="nav-item ms-auto align-self-end">
-                        <h3 class="mb-0"><span class="badge text-bg-warning rounded-bottom-0">Peninjauan</span></h3>
+                        <h3 class="mb-0"><span class="badge text-bg-success rounded-bottom-0">{{ $kurikulum->status }}</span></h3>
                     </li>
                 @endif
             </ul>
         @else
             <ul class="nav nav-underline">
-                <?php $navbar = isNavbarRole($role); ?>
-                @foreach ($navbar as $index => $nav)
-                    <li class="nav-item d-flex flex-row">
-                        <?php
-                        $isActive = Route::is($nav['link']);
-                        if (isset($nav['child_links'])) {
-                            foreach ($nav['child_links'] as $childNav) {
-                                if (Route::is($childNav['link'])) {
-                                    $isActive = true;
-                                }
-                            }
-                        }
-                        ?>
-                        <a class="nav-link {{ $isActive ? 'active' : '' }} me-3"
-                            href="{{ $nav['link'] != '#'
-                                ? (isset($nav['parameters'])
-                                    ? route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $id])
-                                    : route($nav['link'], ['kodeMataKuliah' => $kodeMataKuliah]))
-                                : '#' }}">
-                            {{ $nav['title'] }}
-                        </a>
+                @if (Route::is('dosen.mata-kuliah.index'))
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ route('dosen.mata-kuliah.index') }}">Mata Kuliah</a>
                     </li>
-                @endforeach
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('dosen.mata-kuliah.dashboard')) active @endif" href="{{ route('dosen.mata-kuliah.dashboard', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('dosen.mata-kuliah.show')) active @endif"
+                           href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Informasi Umum</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('dosen.mata-kuliah.indikator-kinerja.*')) active @endif"
+                           href="{{ route('dosen.mata-kuliah.indikator-kinerja.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Indikator
+                            Kinerja</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('kaprodi.tp.*')) active @endif"
+                           href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Tujuan
+                            Pembelajaran</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('kaprodi.mata-kuliah.*')) active @endif"
+                           href="{{ route('dosen.mata-kuliah.rencana-asesmen', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Rencana Asesmen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('kaprodi.mahasiswa.*')) active @endif"
+                           href="{{ route('dosen.mata-kuliah.nilai-mahasiswa', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Nilai Mahasiswa</a>
+                    </li>
+
+                    <li class="nav-item ms-auto align-self-end">
+                        <h3 class="mb-0"><span class="badge text-bg-success rounded-bottom-0">{{ $kurikulum->status }}</span></h3>
+                    </li>
+                @endif
             </ul>
         @endif
     </div>

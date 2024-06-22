@@ -25,7 +25,7 @@ if (!function_exists('isNavbarRole')) {
             ],
             [
                 'title' => 'Informasi Umum',
-                'link' => 'dosen.mata-kuliah.informasi-umum',
+                'link' => 'dosen.mata-kuliah.index',
             ],
             [
                 'title' => 'Indikator Kinerja',

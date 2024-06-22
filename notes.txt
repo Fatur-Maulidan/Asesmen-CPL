@@ -1,0 +1,4 @@
+Problems Ngoding:
+1.  Jika dosen bisa ada di berbagai program studi (pada jurusan yang menerapkan kurikulum berbeda)
+    Harusnya halaman awal dosen menampilkan daftar kurikulum prodi terlebih dahulu, masuk baru ke daftar mata kuliah pada
+    kurikulum yang dipilih

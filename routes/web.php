@@ -127,22 +127,21 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.'], function () { // 'middlewa
     Route::prefix('/mata-kuliah')->group(function () {
 
         Route::get('/', [DosenMataKuliahController::class, 'index'])
-            ->name('mata-kuliah');
+            ->name('mata-kuliah.index');
+        Route::get('{kodeMataKuliah}', [DosenMataKuliahController::class, 'show'])
+            ->name('mata-kuliah.show');
 
         // # Dashboard
         Route::get('{kodeMataKuliah}/dashboard', [DosenDashboardController::class, 'index'])
             ->name('mata-kuliah.dashboard');
 
-        Route::get('{kodeMataKuliah}/informasi-umum', [DosenMataKuliahController::class, 'informasiUmum'])
-            ->name('mata-kuliah.informasi-umum');
-
         // # Indikator Kinerja
         Route::prefix('{kodeMataKuliah}/indikator-kinerja')->group(function () {
             Route::get('/', [DosenIndikatorKinerjaController::class, 'index'])
-                ->name('mata-kuliah.indikator-kinerja');
+                ->name('mata-kuliah.indikator-kinerja.index');
 
-            Route::get('detail-informasi', [DosenIndikatorKinerjaController::class, 'detailInformasi'])
-                ->name('mata-kuliah.indikator-kinerja.detail-informasi');
+            Route::get('{kodeIk}', [DosenIndikatorKinerjaController::class, 'show'])
+                ->name('mata-kuliah.indikator-kinerja.show');
         });
 
         // # Tujuan Pembelajaran
