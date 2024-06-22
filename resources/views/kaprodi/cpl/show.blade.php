@@ -9,7 +9,7 @@
     <div class="row">
         {{-- Sidebar --}}
         <div class="col-3">
-            <button type="button" class="btn btn-outline-primary w-100 mb-4">Ekspor</button>
+            {{--<button type="button" class="btn btn-success w-100 mb-4">Tambah Data CPL</button>--}}
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
@@ -177,11 +177,11 @@
                 <div class="col d-flex">
                     <div class="me-4">
                         <div class="fw-bold">Diubah pada</div>
-                        <div id="tanggal-pengajuan">{{ $cpl->created_at }}</div>
+                        <div id="tanggal-pengajuan">{{ $cpl->created_at->translatedFormat('d F Y H:i') }}</div>
                     </div>
                     <div class="me-4">
                         <div class="fw-bold">Diperbarui pada</div>
-                        <div id="tanggal-pembaruan">{{ $cpl->updated_at }}</div>
+                        <div id="tanggal-pembaruan">{{ $cpl->updated_at->translatedFormat('d F Y H:i') }}</div>
                     </div>
                     <div>
                         <div class="fw-bold">Diubah oleh</div>
@@ -230,14 +230,6 @@
                                     class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
                                     data-bs-parent="#accordionExample2">
                                     <div class="accordion-body">
-                                        <div class="mb-4">
-                                            <div class="fw-bold">Tingkat Relevansi</div>
-                                            <div>1</div>
-                                        </div>
-                                        <div class="mb-4">
-                                            <div class="fw-bold">Bobot Relevansi</div>
-                                            <div>11%</div>
-                                        </div>
                                         <?php $dataIkTp = getDataIkTp(); ?>
                                         <table class="table table-bordered">
                                             <thead>

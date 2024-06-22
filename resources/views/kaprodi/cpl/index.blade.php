@@ -53,8 +53,8 @@
                                 <label for="domain" class="form-label fw-bold">Domain</label>
                                 <select class="form-select" id="domain" name="domain">
                                     <option selected hidden>Pilih domain</option>
-                                    <option value="Sikap">Sikap (S)</option>
-                                    <option value="Pengetahuan">Pengetahuan (P)</option>
+                                    <option value="Sikap">Sikap (SP)</option>
+                                    <option value="Pengetahuan">Pengetahuan (PP)</option>
                                     <option value="Keterampilan Umum">Keterampilan Umum (KU)</option>
                                     <option value="Keterampilan Khusus">Keterampilan Khusus (KK)</option>
                                 </select>

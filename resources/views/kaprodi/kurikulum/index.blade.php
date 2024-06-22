@@ -66,11 +66,11 @@
                         </ul>
                     </div>
                     <div class="card-footer text-body-secondary py-3">
-                        <a href="" class="d-block">Lihat hasil Asesmen CPL</a>
-                        <a href="" class="d-block">Lihat Capaian Pembelajaran</a>
-                        <a href="" class="d-block">Lihat Indikator Kinerja</a>
-                        <a href="" class="d-block">Lihat Tujuan Pembelajaran</a>
-                        <a href="" class="d-block">Lihat Mata Kuliah</a>
+                        <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat hasil Asesmen CPL</a>
+                        <a href="{{ route('kaprodi.cpl.index', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat Capaian Pembelajaran</a>
+                        <a href="{{ route('kaprodi.ik.index', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat Indikator Kinerja</a>
+                        <a href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat Tujuan Pembelajaran</a>
+                        <a href="{{ route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat Mata Kuliah</a>
                     </div>
                 </div>
             </div>

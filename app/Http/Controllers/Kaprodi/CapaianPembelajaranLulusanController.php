@@ -30,7 +30,7 @@ class CapaianPembelajaranLulusanController extends Controller
         $this->kaprodi = new Master_04_Dosen();
         $this->kurikulum = new Master_03_Kurikulum();
         $this->indikatorKinerja = new Master_09_IndikatorKinerja();
-        $this->mataKuliah = new Master_07_MataKuliah(); 
+        $this->mataKuliah = new Master_07_MataKuliah();
     }
 
     /**
@@ -40,11 +40,11 @@ class CapaianPembelajaranLulusanController extends Controller
      */
 
     public function index($kurikulum)
-    {   
+    {
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        
+
         $dataCPL = $this->getDataCPL($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode'));
-        
+
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
             'nama' => 'Jhon Doe',
@@ -98,7 +98,7 @@ class CapaianPembelajaranLulusanController extends Controller
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $cpl = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)->with('indikatorKinerja.mataKuliahRegister.mataKuliah')->first();
         $dataCPL = $this->getDataCPL($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode'));
-        
+
         $dataMk = collect();
         foreach ($cpl->indikatorKinerja as $ik) {
             foreach($ik->mataKuliahRegister as $mkr) {
@@ -201,9 +201,9 @@ class CapaianPembelajaranLulusanController extends Controller
         return $this->checkIfWordLessThanTwo($kode);
     }
 
-    /* 
-        Fungsi ini digunakan untuk mengembalikan apabila hasil inisial 
-        dari domain CPL kurang dari 2 huruf 
+    /*
+        Fungsi ini digunakan untuk mengembalikan apabila hasil inisial
+        dari domain CPL kurang dari 2 huruf
     */
     private function checkIfWordLessThanTwo($kode){
         if($kode === "P"){
@@ -213,11 +213,11 @@ class CapaianPembelajaranLulusanController extends Controller
         }
         return $kode;
     }
-    /* 
+    /*
         Fungsi ini digunakan untuk mengambil data CPL dan mengubah struktur data CPL
-        yang awalnya CPL -> IK -> MKRegister -> MK 
+        yang awalnya CPL -> IK -> MKRegister -> MK
         menjadi CPL -> MKRegister -> MK -> IK
-    */ 
+    */
     private function getDataCPL($dataCpl) {
         $dataCPL = collect();
 
@@ -229,7 +229,7 @@ class CapaianPembelajaranLulusanController extends Controller
                 'mataKuliahRegister' => collect(),
                 'indikatorKinerjaBelumDipetakan' => collect()
             ]);
-        
+
             foreach ($cpl->indikatorKinerja as $ik) {
                 $mapped = false;
                 foreach ($ik->mataKuliahRegister as $mkr) {

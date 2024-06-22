@@ -11,25 +11,17 @@ use App\Models\Master_11_MataKuliahRegister;
 use App\Models\MataKuliah;
 use App\Models\Perkuliahan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MataKuliahController extends Controller
 {
-    protected $mataKuliah;
-    protected $dosenNip;
-    protected $dosen;
-    protected $perkuliahan;
-    protected $tahun;
+    protected $user;
     protected $kurikulum;
-    protected $tahunKurikulum;
+
     public function __construct()
     {
-        $this->tahunKurikulum = 2021;
-        $this->mataKuliah = new Master_07_MataKuliah();
-        $this->kurikulum = new Master_03_Kurikulum();
-        // $this->dosenNip = '196012261992031001';
-        $this->dosenNip = '199301062019031017';
-        $this->dosen = new Master_04_Dosen();
-        // $this->perkuliahan = new Master();
+        $this->user = Master_04_Dosen::find('KO042N');
+        $this->kurikulum = Master_03_Kurikulum::find(1);
     }
 
     /**
@@ -39,21 +31,23 @@ class MataKuliahController extends Controller
      */
     public function index()
     {
-        $this->dosen  = $this->dosen->getDosenByNip($this->dosenNip);
-        $this->kurikulum = $this->kurikulum->getKurikulumByNomorProdi($this->dosen->programStudi->first()->nomor, $this->tahunKurikulum);
-        // $mataKuliahRegister = Master_07_MataKuliah::where('03_MASTER_kurikulum_id', $this->kurikulum->id)->with('mataKuliahRegister.dosen')->get();
-        $this->mataKuliah = Master_11_MataKuliahRegister::whereHas('dosen', function($query) {
-            $query->where('04_MASTER_dosen_kode', $this->dosen->kode);
-        })->with('dosen')->whereHas('mataKuliah', function($query) {
-            $query->where('03_MASTER_kurikulum_id', $this->kurikulum->id);
-        })->with('mataKuliah')->get();
-        
+        $mata_kuliah = Master_07_MataKuliah::with(['mataKuliahRegister' => function($query) {
+            $query->select('id', 'tahun_akademik', 'semester', '07_MASTER_mata_kuliah_id');
+        }])
+            ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)
+            ->whereHas('mataKuliahRegister.dosen', function($query) {
+                $query->where('04_MASTER_dosen_kode', $this->user->kode);
+            })
+            ->get();
+
+        //dd($mata_kuliah);
+
         return view('dosen.mata-kuliah.index', [
             'title' => 'Mata Kuliah',
-            'nama' => 'John Doe',
+            'nama' => $this->user->nama,
             'role' => 'Dosen',
             'title'=> 'Home',
-            'mata_kuliah' => $this->mataKuliah,
+            'mata_kuliah' => $mata_kuliah,
         ]);
     }
 
@@ -62,15 +56,43 @@ class MataKuliahController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function informasiUmum($kodeMataKuliah)
+    public function show($kodeMataKuliah)
     {
-        $this->mataKuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)->with('mataKuliahRegister')->with('kurikulum.programStudi')->first();
-        return view('dosen.mata-kuliah.informasi-umum', [
+        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+            ->with(['mataKuliahRegister.indikatorKinerja.capaianPembelajaranLulusan', 'mataKuliahRegister.tujuanPembelajaran'])
+            ->first();
+
+        $cpl_mata_kuliah = collect();
+        $ik_mata_kuliah = collect();
+        $tp_mata_kuliah = collect();
+        foreach ($mata_kuliah->mataKuliahRegister as $mkr) {
+            foreach ($mkr->tujuanPembelajaran as $tp) {
+                $tp_mata_kuliah->push(['kode' => $tp->kode, 'deskripsi' => $tp->deskripsi]);
+            }
+
+            foreach ($mkr->indikatorKinerja as $ik) {
+                if (!$ik_mata_kuliah->contains('kode', $ik->kode)) {
+                    $ik_mata_kuliah->push(['kode' => $ik->kode, 'deskripsi' => $ik->deskripsi]);
+                }
+
+                if (!$cpl_mata_kuliah->contains('kode', $ik->capaianPembelajaranLulusan->kode)) {
+                    $cpl_mata_kuliah->push(['kode' => $ik->capaianPembelajaranLulusan->kode, 'deskripsi' =>
+                        $ik->capaianPembelajaranLulusan->deskripsi]);
+                }
+            }
+        }
+
+        //dd($tp_mata_kuliah);
+
+        return view('dosen.mata-kuliah.show', [
             'title' => 'Informasi Umum Mata Kuliah',
-            'nama' => 'John Doe',
+            'nama' => $this->user->nama,
             'role' => 'Dosen',
-            'kodeMataKuliah' => $kodeMataKuliah,
-            'mataKuliah' => $this->mataKuliah,
-        ]);  
+            'kurikulum' => $this->kurikulum,
+            'mata_kuliah' => $mata_kuliah,
+            'cpl_mata_kuliah' => $cpl_mata_kuliah->sort(),
+            'ik_mata_kuliah' => $ik_mata_kuliah->sort(),
+            'tp_mata_kuliah' => $tp_mata_kuliah->sort(),
+        ]);
     }
 }
