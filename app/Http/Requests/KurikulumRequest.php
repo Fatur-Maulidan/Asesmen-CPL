@@ -24,11 +24,35 @@ class KurikulumRequest extends FormRequest
     public function rules()
     {
         return [
-            'tahun' => 'bail|required',
+            'tahun' => 'bail|required|unique:03_MASTER_kurikulum,tahun',
             'jumlah_maksimal_rubrik' => 'bail|required',
-            'makna_tingkat_kemampuan' => 'bail|required',
-            'nilai' => 'bail|required',
-            'program_studi_id' => 'bail|required'
+            'tenggat_tp' => 'bail|required|date',
+            'makna_tingkat_kemampuan' => 'bail|required|array',
+            'nilai' => 'bail|required|array',
+            'program_studi_nomor' => 'bail|required'
         ];
+    }
+
+    protected function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $makna_tingkat_kemampuan = $this->input('makna_tingkat_kemampuan', []);
+            foreach ($makna_tingkat_kemampuan as $value) {
+                if (is_null($value)) {
+                    $validator->errors()->add('makna_tingkat_kemampuan', 'Mohon lengkapi data untuk makna tingkat kemampuan.');
+                    break;
+                }
+            }
+
+            $nilai = $this->input('nilai', []);
+            foreach ($nilai as $item) {
+                foreach ($item as $value) {
+                    if (is_null($value)) {
+                        $validator->errors()->add('nilai', 'Mohon lengkapi data untuk nilai.');
+                        break;
+                    }
+                }
+            }
+        });
     }
 }

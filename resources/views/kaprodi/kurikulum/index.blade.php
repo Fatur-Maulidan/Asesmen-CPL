@@ -60,9 +60,11 @@
                     <div class="card-body">
                         <h6 class="card-title fw-bold ">Mahasiswa Aktif</h6>
                         <ul class="mb-0">
-                            @foreach($kurikulum->angkatan_mahasiswa_terdaftar as $angkatan)
+                            @forelse($kurikulum->angkatan_mahasiswa_terdaftar as $angkatan)
                                 <li>Mahasiswa angkatan {{ $angkatan }}</li>
-                            @endforeach
+                            @empty
+                                <li>Belum ada mahasiswa terdaftar.</li>
+                            @endforelse
                         </ul>
                     </div>
                     <div class="card-footer text-body-secondary py-3">

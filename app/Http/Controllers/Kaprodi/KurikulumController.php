@@ -89,10 +89,11 @@ class KurikulumController extends Controller
         Master_03_Kurikulum::create([
             'tahun' => $validated['tahun'],
             'tahun_berlaku' => $validated['tahun'],
-            'status' => StatusKurikulum::Pengelolaan,
+            'status' => StatusKurikulum::Aktif,
+            'konf_tenggat_waktu_tp' => $validated['tenggat_tp'],
             'jumlah_maksimal_rubrik' => $validated['jumlah_maksimal_rubrik'],
             'nilai_rentang_rubrik' => $nilai,
-            '02_MASTER_program_studi_id' => $validated['program_studi_id']
+            '02_MASTER_program_studi_nomor' => $validated['program_studi_nomor']
         ]);
 
         return redirect()->to(route('kaprodi.kurikulum.index'));

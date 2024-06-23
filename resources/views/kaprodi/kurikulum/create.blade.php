@@ -11,31 +11,59 @@
         <input type="hidden" name="program_studi_nomor" value="{{ $program_studi_nomor }}">
         {{-- Year input --}}
         <div class="row mb-4">
-            <div class="col-4">
+            <div class="col-5"
                 <div>
                     <label for="tahun" class="form-label fw-bold">Tahun Kurikulum</label>
-                    <input type="year" class="form-control" id="tahun" name="tahun" value="{{ date('Y') }}"
-                        readonly>
+                    <input type="text" class="form-control @error('tahun') is-invalid @enderror" id="tahun" name="tahun" value="{{ date('Y') }}" readonly>
+                    @error('tahun')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
         </div>
 
         {{-- Rubrik input --}}
         <div class="row mb-4">
-            <div class="col-4">
+            <div class="col-5">
                 <div>
                     <label for="rubrik_maksimal" class="form-label fw-bold">Jumlah maksimal rubrik</label>
-                    <select class="form-select" id="jumlah_maksimal_rubrik" name="jumlah_maksimal_rubrik">
-                        <option value="" selected hidden>Pilih jumlah maksimal rubrik</option>
-                        <option value="3">3</option>
-                        <option value="5">5</option>
+                    <select class="form-select @error('jumlah_maksimal_rubrik') is-invalid @enderror" id="jumlah_maksimal_rubrik" name="jumlah_maksimal_rubrik">
+                        <option value="">Pilih jumlah maksimal rubrik</option>
+                        <option value="3" @if (old('jumlah_maksimal_rubrik') == 3) selected @endif>3</option>
+                        <option value="5" @if (old('jumlah_maksimal_rubrik') == 5) selected @endif>5</option>
                     </select>
+                    @error('jumlah_maksimal_rubrik')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
         </div>
 
+        {{-- Tenggat waktu tp input --}}
+        <div class="row mb-4">
+            <div class="col-5">
+                <div>
+                    <label for="tahun" class="form-label fw-bold">Tanggal Batas Pengisian Tujuan Pembelajaran oleh Dosen</label>
+                    <input type="date" class="form-control @error('tenggat_tp') is-invalid @enderror" id="tenggat_tp" name="tenggat_tp" value="{{ old('tenggat_tp') }}">
+                    @error('tenggat_tp')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        {{-- Warning --}}
+        <div class="row mb-1">
+            <div class="col-8">
+                <p class="text-danger fw-bold">
+                    <i class="bi bi-exclamation-circle me-3"></i>
+                    Rentang yang sudah dipilih tidak akan bisa diubah kembali, pastikan rentang yang dimasukkan benar.
+                </p>
+            </div>
+        </div>
+
         {{-- Rubrik detail --}}
-        <div class="row mb-2">
+        <div class="row mb-4">
             <div class="col-8">
                 <table class="table table-responsive">
                     <thead>
@@ -48,16 +76,14 @@
                     <tbody>
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        {{-- Warning --}}
-        <div class="row mb-4">
-            <div class="col-8">
-                <p class="text-danger fw-bold">
-                    <i class="bi bi-exclamation-circle me-3"></i>
-                    Rentang yang sudah dipilih tidak akan bisa diubah kembali, pastikan rentang yang dimasukkan benar.
-                </p>
+                <ul class="mb-0">
+                    @error('makna_tingkat_kemampuan')
+                        <li class="text-danger">{{ $message }}</li>
+                    @enderror
+                    @error('nilai')
+                        <li class="text-danger">{{ $message }}</li>
+                    @enderror
+                </ul>
             </div>
         </div>
 
