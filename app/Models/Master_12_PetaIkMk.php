@@ -37,12 +37,7 @@ class Master_12_PetaIkMk extends Pivot
     public $timestamps = false;
     // Relations
     public function tujuanPembelajaran()
-<<<<<<< HEAD
-    { 
-        return $this->belongsToMany(Master_13_TujuanPembelajaran::class, '14_MASTER_peta_ik_tp', '12_MASTER_peta_ik_mk_id', '13_MASTER_tujuan_pembelajaran_id');
-=======
     {
         return $this->belongsToMany(Master_13_TujuanPembelajaran::class, '14_MASTER_peta_ik_tp', '12_MASTER_peta_ik_mk_id', '13_MASTER_tujuan_pembelajaran_id')->withPivot('bobot_tp');
->>>>>>> 1da23ae1c89f1a363860862608b560baaffb59c9
     }
 }
