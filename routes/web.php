@@ -89,6 +89,8 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
         ->name('kurikulum.dashboard.mk');
 
     // # CPL
+    Route::post('kurikulum/{kurikulum}/cpl/import', [KaprodiCPLController::class, 'import'])->name('kurikulum.cpl.import');
+    Route::get('kurikulum/{kurikulum}/cpl/download-template', [KaprodiCPLController::class, 'downloadTemplate'])->name('kurikulum.cpl.downloadTemplate');
     Route::resource('kurikulum/{kurikulum}/cpl', KaprodiCPLController::class)
         ->only(['index', 'show', 'store', 'edit', 'update']);
 

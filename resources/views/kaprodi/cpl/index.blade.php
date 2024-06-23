@@ -30,13 +30,16 @@
         </div>
         <div class="col text-end">
             {{-- Button trigger modal --}}
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importCplModal">
+                Import CP
+            </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Tambah Capaian Pembelajaran
+                Tambah CP
             </button>
         </div>
     </div>
 
-    {{-- Modal --}}
+    {{-- Tambah CPL Modal --}}
     <form method="POST" action="{{ route('kaprodi.cpl.store', ['kurikulum' => $kurikulum->tahun]) }}">
         @csrf
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -81,6 +84,33 @@
             </div>
         </div>
     </form>
+
+    {{-- Import CPL Modal --}}
+    <div class="modal fade" id="importCplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="importCplModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="importCplModalLabel">Import Capaian Pembelajaran</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('kaprodi.kurikulum.cpl.import', ['kurikulum' => $kurikulum->tahun]) }}" method="POST" autocomplete="off"
+                          enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-5">
+                            <label for="formFileJurusan" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFileCpl" name="formFileCpl" accept=".xlsx">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('kaprodi.kurikulum.cpl.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}" class="btn btn-outline-success">Download Template</a>
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{-- Data CPL --}}
     <div class="row">
