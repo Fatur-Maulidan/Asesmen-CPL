@@ -89,7 +89,7 @@ class KurikulumController extends Controller
         Master_03_Kurikulum::create([
             'tahun' => $validated['tahun'],
             'tahun_berlaku' => $validated['tahun'],
-            'status' => StatusKurikulum::Aktif,
+            'status' => StatusKurikulum::Pengelolaan,
             'konf_tenggat_waktu_tp' => $validated['tenggat_tp'],
             'jumlah_maksimal_rubrik' => $validated['jumlah_maksimal_rubrik'],
             'nilai_rentang_rubrik' => $nilai,
@@ -130,7 +130,11 @@ class KurikulumController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $kurikulum = Master_03_Kurikulum::find($id);
+
+        $kurikulum->update($request->except('_method', '_token'));
+
+        return redirect()->to(route('kaprodi.kurikulum.index'));
     }
 
     /**
