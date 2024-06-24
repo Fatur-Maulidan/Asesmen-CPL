@@ -35,7 +35,7 @@
                     @method('PATCH')
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Ubah Capaian Pembelajaran</h1>
+                            <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Ubah Indikator Kinerja</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -44,6 +44,33 @@
                                     <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
                                     <textarea class="form-control" name="deskripsi" id="exampleFormControlTextarea1" rows="3">{{ $ik->deskripsi }}</textarea>
                                 </div>
+                                <?php $dataRubrik = json_decode($kurikulum->nilai_rentang_rubrik, true); ?>
+                                @for ($i = 0; $i < $kurikulum->jumlah_maksimal_rubrik; $i++)
+                                    <div class="mb-3">
+                                        <div class="row mb-4">
+                                            <div class="col">
+                                                <div class="fw-bold">Tingkat kemampuan</div>
+                                                <div>{{ $ik->rubrik[$i]->urutan }}</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="fw-bold">Makna kualitatif</div>
+                                                <div>{{ $ik->rubrik[$i]->level_kemampuan }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="fw-bold">Makna tingkat kemampuan</div>
+                                                <div>{{ $dataRubrik[$i + 1]['makna_tingkat_kemampuan'] }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlTextarea2"
+                                            class="form-label fw-bold">Deskripsi</label>
+                                        <textarea placeholder="Deskripsi Rubrik {{ $ik->rubrik[$i]->urutan }}" name="rubrik-{{ $ik->rubrik[$i]->urutan }}"
+                                            class="form-control" id="exampleFormControlTextarea2" rows="3">{{ $ik->rubrik[$i]->deskripsi }}</textarea>
+                                    </div>
+                                @endfor
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -144,3 +171,4 @@
             confirmButtonText: 'Cool'
         })
     </script>
+@endpush

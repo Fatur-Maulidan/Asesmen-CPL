@@ -62,7 +62,8 @@
 
                             <div class="mb-3">
                                 <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" name="deskripsi" rows="3"></textarea>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Deskrispi Capaian Pembelajaran"
+                                    name="deskripsi" rows="3"></textarea>
                             </div>
                         </form>
                     </div>
