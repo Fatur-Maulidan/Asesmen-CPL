@@ -157,9 +157,9 @@ class MataKuliahController extends Controller
     public function pemetaan(Request $request, $kurikulum, $id)
     {
         $indikatorKinerja = new Master_09_IndikatorKinerja();
-        $jenis = "Praktik";
+        // $jenis = "Praktik";
         $mataKuliah = Master_07_MataKuliah::find($id);
-        $mataKuliahRegister = Master_11_MataKuliahRegister::where('07_MASTER_mata_kuliah_id', $mataKuliah->id)->where('jenis',$jenis)->first();
+        $mataKuliahRegister = Master_11_MataKuliahRegister::where('07_MASTER_mata_kuliah_id', $mataKuliah->id)->first();
         
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
 
