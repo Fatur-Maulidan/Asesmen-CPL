@@ -11,27 +11,30 @@
 
         @yield('breadcrumb')
 
-        @if($role != 'Admin' && (!Route::is('kaprodi.kurikulum.create') && !Route::is('kaprodi.kurikulum.index')) && !$kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif))
-            <div class="d-flex justify-content-end mt-4">
-                @if($role == 'Koordinator Program Studi' && $kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
-                    <button type="button" class="btn btn-outline-success mb-0 me-3" data-bs-toggle="modal" data-bs-target="#confirmModal">Finalisasi</button>
-                @endif
-                <h3 class="mb-0">
+        @if($role != 'Admin' && (!Route::is('kaprodi.kurikulum.create') && !Route::is('kaprodi.kurikulum.index')))
+            @if(isset($kurikulum) && !$kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif))
+                <div class="d-flex justify-content-end mt-4">
+                    @if($role == 'Koordinator Program Studi' && $kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                        <button type="button" class="btn btn-outline-success mb-0 me-3" data-bs-toggle="modal" data-bs-target="#confirmFinalisasiModal">Finalisasi</button>
+                    @endif
+                    <h3 class="mb-0">
                 <span
                     class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan)) text-bg-warning @else text-bg-primary) @endif rounded-bottom-0">
                     {{ $kurikulum->status }}
                 </span>
-                </h3>
-            </div>
+                    </h3>
+                </div>
+            @endif
         @endif
 
+        @if ($role == 'Koordinator Program Studi' && isset($kurikulum))
         {{-- Confirm modal --}}
-        <div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false"
-             aria-hidden="true" aria-labelledby="confirmModalLabel" tabindex="-1">
+        <div class="modal fade" id="confirmFinalisasiModal" data-bs-backdrop="static" data-bs-keyboard="false"
+             aria-hidden="true" aria-labelledby="confirmFinalisasiModalLabel" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="confirmModalLabel">Konfirmasi Finalisasi</h1>
+                        <h1 class="modal-title fs-5" id="confirmFinalisasiModalLabel">Konfirmasi Finalisasi</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body py-4">
@@ -60,6 +63,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </nav>
 

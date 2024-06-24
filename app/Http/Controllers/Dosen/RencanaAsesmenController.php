@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RencanaAsesmenRequest;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_07_MataKuliah;
+use App\Models\Master_15_RencanaAsesmen;
 use Illuminate\Http\Request;
 
 class RencanaAsesmenController extends Controller
@@ -47,9 +49,20 @@ class RencanaAsesmenController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $kodeMataKuliah)
+    public function store(RencanaAsesmenRequest $request, $kodeMataKuliah)
     {
-        //
+        $validated = $request->validated();
+
+        $rencana_asesmen = Master_15_RencanaAsesmen::create([
+            'kode' => $validated['kategori'] . '#' . $validated['urutan'],
+            'kategori' => $validated['kategori'],
+            'minggu' => $validated['minggu'],
+            '11_MASTER_mk_register_id' => $validated['mata_kuliah'],
+        ]);
+
+        $rencana_asesmen->tujuanPembelajaran()->attach($validated['tp']);
+
+        return redirect()->route('dosen.mata-kuliah.rencana-asesmen.index', $kodeMataKuliah);
     }
 
     /**
@@ -76,12 +89,7 @@ class RencanaAsesmenController extends Controller
      */
     public function edit($kodeMataKuliah)
     {
-        return view('dosen.rencana-asesmen.ubah-detail-informasi', [
-            'title' => 'Ubah Rencana Asesmen',
-            'nama' => 'John Doe',
-            'role' => 'Dosen',
-            'kodeMataKuliah' => $kodeMataKuliah,
-        ]);
+
     }
 
     /**
@@ -102,8 +110,13 @@ class RencanaAsesmenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($kodeMataKuliah, $id)
     {
-        //
+        $rencana_asesmen = Master_15_RencanaAsesmen::find($id);
+        $tp = $rencana_asesmen->tujuanPembelajaran->pluck('id')->toArray();
+        $rencana_asesmen->tujuanPembelajaran()->detach($tp);
+        $rencana_asesmen->delete();
+
+        return redirect()->route('dosen.mata-kuliah.rencana-asesmen.index', $kodeMataKuliah);
     }
 }

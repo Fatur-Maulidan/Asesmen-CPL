@@ -25,7 +25,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="post" autocomplete="off">
+                    <form
+                        action="{{ route('dosen.mata-kuliah.rencana-asesmen.store', ['kodeMataKuliah' => $mata_kuliah->kode]) }}"
+                        method="post" autocomplete="off" id="formTambahRencanaAsesmen">
                         @csrf
                         <div class="mb-3">
                             <label for="urutan" class="form-label fw-bold">Urutan Asesmen</label>
@@ -51,8 +53,9 @@
                             <label for="" class="form-label fw-bold d-block">Jenis Mata Kuliah</label>
                             @foreach($mata_kuliah->mataKuliahRegister as $mkr)
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="jenis" id="{{ $mkr->jenis }}"
-                                           value="{{ $mkr->jenis }}">
+                                    <input class="form-check-input" type="radio" name="mata_kuliah"
+                                           id="{{ $mkr->jenis }}"
+                                           value="{{ $mkr->id }}">
                                     <label class="form-check-label" for="{{ $mkr->jenis }}">{{ $mkr->jenis }}</label>
                                 </div>
                             @endforeach
@@ -63,7 +66,8 @@
                                 @foreach($mata_kuliah->mataKuliahRegister as $mkr)
                                     <optgroup label="{{ $mkr->jenis }}">
                                         @foreach($mkr->tujuanPembelajaran as $tp)
-                                            <option><span>{{ $tp->kode }}</span> - {{ $tp->deskripsi }}</option>
+                                            <option value="{{ $tp->id }}"><span>{{ $tp->kode }}</span>
+                                                - {{ $tp->deskripsi }}</option>
                                         @endforeach
                                     </optgroup>
                                 @endforeach
@@ -73,7 +77,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-success">Tambah</button>
+                    <button type="submit" class="btn btn-success" form="formTambahRencanaAsesmen">Tambah</button>
                 </div>
             </div>
         </div>
@@ -106,7 +110,7 @@
                                         <tbody>
                                         <tr>
                                             <td class="fw-bold">Kategori</td>
-                                            <td class="fw-bold">Minggu ke-</td>
+                                            <td class="fw-bold text-nowrap">Minggu ke-</td>
                                             <td class="fw-bold">TP yang diujikan</td>
                                         </tr>
                                         <tr>
@@ -114,14 +118,20 @@
                                             <td>{{ $ra->minggu }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    @foreach($ra->tujuanPembelajaran as $tp)
-                                                        <div class="me-2">{{ $tp->kode  }}</div>
-                                                    @endforeach
+                                                    <ul class="mb-0">
+                                                        @foreach($ra->tujuanPembelajaran as $tp)
+                                                            {{--<span class="badge rounded-pill text-bg-primary me-2 fs-6">{{ $tp->kode }}</span>--}}
+                                                            <li>{{ $tp->kode }} - {{ $tp->deskripsi }}</li>
+                                                        @endforeach
+                                                    </ul>
                                                 </div>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <button type="button" class="btn btn-danger btn-hapus mt-2" data-bs-toggle="modal"
+                                            data-bs-target="#confirmModal" data-id="{{ $ra->id }}">Hapus
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -134,11 +144,46 @@
             @endforeach
         </div>
     </div>
+
+    {{-- Confirm modal --}}
+    <div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false"
+         aria-hidden="true" aria-labelledby="confirmModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="confirmModalLabel">Konfirmasi Hapus Rencana Asesmen</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="text-center">
+                        <i class="bi bi-exclamation-triangle-fill text-warning fs-1"></i>
+                        <div>Anda yakin ingin hapus?</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Tidak
+                            </button>
+                        </div>
+                        <div class="col">
+                            <form action="" method="post" id="formHapus">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-success mb-0 w-100">Ya</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
     <script>
         $(document).ready(function () {
+            let url = "{{ url()->current() }}";
             // $('input[type=radio]').on('change', function (e) {
             //    $('#tp').attr('disabled', false);
             // });
@@ -149,6 +194,13 @@
                 dropdownParent: $('#tambahRencanaAsesmenModal'),
                 placeholder: "Pilih Tujuan Pembelajaran",
                 allowClear: true
+            });
+
+            $('.btn-hapus').on('click', function () {
+                const id = $(this).data('id');
+                const route = url + `/${id}`;
+
+                $('#formHapus').attr('action', route);
             });
         });
     </script>
