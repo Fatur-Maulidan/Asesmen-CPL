@@ -1,8 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
+    <h1 class="fw-bold mb-4">{{ $title }}</h1>
     {{ Breadcrumbs::render('kaprodi.kurikulum.create') }}
-    <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
 @section('main')
@@ -11,7 +11,7 @@
         <input type="hidden" name="program_studi_nomor" value="{{ $program_studi_nomor }}">
         {{-- Year input --}}
         <div class="row mb-4">
-            <div class="col-5"
+            <div class="col-5">
                 <div>
                     <label for="tahun" class="form-label fw-bold">Tahun Kurikulum</label>
                     <input type="text" class="form-control @error('tahun') is-invalid @enderror" id="tahun" name="tahun" value="{{ date('Y') }}" readonly>

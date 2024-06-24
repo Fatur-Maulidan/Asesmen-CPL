@@ -1,5 +1,5 @@
  @unless ($breadcrumbs->isEmpty())
-     <ol class="breadcrumb mb-1">
+     <ol class="breadcrumb mb-4">
          @foreach ($breadcrumbs as $breadcrumb)
              @if (!is_null($breadcrumb->url) && !$loop->last)
                  <li class="breadcrumb-item"><a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a></li>
