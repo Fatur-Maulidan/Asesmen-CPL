@@ -141,25 +141,26 @@
                         @if ($ik->rubrik->isEmpty())
                             <div class="text-center">Belum ada rubrik</div>
                         @else
-                            @foreach ($ik->rubrik as $index => $rubrik)
+                            @for ($index = 0; $index < $kurikulum->jumlah_maksimal_rubrik; $index++)
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button bg-light" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseOne2" aria-expanded="true"
-                                            aria-controls="collapseOne2">Rubrik
-                                            {{ $index + 1 }} ( < 50 )</button>
+                                            aria-controls="collapseOne2">{{ $ik->rubrik[$index]->level_kemampuan }} -
+                                            {{ $kurikulum->nilai_rentang_rubrik[$index + 1]['nilai']['awal'] }} < Nilai <
+                                                {{ $kurikulum->nilai_rentang_rubrik[$index + 1]['nilai']['akhir'] }}</button>
                                     </h2>
                                     <div id="collapseOne2" class="accordion-collapse collapse show"
                                         data-bs-parent="#accordionExample2">
                                         <div class="accordion-body">
                                             <div>
                                                 <div class="fw-bold">Deskripsi</div>
-                                                <p>{{ $rubrik->deskripsi }}</p>
+                                                <p>{{ $ik->rubrik[$index]->deskripsi }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @endfor
                         @endif
                     </div>
                 </div>
@@ -167,14 +168,3 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        Swal.fire({
-            title: 'Error!',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'Cool'
-        })
-    </script>
-@endpush
