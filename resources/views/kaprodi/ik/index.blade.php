@@ -60,13 +60,14 @@
 
                         <div class="mb-3">
                             <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
-                            <textarea class="form-control" name="deskripsi" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" name="deskripsi" placeholder="Deskripsi Indikator Kinerja"
+                                id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
 
                         <div class="fw-bold mb-3">Rubrik</div>
 
                         <?php $dataRubrik = rubrik(); ?>
-                        @for ($i = 0; $i < 5; $i++)
+                        @for ($i = 0; $i < $kurikulum->jumlah_maksimal_rubrik; $i++)
                             <div class="mb-3">
                                 <div class="row mb-4">
                                     <div class="col">
@@ -89,7 +90,8 @@
 
                             <div class="mb-3">
                                 <label for="exampleFormControlTextarea2" class="form-label fw-bold">Deskripsi</label>
-                                <textarea name="rubrik-{{ $i }}" class="form-control" id="exampleFormControlTextarea2" rows="3"></textarea>
+                                <textarea placeholder="Deskripsi Rubrik {{ $dataRubrik[$i] }}" name="rubrik-{{ $i }}" class="form-control"
+                                    id="exampleFormControlTextarea2" rows="3"></textarea>
                             </div>
                         @endfor
 

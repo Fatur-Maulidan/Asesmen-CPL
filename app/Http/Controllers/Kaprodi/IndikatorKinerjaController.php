@@ -78,7 +78,6 @@ class IndikatorKinerjaController extends Controller
         $this->capaianPembelajaranLulusan = $this->capaianPembelajaranLulusan
             ->getCplIdByKurikulum($request->input('cpInduk'),$this->kurikulum->id);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,$this->capaianPembelajaranLulusan->id);
-        // dd(substr($this->capaianPembelajaranLulusan->kode,0,2));
 
         $indikatorKinerja = new Master_09_IndikatorKinerja([
             'kode' => $request->input('cpInduk').'.'.(count($this->indikatorKinerja) + 1),
@@ -137,6 +136,7 @@ class IndikatorKinerjaController extends Controller
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
 
         $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
+        
 
         return view('kaprodi.ik.detail', [
             'title' => 'IK',
