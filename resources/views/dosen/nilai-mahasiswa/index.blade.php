@@ -1,12 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    <nav aria-label="breadcrumb mb-4">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item active" aria-current="page">{{ Breadcrumbs::render() }}</li>
-        </ol>
-    </nav>
-    <h1>{{ $title }}</h1>
+    {{ Breadcrumbs::render('dosen.mata-kuliah.indikator-kinerja.index', $mata_kuliah->kode) }}
+    <h1 class="fw-bold mb-4">{{ $title }}</h1>
 @endsection
 
 @section('main')

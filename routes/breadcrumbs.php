@@ -169,26 +169,27 @@ Breadcrumbs::for('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', funct
 });
 
 // Breadcrumb Dosen/mata Kuliah/Rencana Asesmen
-Breadcrumbs::for('dosen.mata-kuliah.rencana-asesmen', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
+Breadcrumbs::for('dosen.mata-kuliah.rencana-asesmen.index', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
     $trail->parent('dosen.mata-kuliah.index');
-    $trail->push($kodeMataKuliah, route('dosen.mata-kuliah.index'));
-    $trail->push('Rencana Asesmen', route('dosen.mata-kuliah.rencana-asesmen', ['kodeMataKuliah' => $kodeMataKuliah]));
+    $trail->push($kodeMataKuliah, route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $kodeMataKuliah]));
+    $trail->push('Rencana Asesmen', route('dosen.mata-kuliah.rencana-asesmen.index', ['kodeMataKuliah' =>
+        $kodeMataKuliah]));
 });
 
 // Breadcrumb Dosen/mata Kuliah/Rencana Asesmen/Detail Informasi
-Breadcrumbs::for('dosen.mata-kuliah.rencana-asesmen.detail-informasi', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
-    $trail->parent('dosen.mata-kuliah.rencana-asesmen', $kodeMataKuliah);
-    $trail->push('Asesmen Pembelajaran', route('dosen.mata-kuliah.rencana-asesmen.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah]));
+Breadcrumbs::for('dosen.mata-kuliah.rencana-asesmen.show', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
+    $trail->parent('dosen.mata-kuliah.rencana-asesmen.index', $kodeMataKuliah);
+    $trail->push('Asesmen Pembelajaran', route('dosen.mata-kuliah.rencana-asesmen.show', ['kodeMataKuliah' => $kodeMataKuliah]));
 });
 
 // Breadcrumb Dosen/mata Kuliah/Rencana Asesmen/Detail Informasi/Ubah
-Breadcrumbs::for('dosen.mata-kuliah.rencana-asesmen.detail-informasi.ubah', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
+Breadcrumbs::for('dosen.mata-kuliah.rencana-asesmen.edit', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
     $trail->parent('dosen.mata-kuliah.rencana-asesmen.detail-informasi', $kodeMataKuliah);
-    $trail->push('Ubah Detail Informasi Rencana Asesmen', route('dosen.mata-kuliah.rencana-asesmen.detail-informasi.ubah', ['kodeMataKuliah' => $kodeMataKuliah]));
+    $trail->push('Ubah Detail Informasi Rencana Asesmen', route('dosen.mata-kuliah.rencana-asesmen.edit', ['kodeMataKuliah' => $kodeMataKuliah]));
 });
 
 // Breadcrumb Dosen/mata Kuliah/Nilai Mahasiswa
-Breadcrumbs::for('dosen.mata-kuliah.nilai-mahasiswa', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
+Breadcrumbs::for('dosen.mata-kuliah.nilai-mahasiswa.index', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
     $trail->parent('dosen.mata-kuliah.index');
     $trail->push($kodeMataKuliah, route('dosen.mata-kuliah.index'));
     $trail->push('Nilai Mahasiswa', route('dosen.mata-kuliah.nilai-mahasiswa', ['kodeMataKuliah' => $kodeMataKuliah]));

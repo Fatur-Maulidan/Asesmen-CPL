@@ -1,9 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('dosen.mata-kuliah.tujuan-pembelajaran', $kodeMataKuliah) }}
-    <h1 class="fw-bold mb-0">
-        {{ $title }}</h1>
+    {{ Breadcrumbs::render('dosen.mata-kuliah.tujuan-pembelajaran', $mata_kuliah->kode) }}
+    <h1 class="fw-bold mb-4">{{ $title }}</h1>
 @endsection
 
 @section('main')
@@ -15,7 +14,7 @@
     <div class="modal fade" id="tambah-tujuan-pembelajaran" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <form method="POST"
-            action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.store', ['kodeMataKuliah' => $kodeMataKuliah]) }}">
+            action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.store', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">
             @csrf
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
@@ -115,7 +114,7 @@
                             <div class="d-flex flex-row align-items-center px-3 rounded-sm border border-1"
                                 style="height:60px">
                                 <a
-                                    href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $tp->id]) }}">Lihat
+                                    href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $mata_kuliah->kode, 'id' => $tp->id]) }}">Lihat
                                     Detail</a>
                             </div>
                         </div>

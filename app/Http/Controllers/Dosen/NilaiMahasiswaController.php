@@ -8,7 +8,7 @@ use App\Models\Master_04_Dosen;
 use App\Models\Master_07_MataKuliah;
 use Illuminate\Http\Request;
 
-class RencanaAsesmenController extends Controller
+class NilaiMahasiswaController extends Controller
 {
     protected $user;
     protected $kurikulum;
@@ -27,16 +27,25 @@ class RencanaAsesmenController extends Controller
     public function index($kodeMataKuliah)
     {
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
-            ->with('mataKuliahRegister.rencanaAsesmen.mahasiswa')
+            ->with('mataKuliahRegister.rencanaAsesmen')
             ->first();
 
-        return view('dosen.rencana-asesmen.index', [
-            'title' => 'Rencana Asesmen',
+        return view('dosen.nilai-mahasiswa.index', [
+            'title' => 'Nilai Mahasiswa',
             'nama' => $this->user->nama,
             'role' => 'Dosen',
-            'kurikulum' => $this->kurikulum,
             'mata_kuliah' => $mata_kuliah,
         ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -45,7 +54,7 @@ class RencanaAsesmenController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $kodeMataKuliah)
+    public function store(Request $request)
     {
         //
     }
@@ -56,14 +65,9 @@ class RencanaAsesmenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kodeMataKuliah)
+    public function show($id)
     {
-        return view('dosen.rencana-asesmen.detail-informasi', [
-            'title' => 'Detail Informasi Rencana Asesmen',
-            'nama' => 'John Doe',
-            'role' => 'Dosen',
-            'kodeMataKuliah' => $kodeMataKuliah,
-        ]);
+        //
     }
 
     /**
@@ -72,14 +76,9 @@ class RencanaAsesmenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($kodeMataKuliah)
+    public function edit($id)
     {
-        return view('dosen.rencana-asesmen.ubah-detail-informasi', [
-            'title' => 'Ubah Rencana Asesmen',
-            'nama' => 'John Doe',
-            'role' => 'Dosen',
-            'kodeMataKuliah' => $kodeMataKuliah,
-        ]);
+        //
     }
 
     /**
