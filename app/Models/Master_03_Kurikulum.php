@@ -85,9 +85,9 @@ class Master_03_Kurikulum extends Model
         return $query->where('status', StatusKurikulum::Aktif);
     }
 
-    public function scopeBerjalan($query)
+    public function scopeArsip($query)
     {
-        return $query->where('status', StatusKurikulum::Berjalan);
+        return $query->where('status', StatusKurikulum::Arsip);
     }
 
     public function scopePengelolaan($query)

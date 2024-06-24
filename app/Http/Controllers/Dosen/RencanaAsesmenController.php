@@ -27,8 +27,10 @@ class RencanaAsesmenController extends Controller
     public function index($kodeMataKuliah)
     {
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
-            ->with('mataKuliahRegister.rencanaAsesmen.mahasiswa')
+            ->with('mataKuliahRegister.rencanaAsesmen.tujuanPembelajaran', 'mataKuliahRegister.tujuanPembelajaran')
             ->first();
+
+        //dd($mata_kuliah);
 
         return view('dosen.rencana-asesmen.index', [
             'title' => 'Rencana Asesmen',
