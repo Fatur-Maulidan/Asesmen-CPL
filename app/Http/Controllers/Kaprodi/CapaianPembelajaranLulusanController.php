@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
+use App\Imports\CapaianPembelajaranLulusanImport;
+use App\Imports\JurusanImport;
 use App\Models\Master_07_MataKuliah;
 use App\Models\Master_11_MataKuliahRegister;
 use Illuminate\Http\Request;
@@ -12,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_09_IndikatorKinerja;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CapaianPembelajaranLulusanController extends Controller
 {
@@ -251,5 +254,21 @@ class CapaianPembelajaranLulusanController extends Controller
             $dataCPL->push($cplData);
         }
         return $dataCPL;
+    }
+
+    public function downloadTemplate()
+    {
+        $file_path = public_path('files/templates/Template_CPL.xlsx');
+
+        return response()->download($file_path);
+    }
+
+    public function import($kurikulum)
+    {
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+
+        Excel::import(new CapaianPembelajaranLulusanImport($this->kurikulum->id), request()->file('formFileCpl'));
+
+        return redirect(route('kaprodi.cpl.index'))->with('success', 'All good!');
     }
 }

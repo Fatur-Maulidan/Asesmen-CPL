@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master_03_Kurikulum;
+use App\Models\Master_04_Dosen;
+use App\Models\Master_07_MataKuliah;
 use Illuminate\Http\Request;
 use App\Http\Requests\TujuanPembelajaranStoreRequest;
 use App\Models\Master_13_TujuanPembelajaran;
@@ -11,8 +14,13 @@ use Illuminate\Support\Facades\Validator;
 class TujuanPembelajaranController extends Controller
 {
     protected $validation;
+    protected $user;
+    protected $kurikulum;
+
     public function __construct(){
         $this->validation = new TujuanPembelajaranStoreRequest();
+        $this->user = Master_04_Dosen::find('KO042N');
+        $this->kurikulum = Master_03_Kurikulum::find(1);
     }
 
     /**
@@ -22,13 +30,16 @@ class TujuanPembelajaranController extends Controller
      */
     public function index($kodeMataKuliah)
     {
+        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+            ->first();
+
         $dataTp = Master_13_TujuanPembelajaran::all();
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => 'John Doe',
             'role' => 'Dosen',
             'dataTp' => $dataTp,
-            'kodeMataKuliah' => $kodeMataKuliah
+            'mata_kuliah' => $mata_kuliah
         ]);
     }
 

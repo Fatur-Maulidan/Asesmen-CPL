@@ -33,7 +33,7 @@ class Master_03_Kurikulum extends Model
      *
      * @var array
      */
-    protected $fillable = ['tahun', 'tahun_berlaku', 'tahun_berakhir', 'status', '02_MASTER_program_studi_nomor'];
+    protected $fillable = ['tahun', 'tahun_berlaku', 'tahun_berakhir', 'status', '02_MASTER_program_studi_nomor', 'konf_tenggat_waktu_tp', 'jumlah_maksimal_rubrik', 'nilai_rentang_rubrik'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,7 +48,9 @@ class Master_03_Kurikulum extends Model
      * @var array
      */
     protected $casts = [
-        'status' => StatusKurikulum::class
+        'status' => StatusKurikulum::class,
+        'nilai_rentang_rubrik' => 'array',
+        'konf_tenggat_waktu_tp' => 'datetime',
     ];
 
     // # Relations

@@ -11,15 +11,15 @@
             <div class="accordion accordion-flush border border-2" id="daftarIK">
                 @foreach ($ik_mata_kuliah as $index => $ik)
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingOne">
+                        <h2 class="accordion-header" id="flush-heading{{ $index }}">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapse{{ $index }}" aria-expanded="false"
-                                aria-controls="flush-collapse{{ $index }}">
+                                    data-bs-target="#flush-collapse{{ $index }}" aria-expanded="false"
+                                    aria-controls="flush-collapse{{ $index }}">
                                 {{ $ik['kode'] }} - {{ $ik['deskripsi'] }}
                             </button>
                         </h2>
                         <div id="flush-collapse{{ $index }}" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                             data-bs-parent="#daftarIK">
                             <div class="accordion-body">
                                 <div class="">
                                     <div class="fw-bold">Tujuan Pembelajaran</div>
@@ -32,14 +32,15 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="d-flex flex-column justify-content-center px-3 rounded-sm border border-1"
-                                style="height:60px">
+                            <div class="accordion-footer bg-light mb-0 p-3 border-top">
                                 <a
                                     href="{{ route('dosen.mata-kuliah.indikator-kinerja.show', ['kodeMataKuliah' => $mata_kuliah->kode, 'kodeIk' => $ik['kode']]) }}">Lihat
                                     Detail</a>
                             </div>
                         </div>
+                    </div>
                 @endforeach
             </div>
         </div>
-    @endsection
+    </div>
+@endsection

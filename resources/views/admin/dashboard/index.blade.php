@@ -1,8 +1,8 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
+    <h1 class="fw-bold mb-4">{{ $title }}</h1>
     {{ Breadcrumbs::render() }}
-    <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
 
 @section('main')

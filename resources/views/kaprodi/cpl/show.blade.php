@@ -183,10 +183,10 @@
                         <div class="fw-bold">Diperbarui pada</div>
                         <div id="tanggal-pembaruan">{{ $cpl->updated_at->translatedFormat('d F Y H:i') }}</div>
                     </div>
-                    <div>
-                        <div class="fw-bold">Diubah oleh</div>
-                        <div>{{ $nama }}</div>
-                    </div>
+                    {{--<div>--}}
+                    {{--    <div class="fw-bold">Diubah oleh</div>--}}
+                    {{--    <div>{{ $nama }}</div>--}}
+                    {{--</div>--}}
                 </div>
                 <div class="col-auto">
                     {{--<a href="{{ route('kaprodi.cpl.edit', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->kode]) }}"--}}
