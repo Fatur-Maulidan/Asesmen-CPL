@@ -102,6 +102,11 @@ class Master_03_Kurikulum extends Model
         }
     }
 
+    public function scopeProdi($query, $program_studi_nomor)
+    {
+        return $query->where('program_studi_nomor', $program_studi_nomor);
+    }
+
     // # Methods
     /**
      * Mendapatkan ID Program Studi berdasarkan tahun kurikulumnya
@@ -132,5 +137,10 @@ class Master_03_Kurikulum extends Model
         $kaprodi = new Master_04_Dosen();
         $kaprodi = $kaprodi->getProdiKodeByDosenNip($kaprodiNip);
         return $this->getKurikulumByNomorProdi($kaprodi->programStudi->first()->nomor, $kurikulum);
+    }
+
+    public function getKurikulumByYearAndProdi($tahun, $program_studi_nomor)
+    {
+        return $this->where('tahun', $tahun)->where('02_MASTER_program_studi_nomor', $program_studi_nomor)->first();
     }
 }

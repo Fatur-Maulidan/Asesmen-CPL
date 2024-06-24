@@ -31,7 +31,6 @@ class MataKuliahImport implements ToModel, WithHeadingRow, SkipsOnError
             'kode' => $row['kode'],
             'nama' => $row['nama'],
             'deskripsi' => $row['deskripsi'],
-            'jumlah_sks' => $row['jumlah_sks'],
             '03_MASTER_kurikulum_id' => $this->kurikulum_id,
         ]);
     }

@@ -33,7 +33,6 @@ class MataKuliahRequest extends FormRequest
             ],
             'nama' => 'bail|required',
             'deskripsi' => 'bail|required',
-            'jumlah_sks' => 'bail|required|numeric',
         ];
     }
 }
