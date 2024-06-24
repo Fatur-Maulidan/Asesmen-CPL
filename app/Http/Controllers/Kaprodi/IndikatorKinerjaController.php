@@ -226,9 +226,9 @@ class IndikatorKinerjaController extends Controller
                         ->update(['deskripsi' => $request->input('rubrik-'.($i+1))]);
                 }
         }
-            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $kurikulum])->with('success', 'Data berhasil ditambahkan');
+            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $indikatorKinerja->kode])->with('success', 'Data berhasil ditambahkan');
         } else {
-            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $kurikulum])->with('error', 'Data gagal ditambahkan');
+            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $indikatorKinerja->kode])->with('error', 'Data gagal ditambahkan');
         }
     }
 
