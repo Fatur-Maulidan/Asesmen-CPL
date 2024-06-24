@@ -28,7 +28,7 @@
         {{-- Modal --}}
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-xl">
                 <form method="POST"
                     action="{{ route('kaprodi.ik.update', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->id]) }}">
                     @csrf
@@ -41,20 +41,25 @@
                         <div class="modal-body">
                             <form action="">
                                 <div class="mb-3">
-                                    <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
+                                    <label for="exampleFormControlTextarea1" width="100%"
+                                        class="form-label fw-bold">Deskripsi</label>
                                     <textarea class="form-control" name="deskripsi" id="exampleFormControlTextarea1" rows="3">{{ $ik->deskripsi }}</textarea>
                                 </div>
-                                <?php $dataRubrik = json_decode($kurikulum->nilai_rentang_rubrik, true); ?>
+                                @php
+                                    $dataRubrik = $kurikulum->nilai_rentang_rubrik;
+                                    $maknaKualitatif = rubrik();
+                                @endphp
+
                                 @for ($i = 0; $i < $kurikulum->jumlah_maksimal_rubrik; $i++)
                                     <div class="mb-3">
                                         <div class="row mb-4">
                                             <div class="col">
                                                 <div class="fw-bold">Tingkat kemampuan</div>
-                                                <div>{{ $ik->rubrik[$i]->urutan }}</div>
+                                                <div>{{ $i + 1 }}</div>
                                             </div>
                                             <div class="col">
                                                 <div class="fw-bold">Makna kualitatif</div>
-                                                <div>{{ $ik->rubrik[$i]->level_kemampuan }}</div>
+                                                <div>{{ $maknaKualitatif[$i] }}</div>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -67,8 +72,9 @@
                                     <div class="mb-3">
                                         <label for="exampleFormControlTextarea2"
                                             class="form-label fw-bold">Deskripsi</label>
-                                        <textarea placeholder="Deskripsi Rubrik {{ $ik->rubrik[$i]->urutan }}" name="rubrik-{{ $ik->rubrik[$i]->urutan }}"
-                                            class="form-control" id="exampleFormControlTextarea2" rows="3">{{ $ik->rubrik[$i]->deskripsi }}</textarea>
+                                        <textarea placeholder="Deskripsi Rubrik {{ $ik->rubrik[$i]->urutan ?? $maknaKualitatif[$i] }}"
+                                            name="rubrik-{{ $ik->rubrik[$i]->urutan ?? $i + 1 }}" class="form-control" id="exampleFormControlTextarea2"
+                                            rows="3">{{ $ik->rubrik[$i]->deskripsi ?? null }}</textarea>
                                     </div>
                                 @endfor
                             </form>
