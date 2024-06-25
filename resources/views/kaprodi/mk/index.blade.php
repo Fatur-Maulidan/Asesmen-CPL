@@ -2,17 +2,19 @@
 
 @section('breadcrumb')
     {{ Breadcrumbs::render('kaprodi.mata-kuliah.index', $kurikulum->tahun) }}
-    <h1 class="fw-bold mb-0">{{ $title }}</h1>
+    <h1 class="fw-bold mb-4">{{ $title }}</h1>
 @endsection
 
 @section('main')
+    {{-- Buttons --}}
     <div class="row mb-5">
         <div class="col text-end">
-            {{-- Buttons --}}
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importMataKuliahModal">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                    data-bs-target="#importMataKuliahModal">
                 Import Mata Kuliah
             </button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahMataKuliahModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#tambahMataKuliahModal">
                 Tambah Mata Kuliah
             </button>
         </div>
@@ -20,7 +22,7 @@
 
     {{-- Import Mata Kuliah Modal --}}
     <div class="modal fade" id="importMataKuliahModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="importMataKuliahModalLabel" aria-hidden="true">
+         aria-labelledby="importMataKuliahModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -28,8 +30,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.mata-kuliah.import', ['kurikulum' => $kurikulum]) }}" method="POST"
-                        autocomplete="off" enctype="multipart/form-data">
+                    <form action="{{ route('kaprodi.mata-kuliah.import', ['kurikulum' => $kurikulum->tahun]) }}" method="POST"
+                          autocomplete="off" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-5">
                             <label for="formFile" class="form-label fw-bold">Upload File Excel</label>
@@ -37,7 +39,7 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('kaprodi.mata-kuliah.downloadTemplate', ['kurikulum' => $kurikulum]) }}"
-                                class="btn btn-outline-success">Download
+                               class="btn btn-outline-success">Download
                                 Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
                         </div>
@@ -49,7 +51,7 @@
 
     {{-- Tambah Mata Kuliah Modal --}}
     <div class="modal fade" id="tambahMataKuliahModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="tambahMataKuliahModalLabel" aria-hidden="true">
+         aria-labelledby="tambahMataKuliahModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -57,34 +59,27 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.mata-kuliah.store', ['kurikulum' => $kurikulum]) }}" method="post"
-                        autocomplete="off" id="tambahMataKuliahForm">
+                    <form action="{{ route('kaprodi.mata-kuliah.store', ['kurikulum' => $kurikulum->tahun]) }}" method="post"
+                          autocomplete="off" id="tambahMataKuliahForm">
                         @csrf
                         <div class="mb-3">
                             <label for="kode" class="form-label fw-bold">Kode</label>
                             <input type="text" class="form-control" id="kode" name="kode"
-                                placeholder="Kode mata kuliah">
+                                   placeholder="Kode mata kuliah">
                             <div id="kode_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="nama" class="form-label fw-bold">Nama</label>
                             <input type="text" class="form-control" id="nama" name="nama"
-                                placeholder="Nama mata kuliah">
+                                   placeholder="Nama mata kuliah">
                             <div id="nama_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label fw-bold">Deskripsi</label>
-                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="6"></textarea>
                             <div id="deskripsi_feedback" class="text-danger"></div>
-                        </div>
-
-                        <div class="">
-                            <label for="jumlah_sks" class="form-label fw-bold">Jumlah SKS</label>
-                            <input type="number" class="form-control" id="jumlah_sks" name="jumlah_sks"
-                                placeholder="Jumlah SKS mata kuliah">
-                            <div id="jumlah_sks_feedback" class="text-danger"></div>
                         </div>
                     </form>
                 </div>
@@ -95,7 +90,8 @@
                         </div>
                         <div class="col">
                             <button type="submit" class="btn btn-success w-100"
-                                form="tambahMataKuliahForm">Tambah</button>
+                                    form="tambahMataKuliahForm">Tambah
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -111,13 +107,13 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#accordion{{ $loop->iteration }}" aria-expanded="false"
-                                aria-controls="{{ $loop->iteration }}">
+                                    data-bs-target="#accordion{{ $loop->iteration }}" aria-expanded="false"
+                                    aria-controls="{{ $loop->iteration }}">
                                 {{ $mk->kode . ' ' . $mk->nama }}
                             </button>
                         </h2>
                         <div id="accordion{{ $loop->iteration }}" class="accordion-collapse collapse"
-                            data-bs-parent="#daftarMataKuliah">
+                             data-bs-parent="#daftarMataKuliah">
                             <div class="accordion-body">
                                 <p class="fw-bold mb-1">Deskripsi</p>
                                 <p class="mb-4">{{ $mk->deskripsi }}</p>
@@ -130,7 +126,7 @@
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
                                 <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mk->kode]) }}"
-                                    class="me-3">Lihat detail</a>
+                                   class="me-3">Lihat detail</a>
                             </div>
                         </div>
                     </div>
@@ -146,7 +142,7 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const tambahMataKuliahModal = document.getElementById('tambahMataKuliahModal');
             const tambahMataKuliahModalInstance = new bootstrap.Modal('#tambahMataKuliahModal');
 
@@ -162,7 +158,7 @@
                 $('#jumlah_sks_feedback').html('');
             });
 
-            $('#tambahMataKuliahForm').on('submit', function(e) {
+            $('#tambahMataKuliahForm').on('submit', function (e) {
                 e.preventDefault();
 
                 $.ajax({
@@ -170,12 +166,12 @@
                     url: $(this).attr('action'),
                     data: $(this).serialize(),
                     dataType: "JSON",
-                    success: function(res) {
+                    success: function (res) {
                         console.log(res)
                         tambahMataKuliahModalInstance.hide();
                         location.reload();
                     },
-                    error: function(err) {
+                    error: function (err) {
                         // when status code is 422, it's a validation issue
                         if (err.status == 422) {
                             console.log(err.responseJSON);

@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     {{ Breadcrumbs::render('kaprodi.mahasiswa.index', $kurikulum->tahun) }}
-    <h1 class="fw-bold mb-0">{{ $title }}</h1>
+    <h1 class="fw-bold mb-4">{{ $title }}</h1>
 @endsection
 
 @section('main')
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    {{-- Import Jurusan Modal --}}
+    {{-- Import Mahasiswa Modal --}}
     <div class="modal fade" id="importMahasiswaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="importMahasiswaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -71,7 +71,7 @@
                     @endif
 
                     <form method="POST" action="{{ route('kaprodi.mahasiswa.store', ['kurikulum' => $kurikulum->tahun]) }}"
-                        autocomplete="off" id="tambahMahasiswForm">
+                        autocomplete="off" id="tambahMahasiswaForm">
                         @csrf
 
                         <div class="mb-3">
@@ -154,7 +154,7 @@
                             <select class="form-select @error('tahun_angkatan') is-invalid @enderror"
                                 name="tahun_angkatan" aria-label="Default select example" required>
                                 <option selected>Pilih tahun masuk</option>
-                                @for ($i = 2020; $i < date('Y'); $i++)
+                                @for ($i = 2020; $i < date('Y', strtotime('+5 years')); $i++)
                                     <option value="{{ $i }}"
                                         @if (old('tahun_angkatan') == $i) {{ 'selected' }} @endif>{{ $i }}
                                     </option>

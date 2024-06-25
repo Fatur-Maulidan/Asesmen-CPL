@@ -49,7 +49,7 @@
                         <div class="d-inline">
                             <span class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</span>
                             <span
-                                class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Berjalan)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}
+                                class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Arsip)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}
                             </span>
                         </div>
                         <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}"

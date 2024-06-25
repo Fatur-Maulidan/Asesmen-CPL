@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Master_07_MataKuliah;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class MataKuliahRequest extends FormRequest
+class RencanaAsesmenRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +23,12 @@ class MataKuliahRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->route('mata_kuliah');
         return [
-            'kode' => [
-                'bail', 'required',
-                Rule::unique('07_MASTER_mata_kuliah')->ignore($id),
-            ],
-            'nama' => 'bail|required',
-            'deskripsi' => 'bail|required',
+            'urutan' => 'bail|required|numeric|min:1|max:20',
+            'kategori' => 'bail|required',
+            'minggu' => 'bail|required|numeric|min:1|max:16',
+            'mata_kuliah' => 'bail|required',
+            'tp' => 'bail|required|array',
         ];
     }
 }

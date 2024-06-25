@@ -12,23 +12,19 @@ use App\Models\Master_09_IndikatorKinerja;
 use App\Models\Master_11_MataKuliahRegister;
 use App\Models\Master_12_PetaIkMk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MataKuliahController extends Controller
 {
     protected $user;
-    protected $kaprodiNip;
-    protected $kaprodi;
     protected $kurikulum;
-    protected $indikatorKinerja;
 
     public function __construct() {
-        $this->user = Master_04_Dosen::with('programStudi:id,koordinator_nip',)->find('195905211994031001');
-        $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Master_04_Dosen();
+        $this->user = Master_04_Dosen::with('kaprodi')->find('KO042N');
         $this->kurikulum = new Master_03_Kurikulum();
-        $this->indikatorKinerja = new Master_09_IndikatorKinerja();
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,14 +32,14 @@ class MataKuliahController extends Controller
      */
     public function index($kurikulum)
     {
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        
+        $this->kurikulum = $this->kurikulum->getKurikulumByYearAndProdi($kurikulum, $this->user->kaprodi->nomor);
+        $mata_kuliah = Master_07_MataKuliah::where('03_MASTER_kurikulum_id', $this->kurikulum->id)->get();
+
         return view('kaprodi.mk.index', [
             'title' => 'Mata Kuliah',
-            'nama' => 'Jhon Doe',
+            'nama' => $this->user->nama,
             'role' => 'Koordinator Program Studi',
-            // 'kurikulum' => $kurikulum,
-            'mata_kuliah' => Master_07_MataKuliah::all(),
+            'mata_kuliah' => $mata_kuliah,
             'kurikulum' => $this->kurikulum
         ]);
     }
@@ -66,11 +62,11 @@ class MataKuliahController extends Controller
      */
     public function store(MataKuliahRequest $request, $kurikulum)
     {
+        $this->kurikulum = $this->kurikulum->getKurikulumByYearAndProdi($kurikulum, $this->user->kaprodi->nomor);
+
         if ($request->ajax()) {
-            $kurikulum_id = Master_03_Kurikulum::whereRelation('programStudi', 'id', $this->user->{'02_MASTER_program_studi_id'})
-                ->where('tahun', $kurikulum)->pluck('id')->first();
             $validated = $request->validated();
-            $validated['03_MASTER_kurikulum_id'] = $kurikulum_id;
+            $validated['03_MASTER_kurikulum_id'] = $this->kurikulum->id;
 
             Master_07_MataKuliah::create($validated);
 
@@ -150,7 +146,7 @@ class MataKuliahController extends Controller
 
         return redirect()->route('kaprodi.mata-kuliah.show', [
             'kurikulum' => $kurikulum,
-            'mata_kuliah' => $mataKuliah->kode 
+            'mata_kuliah' => $mataKuliah->kode
         ]);
     }
 
@@ -162,7 +158,6 @@ class MataKuliahController extends Controller
         $mataKuliahRegister = Master_11_MataKuliahRegister::where('07_MASTER_mata_kuliah_id', $mataKuliah->id)
             ->where('jenis', $jenis)
             ->first();
-        
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
 
         foreach($request->input('checkbox') as $ik){
@@ -174,7 +169,7 @@ class MataKuliahController extends Controller
         if(Master_12_PetaIkMk::insert($petaIkMk)){
             return redirect()->route('kaprodi.mata-kuliah.show', [
                 'kurikulum' => $kurikulum,
-                'mata_kuliah' => $mataKuliah->kode 
+                'mata_kuliah' => $mataKuliah->kode
             ])->with('success', 'Data berhasil disimpan');
         } else {
             return redirect()->route('kaprodi.mata-kuliah.show', [
@@ -204,9 +199,9 @@ class MataKuliahController extends Controller
 
     public function import($kurikulum)
     {
-        $kurikulum_id = Master_03_Kurikulum::whereRelation('programStudi', 'id', $this->user->{'02_MASTER_program_studi_id'})
-            ->where('tahun', $kurikulum)->pluck('id')->first();
-        Excel::import(new MataKuliahImport($kurikulum_id), request()->file('formFile'));
+        $this->kurikulum = $this->kurikulum->getKurikulumByYearAndProdi($kurikulum, $this->user->kaprodi->nomor);
+
+        Excel::import(new MataKuliahImport($this->kurikulum->id), request()->file('formFile'));
 
         return redirect()->back();
     }

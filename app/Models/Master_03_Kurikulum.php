@@ -85,9 +85,9 @@ class Master_03_Kurikulum extends Model
         return $query->where('status', StatusKurikulum::Aktif);
     }
 
-    public function scopeBerjalan($query)
+    public function scopeArsip($query)
     {
-        return $query->where('status', StatusKurikulum::Berjalan);
+        return $query->where('status', StatusKurikulum::Arsip);
     }
 
     public function scopePengelolaan($query)
@@ -100,6 +100,11 @@ class Master_03_Kurikulum extends Model
         if (request('search')) {
             return $query->where('tahun', 'like', '%' . request('search') . '%');
         }
+    }
+
+    public function scopeProdi($query, $program_studi_nomor)
+    {
+        return $query->where('program_studi_nomor', $program_studi_nomor);
     }
 
     // # Methods
@@ -132,5 +137,10 @@ class Master_03_Kurikulum extends Model
         $kaprodi = new Master_04_Dosen();
         $kaprodi = $kaprodi->getProdiKodeByDosenNip($kaprodiNip);
         return $this->getKurikulumByNomorProdi($kaprodi->programStudi->first()->nomor, $kurikulum);
+    }
+
+    public function getKurikulumByYearAndProdi($tahun, $program_studi_nomor)
+    {
+        return $this->where('tahun', $tahun)->where('02_MASTER_program_studi_nomor', $program_studi_nomor)->first();
     }
 }

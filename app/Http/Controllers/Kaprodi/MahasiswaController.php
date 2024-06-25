@@ -22,8 +22,7 @@ class MahasiswaController extends Controller
     public function __construct()
     {
         $this->user = Master_04_Dosen::with('kaprodi')->find('KO042N');
-        $this->kurikulum = Master_03_Kurikulum::where('02_MASTER_program_studi_nomor', $this->user->kaprodi->nomor)
-        ->where('tahun', request('kurikulum'))->first();
+        $this->kurikulum = new Master_03_Kurikulum();
     }
 
     /**
@@ -33,7 +32,9 @@ class MahasiswaController extends Controller
      */
     public function index($kurikulum, MahasiswaDataTable $dataTable)
     {
-        return $dataTable->with('kurikulum', $kurikulum)->render('kaprodi.mahasiswa.index', [
+        $this->kurikulum = $this->kurikulum->getKurikulumByYearAndProdi($kurikulum, $this->user->kaprodi->nomor);
+
+        return $dataTable->with('kurikulum', $this->kurikulum)->render('kaprodi.mahasiswa.index', [
             'title' => 'Mahasiswa',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
@@ -54,41 +55,48 @@ class MahasiswaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\MahasiswaRequest  $request
+     * @param \App\Http\Requests\MahasiswaRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(MahasiswaRequest $request, $kurikulum)
     {
         $validateData = $request->validated();
-        $kurikulumModel = new Master_03_Kurikulum();
+        $this->kurikulum = $this->kurikulum->getKurikulumByYearAndProdi($kurikulum, $this->user->kaprodi->nomor);
 
         $mahasiswaModel = new Master_06_Mahasiswa([
             'nim' => $validateData['nim'],
             'nama' => $validateData['nama'],
-            'jenis_kelamin' => $validateData['jenis_kelamin'],
-            'kelas' => date('Y') - $validateData['tahun_angkatan'] . $validateData['kelas'],  // Harus bisa menyeseuaikan dengan tahun angkatan dan jenjang pendidikan @PENDING
             'email' => $validateData['email'],
+            'jenis_kelamin' => $validateData['jenis_kelamin'],
+            'kelas' => ($validateData['tahun_angkatan'] - date('Y')) . $validateData['kelas'],
             'tahun_angkatan' => $validateData['tahun_angkatan'],
             'status' => StatusKeaktifan::Aktif,
-            'tahun' => $kurikulum,
-            '02_MASTER_program_studi_id' => $kurikulumModel->getProgramStudiId($kurikulum)
+            'tahun' => $this->kurikulum->tahun,
+            '02_MASTER_program_studi_nomor' => $this->user->kaprodi->nomor,
+            '03_MASTER_kurikulum_id' => $this->kurikulum->id,
         ]);
 
-        try {
-            $mahasiswaModel->save();
-
-            return redirect()->route('kaprodi.mahasiswa.index', compact('kurikulum'))->with('success', 'Berhasil menambahkan data');
-        } catch (\Illuminate\Database\QueryException $e) {
-            $errorMessage = ($e->errorInfo[1] == 1062) ? 'NIM atau email yang sama sudah terdaftar!' : 'Gagal menambahkan data!';
-
-            return redirect()->back()->with('error', $errorMessage)->withInput();
-        }
+        $mahasiswaModel->save();
+        return redirect()->route('kaprodi.mahasiswa.index', ['kurikulum' => $kurikulum])->with('success', 'Berhasil menambahkan data');
+        //try {
+        //
+        //    return response()->json([
+        //        'success' => true,
+        //    ], 201);
+        //} catch (\Illuminate\Database\QueryException $e) {
+        //    $errorMessage = ($e->errorInfo[1] == 1062) ? 'NIM atau email yang sama sudah terdaftar!' : 'Gagal menambahkan data!';
+        //
+        //    //return redirect()->back()->with('error', $errorMessage)->withInput();
+        //    return response()->json([
+        //        'error' => $errorMessage,
+        //    ], 201);
+        //}
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($kurikulum, $nim)
@@ -105,7 +113,7 @@ class MahasiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -116,8 +124,8 @@ class MahasiswaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(MahasiswaRequest $request, $kurikulum, $nim)
@@ -138,7 +146,7 @@ class MahasiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($kurikulum, $nim)

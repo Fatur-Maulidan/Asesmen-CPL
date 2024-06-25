@@ -81,7 +81,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
 Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'middleware' => ['auth', 'can:view_kurikulum']
     // # Kurikulum
     Route::resource('kurikulum', KaprodiKurikulumController::class)
-        ->only(['index', 'create', 'store']);
+        ->only(['index', 'create', 'store', 'update']);
 
     // # Dashboard
     Route::get('kurikulum/{kurikulum}/dashboard-cpl', [KaprodiDashboardController::class, 'indexCpl'])
@@ -171,11 +171,11 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.'], function () { // 'middlewa
             Route::get('/', [DosenRencanaAsesmenController::class, 'index'])
                 ->name('mata-kuliah.rencana-asesmen.index');
 
-            Route::get('detail-informasi', [DosenRencanaAsesmenController::class, 'show'])
-                ->name('mata-kuliah.rencana-asesmen.show');
+            Route::post('/', [DosenRencanaAsesmenController::class, 'store'])
+                ->name('mata-kuliah.rencana-asesmen.store');
 
-            Route::get('detail-informasi/ubah', [DosenRencanaAsesmenController::class, 'edit'])
-                ->name('mata-kuliah.rencana-asesmen.edit');
+            Route::delete('/{id}', [DosenRencanaAsesmenController::class, 'destroy'])
+                ->name('mata-kuliah.rencana-asesmen.destroy');
         });
 
         // # Nilai Mahasiswa

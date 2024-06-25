@@ -28,6 +28,7 @@ class DashboardController extends Controller
             'title' => 'Dashboard',
             'nama' => 'John Doe',
             'role' => 'Dosen',
+            'kurikulum' => $this->kurikulum,
             'mata_kuliah' => $mata_kuliah
         ]);
     }
