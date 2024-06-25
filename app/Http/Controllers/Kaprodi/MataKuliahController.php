@@ -21,7 +21,7 @@ class MataKuliahController extends Controller
     protected $kurikulum;
 
     public function __construct() {
-        $this->user = Master_04_Dosen::find('KO042N');
+        $this->user = Master_04_Dosen::with('kaprodi')->find('KO042N');
         $this->kurikulum = new Master_03_Kurikulum();
     }
 

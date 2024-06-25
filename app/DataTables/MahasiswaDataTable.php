@@ -56,7 +56,13 @@ class MahasiswaDataTable extends DataTable
      */
     public function query(Master_06_Mahasiswa $model)
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+
+        if ($this->kurikulum) {
+            $query->where('03_MASTER_kurikulum_id', $this->kurikulum->id);
+        }
+
+        return $query;
     }
 
     /**
