@@ -104,6 +104,7 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
     // # Tujuan Pembelajaran
     Route::get('kurikulum/{kurikulum}/tp', [KaprodiTujuanPembelajaranController::class, 'index'])->name('tp.index');
     Route::get('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'validasi'])->name('tp.validasi');
+    Route::patch('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'update'])->name('tp.update');
 
     // # Mata kuliah
     Route::get('kurikulum/{kurikulum}/mata-kuliah/download-template', [KaprodiMataKuliahController::class, 'downloadTemplate'])->name('mata-kuliah.downloadTemplate');

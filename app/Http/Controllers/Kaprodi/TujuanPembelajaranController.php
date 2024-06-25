@@ -89,12 +89,12 @@ class TujuanPembelajaranController extends Controller
         $mataKuliah = request('mata_kuliah') ?? $this->mataKuliah[0]->nama;
         $selectedMataKuliah = $selectedMataKuliah->getMataKuliahByNamaAndKurikulum($mataKuliah,$this->kurikulum->id);
 
-        $mata_kuliah = Master_07_MataKuliah::where('kode', $selectedMataKuliah->kode)
+        $dataMataKuliah = Master_07_MataKuliah::where('kode', $selectedMataKuliah->kode)
             ->with('mataKuliahRegister.indikatorKinerja', 'mataKuliahRegister.tujuanPembelajaran.petaIkMk')
             ->first();
         
         $ikMataKuliah = collect();
-        foreach ($mata_kuliah->mataKuliahRegister as $mkr) {
+        foreach ($dataMataKuliah->mataKuliahRegister as $mkr) {
             foreach ($mkr->indikatorKinerja as $ik) {
                 if (!$ikMataKuliah->contains('kode', $ik->kode)) {
                     $ikMataKuliah->push([
@@ -109,7 +109,7 @@ class TujuanPembelajaranController extends Controller
             foreach ($mkr->tujuanPembelajaran as $tp) {
                 foreach ($tp->petaIkMk as $peta) {
                     $ikMataKuliah->transform(function ($item, $key) use ($peta, $tp) {
-                        if ($item['id'] == $peta->{'09_MASTER_indikator_kinerja_id'}) {
+                        if ($item['id'] == $peta->{'09_MASTER_indikator_kinerja_id'} && $tp->status_validasi == null && $tp->alasan_penolakan == null) {
                             $item['tp'][] = [
                                 'kode' => $tp->kode,
                                 'deskripsi' => $tp->deskripsi,
@@ -120,20 +120,33 @@ class TujuanPembelajaranController extends Controller
                 }
             }
         }
-        
+        $ik = request('indikator_kinerja') ?? ($ikMataKuliah[0]['kode'] ?? null);
         $selectedIndikatorKinerja = new Master_09_IndikatorKinerja;
-        $ik = request('indikator_kinerja') ?? $ikMataKuliah[0]['kode'] == null ? null : null;
-
+        $selectedIndikatorKinerja = $ik != null ? $selectedIndikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, '', $ik)->first() : $ik;
         return view('kaprodi.tp.validasi', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => 'Jhon Doe',
             'role' => 'Koordinator Program Studi',
             'kurikulum' => $this->kurikulum,
             'data_mata_kuliah' => $this->mataKuliah,
-            'selected_mata_kuliah' => $selectedMataKuliah,
             'data_indikator_kinerja' => $this->indikatorKinerja,
             'ik_mata_kuliah' => $ikMataKuliah->sort(),
-            'selected_ik' => ''
+            'selected_mata_kuliah' => $selectedMataKuliah,
+            'selected_indikator_kinerja' => $selectedIndikatorKinerja
         ]);
+    }
+
+    public function update(Request $request, $kurikulum){
+        $statusButton = $request->input('btn');
+        $status = "";
+
+        dd($request->all());
+
+        switch ( $statusButton ) {
+            case 'tolak_semua':
+                $status = "Ditolak";
+            case 'setujui_semua':
+                $status = 'Disetujui';
+        }
     }
 }

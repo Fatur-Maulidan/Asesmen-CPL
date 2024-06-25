@@ -117,6 +117,7 @@ class IndikatorKinerjaController extends Controller
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,'',$ik);
         
         $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
+        // dd($this->kurikulum->nilai_rentang_rubrik[1]['nilai']['awal']);
 
         return view('kaprodi.ik.show', [
             'title' => 'IK',
