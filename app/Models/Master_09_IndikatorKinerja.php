@@ -77,14 +77,14 @@ class Master_09_IndikatorKinerja extends Model
     // Fungsi ini digunakan untuk mendapatkan data
         // Indikator Kinerja -> CPL berdasarkan kurikulum yang berjalan
         // Indikator Kinerja -> Master10Rubrik
-    public function getDataIndikatorKinerja($kurikulum, $idCpl = '', $kode = '', $mataKuliah = true) {
+    public function getDataIndikatorKinerja($kurikulum, $idCpl = '', $kode = '', $mataKuliah = false) {
         $indikatorKinerja = $this->with('capaianPembelajaranLulusan');
         $indikatorKinerja = empty($kode) ? $indikatorKinerja : $indikatorKinerja->where('kode', $kode)->with('rubrik');
         $indikatorKinerja = empty($idCpl) ? $indikatorKinerja : $indikatorKinerja->where('08_MASTER_capaian_pembelajaran_lulusan_id', $idCpl);
-        $indikatorKinerja = $indikatorKinerja->with('mataKuliahRegister')->whereHas('mataKuliahRegister', function($query) use ($kurikulum) {
+        $indikatorKinerja = $mataKuliah == false ? $indikatorKinerja : $indikatorKinerja->with('mataKuliahRegister')->whereHas('mataKuliahRegister', function($query) use ($kurikulum) {
             $query->where('03_MASTER_kurikulum_id', $kurikulum);
         });
-        $indikatorKinerja = $indikatorKinerja->where('03_MASTER_kurikulum_id',$kurikulum)->with('capaianPembelajaranLulusan')->get();
+        $indikatorKinerja = $indikatorKinerja->where('03_MASTER_kurikulum_id',$kurikulum)->with('rubrik')->get();
         return $indikatorKinerja;
     }
 }

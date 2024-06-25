@@ -28,22 +28,55 @@
         {{-- Modal --}}
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-xl">
                 <form method="POST"
                     action="{{ route('kaprodi.ik.update', ['kurikulum' => $kurikulum->tahun, 'ik' => $ik->id]) }}">
                     @csrf
                     @method('PATCH')
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Ubah Capaian Pembelajaran</h1>
+                            <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Ubah Indikator Kinerja</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form action="">
                                 <div class="mb-3">
-                                    <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
+                                    <label for="exampleFormControlTextarea1" width="100%"
+                                        class="form-label fw-bold">Deskripsi</label>
                                     <textarea class="form-control" name="deskripsi" id="exampleFormControlTextarea1" rows="3">{{ $ik->deskripsi }}</textarea>
                                 </div>
+                                @php
+                                    $dataRubrik = $kurikulum->nilai_rentang_rubrik;
+                                    $maknaKualitatif = rubrik();
+                                @endphp
+
+                                @for ($i = 0; $i < $kurikulum->jumlah_maksimal_rubrik; $i++)
+                                    <div class="mb-3">
+                                        <div class="row mb-4">
+                                            <div class="col">
+                                                <div class="fw-bold">Tingkat kemampuan</div>
+                                                <div>{{ $i + 1 }}</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="fw-bold">Makna kualitatif</div>
+                                                <div>{{ $maknaKualitatif[$i] }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="fw-bold">Makna tingkat kemampuan</div>
+                                                <div>{{ $dataRubrik[$i + 1]['makna_tingkat_kemampuan'] }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlTextarea2"
+                                            class="form-label fw-bold">Deskripsi</label>
+                                        <textarea placeholder="Deskripsi Rubrik {{ $ik->rubrik[$i]->urutan ?? $maknaKualitatif[$i] }}"
+                                            name="rubrik-{{ $ik->rubrik[$i]->urutan ?? $i + 1 }}" class="form-control" id="exampleFormControlTextarea2"
+                                            rows="3">{{ $ik->rubrik[$i]->deskripsi ?? null }}</textarea>
+                                    </div>
+                                @endfor
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -108,25 +141,26 @@
                         @if ($ik->rubrik->isEmpty())
                             <div class="text-center">Belum ada rubrik</div>
                         @else
-                            @foreach ($ik->rubrik as $index => $rubrik)
+                            @for ($index = 0; $index < $kurikulum->jumlah_maksimal_rubrik; $index++)
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button bg-light" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseOne2" aria-expanded="true"
-                                            aria-controls="collapseOne2">Rubrik
-                                            {{ $index + 1 }} ( < 50 )</button>
+                                            aria-controls="collapseOne2">{{ $ik->rubrik[$index]->level_kemampuan }} -
+                                            {{ $kurikulum->nilai_rentang_rubrik[$index + 1]['nilai']['awal'] }} < Nilai <
+                                                {{ $kurikulum->nilai_rentang_rubrik[$index + 1]['nilai']['akhir'] }}</button>
                                     </h2>
                                     <div id="collapseOne2" class="accordion-collapse collapse show"
                                         data-bs-parent="#accordionExample2">
                                         <div class="accordion-body">
                                             <div>
                                                 <div class="fw-bold">Deskripsi</div>
-                                                <p>{{ $rubrik->deskripsi }}</p>
+                                                <p>{{ $ik->rubrik[$index]->deskripsi }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @endfor
                         @endif
                     </div>
                 </div>
@@ -134,13 +168,3 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        Swal.fire({
-            title: 'Error!',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'Cool'
-        })
-    </script>

@@ -24,10 +24,10 @@
                         </select>
                     </div>
                     <div class="col">
-                        <select class="form-select">
-                            <option value="1">IK-1</option>
-                            <option value="2">IK-2</option>
-                            <option value="3">IK-33</option>
+                        <select class="form-select" id="indikator-kinerja">
+                            @foreach ($ik_mata_kuliah as $ik)
+                                <option value="{{ $ik['kode'] }}">{{ $ik['kode'] }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -126,13 +126,28 @@
         const url = "{{ url()->current() }}";
 
         $(document).ready(function() {
-            $('#mata-kuliah').change(function() {
-                var selectedMataKuliah = $(this).val();
+            function updatePage() {
+                var selectedMataKuliah = $('#mata-kuliah').val();
+                var selectedIndikatorKinerja = $('#indikator-kinerja').val();
+
+                var params = {};
                 if (selectedMataKuliah) {
-                    location.href = url + '?mata_kuliah=' + encodeURIComponent(selectedMataKuliah);
-                } else {
-                    location.href = url;
+                    params.mata_kuliah = selectedMataKuliah;
                 }
+                if (selectedIndikatorKinerja) {
+                    params.indikator_kinerja = selectedIndikatorKinerja;
+                }
+
+                var queryString = $.param(params);
+                location.href = url + '?' + queryString;
+            }
+
+            $('#mata-kuliah').change(function() {
+                updatePage();
+            });
+
+            $('#indikator-kinerja').change(function() {
+                updatePage();
             });
         });
     </script>

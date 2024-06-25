@@ -78,17 +78,16 @@ class IndikatorKinerjaController extends Controller
         $this->capaianPembelajaranLulusan = $this->capaianPembelajaranLulusan
             ->getCplIdByKurikulum($request->input('cpInduk'),$this->kurikulum->id);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,$this->capaianPembelajaranLulusan->id);
-        // dd(substr($this->capaianPembelajaranLulusan->kode,0,2));
 
         $indikatorKinerja = new Master_09_IndikatorKinerja([
             'kode' => $request->input('cpInduk').'.'.(count($this->indikatorKinerja) + 1),
             'deskripsi' => $request->input('deskripsi'),
-            '03_MASTER_kurikulum_id' => $this->kurikulum->id,
+        '03_MASTER_kurikulum_id' => $this->kurikulum->id,
             '08_MASTER_capaian_pembelajaran_lulusan_id' => $this->capaianPembelajaranLulusan->id,
         ]);
 
         if($indikatorKinerja->save()){
-            for($i = 0; $i < 5; $i++){
+            for($i = 0; $i < $this->kurikulum->jumlah_maksimal_rubrik; $i++){
                 $rubrik = new Master_10_Rubrik([
                     'urutan' => $i+1,
                     'level_kemampuan' => $levelKemampuan[$i],
@@ -192,6 +191,9 @@ class IndikatorKinerjaController extends Controller
      */
     public function update(Request $request, $kurikulum, $id)
     {
+        $levelKemampuan = rubrik();
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+
         $validation = Validator::make(
             $request->all(),
             $this->validator->rules(),
@@ -201,15 +203,32 @@ class IndikatorKinerjaController extends Controller
         if ($validation->fails()) {
             return redirect()->back()->withErrors($validation)->withInput();
         }
-        $dataIk = Master_09_IndikatorKinerja::find($id)->first();
+        $indikatorKinerja = Master_09_IndikatorKinerja::find($id);
+
+        $rubrik = Master_10_Rubrik::where('09_MASTER_indikator_kinerja_id', $id)->get();
         
-
-        $dataIk->deskripsi = $request->input('deskripsi');
-
-        if($dataIk->save()){
-            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $dataIk->kode])->with('success', 'Data berhasil diubah');
+        $indikatorKinerja->deskripsi = $request->input('deskripsi');
+        if($indikatorKinerja->save()){
+            if($rubrik->isEmpty()) {
+                for($i = 0; $i < $this->kurikulum->jumlah_maksimal_rubrik; $i++){
+                    $rubrik = new Master_10_Rubrik([
+                        'urutan' => $i+1,
+                        'level_kemampuan' => $levelKemampuan[$i],
+                        'deskripsi' => $request->input('rubrik-'.($i)),
+                        '09_MASTER_indikator_kinerja_id' => $indikatorKinerja->id
+                    ]);
+                    $rubrik->save();
+                }
+            } else {
+                for($i = 0; $i < $this->kurikulum->jumlah_maksimal_rubrik; $i++){
+                    Master_10_Rubrik::where('09_MASTER_indikator_kinerja_id', $id)
+                        ->where('urutan', $i+1)
+                        ->update(['deskripsi' => $request->input('rubrik-'.($i+1))]);
+                }
+        }
+            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $indikatorKinerja->kode])->with('success', 'Data berhasil ditambahkan');
         } else {
-            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $dataIk->kode])->with('error', 'Data gagal diubah');
+            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $indikatorKinerja->kode])->with('error', 'Data gagal ditambahkan');
         }
     }
 
