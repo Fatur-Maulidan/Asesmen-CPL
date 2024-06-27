@@ -262,7 +262,7 @@
                             <label for="tahun_angkatan_ubah" class="fw-bold mb-2">Tahun Angkatan</label>
                             <select class="form-select" id="tahun_angkatan_ubah" name="tahun_angkatan">
                                 <option>Pilih tahun masuk</option>
-                                @for ($i = 2020; $i < date('Y'); $i++)
+                                @for ($i = 2020; $i < date('Y', strtotime('+5 years')); $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
                             </select>

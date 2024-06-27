@@ -51,7 +51,7 @@ class Master_15_RencanaAsesmen extends Model
     // Relations
     public function mataKuliahRegister()
     {
-        return $this->belongsTo(Master_15_RencanaAsesmen::class, '11_MASTER_mk_register_id');
+        return $this->belongsTo(Master_11_MataKuliahRegister::class, '11_MASTER_mk_register_id');
     }
 
     public function tujuanPembelajaran()

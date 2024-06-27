@@ -68,7 +68,7 @@ class MahasiswaController extends Controller
             'nama' => $validateData['nama'],
             'email' => $validateData['email'],
             'jenis_kelamin' => $validateData['jenis_kelamin'],
-            'kelas' => ($validateData['tahun_angkatan'] - date('Y')) . $validateData['kelas'],
+            'kelas' => ($validateData['tahun_angkatan'] - date('Y') + 1) . $validateData['kelas'],
             'tahun_angkatan' => $validateData['tahun_angkatan'],
             'status' => StatusKeaktifan::Aktif,
             'tahun' => $this->kurikulum->tahun,

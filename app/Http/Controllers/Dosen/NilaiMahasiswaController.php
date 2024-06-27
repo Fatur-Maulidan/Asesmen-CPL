@@ -16,7 +16,7 @@ class NilaiMahasiswaController extends Controller
     public function __construct()
     {
         $this->user = Master_04_Dosen::find('KO042N');
-        $this->kurikulum = Master_03_Kurikulum::find(1);
+        $this->kurikulum = new Master_03_Kurikulum;
     }
 
     /**

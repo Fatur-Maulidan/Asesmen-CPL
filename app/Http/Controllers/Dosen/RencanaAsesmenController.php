@@ -9,6 +9,7 @@ use App\Models\Master_04_Dosen;
 use App\Models\Master_07_MataKuliah;
 use App\Models\Master_15_RencanaAsesmen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RencanaAsesmenController extends Controller
 {
@@ -53,14 +54,22 @@ class RencanaAsesmenController extends Controller
     {
         $validated = $request->validated();
 
-        $rencana_asesmen = Master_15_RencanaAsesmen::create([
-            'kode' => $validated['kategori'] . '#' . $validated['urutan'],
-            'kategori' => $validated['kategori'],
-            'minggu' => $validated['minggu'],
-            '11_MASTER_mk_register_id' => $validated['mata_kuliah'],
-        ]);
+        DB::transaction(function () use ($kodeMataKuliah, $validated) {
+            $rencana_asesmen = Master_15_RencanaAsesmen::create([
+                'kode' => $validated['kategori'] . '#' . $validated['urutan'],
+                'kategori' => $validated['kategori'],
+                'minggu' => $validated['minggu'],
+                '11_MASTER_mk_register_id' => $validated['mata_kuliah'],
+            ]);
 
-        $rencana_asesmen->tujuanPembelajaran()->attach($validated['tp']);
+            // Map rencana asesmen with tujuan pembelajaran
+            $rencana_asesmen->tujuanPembelajaran()->attach($validated['tp']);
+
+            // Map rencana asesmen with mahasiswa
+            $mahasiswa = $rencana_asesmen->mataKuliahRegister->mahasiswa->pluck('nim')->toArray();
+            //dd($mahasiswa);
+            $rencana_asesmen->mahasiswa()->attach($mahasiswa);
+        });
 
         return redirect()->route('dosen.mata-kuliah.rencana-asesmen.index', $kodeMataKuliah);
     }
@@ -112,10 +121,14 @@ class RencanaAsesmenController extends Controller
      */
     public function destroy($kodeMataKuliah, $id)
     {
-        $rencana_asesmen = Master_15_RencanaAsesmen::find($id);
-        $tp = $rencana_asesmen->tujuanPembelajaran->pluck('id')->toArray();
-        $rencana_asesmen->tujuanPembelajaran()->detach($tp);
-        $rencana_asesmen->delete();
+        DB::transaction(function () use ($id) {
+            $rencana_asesmen = Master_15_RencanaAsesmen::find($id);
+            $tp = $rencana_asesmen->tujuanPembelajaran->pluck('id')->toArray();
+            $mahasiswa = $rencana_asesmen->mahasiswa->pluck('nim')->toArray();
+            $rencana_asesmen->tujuanPembelajaran()->detach($tp);
+            $rencana_asesmen->mahasiswa()->detach($mahasiswa);
+            $rencana_asesmen->delete();
+        });
 
         return redirect()->route('dosen.mata-kuliah.rencana-asesmen.index', $kodeMataKuliah);
     }
