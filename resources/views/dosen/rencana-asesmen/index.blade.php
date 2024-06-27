@@ -129,9 +129,10 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <button type="button" class="btn btn-danger btn-hapus mt-2" data-bs-toggle="modal"
-                                            data-bs-target="#confirmModal" data-id="{{ $ra->id }}">Hapus
-                                    </button>
+                                    {{--<button type="button" class="btn btn-danger btn-hapus mt-2" data-bs-toggle="modal"--}}
+                                    {{--        data-bs-target="#confirmModal" data-id="{{ $ra->id }}">Hapus--}}
+                                    {{--</button>--}}
+                                    {{--<button type="button" class="btn btn-success mt-2">Input Nilai</button>--}}
                                 </div>
                             </div>
                         </div>
