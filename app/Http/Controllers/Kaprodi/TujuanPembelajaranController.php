@@ -18,6 +18,7 @@ class TujuanPembelajaranController extends Controller
     protected $kurikulum;
     protected $mataKuliah;
     protected $indikatorKinerja;
+    protected $tujuanPembelajaran;
 
     public function __construct()
     {
@@ -26,6 +27,7 @@ class TujuanPembelajaranController extends Controller
         $this->kurikulum = new Master_03_Kurikulum();
         $this->mataKuliah = new Master_07_MataKuliah();
         $this->indikatorKinerja = new Master_09_IndikatorKinerja();
+        $this->tujuanPembelajaran = new Master_13_TujuanPembelajaran();
     }
 
     /**
@@ -78,6 +80,7 @@ class TujuanPembelajaranController extends Controller
 
     public function validasi($kurikulum)
     {
+        
         $dataTp = collect();
         $dataIk = collect();
 
@@ -111,6 +114,7 @@ class TujuanPembelajaranController extends Controller
                     $ikMataKuliah->transform(function ($item, $key) use ($peta, $tp) {
                         if ($item['id'] == $peta->{'09_MASTER_indikator_kinerja_id'} && $tp->status_validasi == null && $tp->alasan_penolakan == null) {
                             $item['tp'][] = [
+                                'id' => $tp->id,
                                 'kode' => $tp->kode,
                                 'deskripsi' => $tp->deskripsi,
                             ];
@@ -138,15 +142,30 @@ class TujuanPembelajaranController extends Controller
 
     public function update(Request $request, $kurikulum){
         $statusButton = $request->input('btn');
-        $status = "";
-
-        dd($request->all());
+        $tp[] = $request->input('tp_id');
+        $this->tujuanPembelajaran = $this->tujuanPembelajaran->getDataTpById($request->input('tp_id'));
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
 
         switch ( $statusButton ) {
             case 'tolak_semua':
-                $status = "Ditolak";
+                return $this->rejectOrApproveDataTp('Ditolak', $this->tujuanPembelajaran, $this->kurikulum);
             case 'setujui_semua':
-                $status = 'Disetujui';
+                return $this->rejectOrApproveDataTp('Disetujui', $this->tujuanPembelajaran, $this->kurikulum);
+            case 'simpan':
+                return $this->saveUpdateDataTp("", $tp);
         }
+    }
+    
+    // Ditolak
+    private function rejectOrApproveDataTp($status = "", $dataTp, $kurikulum){
+        foreach($dataTp as $tp) {
+            $tp->status_validasi = $status;
+            $tp->save();
+        }
+        return redirect()->route('kaprodi.tp.validasi', ['kurikulum' => $kurikulum->tahun]);
+    }
+
+    private function saveUpdateDataTp($request, $tp) {
+
     }
 }

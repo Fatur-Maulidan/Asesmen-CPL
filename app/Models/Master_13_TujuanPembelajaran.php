@@ -72,4 +72,9 @@ class Master_13_TujuanPembelajaran extends Model
     {
         return $this->hasMany(Master_17_KemampuanAkhirDiharapkan::class, '13_MASTER_tujuan_pembelajaran_id');
     }
+
+    public function getDataTpById($id)
+    {
+        return $this->find($id);
+    }
 }
