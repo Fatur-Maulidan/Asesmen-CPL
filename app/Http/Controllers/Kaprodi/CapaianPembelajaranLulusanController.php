@@ -173,9 +173,11 @@ class CapaianPembelajaranLulusanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CapaianPembelajaranLulusanStoreRequest $request, $kurikulum, $cpl)
+    public function update(Request $request, $kurikulum, $cpl)
     {
-        $validator = $request->validated();
+        dd('test');
+        // $validator = $request->validated();
+        // dd($validator);
 
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
 
@@ -184,6 +186,8 @@ class CapaianPembelajaranLulusanController extends Controller
 
         $dataCPL->deskripsi = $request->input('deskripsi');
         $dataCPL->updated_at = date('Y-m-d H:i:s');
+
+        dd($dataCPL, $kurikulum);
 
         if ($dataCPL->save()) {
             return redirect()->route('kaprodi.cpl.show', compact('kurikulum', 'cpl'));

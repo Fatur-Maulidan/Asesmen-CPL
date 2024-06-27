@@ -7,7 +7,7 @@
 
 @section('main')
     {{--  Alert message  --}}
-    @if( session('message') )
+    @if (session('message'))
         <div class="alert alert-secondary mb-5" role="alert">
             {{ session('message') }}
         </div>
@@ -17,8 +17,8 @@
     <div class="row mb-4">
         <div class="col">
             <form role="search" method="GET" action="" autocomplete="off">
-                <input class="form-control search" type="search" id="search" name="search"
-                    placeholder="Cari" value="{{ request('search') }}">
+                <input class="form-control search" type="search" id="search" name="search" placeholder="Cari"
+                    value="{{ request('search') }}">
             </form>
         </div>
         <div class="col text-end">
@@ -53,7 +53,7 @@
 
     {{-- Import Program Studi Modal --}}
     <div class="modal fade" id="importProgramStudiModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="importProgramStudiModalLabel" aria-hidden="true">
+        aria-labelledby="importProgramStudiModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -62,14 +62,16 @@
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('admin.program-studi.import') }}" method="POST" autocomplete="off"
-                          enctype="multipart/form-data">
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="mb-5">
                             <label for="formFileProgramStudi" class="form-label fw-bold">Upload File Excel</label>
-                            <input class="form-control" type="file" id="formFileProgramStudi" name="formFileProgramStudi" accept=".xlsx">
+                            <input class="form-control" type="file" id="formFileProgramStudi" name="formFileProgramStudi"
+                                accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('admin.program-studi.downloadTemplate') }}" class="btn btn-outline-success">Download
+                            <a href="{{ route('admin.program-studi.downloadTemplate') }}"
+                                class="btn btn-outline-success">Download
                                 Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
                         </div>
@@ -94,10 +96,12 @@
                         @csrf
                         <div class="mb-5">
                             <label for="formFileJurusan" class="form-label fw-bold">Upload File Excel</label>
-                            <input class="form-control" type="file" id="formFileJurusan" name="formFileJurusan" accept=".xlsx">
+                            <input class="form-control" type="file" id="formFileJurusan" name="formFileJurusan"
+                                accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('admin.jurusan.downloadTemplate') }}" class="btn btn-outline-success">Download
+                            <a href="{{ route('admin.jurusan.downloadTemplate') }}"
+                                class="btn btn-outline-success">Download
                                 Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
                         </div>
@@ -123,7 +127,7 @@
                         <div class="mb-4">
                             <label for="nomor_jurusan" class="form-label fw-bold">Nomor</label>
                             <input type="text" class="form-control" id="nomor_jurusan" name="nomor"
-                                   placeholder="Nomor Jurusan">
+                                placeholder="Nomor Jurusan">
                             <div id="nomor_jurusan_feedback" class="text-danger"></div>
                         </div>
 
@@ -138,7 +142,7 @@
                             <div class="fw-bold mb-2">Golongan</div>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="golongan"
+                                    <input class="form-check-input" type="radio" name="golongan_jurusan"
                                         id="rekayasa" value="{{ \App\Enums\JurusanGolongan::Rekayasa }}">
                                     <label class="form-check-label" for="rekayasa">Rekayasa</label>
                                 </div>
@@ -167,7 +171,7 @@
                             <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-success w-100" form="tambahJurusanForm"
+                            <button type="submit" class="btn btn-success w-100" form="#tambahJurusanForm"
                                 id="btn-add">Tambah</button>
                         </div>
                     </div>
@@ -193,7 +197,7 @@
                         <div class="mb-4">
                             <label for="nomor_jurusan_ubah" class="form-label fw-bold">Nomor</label>
                             <input type="text" class="form-control" id="nomor_jurusan_ubah" name="nomor"
-                                   placeholder="Nomor Jurusan">
+                                placeholder="Nomor Jurusan">
                             <div id="nomor_jurusan_feedback_ubah" class="text-danger"></div>
                         </div>
 
@@ -208,8 +212,8 @@
                             <div class="fw-bold mb-2">Golongan</div>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="golongan"
-                                        id="rekayasa_ubah" value="{{ \App\Enums\JurusanGolongan::Rekayasa }}">
+                                    <input class="form-check-input" type="radio" name="golongan" id="rekayasa_ubah"
+                                        value="{{ \App\Enums\JurusanGolongan::Rekayasa }}">
                                     <label class="form-check-label" for="rekayasa_ubah">Rekayasa</label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -264,7 +268,7 @@
                         <div class="mb-4">
                             <label for="nomor_prodi" class="form-label fw-bold">Nomor</label>
                             <input type="text" class="form-control" id="nomor_prodi" name="nomor"
-                                   placeholder="Nomor program studi">
+                                placeholder="Nomor program studi">
                             <div id="nomor_prodi_feedback" class="text-danger"></div>
                         </div>
 
@@ -278,7 +282,7 @@
                         <div class="mb-4">
                             <label for="kode_prodi" class="form-label fw-bold">Kode</label>
                             <input type="text" class="form-control" id="kode_prodi" name="kode"
-                                   placeholder="Kode program studi">
+                                placeholder="Kode program studi">
                             <div id="kode_prodi_feedback" class="text-danger"></div>
                         </div>
 
@@ -322,7 +326,7 @@
 
     {{-- Hapus Modal --}}
     <div class="modal fade" id="hapusModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
-         aria-labelledby="hapusModalLabel" tabindex="-1">
+        aria-labelledby="hapusModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -427,10 +431,10 @@
                                                 </ul>
                                             </div>
 
-                                            {{--<div>--}}
-                                            {{--    <a href="#" class="btn-hapus-prodi" data-bs-toggle="modal"--}}
-                                            {{--       data-bs-target="#hapusModal" data-nomor="{{ $prodi->nomor }}">Hapus</a>--}}
-                                            {{--</div>--}}
+                                            {{-- <div> --}}
+                                            {{--    <a href="#" class="btn-hapus-prodi" data-bs-toggle="modal" --}}
+                                            {{--       data-bs-target="#hapusModal" data-nomor="{{ $prodi->nomor }}">Hapus</a> --}}
+                                            {{-- </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -444,8 +448,8 @@
                         <a href="#" class="btn-add-prodi" data-bs-toggle="modal"
                             data-bs-target="#tambahProgramStudiModal" data-nomor="{{ $jrsn->nomor }}">Tambah Program
                             Studi</a>
-                        {{--<a href="#" class="btn-hapus-jurusan" data-bs-toggle="modal"--}}
-                        {{--   data-bs-target="#hapusModal" data-nomor="{{ $jrsn->nomor }}">Hapus</a>--}}
+                        {{-- <a href="#" class="btn-hapus-jurusan" data-bs-toggle="modal" --}}
+                        {{--   data-bs-target="#hapusModal" data-nomor="{{ $jrsn->nomor }}">Hapus</a> --}}
                     </div>
                 </div>
             </div>
@@ -626,13 +630,15 @@
                             console.log(err.responseJSON);
                             $('#nama_prodi_feedback').html(err.responseJSON.errors.nama[0]);
 
-                            $('#jenjang_prodi_feedback').html(err.responseJSON.errors.jenjang_pendidikan[0]);
+                            $('#jenjang_prodi_feedback').html(err.responseJSON.errors
+                                .jenjang_pendidikan[0]);
 
                             $('#nomor_prodi_feedback').html(err.responseJSON.errors.nomor[0]);
 
                             $('#kode_prodi_feedback').html(err.responseJSON.errors.kode[0]);
 
-                            $('#koordinator_prodi_feedback').html(err.responseJSON.errors.koordinator_prodi[0]);
+                            $('#koordinator_prodi_feedback').html(err.responseJSON.errors
+                                .koordinator_prodi[0]);
                         } else if (err.status == 500) {
                             console.log(err);
                         }
@@ -640,13 +646,13 @@
                 });
             });
 
-            $('.btn-hapus-jurusan, .btn-hapus-prodi').on('click', function (e) {
+            $('.btn-hapus-jurusan, .btn-hapus-prodi').on('click', function(e) {
                 e.preventDefault();
 
                 const nomor = $(this).data('nomor');
-                const route = $(this).hasClass('btn-hapus-jurusan')
-                    ? url + "/" + nomor
-                    : "{{ url('/') }}/admin/program-studi/" + nomor;
+                const route = $(this).hasClass('btn-hapus-jurusan') ?
+                    url + "/" + nomor :
+                    "{{ url('/') }}/admin/program-studi/" + nomor;
 
                 $('#hapusForm').attr('action', route);
             })

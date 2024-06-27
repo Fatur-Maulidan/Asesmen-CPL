@@ -51,7 +51,7 @@
             @endif
         </div>
     </div>
-    <form method="POST" action="{{ route('kaprodi.tp.update', ['kurikulum' => $kurikulum]) }}">
+    <form method="POST" action="{{ route('kaprodi.tp.update', ['kurikulum' => $kurikulum->tahun]) }}">
         @csrf
         @method('PATCH')
         <div class="row mb-4">
@@ -66,7 +66,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <form action="">
+                        <form id="formData">
                             @if ($ik_mata_kuliah->isEmpty() || $ik_mata_kuliah->where('id', $selected_indikator_kinerja->id)->first()['tp'] == null)
                                 <tr>
                                     <td colspan="4" class="text-center">Belum terdapat TP</td>
@@ -74,7 +74,7 @@
                             @else
                                 @foreach ($ik_mata_kuliah->where('id', $selected_indikator_kinerja->id)->first()['tp'] as $tp)
                                     <tr>
-                                        {{-- <input type="hidden" name="tp-ids" value="{{ $tp['id'] }}"> --}}
+                                        <input type="hidden" name="tp_id[]" value="{{ $tp['id'] }}">
                                         <td class="py-3 align-content-center">
                                             {{ $tp['kode'] }}</td>
                                         <td class="py-3">
@@ -84,16 +84,16 @@
                                             <div class="d-flex">
                                                 <div class="form-check me-3">
                                                     <input class="form-check-input" type="radio"
-                                                        name="status-{{ $loop->index }}" id="tolak"
-                                                        id="flexRadioDefault1">
+                                                        name="status-{{ $tp['id'] }}" id="tolak"
+                                                        id="flexRadioDefault1" data-tp-id="{{ $tp['id'] }}">
                                                     <label class="form-check-label" for="flexRadioDefault1">
                                                         Tolak
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio"
-                                                        name="status-{{ $loop->index }}" id="setujui"
-                                                        id="flexRadioDefault2">
+                                                        name="status-{{ $tp['id'] }}" id="setujui"
+                                                        id="flexRadioDefault2" data-tp-id="{{ $tp['id'] }}">
                                                     <label class="form-check-label" for="flexRadioDefault2">
                                                         Setujui
                                                     </label>
@@ -101,7 +101,7 @@
                                             </div>
                                         </td>
                                         <td class="align-content-center">
-                                            <textarea class="form-control" id="exampleFormControlTextarea2" name="alasan_penolakan"
+                                            <textarea class="form-control" id="exampleFormControlTextarea2" name="alasan_penolakan-{{ $tp['id'] }}"
                                                 placeholder="Masukkan alasan penolakan" disabled></textarea>
                                         </td>
                                     </tr>
@@ -115,11 +115,13 @@
         <div class="row">
             <div class="col-12 text-end">
                 <button class="btn btn-outline-danger" id="resetCheckbox">Reset ulang</button>
-                <button type="submit" class="btn btn-outline-danger" name="btn" value="tolak_semua">Tolak
+                <button type="submit" class="btn btn-outline-danger sendData" name="btn" value="tolak_semua"
+                    data-action="tolak_semua">Tolak
                     semua</button>
-                <button type="submit" class="btn btn-outline-primary" name="btn" value="setujui_semua">Setujui
+                <button type="submit" class="btn btn-outline-primary sendData" name="btn" value="setujui_semua"
+                    data-action="setujui_semua">Setujui
                     semua</button>
-                <button type="submit" class="btn btn-primary" name="btn" value="simpan">Simpan</button>
+                <button class="btn btn-primary sendData" name="btn" value="simpan" data-action="simpan">Simpan</button>
                 <button type="submit" class="btn btn-success" name="btn" value="finalisasi"
                     disabled>Finalisasi</button>
             </div>
