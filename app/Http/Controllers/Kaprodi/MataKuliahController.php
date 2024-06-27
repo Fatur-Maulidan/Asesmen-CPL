@@ -20,9 +20,14 @@ class MataKuliahController extends Controller
     protected $user;
     protected $kurikulum;
 
+    protected $kaprodiNip;
+    protected $indikatorKinerja;
+
     public function __construct() {
         $this->user = Master_04_Dosen::with('kaprodi')->find('KO042N');
         $this->kurikulum = new Master_03_Kurikulum();
+        $this->kaprodiNip = '199301062019031017';
+        $this->indikatorKinerja = new Master_09_IndikatorKinerja();
     }
 
     /**

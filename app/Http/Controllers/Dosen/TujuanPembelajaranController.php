@@ -65,7 +65,7 @@ class TujuanPembelajaranController extends Controller
         $tujuanPembelajaran = new Master_13_TujuanPembelajaran([
             'kode' => "TP-".($dataTp + 1),
             'deskripsi' => $request->input('deskripsi'),
-            'tanggal_diajukan' => date('Y-m-d H:i:s')
+            'tanggal_diajukan' => date('Y-m-d H:i:s'),
         ]);
 
         if($tujuanPembelajaran->save()) {
