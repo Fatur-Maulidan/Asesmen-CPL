@@ -32,7 +32,7 @@ class Create01AnalisisKetercapaianMahasiswaTable extends Migration
             $table->string('kode_ik', 10);
             $table->string('kode_ra', 10);
             $table->string('kode_tp', 10);
-            $table->decimal('ketercapaian_tp', 4, 2);
+            $table->decimal('ketercapaian_tp', 4, 2)->nullable();
 
             $table->foreign('nim')->references('nim')->on('06_MASTER_mahasiswa');
             $table->foreign('id_mata_kuliah')->references('id')->on('07_MASTER_mata_kuliah');
