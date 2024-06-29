@@ -1,14 +1,12 @@
 <?php
 
 use App\Enums\JenisKelamin;
-use App\Enums\RoleDosen;
 use App\Enums\StatusKeaktifan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
-class Create04MasterDosenTable extends Migration
+class Create06MasterMahasiswaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,18 +15,17 @@ class Create04MasterDosenTable extends Migration
      */
     public function up()
     {
-        Schema::create('04_MASTER_dosen', function (Blueprint $table) {
-            $table->string('nip', 18)->primary();
-            $table->string('kode', 6)->unique();
+        Schema::create('06_MASTER_mahasiswa', function (Blueprint $table) {
+            $table->string('nim', 9)->primary();
             $table->string('nama', 50);
-            $table->string('email', 50)->unique();
             $table->enum('jenis_kelamin', JenisKelamin::getValues());
-            $table->enum('role', RoleDosen::getValues());
+            $table->string('email', 50)->unique();
+            $table->string('kelas', 2);
+            $table->year('tahun_angkatan');
             $table->enum('status', StatusKeaktifan::getValues())->default(StatusKeaktifan::Aktif);
-            $table->string('kata_sandi')->default(Hash::make('katasandi123'));
             $table->timestamps();
-            $table->foreignId('01_MASTER_jurusan_id')->constrained('01_MASTER_jurusan');
-            $table->foreignId('02_MASTER_program_studi_id');
+            $table->foreignId('02_MASTER_program_studi_id')->constrained('02_MASTER_program_studi');
+            $table->foreignId('03_MASTER_kurikulum_id')->constrained('03_MASTER_kurikulum');
         });
     }
 
@@ -39,6 +36,6 @@ class Create04MasterDosenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('04_MASTER_dosen');
+        Schema::dropIfExists('06_MASTER_mahasiswa');
     }
 }

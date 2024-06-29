@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Create09MasterRencanaAsesmenTable extends Migration
+class Create15MasterRencanaAsesmenTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class Create09MasterRencanaAsesmenTable extends Migration
      */
     public function up()
     {
-        Schema::create('09_MASTER_rencana_asesmen', function (Blueprint $table) {
+        Schema::create('15_MASTER_rencana_asesmen', function (Blueprint $table) {
             $table->id();
-            $table->string('kategori', 15);
             $table->string('kode', 20);
-            $table->unsignedInteger('minggu');
+            $table->string('kategori', 15);
+            $table->unsignedTinyInteger('minggu');
             $table->timestamps();
+            $table->foreignId('11_MASTER_mk_register_id')->constrained('11_MASTER_mk_register');
         });
     }
 
@@ -29,6 +30,6 @@ class Create09MasterRencanaAsesmenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('09_MASTER_rencana_asesmen');
+        Schema::dropIfExists('15_MASTER_rencana_asesmen');
     }
 }

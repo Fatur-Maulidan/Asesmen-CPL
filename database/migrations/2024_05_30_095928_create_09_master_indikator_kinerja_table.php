@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Create08MasterIndikatorKinerjaTable extends Migration
+class Create09MasterIndikatorKinerjaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class Create08MasterIndikatorKinerjaTable extends Migration
      */
     public function up()
     {
-        Schema::create('08_MASTER_indikator_kinerja', function (Blueprint $table) {
+        Schema::create('09_MASTER_indikator_kinerja', function (Blueprint $table) {
             $table->id();
             $table->string('kode', 10);
-            $table->string('deskripsi', 600);
+            $table->string('deskripsi', 1000);
             $table->timestamps();
+            $table->foreignId('08_MASTER_capaian_pembelajaran_lulusan_id')->constrained('08_MASTER_capaian_pembelajaran_lulusan')
+                ->index('09_master_ik_08_master_cpl_id_foreign');
         });
     }
 
@@ -28,6 +30,6 @@ class Create08MasterIndikatorKinerjaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('08_MASTER_indikator_kinerja');
+        Schema::dropIfExists('09_MASTER_indikator_kinerja');
     }
 }

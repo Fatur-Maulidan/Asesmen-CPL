@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Create12MasterRubrikTable extends Migration
+class Create07MasterMataKuliahTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class Create12MasterRubrikTable extends Migration
      */
     public function up()
     {
-        Schema::create('12_MASTER_rubrik', function (Blueprint $table) {
+        Schema::create('07_MASTER_mata_kuliah', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('urutan');
-            $table->string('level_kemampuan', 20);
-            $table->string('deskripsi', 600);
+            $table->string('kode', 12)->unique();
+            $table->string('nama', 50);
+            $table->string('deskripsi', 1000);
             $table->timestamps();
-            $table->foreignId('08_MASTER_indikator_kinerja_id')->constrained('08_MASTER_indikator_kinerja');
+            $table->foreignId('03_MASTER_kurikulum_id')->constrained('03_MASTER_kurikulum');
         });
     }
 
@@ -30,6 +30,6 @@ class Create12MasterRubrikTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('12_MASTER_rubrik');
+        Schema::dropIfExists('07_MASTER_mata_kuliah');
     }
 }

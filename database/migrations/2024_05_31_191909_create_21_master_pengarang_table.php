@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Create22MasterPengarangTable extends Migration
+class Create21MasterPengarangTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class Create22MasterPengarangTable extends Migration
      */
     public function up()
     {
-        Schema::create('22_MASTER_pengarang', function (Blueprint $table) {
+        Schema::create('21_MASTER_pengarang', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 50);
+            $table->string('nama_depan', 50);
+            $table->string('nama_belakang', 50);
+            $table->timestamps();
         });
     }
 
@@ -26,6 +28,6 @@ class Create22MasterPengarangTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('22_MASTER_pengarang');
+        Schema::dropIfExists('21_MASTER_pengarang');
     }
 }

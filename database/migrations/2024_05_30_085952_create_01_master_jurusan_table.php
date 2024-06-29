@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\JurusanGolongan;
+use App\Enums\KategoriJurusan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +16,8 @@ class Create01MasterJurusanTable extends Migration
     {
         Schema::create('01_MASTER_jurusan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 50)->unique();
-            $table->enum('golongan', JurusanGolongan::getValues());
+            $table->string('nama', 50);
+            $table->enum('golongan', KategoriJurusan::getValues());
             $table->timestamps();
         });
     }

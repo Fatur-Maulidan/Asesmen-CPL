@@ -4,7 +4,7 @@ use App\Enums\DomainCPL;
 use App\Enums\JenisKelamin;
 use App\Enums\JenisPerkuliahan;
 use App\Enums\JenjangPendidikan;
-use App\Enums\JurusanGolongan;
+use App\Enums\KategoriJurusan;
 use App\Enums\RoleDosen;
 use App\Enums\StatusKeaktifan;
 use App\Enums\StatusKurikulum;
@@ -33,9 +33,9 @@ return [
         JenjangPendidikan::D4 => 'D4'
     ],
 
-    JurusanGolongan::class => [
-        JurusanGolongan::Rekayasa => 'Rekayasa',
-        JurusanGolongan::Nonrekayasa => 'Nonrekayasa'
+    KategoriJurusan::class => [
+        KategoriJurusan::Rekayasa => 'Rekayasa',
+        KategoriJurusan::Nonrekayasa => 'Nonrekayasa'
     ],
 
     RoleDosen::class => [

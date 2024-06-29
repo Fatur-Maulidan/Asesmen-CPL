@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Create07MasterCapaianPembelajaranLulusanTable extends Migration
+class Create08MasterCapaianPembelajaranLulusanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +14,13 @@ class Create07MasterCapaianPembelajaranLulusanTable extends Migration
      */
     public function up()
     {
-        Schema::create('07_MASTER_capaian_pembelajaran_lulusan', function (Blueprint $table) {
+        Schema::create('08_MASTER_capaian_pembelajaran_lulusan', function (Blueprint $table) {
             $table->id();
             $table->string('kode', 10);
-            $table->string('deskripsi', 600);
             $table->enum('domain', DomainCPL::getValues());
+            $table->string('deskripsi', 1000);
             $table->timestamps();
-            $table->foreignId('03_MASTER_kurikulum_id')->constrained('03_MASTER_kurikulum')->index('07_master_cpl_03_master_kurikulum_id_foreign');
+            $table->foreignId('03_MASTER_kurikulum_id')->constrained('03_MASTER_kurikulum')->index('08_master_cpl_03_master_kurikulum_id_foreign');
         });
     }
 
@@ -31,6 +31,6 @@ class Create07MasterCapaianPembelajaranLulusanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('07_MASTER_capaian_pembelajaran_lulusan');
+        Schema::dropIfExists('08_MASTER_capaian_pembelajaran_lulusan');
     }
 }

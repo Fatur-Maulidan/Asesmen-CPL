@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\JurusanGolongan;
+use App\Enums\KategoriJurusan;
 use Illuminate\Database\Eloquent\Model;
 
 class Master_01_Jurusan extends Model
@@ -55,7 +55,7 @@ class Master_01_Jurusan extends Model
      * @var array
      */
     protected $casts = [
-        'golongan' => JurusanGolongan::class,
+        'golongan' => KategoriJurusan::class,
     ];
 
     // # Relations

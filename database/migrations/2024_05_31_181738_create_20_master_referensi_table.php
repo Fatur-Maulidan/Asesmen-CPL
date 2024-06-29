@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeyToDosen extends Migration
+class Create20MasterReferensiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddForeignKeyToDosen extends Migration
      */
     public function up()
     {
-        Schema::table('04_MASTER_dosen', function (Blueprint $table) {
-            $table->foreign('02_MASTER_program_studi_id')->references('id')->on('02_MASTER_program_studi');
+        Schema::create('20_MASTER_referensi', function (Blueprint $table) {
+            $table->id();
+            $table->string('judul', 50);
+            $table->year('tahun_terbit');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddForeignKeyToDosen extends Migration
      */
     public function down()
     {
-        Schema::table('04_MASTER_dosen', function (Blueprint $table) {
-            $table->dropForeign(['02_MASTER_program_studi_id']);
-        });
+        Schema::dropIfExists('20_MASTER_referensi');
     }
 }
