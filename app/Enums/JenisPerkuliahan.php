@@ -6,10 +6,10 @@ use BenSampo\Enum\Enum;
 
 /**
  * @method static static Teori()
- * @method static static Praktik()
+ * @method static static Praktikum()
  */
 final class JenisPerkuliahan extends Enum
 {
     const Teori =   'Teori';
-    const Praktik =   'Praktik';
+    const Praktik =   'Praktikum';
 }
