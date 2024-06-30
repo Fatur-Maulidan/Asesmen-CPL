@@ -26,7 +26,7 @@ class Create04MasterDosenTable extends Migration
             $table->enum('jenis_kelamin', JenisKelamin::getValues());
             $table->enum('status', StatusKeaktifan::getValues())->default('Aktif');
             $table->timestamps();
-            $table->foreignId('01_MASTER_jurusan_id')->constrained('01_MASTER_jurusan');
+            $table->foreignId('01_MASTER_jurusan_id')->nullable()->constrained('01_MASTER_jurusan');
         });
     }
 

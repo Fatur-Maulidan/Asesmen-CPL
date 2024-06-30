@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Enums\JenisKelamin;
-use App\Enums\RoleDosen;
 use App\Enums\StatusKeaktifan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
-class Master_04_Dosen extends Model
+class Master_04_Dosen extends Authenticatable
 {
+    use HasRoles;
+
     /**
      * The table associated with the model.
      *
@@ -61,6 +64,15 @@ class Master_04_Dosen extends Model
         'status' => StatusKeaktifan::class,
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'kata_sandi'
+    ];
+
     // # Relations
     public function jurusan()
     {
@@ -80,6 +92,12 @@ class Master_04_Dosen extends Model
     public function mataKuliahRegister()
     {
         return $this->belongsToMany(Master_11_MataKuliahRegister::class, '17_MASTER_pengampu', '04_MASTER_dosen_kode', '11_MASTER_mk_register_id');
+    }
+
+    // # Auth
+    public function getAuthPassword()
+    {
+        return $this->kata_sandi;
     }
 
     // # Methods

@@ -24,7 +24,7 @@ class LoginPostRequest extends FormRequest
     public function rules()
     {
         return [
-            'NIP' => 'required|numeric',
+            'kode' => 'required',
             'password' => 'required'
         ];
     }
@@ -32,9 +32,8 @@ class LoginPostRequest extends FormRequest
     public function messages()
     {
         return [
-            'NIP.required' => 'NIP wajib diisi',
-            'NIP.numeric' => 'NIP harus berupa angka',
-            'password.required' => 'Password wajib diisi',
+            'kode.required' => 'Kode harus diisi.',
+            'password.required' => 'Password harus diisi.',
         ];
     }
 }

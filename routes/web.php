@@ -47,7 +47,7 @@ Route::get('logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 // # Route untuk admin
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middleware' => ['auth', 'can:view_kurikulum']
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'admin']], function () {
     // # Dashboard
     Route::resource('dashboard', AdminDashboard::class);
 
@@ -78,7 +78,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // , 'middle
 });
 
 // # Route untuk kaprodi
-Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'middleware' => ['auth', 'can:view_kurikulum']
+Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth', 'kaprodi']],
+    function () {
     // # Kurikulum
     Route::resource('kurikulum', KaprodiKurikulumController::class)
         ->only(['index', 'create', 'store', 'update']);
@@ -127,7 +128,7 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.'], function () { // , 'mi
 });
 
 // # Route untuk dosen
-Route::group(['prefix' => 'dosen', 'as' => 'dosen.'], function () { // 'middleware' => ['auth', 'can:view_mata_kuliah'],
+Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'dosen']], function () {
     Route::prefix('/mata-kuliah')->group(function () {
 
         Route::get('/', [DosenMataKuliahController::class, 'index'])

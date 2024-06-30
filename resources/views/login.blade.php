@@ -8,20 +8,19 @@
         </div>
     @endif
 
-
     <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;background-color:#FEFEFE">
         <div class="d-flex flex-column align-items-center border-end-2 border-bottom-2 px-5 py-5 shadow-sm"
             style="background-color:#FFFFFF;">
             <div class="fw-bold fs-3 mb-4">Masuk</div>
-            <form action="{{ route('login') }}" method="POST">
+            <form action="{{ route('login') }}" method="POST" autocomplete="off">
                 @csrf
                 <div class="d-flex flex-column align-items-evenly">
-                    <div class="">
+                    <div class="mb-4">
                         <div class="mb-4">
-                            <input type="number" placeholder="NIP"
-                                class="rounded py-2 px-2 border border-dark @error('NIP') is-invalid @enderror"
-                                id="NIP" name="NIP" autofocus required value="{{ old('NIP') }}">
-                            @error('NIP')
+                            <input type="text" placeholder="Kode"
+                                class="rounded py-2 px-2 border border-dark @error('kode') is-invalid @enderror"
+                                id="kode" name="kode" autofocus required value="{{ old('kode') }}">
+                            @error('kode')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -29,13 +28,6 @@
                             <input type="password" placeholder="Kata Sandi" class="rounded py-2 px-2 border border-dark"
                                 name="password" id="password" required>
                             <i class="bi bi-eye-slash position-absolute" style="top:20%;right:5%;" id="togglePassword"></i>
-                        </div>
-                        <div class="mb-5">
-                            <a href="#"
-                                class="link-offset-2 link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
-                                style="font-size:12px;">
-                                Lupa Kata Sandi?
-                            </a>
                         </div>
                     </div>
                     <div class="d-flex flex-column position-relative">

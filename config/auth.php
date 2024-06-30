@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Master_04_Dosen;
+
 return [
 
     /*
@@ -14,7 +16,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'dosen',
         'passwords' => 'users',
     ],
 
@@ -36,9 +38,9 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'dosen' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'dosen',
         ],
     ],
 
@@ -60,15 +62,15 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+        //'users' => [
+        //    'driver' => 'eloquent',
+        //    'model' => App\Models\User::class,
+        //],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'dosen' => [
+            'driver' => 'eloquent',
+            'model' => Master_04_Dosen::class,
+        ],
     ],
 
     /*
