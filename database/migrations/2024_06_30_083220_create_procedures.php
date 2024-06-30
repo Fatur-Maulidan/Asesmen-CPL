@@ -15,7 +15,7 @@ class CreateProcedures extends Migration
     public function up()
     {
         DB::unprepared('
-            CREATE DEFINER=`root`@`%` PROCEDURE `GET_LATEST_ID`(OUT latest_id INT)
+            CREATE DEFINER=`root`@`%` PROCEDURE `GET_LATEST_ID`(OUT latest_id BIGINT UNSIGNED)
             BEGIN
                 DECLARE no_rows_found TINYINT DEFAULT 0;
 
@@ -41,14 +41,14 @@ class CreateProcedures extends Migration
 
         DB::unprepared('
             CREATE DEFINER=`root`@`%` PROCEDURE `GET_MATA_KULIAH_INFO`(
-                IN id_ra_in INT,
-                OUT id_mk_register_out INT,
-                OUT id_mata_kuliah_out INT,
+                IN id_ra_in BIGINT UNSIGNED,
+                OUT id_mk_register_out BIGINT UNSIGNED,
+                OUT id_mata_kuliah_out BIGINT UNSIGNED,
                 OUT kode_mata_kuliah_out VARCHAR(10),
                 OUT nama_mata_kuliah_out VARCHAR(50),
                 OUT tahun_akademik_awal_out YEAR,
                 OUT tahun_akademik_akhir_out YEAR,
-                OUT semester_out INT,
+                OUT semester_out TINYINT UNSIGNED,
                 OUT jenis_out ENUM ("Teori", "Praktikum")
             )
             BEGIN
@@ -77,9 +77,9 @@ class CreateProcedures extends Migration
 
         DB::unprepared('
             CREATE DEFINER=`root`@`%` PROCEDURE `GET_TOTAL_BOBOT_TP_MK`(
-                IN id_mr_in INT,
-                IN id_mk_in INT,
-                OUT total_bobot_tp_out INT
+                IN id_mr_in BIGINT UNSIGNED,
+                IN id_mk_in BIGINT UNSIGNED,
+                OUT total_bobot_tp_out TINYINT UNSIGNED
             )
             BEGIN
                 SELECT
@@ -95,13 +95,13 @@ class CreateProcedures extends Migration
         ');
 
         DB::unprepared('
-            CREATE DEFINER=`root`@`%` PROCEDURE `SET_KETERCAPAIAN_TP`(IN nim_mhs VARCHAR(9), IN id_ra_in INT, IN nilai_ra INT)
+            CREATE DEFINER=`root`@`%` PROCEDURE `SET_KETERCAPAIAN_TP`(IN nim_mhs VARCHAR(9), IN id_ra_in BIGINT UNSIGNED, IN nilai_ra TINYINT UNSIGNED)
             BEGIN
-                DECLARE id_mkr INT;
-                DECLARE id_mk INT;
-                DECLARE id_cpl_v INT;
-                DECLARE id_ik_v INT;
-                DECLARE id_tp_v INT;
+                DECLARE id_mkr BIGINT UNSIGNED;
+                DECLARE id_mk BIGINT UNSIGNED;
+                DECLARE id_cpl_v BIGINT UNSIGNED;
+                DECLARE id_ik_v BIGINT UNSIGNED;
+                DECLARE id_tp_v BIGINT UNSIGNED;
                 DECLARE kode_mk VARCHAR(10);
                 DECLARE kode_cpl_v VARCHAR(10);
                 DECLARE kode_ik_v VARCHAR(10);
@@ -110,7 +110,7 @@ class CreateProcedures extends Migration
                 DECLARE nama_mk VARCHAR(50);
                 DECLARE thn_akademik_awal YEAR;
                 DECLARE thn_akademik_akhir YEAR;
-                DECLARE semester_mk INT;
+                DECLARE semester_mk TINYINT UNSIGNED;
                 DECLARE jenis_mk ENUM("Teori", "Praktik");
                 DECLARE ketercapaian_tp DECIMAL(4,2);
                 DECLARE total_bobot_tp_v DECIMAL(3,0);
