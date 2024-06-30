@@ -17,7 +17,7 @@ class Create01MasterJurusanTable extends Migration
         Schema::create('01_MASTER_jurusan', function (Blueprint $table) {
             $table->id();
             $table->string('nama', 50);
-            $table->enum('golongan', KategoriJurusan::getValues());
+            $table->enum('kategori', KategoriJurusan::getValues());
             $table->timestamps();
         });
     }
