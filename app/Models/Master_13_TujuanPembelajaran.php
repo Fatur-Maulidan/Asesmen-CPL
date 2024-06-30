@@ -33,7 +33,7 @@ class Master_13_TujuanPembelajaran extends Model
      *
      * @var array
      */
-    protected $fillable = ['kode', 'deskripsi', 'tanggal_divalidasi', 'status_validasi', 'alasan_penolakan', '11_MASTER_mk_register_id'];
+    protected $fillable = ['kode', 'deskripsi', 'tanggal_divalidasi', 'status', 'alasan_penolakan', '11_MASTER_mk_register_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -49,13 +49,13 @@ class Master_13_TujuanPembelajaran extends Model
      */
     protected $casts = [
         'tanggal_divalidasi' => 'datetime',
-        'status_validasi' => StatusValidasiTP::class
+        'status' => StatusValidasiTP::class
     ];
 
     // Relations
     public function mataKuliahRegister()
     {
-        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '11_MASTER_mk_register_id');
+        return $this->belongsTo(Master_11_MataKuliahRegister::class, '11_MASTER_mk_register_id');
     }
 
     public function petaIkMk()
@@ -68,9 +68,9 @@ class Master_13_TujuanPembelajaran extends Model
         return $this->belongsToMany(Master_15_RencanaAsesmen::class, '16_MASTER_peta_ra_tp', '13_MASTER_tujuan_pembelajaran_id', '15_MASTER_rencana_asesmen_id');
     }
 
-    public function kemampuanAkhirDiharapkan()
+    public function ketercapaian()
     {
-        return $this->hasMany(Master_17_KemampuanAkhirDiharapkan::class, '13_MASTER_tujuan_pembelajaran_id');
+        return $this->hasMany(Analisis_01_Ketercapaian_Mahasiswa::class, 'id_tp');
     }
 
     public function getDataTpById($id)

@@ -20,28 +20,21 @@ class Master_02_ProgramStudi extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'nomor';
-
-    /**
-     * The "type" of the primary key ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
+    protected $primaryKey = 'id';
 
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = false;
+    public $incrementing = true;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['nomor', 'nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_nomor', '04_MASTER_dosen_kode'];
+    protected $fillable = ['nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_id', '04_MASTER_dosen_kode'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -62,12 +55,12 @@ class Master_02_ProgramStudi extends Model
     // # Relations
     public function jurusan()
     {
-        return $this->belongsTo(Master_01_Jurusan::class, '01_MASTER_jurusan_nomor');
+        return $this->belongsTo(Master_01_Jurusan::class, '01_MASTER_jurusan_id');
     }
 
     public function kurikulum()
     {
-        return $this->hasMany(Master_03_Kurikulum::class, '02_MASTER_program_studi_nomor');
+        return $this->hasMany(Master_03_Kurikulum::class, '02_MASTER_program_studi_id');
     }
 
     public function kaprodi()
@@ -77,12 +70,12 @@ class Master_02_ProgramStudi extends Model
 
     public function dosen()
     {
-        return $this->belongsToMany(Master_04_Dosen::class, '05_MASTER_prodi_dosen', '02_MASTER_program_studi_nomor', '04_MASTER_dosen_kode');
+        return $this->belongsToMany(Master_04_Dosen::class, '05_MASTER_prodi_dosen', '02_MASTER_program_studi_id', '04_MASTER_dosen_kode');
     }
 
     public function mahasiswa()
     {
-        return $this->hasMany(Master_06_Mahasiswa::class, '02_MASTER_program_studi_nomor');
+        return $this->hasMany(Master_06_Mahasiswa::class, '02_MASTER_program_studi_id');
     }
 
     // # Methods

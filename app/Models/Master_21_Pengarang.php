@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use App\Http\Middleware\TrustProxies;
 use Illuminate\Database\Eloquent\Model;
 
-class Master_17_KemampuanAkhirDiharapkan extends Model
+class Master_21_Pengarang extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '17_MASTER_kad';
+    protected $table = '21_MASTER_pengarang';
 
     /**
      * The primary key associated with the table.
@@ -32,14 +33,14 @@ class Master_17_KemampuanAkhirDiharapkan extends Model
      *
      * @var array
      */
-    protected $fillable = ['deskripsi', 'materi', 'minggu', 'persentase_kontribusi_tp', '13_MASTER_tujuan_pembelajaran_id'];
+    protected $fillable = ['nama_depan', 'nama_belakang'];
 
     /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * The attributes that should be cast.
@@ -49,13 +50,8 @@ class Master_17_KemampuanAkhirDiharapkan extends Model
     protected $casts = [];
 
     // Relations
-    public function tujuanPembelajaran()
+    public function referensi()
     {
-        return $this->belongsTo(Master_13_TujuanPembelajaran::class, '13_MASTER_tujuan_pembelajaran_id');
-    }
-
-    public function soal()
-    {
-        return $this->hasMany(Master_18_Soal::class, '17_MASTER_kad_id');
+        return $this->belongsToMany(Master_20_Referensi::class, '22_MASTER_referensi_register', '21_MASTER_pengarang_id', '20_MASTER_referensi_id');
     }
 }

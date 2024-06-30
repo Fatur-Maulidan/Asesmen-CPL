@@ -42,7 +42,7 @@ class Master_04_Dosen extends Model
      *
      * @var array
      */
-    protected $fillable = ['kode', 'nip', 'nama', 'email', 'jenis_kelamin', 'status', '01_MASTER_jurusan_nomor'];
+    protected $fillable = ['kode', 'nip', 'nama', 'email', 'kata_sandi', 'jenis_kelamin', 'status', '01_MASTER_jurusan_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -64,7 +64,7 @@ class Master_04_Dosen extends Model
     // # Relations
     public function jurusan()
     {
-        return $this->belongsTo(Master_01_Jurusan::class, '01_MASTER_jurusan_nomor');
+        return $this->belongsTo(Master_01_Jurusan::class, '01_MASTER_jurusan_id');
     }
 
     public function kaprodi()
@@ -74,12 +74,12 @@ class Master_04_Dosen extends Model
 
     public function programStudi()
     {
-        return $this->belongsToMany(Master_02_ProgramStudi::class, '05_MASTER_prodi_dosen', '04_MASTER_dosen_kode', '02_MASTER_program_studi_nomor');
+        return $this->belongsToMany(Master_02_ProgramStudi::class, '05_MASTER_prodi_dosen', '04_MASTER_dosen_kode', '02_MASTER_program_studi_id');
     }
 
     public function mataKuliahRegister()
     {
-        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '19_MASTER_pengampu', '04_MASTER_dosen_kode', '11_MASTER_mk_register_id');
+        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '17_MASTER_pengampu', '04_MASTER_dosen_kode', '11_MASTER_mk_register_id');
     }
 
     // # Methods

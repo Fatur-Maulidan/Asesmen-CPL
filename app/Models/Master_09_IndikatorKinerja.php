@@ -32,7 +32,7 @@ class Master_09_IndikatorKinerja extends Model
      *
      * @var array
      */
-    protected $fillable = ['kode', 'deskripsi', '03_MASTER_kurikulum_id', '08_MASTER_capaian_pembelajaran_lulusan_id'];
+    protected $fillable = ['kode', 'deskripsi', '08_MASTER_capaian_pembelajaran_lulusan_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -49,20 +49,11 @@ class Master_09_IndikatorKinerja extends Model
     protected $casts = [];
 
     // # Relations
-    public function kurikulum()
-    {
-        return $this->belongsTo(Master_03_Kurikulum::class, '03_MASTER_kurikulum_id');
-    }
-
     public function capaianPembelajaranLulusan()
     {
         return $this->belongsTo(Master_08_CapaianPembelajaranLulusan::class, '08_MASTER_capaian_pembelajaran_lulusan_id');
     }
-    public function tujuanPembelajaran()
-    {
-        return $this->hasMany(Master_13_TujuanPembelajaran::class, '11_MASTER_mk_register_id');
-    }
-    
+
     public function rubrik()
     {
         return $this->hasMany(Master_10_Rubrik::class, '09_MASTER_indikator_kinerja_id');
@@ -71,6 +62,11 @@ class Master_09_IndikatorKinerja extends Model
     public function mataKuliahRegister()
     {
         return $this->belongsToMany(Master_11_MataKuliahRegister::class, '12_MASTER_peta_ik_mk', '09_MASTER_indikator_kinerja_id', '11_MASTER_mk_register_id')->using(Master_12_PetaIkMk::class)->withPivot('id');
+    }
+
+    public function ketercapaian()
+    {
+        return $this->hasMany(Analisis_01_Ketercapaian_Mahasiswa::class, 'id_ik');
     }
 
     // # Methods

@@ -39,7 +39,7 @@ class Master_15_RencanaAsesmen extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * The attributes that should be cast.
@@ -61,6 +61,11 @@ class Master_15_RencanaAsesmen extends Model
 
     public function mahasiswa()
     {
-        return $this->belongsToMany(Master_06_Mahasiswa::class, '21_MASTER_nilai_mahasiswa', '15_MASTER_rencana_asesmen_id', '06_MASTER_mahasiswa_nim')->withPivot('nilai')->withTimestamps();
+        return $this->belongsToMany(Master_06_Mahasiswa::class, '19_MASTER_nilai_mahasiswa', '15_MASTER_rencana_asesmen_id', '06_MASTER_mahasiswa_nim')->withPivot('nilai')->withTimestamps();
+    }
+
+    public function ketercapaian()
+    {
+        return $this->hasMany(Analisis_01_Ketercapaian_Mahasiswa::class, 'id_ra');
     }
 }

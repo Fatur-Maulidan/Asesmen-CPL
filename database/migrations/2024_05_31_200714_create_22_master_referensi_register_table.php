@@ -13,7 +13,7 @@ class Create22MasterReferensiRegisterTable extends Migration
      */
     public function up()
     {
-        Schema::create('22_MASTER_referensi_utama', function (Blueprint $table) {
+        Schema::create('22_MASTER_referensi_register', function (Blueprint $table) {
             $table->foreignId('20_MASTER_referensi_id')->constrained('20_MASTER_referensi');
             $table->foreignId('21_MASTER_pengarang_id')->constrained('21_MASTER_pengarang');
         });

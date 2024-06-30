@@ -62,6 +62,11 @@ class Master_08_CapaianPembelajaranLulusan extends Model
         return $this->hasMany(Master_09_IndikatorKinerja::class, '08_MASTER_capaian_pembelajaran_lulusan_id');
     }
 
+    public function ketercapaian()
+    {
+        return $this->hasMany(Analisis_01_Ketercapaian_Mahasiswa::class, 'id_cpl');
+    }
+
     // # Methods
     public function getCplIdByKurikulum($kode, $kurikulum)
     {

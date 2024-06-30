@@ -41,7 +41,7 @@ class Master_06_Mahasiswa extends Model
      *
      * @var array
      */
-    protected $fillable = ['nim', 'nama', 'email', 'jenis_kelamin', 'kelas', 'tahun_angkatan', 'status', '02_MASTER_program_studi_nomor', '03_MASTER_kurikulum_id'];
+    protected $fillable = ['nim', 'nama', 'email', 'jenis_kelamin', 'kelas', 'tahun_angkatan', 'status', '02_MASTER_program_studi_id', '03_MASTER_kurikulum_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -63,7 +63,7 @@ class Master_06_Mahasiswa extends Model
     // # Relations
     public function programStudi()
     {
-        return $this->belongsTo(Master_02_ProgramStudi::class, '02_MASTER_program_studi_nomor');
+        return $this->belongsTo(Master_02_ProgramStudi::class, '02_MASTER_program_studi_id');
     }
 
     public function kurikulum()
@@ -73,12 +73,17 @@ class Master_06_Mahasiswa extends Model
 
     public function mataKuliahRegister()
     {
-        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '20_MASTER_mahasiswa_perkuliahan', '06_MASTER_mahasiswa_nim', '11_MASTER_mk_register_id');
+        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '18_MASTER_perkuliahan', '06_MASTER_mahasiswa_nim', '11_MASTER_mk_register_id');
     }
 
     public function rencanaAsesmen()
     {
-        return $this->belongsToMany(Master_15_RencanaAsesmen::class, '21_MASTER_nilai_mahasiswa', '06_MASTER_mahasiswa_nim', '15_MASTER_rencana_asesmen_id')->withPivot('nilai')->withTimestamps();
+        return $this->belongsToMany(Master_15_RencanaAsesmen::class, '19_MASTER_nilai_mahasiswa', '06_MASTER_mahasiswa_nim', '15_MASTER_rencana_asesmen_id')->withPivot('nilai')->withTimestamps();
+    }
+
+    public function ketercapaian()
+    {
+        return $this->hasMany(Analisis_01_Ketercapaian_Mahasiswa::class, 'nim');
     }
 
     // # Scopes

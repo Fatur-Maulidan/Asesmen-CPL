@@ -33,7 +33,7 @@ class Master_03_Kurikulum extends Model
      *
      * @var array
      */
-    protected $fillable = ['tahun', 'tahun_berlaku', 'tahun_berakhir', 'status', '02_MASTER_program_studi_nomor', 'konf_tenggat_waktu_tp', 'jumlah_maksimal_rubrik', 'nilai_rentang_rubrik'];
+    protected $fillable = ['tahun', 'tahun_berlaku', 'tahun_berakhir', 'status', 'konf_tenggat_waktu_tp', '02_MASTER_program_studi_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -49,14 +49,13 @@ class Master_03_Kurikulum extends Model
      */
     protected $casts = [
         'status' => StatusKurikulum::class,
-        'nilai_rentang_rubrik' => 'array',
         'konf_tenggat_waktu_tp' => 'datetime',
     ];
 
     // # Relations
     public function programStudi()
     {
-        return $this->belongsTo(Master_02_ProgramStudi::class, '02_MASTER_program_studi_nomor');
+        return $this->belongsTo(Master_02_ProgramStudi::class, '02_MASTER_program_studi_id');
     }
 
     public function mataKuliah()
@@ -67,11 +66,6 @@ class Master_03_Kurikulum extends Model
     public function capaianPembelajaranLulusan()
     {
         return $this->hasMany(Master_08_CapaianPembelajaranLulusan::class, '03_MASTER_kurikulum_id');
-    }
-
-    public function indikatorKinerja()
-    {
-        return $this->hasMany(Master_09_IndikatorKinerja::class, '03_MASTER_kurikulum_id');
     }
 
     public function mahasiswa()
@@ -102,9 +96,9 @@ class Master_03_Kurikulum extends Model
         }
     }
 
-    public function scopeProdi($query, $program_studi_nomor)
+    public function scopeProdi($query, $program_studi_id)
     {
-        return $query->where('program_studi_nomor', $program_studi_nomor);
+        return $query->where('program_studi_id', $program_studi_id);
     }
 
     // # Methods
@@ -119,8 +113,8 @@ class Master_03_Kurikulum extends Model
         return $this->where('tahun', $tahunAkademikVal)->pluck('02_MASTER_program_studi_id')[0];
     }
 
-    public function getKurikulumByNomorProdi($nomorProdi, $kurikulum){
-        return $this->where('02_MASTER_program_studi_nomor', $nomorProdi)
+    public function getKurikulumByNomorProdi($idProdi, $kurikulum){
+        return $this->where('02_MASTER_program_studi_id', $idProdi)
                     ->where('tahun', $kurikulum)
                     ->with('capaianPembelajaranLulusan.indikatorKinerja.mataKuliahRegister.mataKuliah')
                     ->first();

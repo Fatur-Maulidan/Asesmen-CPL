@@ -34,7 +34,7 @@ class Master_11_MataKuliahRegister extends Model
      *
      * @var array
      */
-    protected $fillable = ['tahun_akademik', 'semester', 'jenis', '07_MASTER_mata_kuliah_id'];
+    protected $fillable = ['tahun_akademik_awal', 'tahun_akademik_akhir', 'semester', 'jenis', '07_MASTER_mata_kuliah_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -75,19 +75,25 @@ class Master_11_MataKuliahRegister extends Model
 
     public function dosen()
     {
-        return $this->belongsToMany(Master_04_Dosen::class, '19_MASTER_pengampu', '11_MASTER_mk_register_id', '04_MASTER_dosen_kode');
+        return $this->belongsToMany(Master_04_Dosen::class, '17_MASTER_pengampu', '11_MASTER_mk_register_id', '04_MASTER_dosen_kode');
     }
 
     public function mahasiswa()
     {
-        return $this->belongsToMany(Master_06_Mahasiswa::class, '20_MASTER_mahasiswa_perkuliahan', '11_MASTER_mk_register_id', '06_MASTER_mahasiswa_nim');
+        return $this->belongsToMany(Master_06_Mahasiswa::class, '18_MASTER_perkuliahan', '11_MASTER_mk_register_id', '06_MASTER_mahasiswa_nim');
     }
 
     public function referensi()
     {
-        return $this->belongsToMany(Master_22_Referensi::class, '25_MASTER_referensi_utama', '23_MASTER_mk_register_id', '22_MASTER_referensi_id');
+        return $this->belongsToMany(Master_20_Referensi::class, '23_MASTER_referensi_utama', '11_MASTER_mk_register_id', '20_MASTER_referensi_id');
     }
 
+    public function ketercapaian()
+    {
+        return $this->hasMany(Analisis_01_Ketercapaian_Mahasiswa::class, 'id_mk_register');
+    }
+
+    // # Methods
     public function getMataKuliahByIdMataKuliahRegister($id){
         return $this->where('07_MASTER_mata_kuliah_id', $id)->first();
     }

@@ -19,28 +19,21 @@ class Master_01_Jurusan extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'nomor';
-
-    /**
-     * The "type" of the primary key ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
+    protected $primaryKey = 'id';
 
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = false;
+    public $incrementing = true;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['nomor', 'nama', 'golongan'];
+    protected $fillable = ['nama', 'kategori'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -55,29 +48,29 @@ class Master_01_Jurusan extends Model
      * @var array
      */
     protected $casts = [
-        'golongan' => KategoriJurusan::class,
+        'kategori' => KategoriJurusan::class,
     ];
 
     // # Relations
     public function programStudi()
     {
-        return $this->hasMany(Master_02_ProgramStudi::class, '01_MASTER_jurusan_nomor');
+        return $this->hasMany(Master_02_ProgramStudi::class, '01_MASTER_jurusan_id');
     }
 
     public function dosen()
     {
-        return $this->hasMany(Master_04_Dosen::class, '01_MASTER_jurusan_nomor');
+        return $this->hasMany(Master_04_Dosen::class, '01_MASTER_jurusan_id');
     }
 
     // # Scopes
     public function scopeRekayasa($query)
     {
-        return $query->where('golongan', 'Rekayasa');
+        return $query->where('kategori', 'Rekayasa');
     }
 
     public function scopeNonrekayasa($query)
     {
-        return $query->where('golongan', 'Nonrekayasa');
+        return $query->where('kategori', 'Nonrekayasa');
     }
 
     public function scopeSearch($query)

@@ -32,7 +32,7 @@ class Master_10_Rubrik extends Model
      *
      * @var array
      */
-    protected $fillable = ['urutan', 'level_kemampuan', 'deskripsi', '09_MASTER_indikator_kinerja_id'];
+    protected $fillable = ['urutan', 'deskripsi', '09_MASTER_indikator_kinerja_id'];
 
     /**
      * Indicates if the model should be timestamped.

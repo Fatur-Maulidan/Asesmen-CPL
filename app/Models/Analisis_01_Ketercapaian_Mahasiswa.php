@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use App\Enums\KategoriJurusan;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Master_18_Soal extends Model
+class Analisis_01_Ketercapaian_Mahasiswa extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '18_MASTER_soal';
+    protected $table = '01_ANALISIS_ketercapaian_mahasiswa';
 
     /**
      * The primary key associated with the table.
@@ -32,7 +34,7 @@ class Master_18_Soal extends Model
      *
      * @var array
      */
-    protected $fillable = ['pertanyaan', 'bentuk_evaluasi'];
+    protected $fillable = ['nama', 'kategori'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -48,9 +50,5 @@ class Master_18_Soal extends Model
      */
     protected $casts = [];
 
-    // Relations
-    public function kemampuanAkhirDiharapkan()
-    {
-        return $this->belongsTo(Master_17_KemampuanAkhirDiharapkan::class, '17_MASTER_kad_id');
-    }
+    // # Relations
 }

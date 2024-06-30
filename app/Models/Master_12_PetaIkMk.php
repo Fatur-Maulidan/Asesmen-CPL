@@ -34,7 +34,13 @@ class Master_12_PetaIkMk extends Pivot
      */
     protected $fillable = ['11_MASTER_mk_register_id', '09_MASTER_indikator_kinerja_id'];
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
     public $timestamps = false;
+
     // Relations
     public function tujuanPembelajaran()
     {

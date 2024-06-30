@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Master_22_Referensi extends Model
+class Master_20_Referensi extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = '22_MASTER_referensi';
+    protected $table = '20_MASTER_referensi';
 
     /**
      * The primary key associated with the table.
@@ -39,7 +39,7 @@ class Master_22_Referensi extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * The attributes that should be cast.
@@ -51,11 +51,11 @@ class Master_22_Referensi extends Model
     // Relations
     public function pengarang()
     {
-        return $this->belongsToMany(Master_23_Pengarang::class, '24_MASTER_referensi_register', '22_MASTER_referensi_id', '23_MASTER_pengarang_id');
+        return $this->belongsToMany(Master_21_Pengarang::class, '22_MASTER_referensi_register', '20_MASTER_referensi_id', '21_MASTER_pengarang_id');
     }
 
     public function mataKuliahRegister()
     {
-        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '25_MASTER_referensi_utama', '22_MASTER_referensi_id', '23_MASTER_mk_register_id');
+        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '23_MASTER_referensi_utama', '20_MASTER_referensi_id', '11_MASTER_mk_register_id');
     }
 }
