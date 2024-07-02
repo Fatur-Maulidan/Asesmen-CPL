@@ -29,19 +29,20 @@ class DosenRequest extends FormRequest
         $kode = $this->segment(count($this->segments()));
 
         return [
+            'id' => 'bail|sometimes|required|integer|exists:04_MASTER_dosen,id',
             'kode' => [
                 'bail', 'required',
-                Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')
+                Rule::unique('04_MASTER_dosen')->ignore($kode, 'id')
             ],
             'nip' => [
                 'bail', 'required',
-                Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')
+                Rule::unique('04_MASTER_dosen')->ignore($kode, 'id')
             ],
             'nama' => 'bail|required|regex:/^[a-zA-Z\s.,]+$/',
             'jenis_kelamin' => 'bail|required',
             'email' => [
                 'bail', 'required', 'email',
-                Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')
+                Rule::unique('04_MASTER_dosen')->ignore($kode, 'id')
             ],
             'jurusan' => 'bail|required',
             'program_studi' => 'sometimes|bail|required|array',

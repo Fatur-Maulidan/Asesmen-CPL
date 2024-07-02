@@ -37,7 +37,7 @@ class DosenController extends Controller
         return $dataTable->with('filter', $filter)->render('admin.dosen.index', [
             'title' => 'Dosen',
             'jurusan' => $jurusan,
-            'prodi' => $program_studi,
+            'program_studi' => $program_studi,
         ]);
     }
 
@@ -81,10 +81,10 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kode)
+    public function show($id)
     {
         if (request()->ajax()) {
-            $dosen = Master_04_Dosen::with('programStudi:id,nama,jenjang_pendidikan')->find($kode);
+            $dosen = Master_04_Dosen::with('programStudi:id,nama,jenjang_pendidikan')->find($id);
 
             return response()->json([
                 'dosen' => $dosen
@@ -110,15 +110,14 @@ class DosenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(DosenRequest $request, $kode)
+    public function update(DosenRequest $request, $id)
     {
         if ($request->ajax()) {
-            $dosen = Master_04_Dosen::find($kode);
+            $dosen = Master_04_Dosen::find($id);
 
             $validated = $request->validated();
             $validated['01_MASTER_jurusan_id'] = $validated['jurusan'];
             unset($validated['jurusan']);
-            $old_kode = $validated['kode'];
 
             $old_prodi = [];
             foreach ($dosen->programStudi as $prodi) {
@@ -131,18 +130,9 @@ class DosenController extends Controller
                 }
             }
 
-            $role = Role::findByName('dosen');
-            if ($old_kode != $dosen->kode) {
-                $dosen->roles()->detach($role->id);
-            }
-
-            DB::transaction(function () use ($dosen, $validated, $role, $old_kode) {
+            DB::transaction(function () use ($dosen, $validated) {
                 $dosen->update($validated);
-                $new_kode = $dosen->kode;
                 $dosen->programStudi()->sync($validated['program_studi']);
-                if ($old_kode != $new_kode) {
-                    $dosen->roles()->attach($role->id);
-                }
             });
 
             return response()->json([
@@ -164,9 +154,9 @@ class DosenController extends Controller
         return redirect()->back();
     }
 
-    public function toggleStatus($nip)
+    public function toggleStatus($id)
     {
-        $dosen = Master_04_Dosen::find($nip);
+        $dosen = Master_04_Dosen::find($id);
 
         $dosen->update([
             'status' => ($dosen->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::Nonaktif : StatusKeaktifan::Aktif

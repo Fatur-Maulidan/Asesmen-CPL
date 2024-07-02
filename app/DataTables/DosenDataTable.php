@@ -42,7 +42,7 @@ class DosenDataTable extends DataTable
                     $button = '<button type="submit" class="btn btn-success">Aktifkan</button>';
                 }
 
-                $form = '<form action="' . route('admin.dosen.toggleStatus', ['dosen' => $dosen->kode]) . '" method="post">
+                $form = '<form action="' . route('admin.dosen.toggleStatus', ['dosen' => $dosen->id]) . '" method="post">
                     ' . csrf_field() . '
                     ' . method_field('PATCH') . '
                     ' . $button . '
@@ -51,7 +51,7 @@ class DosenDataTable extends DataTable
                 return $form;
             })
             ->addColumn('tindakan', function (Master_04_Dosen $dosen) {
-                $content = '<button type="button" class="btn btn-warning btn-ubah" data-bs-toggle="modal" data-bs-target="#DosenModal" data-kode="' . $dosen->kode . '">Ubah</button>';
+                $content = '<button type="button" class="btn btn-warning btn-ubah" data-bs-toggle="modal" data-bs-target="#DosenModal" data-id="' . $dosen->id . '">Ubah</button>';
 
                 return $content;
             })

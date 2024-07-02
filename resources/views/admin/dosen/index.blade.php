@@ -79,6 +79,7 @@
                     <form action="" method="POST" autocomplete="off" id="tambahDosenForm">
                         @csrf
                         <div id="method_spoofing"></div>
+                        <div id="hidden"></div>
 
                         <div class="row">
                             <div class="col-6">
@@ -144,8 +145,8 @@
                                     <label for="program_studi" class="form-label fw-bold">Program studi</label>
                                     <select class="form-select" id="program_studi" name="program_studi[]" multiple>
                                         <option value="">Pilih program studi</option>
-                                        @foreach ($prodi as $p)
-                                            <option value="{{ $p->id }}">{{ $p->jenjang_pendidikan . ' ' .$p->nama }}</option>
+                                        @foreach ($program_studi as $prodi)
+                                            <option value="{{ $prodi->id }}">{{ $prodi->jenjang_pendidikan . ' ' .$prodi->nama }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -161,39 +162,6 @@
                         <div class="col">
                             <button type="submit" class="btn btn-success w-100" form="tambahDosenForm"
                                 id="btn-submit">Tambah</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Hapus Modal --}}
-    <div class="modal fade" id="hapusDosenModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
-        aria-labelledby="hapusDosenModalLabel" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="hapusDosenModalLabel">Konfirmasi Penghapusan</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body py-4">
-                    <div class="text-center">
-                        <i class="bi bi-exclamation-triangle-fill text-warning fs-1"></i>
-                        <div>Anda yakin ingin hapus data?</div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row w-100">
-                        <div class="col">
-                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Tidak</button>
-                        </div>
-                        <div class="col">
-                            <form action="" method="post" id="hapusDosenForm">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-success w-100" data-bs-dismiss="modal">Ya</button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -314,18 +282,11 @@
                 });
             });
 
-            $(document).on('click', '.btn-hapus', function(e) {
-                e.preventDefault();
-
-                const kode = $(this).data('kode');
-                $('#hapusDosenForm').attr('action', "{{ url()->current() }}/" + kode);
-            });
-
             $(document).on('click', '.btn-ubah', function(e) {
                 e.preventDefault();
 
-                const kode = $(this).data('kode');
-                const url = "{{ url()->current() }}/" + kode;
+                const id = $(this).data('id');
+                const url = "{{ url()->current() }}/" + id;
 
                 $.ajax({
                     type: "get",
@@ -337,11 +298,14 @@
                         $('#kode').val(res.dosen.kode);
                         $('#nip').val(res.dosen.nip);
                         $('#nama').val(res.dosen.nama);
+
                         (res.dosen.jenis_kelamin == '{{ \App\Enums\JenisKelamin::LakiLaki }}')
                             ? $('#jk_laki').prop('checked', true)
                             : $('#jk_perempuan').prop('checked', true);
+
                         $('#email').val(res.dosen.email);
                         $('#jurusan').val(res.dosen['01_MASTER_jurusan_id']).change();
+
                         let prodi = [];
                         if (res.dosen.program_studi) {
                             res.dosen.program_studi.forEach(function (element, index) {
@@ -356,8 +320,9 @@
                 });
 
                 $('#DosenModalLabel').html('Ubah Dosen');
-                $('#tambahDosenForm').attr('action', "{{ url()->current() }}/" + kode);
+                $('#tambahDosenForm').attr('action', "{{ url()->current() }}/" + id);
                 $('#method_spoofing').html('{{ method_field('patch') }}');
+                $('#hidden').html(`<input type="hidden" name="id" value="${id}">`);
                 $('#btn-submit').html('Ubah');
                 $('#btn-submit').addClass('btn-warning').removeClass('btn-success');
             });
