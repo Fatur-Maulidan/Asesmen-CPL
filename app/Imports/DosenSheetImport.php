@@ -15,7 +15,7 @@ class DosenSheetImport implements OnEachRow, WithHeadingRow
 
     public function __construct()
     {
-        $this->program_studi = Master_02_ProgramStudi::select('nomor', 'nama', 'jenjang_pendidikan')->get();
+        $this->program_studi = Master_02_ProgramStudi::select('id', 'nama', 'jenjang_pendidikan')->get();
     }
 
     /**
@@ -28,19 +28,32 @@ class DosenSheetImport implements OnEachRow, WithHeadingRow
         $rowIndex = $row->getIndex();
         $row      = $row->toArray();
 
-        $prodi = $this->program_studi->where('jenjang_pendidikan', explode(' ', $row['program_studi'], 2)[0])
-        ->where('nama', explode(' ', $row['program_studi'], 2)[1])->first();
-
-        $dosen = Master_04_Dosen::updateOrCreate(['kode' => $row['kode']],
-            [
-            'kode' => $row['kode'],
+        $data = [
+            'kode' => $row['kode_dosen'],
             'nip' => $row['nip'],
             'nama' => $row['nama'],
             'email' => $row['email'],
             'jenis_kelamin' => $row['jenis_kelamin'],
-            '01_MASTER_jurusan_nomor' => Master_01_Jurusan::where('nama', $row['jurusan'])->pluck('nomor')->first(),
-        ]);
+            '01_MASTER_jurusan_id' => Master_01_Jurusan::where('nama', $row['homebase_jurusan'])->pluck('id')->first(),
+        ];
 
-        $dosen->programStudi()->attach($prodi);
+        $dosen = Master_04_Dosen::where('kode', $row['kode_dosen'])->first();
+        if ($dosen) {
+            $dosen->update($data);
+        } else {
+            $dosen = Master_04_Dosen::create($data);
+        }
+
+        $program_studi = explode(',', $row['program_studi_mengajar']);
+        $prodi = [];
+        foreach ($program_studi as $ps) {
+            $temp = $this->program_studi->where('jenjang_pendidikan', explode(' ', trim($ps), 2)[0])
+                ->where('nama', explode(' ', trim($ps), 2)[1])->pluck('id')->first();
+
+            $prodi[] = $temp;
+        }
+
+        $dosen->programStudi()->sync($prodi);
+        $dosen->assignRole('dosen');
     }
 }
