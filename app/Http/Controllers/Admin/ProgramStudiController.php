@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ProgramStudiExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProgramStudiRequest;
 use App\Imports\JurusanImport;
@@ -124,6 +125,7 @@ class ProgramStudiController extends Controller
     {
         $file_path = public_path('files/templates/Template_Program_Studi.xlsx');
 
+        //return Excel::download(new ProgramStudiExport, 'Template_Program_Studi.xlsx');
         return response()->download($file_path);
     }
 
