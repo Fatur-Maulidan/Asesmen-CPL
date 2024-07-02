@@ -6,10 +6,14 @@
         </a>
         <div class="d-flex align-items-center ">
             <div class="d-flex flex-column text-end me-2">
-                <div class="fw-bold">{{ $nama }}</div>
-                <div>{{ $role }}</div>
+                <div class="fw-bold">{{ auth()->user()->nama }}</div>
+                <div>{{ Str::title(auth()->user()->roles[0]->name) }}</div>
             </div>
             <img src="{{ asset('images/logo-polban2.png') }}" alt="polban" width=40>
+            <form action="{{ route('logout') }}" method="post">
+                @csrf
+                <button type="submit" class="btn btn-outline-danger ms-3">Logout</button>
+            </form>
         </div>
     </div>
 </nav>
@@ -17,7 +21,7 @@
 <nav class="navbar navbar-expand-lg bg-dark shadow shadow-sm py-3" data-bs-theme="dark">
     <div class="container-fluid">
         <ul class="navbar-nav nav-underline mx-auto">
-            @if ($role == 'Admin')
+            @if (auth()->user()->roles[0]->name == 'admin')
                 <li class="nav-item">
                     <a class="nav-link @if (Route::is('admin.dashboard.*')) active @endif"
                        href="{{ route('admin.dashboard.index') }}">Dashboard</a>
@@ -30,7 +34,7 @@
                     <a class="nav-link @if (Route::is('admin.dosen.*')) active @endif"
                        href="{{ route('admin.dosen.index') }}">Dosen</a>
                 </li>
-            @elseif($role == 'Koordinator Program Studi')
+            @elseif(auth()->user()->roles[0]->name == 'koordinator program studi')
                 @if (Route::is('kaprodi.kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard.*'))
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('kaprodi.kurikulum.index') }}">Kurikulum</a>

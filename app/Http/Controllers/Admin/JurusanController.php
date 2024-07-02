@@ -8,6 +8,8 @@ use App\Imports\JurusanImport;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_01_Jurusan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 class JurusanController extends Controller
@@ -31,8 +33,6 @@ class JurusanController extends Controller
 
         return view('admin.jurusan.index', [
             'title' => 'Jurusan',
-            'nama' => 'John Tyler',
-            'role' => 'Admin',
             'jurusan' => $jurusan->get(),
             'dosen' => Master_04_Dosen::get(['nip', 'kode', 'nama'])
         ]);
@@ -56,13 +56,15 @@ class JurusanController extends Controller
      */
     public function store(JurusanRequest $request)
     {
-        $validated = $request->validated();
+        if ($request->ajax()) {
+            $validated = $request->validated();
 
-        Master_01_Jurusan::create($validated);
+            Master_01_Jurusan::create($validated);
 
-        return response()->json([
-            'message' => 'Data berhasil ditambah.'
-        ], 201);
+            return response()->json([
+                'message' => 'Data berhasil ditambah.'
+            ], 201);
+        }
     }
 
     /**

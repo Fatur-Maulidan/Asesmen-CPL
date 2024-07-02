@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary pb-0 border">
     <div class="container-fluid container-md d-block pt-2">
         <h6 class="mb-4">
-            @if ($role == 'Admin')
+            @if (auth()->user()->roles[0]->name == 'admin')
                 <span class="fw-normal">Admin</span>
             @else
                 <span class="fw-normal">Jurusan Teknik Komputer dan Informatika |</span>
@@ -11,10 +11,10 @@
 
         @yield('breadcrumb')
 
-        @if($role != 'Admin' && (!Route::is('kaprodi.kurikulum.create') && !Route::is('kaprodi.kurikulum.index')))
+        @if(auth()->user()->roles[0]->name != 'Admin' && (!Route::is('kaprodi.kurikulum.create') && !Route::is('kaprodi.kurikulum.index')))
             @if(isset($kurikulum) && !$kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif))
                 <div class="d-flex justify-content-end mt-4">
-                    @if($role == 'Koordinator Program Studi' && $kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                    @if(auth()->user()->roles[0]->name == 'koordinator program studi' && $kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
                         <button type="button" class="btn btn-outline-success mb-0 me-3" data-bs-toggle="modal" data-bs-target="#confirmFinalisasiModal">Finalisasi</button>
                     @endif
                     <h3 class="mb-0">
@@ -27,7 +27,7 @@
             @endif
         @endif
 
-        @if ($role == 'Koordinator Program Studi' && isset($kurikulum))
+        @if (auth()->user()->roles[0]->name == 'koordinator program studi' && isset($kurikulum))
         {{-- Confirm modal --}}
         <div class="modal fade" id="confirmFinalisasiModal" data-bs-backdrop="static" data-bs-keyboard="false"
              aria-hidden="true" aria-labelledby="confirmFinalisasiModalLabel" tabindex="-1">

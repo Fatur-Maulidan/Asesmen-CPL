@@ -41,10 +41,10 @@ Route::redirect('/', '/login');
 Route::get('login', [AuthController::class, 'index'])
     ->name('login')->middleware('guest');
 
-Route::post('login', [AuthController::class, 'authenticate']);
+Route::post('login', [AuthController::class, 'authenticate'])->middleware('guest');
 
-Route::get('logout', [AuthController::class, 'logout'])
-    ->name('logout');
+Route::post('logout', [AuthController::class, 'logout'])
+    ->name('logout')->middleware('auth');
 
 // # Route untuk admin
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'admin']], function () {

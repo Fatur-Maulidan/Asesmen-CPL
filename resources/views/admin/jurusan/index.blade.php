@@ -23,7 +23,7 @@
         </div>
         <div class="col text-end">
             <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#importProgramStudiModal">
+                    data-bs-target="#importProgramStudiModal" @if($jurusan->isEmpty()) disabled @endif>
                 Import Program Studi
             </button>
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importJurusanModal">
@@ -129,12 +129,6 @@
                     <form action="{{ route('admin.jurusan.store') }}" method="POST" autocomplete="off"
                           id="tambahJurusanForm">
                         @csrf
-                        <div class="mb-4">
-                            <label for="nomor_jurusan" class="form-label fw-bold">Nomor</label>
-                            <input type="text" class="form-control" id="nomor_jurusan" name="nomor"
-                                   placeholder="Nomor Jurusan">
-                            <div id="nomor_jurusan_feedback" class="text-danger"></div>
-                        </div>
 
                         <div class="mb-4">
                             <label for="nama_jurusan" class="form-label fw-bold">Nama</label>
@@ -144,30 +138,21 @@
                         </div>
 
                         <div class="mb-4">
-                            <div class="fw-bold mb-2">Golongan</div>
+                            <div class="fw-bold mb-2">Kategori</div>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="golongan_jurusan"
+                                    <input class="form-check-input" type="radio" name="kategori"
                                            id="rekayasa" value="{{ \App\Enums\KategoriJurusan::Rekayasa }}">
                                     <label class="form-check-label" for="rekayasa">Rekayasa</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="golongan_jurusan"
+                                    <input class="form-check-input" type="radio" name="kategori"
                                            id="nonrekayasa" value="{{ \App\Enums\KategoriJurusan::Nonrekayasa }}">
                                     <label class="form-check-label" for="nonrekayasa">Non Rekayasa</label>
                                 </div>
                             </div>
-                            <div id="golongan_jurusan_feedback" class="text-danger"></div>
+                            <div id="kategori_jurusan_feedback" class="text-danger"></div>
                         </div>
-
-                        {{-- <div>
-                            <label for="domain" class="form-label fw-bold">Ketua Jurusan</label>
-                            <select class="form-select" id="domain">
-                                <option selected>Pilih dosen</option>
-                                <option value="1">Yadi Adithia</option>
-                                <option value="2">Alex Yassensdra</option>
-                            </select>
-                        </div> --}}
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -176,9 +161,7 @@
                             <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-success w-100" form="#tambahJurusanForm"
-                                    id="btn-add">Tambah
-                            </button>
+                            <button type="submit" class="btn btn-success w-100" form="tambahJurusanForm">Tambah</button>
                         </div>
                     </div>
                 </div>
@@ -199,13 +182,7 @@
                     <form action="" autocomplete="off" id="ubahJurusanForm">
                         @csrf
                         @method('PUT')
-                        <input type="hidden" name="nomor_old" id="nomor_jurusan_old">
-                        <div class="mb-4">
-                            <label for="nomor_jurusan_ubah" class="form-label fw-bold">Nomor</label>
-                            <input type="text" class="form-control" id="nomor_jurusan_ubah" name="nomor"
-                                   placeholder="Nomor Jurusan">
-                            <div id="nomor_jurusan_feedback_ubah" class="text-danger"></div>
-                        </div>
+                        <input type="hidden" name="id_jurusan" id="id_jurusan">
 
                         <div class="mb-4">
                             <label for="nama_jurusan_ubah" class="form-label fw-bold">Nama</label>
@@ -215,30 +192,21 @@
                         </div>
 
                         <div class="mb-4">
-                            <div class="fw-bold mb-2">Golongan</div>
+                            <div class="fw-bold mb-2">Kategori</div>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="golongan" id="rekayasa_ubah"
+                                    <input class="form-check-input" type="radio" name="kategori" id="rekayasa_ubah"
                                            value="{{ \App\Enums\KategoriJurusan::Rekayasa }}">
                                     <label class="form-check-label" for="rekayasa_ubah">Rekayasa</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="golongan_jurusan"
+                                    <input class="form-check-input" type="radio" name="kategori"
                                            id="nonrekayasa_ubah" value="{{ \App\Enums\KategoriJurusan::Nonrekayasa }}">
                                     <label class="form-check-label" for="nonrekayasa_ubah">Non Rekayasa</label>
                                 </div>
                             </div>
-                            <div id="golongan_jurusan_feedback_ubah" class="text-danger"></div>
+                            <div id="kategori_jurusan_feedback_ubah" class="text-danger"></div>
                         </div>
-
-                        {{-- <div>
-                            <label for="domain" class="form-label fw-bold">Ketua Jurusan</label>
-                            <select class="form-select" id="domain">
-                                <option selected>Pilih dosen</option>
-                                <option value="1">Yadi Adithia</option>
-                                <option value="2">Alex Yassensdra</option>
-                            </select>
-                        </div> --}}
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -333,39 +301,6 @@
         </div>
     </div>
 
-    {{-- Hapus Modal --}}
-    <div class="modal fade" id="hapusModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
-         aria-labelledby="hapusModalLabel" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="hapusModalLabel">Konfirmasi Penghapusan</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body py-4">
-                    <div class="text-center">
-                        <i class="bi bi-exclamation-triangle-fill text-warning fs-1"></i>
-                        <div>Anda yakin ingin hapus data?</div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row w-100">
-                        <div class="col">
-                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Tidak</button>
-                        </div>
-                        <div class="col">
-                            <form action="" method="post" id="hapusForm">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-success w-100" data-bs-dismiss="modal">Ya</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{-- Data jurusan --}}
     <div class="row gy-5">
         @forelse ($jurusan as $jrsn)
@@ -378,8 +313,8 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <div class="fw-bold">Golongan jurusan</div>
-                            <div>{{ $jrsn->golongan }}</div>
+                            <div class="fw-bold">Kategori jurusan</div>
+                            <div>{{ $jrsn->kategori }}</div>
                         </div>
 
                         <div>
@@ -388,7 +323,7 @@
                                 @forelse ($jrsn->programStudi as $prodi)
                                     <li>{{ $prodi->jenjang_pendidikan . ' ' . $prodi->nama }}</li>
                                 @empty
-                                    <li>Tidak ada data.</li>
+                                    <li>Belum ada program studi terdaftar.</li>
                                 @endforelse
                             </ul>
                         </div>
@@ -399,24 +334,19 @@
                             Tidak ada program studi.
                         </div>
                     @else
-                        <div class="accordion" id="daftarProdi{{ $jrsn->nomor }}">
+                        <div class="accordion" id="daftarProdi{{ $loop->iteration }}">
                             @foreach ($jrsn->programStudi as $prodi)
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button bg-light fw-bold" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#prodi{{ $prodi->nomor }}"
+                                                data-bs-toggle="collapse" data-bs-target="#prodi{{ $prodi->id }}"
                                                 aria-expanded="true" aria-controls="prodi{{ $loop->iteration }}">
                                             {{ $prodi->jenjang_pendidikan . ' ' . $prodi->nama }}
                                         </button>
                                     </h2>
-                                    <div id="prodi{{ $prodi->nomor }}" class="accordion-collapse collapse"
+                                    <div id="prodi{{ $prodi->id }}" class="accordion-collapse collapse"
                                          data-bs-parent="#daftarProdi">
                                         <div class="accordion-body">
-                                            <div class="mb-3">
-                                                <div class="fw-bold">Nomor program studi</div>
-                                                <div>{{ $prodi->nomor }}</div>
-                                            </div>
-
                                             <div class="mb-3">
                                                 <div class="fw-bold">Kode program studi</div>
                                                 <div>{{ $prodi->kode }}</div>
@@ -439,11 +369,6 @@
                                                     @endforelse
                                                 </ul>
                                             </div>
-
-                                            {{-- <div> --}}
-                                            {{--    <a href="#" class="btn-hapus-prodi" data-bs-toggle="modal" --}}
-                                            {{--       data-bs-target="#hapusModal" data-nomor="{{ $prodi->nomor }}">Hapus</a> --}}
-                                            {{-- </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -451,14 +376,19 @@
                         </div>
                     @endif
                     <div class="card-body text-body-secondary">
-                        <a href="#" class="btn-edit" class="me-2" data-bs-toggle="modal"
-                           data-bs-target="#ubahJurusanModal" data-nomor="{{ $jrsn->nomor }}"
-                           data-nama="{{ $jrsn->nama }}" data-golongan="{{ $jrsn->golongan }}">Ubah</a>
-                        <a href="#" class="btn-add-prodi" data-bs-toggle="modal"
-                           data-bs-target="#tambahProgramStudiModal" data-nomor="{{ $jrsn->nomor }}">Tambah Program
-                            Studi</a>
-                        {{-- <a href="#" class="btn-hapus-jurusan" data-bs-toggle="modal" --}}
-                        {{--   data-bs-target="#hapusModal" data-nomor="{{ $jrsn->nomor }}">Hapus</a> --}}
+                        <d class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-warning btn-sm btn-edit" data-bs-toggle="modal"
+                                    data-bs-target="#ubahJurusanModal"
+                                    data-id="{{ $jrsn->id }}"
+                                    data-nama="{{ $jrsn->nama }}"
+                                    data-kategori="{{ $jrsn->kategori }}">Ubah Data
+                                Jurusan
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm btn-add-prodi" data-bs-toggle="modal"
+                                    data-bs-target="#tambahProgramStudiModal" data-nomor="{{ $jrsn->nomor }}">Tambah
+                                Program Studi
+                            </button>
+                        </d>
                     </div>
                 </div>
             </div>
@@ -503,14 +433,12 @@
             });
 
             tambahJurusanModal.addEventListener('hidden.bs.modal', event => {
-                $('#nomor_jurusan').val('');
                 $('#nama_jurusan').val('');
                 $('#rekayasa').prop('checked', false);
                 $('#nonrekayasa').prop('checked', false);
 
-                $('#nomor_jurusan_feedback').html('');
                 $('#nama_jurusan_feedback').html('');
-                $('#golongan_jurusan_feedback').html('');
+                $('#kategori_jurusan_feedback').html('');
             });
 
             ubahJurusanModal.addEventListener('hidden.bs.modal', event => {
@@ -554,27 +482,30 @@
                         // when status code is 422, it's a validation issue
                         if (err.status == 422) {
                             console.log(err.responseJSON);
-                            $('#nomor_jurusan_feedback').html(err.responseJSON.errors
-                                .nomor[0])
+                            if (err.responseJSON.errors.nama) {
+                                $('#nama_jurusan_feedback').html(err.responseJSON.errors.nama[0]);
+                            } else {
+                                $('#nama_jurusan_feedback').html('');
+                            }
 
-                            $('#nama_jurusan_feedback').html(err.responseJSON.errors
-                                .nama[0])
-
-                            $('#golongan_jurusan_feedback').html(err.responseJSON.errors
-                                .golongan[0])
+                            if (err.responseJSON.errors.kategori) {
+                                $('#kategori_jurusan_feedback').html(err.responseJSON.errors.kategori[0]);
+                            } else {
+                                $('#kategori_jurusan_feedback').html('');
+                            }
                         }
                     }
                 });
             });
 
             $('.btn-edit').on('click', function (e) {
-                const nomor = $(this).data('nomor');
+                const id = $(this).data('id');
                 const nama = $(this).data('nama');
-                const golongan = $(this).data('golongan');
+                const kategori = $(this).data('kategori');
 
-                $('#nomor_jurusan_ubah, #nomor_jurusan_old').val(nomor);
+                $('#id_jurusan').val(id);
                 $('#nama_jurusan_ubah').val(nama);
-                if (golongan == 'Rekayasa') {
+                if (kategori == 'Rekayasa') {
                     $('#rekayasa_ubah').prop('checked', true);
                 } else {
                     $('#nonrekayasa_ubah').prop('checked', true);
@@ -585,11 +516,11 @@
                 e.preventDefault();
                 $('#submit-edit').html(buttonLoading);
 
-                const nomor = $('#nomor_jurusan_old').val();
+                const id = $('#id_jurusan').val();
 
                 $.ajax({
                     type: "put",
-                    url: url + "/" + nomor,
+                    url: url + "/" + id,
                     data: $(this).serialize(),
                     dataType: "JSON",
                     success: function (res) {
@@ -603,14 +534,17 @@
                         // when status code is 422, it's a validation issue
                         if (err.status == 422) {
                             console.log(err.responseJSON);
-                            $('#nomor_jurusan_feedback_ubah').html(err.responseJSON.errors
-                                .nomor[0])
+                            if (err.responseJSON.errors.nama) {
+                                $('#nama_jurusan_feedback').html(err.responseJSON.errors.nama[0]);
+                            } else {
+                                $('#nama_jurusan_feedback').html('');
+                            }
 
-                            $('#nama_jurusan_feedback_ubah').html(err.responseJSON.errors
-                                .nama[0])
-
-                            $('#golongan_jurusan_feedback_ubah').html(err.responseJSON.errors
-                                .golongan[0])
+                            if (err.responseJSON.errors.kategori) {
+                                $('#kategori_jurusan_feedback').html(err.responseJSON.errors.kategori[0]);
+                            } else {
+                                $('#kategori_jurusan_feedback').html('');
+                            }
                         }
                     }
                 });
