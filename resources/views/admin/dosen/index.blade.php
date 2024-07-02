@@ -17,7 +17,7 @@
                             <select class="form-select" id="filter_jurusan" name="jurusan">
                                 <option value="">Pilih jurusan</option>
                                 @foreach ($jurusan as $jrsn)
-                                    <option value="{{ $jrsn->nomor }}" @if (request('jurusan') == $jrsn->nomor) selected @endif>{{ $jrsn->nama }}</option>
+                                    <option value="{{ $jrsn->id }}" @if (request('jurusan') == $jrsn->id) selected @endif>{{ $jrsn->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -215,6 +215,10 @@
         $(document).ready(function() {
             const DosenModal = document.getElementById('DosenModal');
             const DosenModalInstance = new bootstrap.Modal('#DosenModal');
+            const buttonLoading = `
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>`;
 
             DosenModal.addEventListener('hidden.bs.modal', event => {
                 $('#kode').val('');
@@ -237,11 +241,13 @@
                 const url = "{{ url()->current() }}";
                 $('#tambahDosenForm').attr('action', url);
                 $('#DosenModalLabel').html('Tambah Dosen');
+                $('#btn-submit').addClass('btn-success').removeClass('btn-warning');
                 $('#btn-submit').html('Tambah');
             });
 
             $('#tambahDosenForm').on('submit', function(e) {
                 e.preventDefault();
+                $('#btn-submit').html(buttonLoading);
 
                 $.ajax({
                     type: "post",
@@ -249,11 +255,13 @@
                     data: $(this).serialize(),
                     dataType: "JSON",
                     success: function(res) {
-                        console.log(res)
+                        console.log(res);
+                        $('#btn-submit').html('Tambah');
                         DosenModalInstance.hide();
                         location.reload();
                     },
                     error: function(err) {
+                        $('#btn-submit').html('Tambah');
                         // when status code is 422, it's a validation issue
                         if (err.status == 422) {
                             console.log(err.responseJSON);
@@ -333,11 +341,11 @@
                             ? $('#jk_laki').prop('checked', true)
                             : $('#jk_perempuan').prop('checked', true);
                         $('#email').val(res.dosen.email);
-                        $('#jurusan').val(res.dosen['01_MASTER_jurusan_nomor']).change();
+                        $('#jurusan').val(res.dosen['01_MASTER_jurusan_id']).change();
                         let prodi = [];
                         if (res.dosen.program_studi) {
                             res.dosen.program_studi.forEach(function (element, index) {
-                                prodi.push(element.nomor);
+                                prodi.push(element.id);
                             });
                         }
                         $('#program_studi').val(prodi).change();
@@ -351,6 +359,7 @@
                 $('#tambahDosenForm').attr('action', "{{ url()->current() }}/" + kode);
                 $('#method_spoofing').html('{{ method_field('patch') }}');
                 $('#btn-submit').html('Ubah');
+                $('#btn-submit').addClass('btn-warning').removeClass('btn-success');
             });
 
             $('#program_studi').select2({

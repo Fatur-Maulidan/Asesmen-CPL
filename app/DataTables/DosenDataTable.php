@@ -51,9 +51,7 @@ class DosenDataTable extends DataTable
                 return $form;
             })
             ->addColumn('tindakan', function (Master_04_Dosen $dosen) {
-                $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#tambahDosenModal" data-kode="' . $dosen->kode . '">Ubah</a>';
-                // <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusDosenModal" data-kode="' .
-                //                    $dosen->kode . '">Hapus</a>
+                $content = '<button type="button" class="btn btn-warning btn-ubah" data-bs-toggle="modal" data-bs-target="#DosenModal" data-kode="' . $dosen->kode . '">Ubah</button>';
 
                 return $content;
             })

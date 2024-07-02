@@ -11,9 +11,11 @@ use App\Models\Master_02_ProgramStudi;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_01_Jurusan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Stmt\Do_;
+use Spatie\Permission\Models\Role;
 
 class DosenController extends Controller
 {
@@ -82,7 +84,7 @@ class DosenController extends Controller
     public function show($kode)
     {
         if (request()->ajax()) {
-            $dosen = Master_04_Dosen::with('programStudi:nomor,nama,jenjang_pendidikan')->find($kode);
+            $dosen = Master_04_Dosen::with('programStudi:id,nama,jenjang_pendidikan')->find($kode);
 
             return response()->json([
                 'dosen' => $dosen
@@ -110,16 +112,17 @@ class DosenController extends Controller
      */
     public function update(DosenRequest $request, $kode)
     {
-        $dosen = Master_04_Dosen::find($kode);
-
         if ($request->ajax()) {
+            $dosen = Master_04_Dosen::find($kode);
+
             $validated = $request->validated();
-            $validated['01_MASTER_jurusan_nomor'] = $validated['jurusan'];
+            $validated['01_MASTER_jurusan_id'] = $validated['jurusan'];
             unset($validated['jurusan']);
+            $old_kode = $validated['kode'];
 
             $old_prodi = [];
             foreach ($dosen->programStudi as $prodi) {
-                array_push($old_prodi, $prodi->nomor);
+                array_push($old_prodi, $prodi->id);
             }
 
             if ($old_prodi != $validated['program_studi']) {
@@ -128,8 +131,19 @@ class DosenController extends Controller
                 }
             }
 
-            $dosen->update($validated);
-            $dosen->programStudi()->sync($validated['program_studi']);
+            $role = Role::findByName('dosen');
+            if ($old_kode != $dosen->kode) {
+                $dosen->roles()->detach($role->id);
+            }
+
+            DB::transaction(function () use ($dosen, $validated, $role, $old_kode) {
+                $dosen->update($validated);
+                $new_kode = $dosen->kode;
+                $dosen->programStudi()->sync($validated['program_studi']);
+                if ($old_kode != $new_kode) {
+                    $dosen->roles()->attach($role->id);
+                }
+            });
 
             return response()->json([
                 'message' => 'Data berhasil diubah.'
