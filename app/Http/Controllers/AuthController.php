@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusKeaktifan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Master_04_Dosen;
@@ -20,6 +21,7 @@ class AuthController extends Controller
     public function authenticate(LoginPostRequest $request){
         $validated = $request->validated();
         $credentials = $validated;
+        $credentials['status'] = StatusKeaktifan::Aktif;
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();

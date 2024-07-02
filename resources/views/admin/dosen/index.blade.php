@@ -32,7 +32,7 @@
                             <select class="form-select" id="filter_jurusan" name="jurusan">
                                 <option value="">Pilih jurusan</option>
                                 @foreach ($jurusan as $jrsn)
-                                    <option value="{{ $jrsn->id }}" @if (request('jurusan') == $jrsn->id) selected @endif>{{ $jrsn->nama }}</option>
+                                    <option value="{{ $jrsn->nomor }}" @if (request('jurusan') == $jrsn->nomor) selected @endif>{{ $jrsn->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -117,7 +117,7 @@
                         <div class="mb-3">
                             <label for="nip" class="form-label fw-bold">NIP</label>
                             <input type="text" class="form-control" id="nip" name="nip"
-                                   placeholder="id Induk Pegawai">
+                                   placeholder="Nomor Induk Pegawai">
                             <div id="nip_feedback" class="text-danger"></div>
                         </div>
 
@@ -157,7 +157,7 @@
                             <select class="form-select" id="jurusan" name="jurusan">
                                 <option value="" selected>Pilih jurusan</option>
                                 @foreach ($jurusan as $jrsn)
-                                    <option value="{{ $jrsn->id }}">{{ $jrsn->nama }}</option>
+                                    <option value="{{ $jrsn->nomor }}">{{ $jrsn->nama }}</option>
                                 @endforeach
                             </select>
                             <div id="jurusan_feedback" class="text-danger"></div>
@@ -168,7 +168,7 @@
                             <select class="form-select" id="program_studi" name="program_studi[]" multiple>
                                 <option value="">Pilih program studi</option>
                                 @foreach ($prodi as $p)
-                                    <option value="{{ $p->id }}">{{ $p->jenjang_pendidikan . ' ' .$p->nama }}</option>
+                                    <option value="{{ $p->nomor }}">{{ $p->jenjang_pendidikan . ' ' .$p->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -398,11 +398,11 @@
                             ? $('#jk_laki').prop('checked', true)
                             : $('#jk_perempuan').prop('checked', true);
                         $('#email').val(res.dosen.email);
-                        $('#jurusan').val(res.dosen['01_MASTER_jurusan_id']).change();
+                        $('#jurusan').val(res.dosen['01_MASTER_jurusan_nomor']).change();
                         let prodi = [];
                         if (res.dosen.program_studi) {
                             res.dosen.program_studi.forEach(function (element, index) {
-                                prodi.push(element.id);
+                                prodi.push(element.nomor);
                             });
                         }
                         $('#program_studi').val(prodi).change();
