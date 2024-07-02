@@ -239,14 +239,7 @@
                     <form action="{{ route('admin.program-studi.store') }}" method="POST" autocomplete="off"
                           id="tambahProgramStudiForm">
                         @csrf
-                        <input type="hidden" name="jurusan_nomor" id="nomor_jurusan_prodi">
-
-                        <div class="mb-4">
-                            <label for="nomor_prodi" class="form-label fw-bold">Nomor</label>
-                            <input type="text" class="form-control" id="nomor_prodi" name="nomor"
-                                   placeholder="Nomor program studi">
-                            <div id="nomor_prodi_feedback" class="text-danger"></div>
-                        </div>
+                        <input type="hidden" name="id_jurusan" id="id_jurusan_prodi">
 
                         <div class="mb-4">
                             <label for="nama_prodi" class="form-label fw-bold">Nama</label>
@@ -264,21 +257,32 @@
 
                         <div class="mb-4">
                             <label for="jenjang_prodi" class="form-label fw-bold">Jenjang pendidikan</label>
-                            <select class="form-select" id="jenjang_prodi" name="jenjang_pendidikan">
-                                <option value="" selected>Pilih jenjang pendidikan program studi</option>
-                                <option value="D3">D3</option>
-                                <option value="D4">D4</option>
-                            </select>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jenjang_pendidikan"
+                                           id="D3" value="D3">
+                                    <label class="form-check-label" for="D3">D3</label>
+                                </div><div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jenjang_pendidikan"
+                                           id="D4" value="D4">
+                                    <label class="form-check-label" for="D4">D4</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jenjang_pendidikan"
+                                           id="S2" value="S2">
+                                    <label class="form-check-label" for="S2">S2</label>
+                                </div>
+                            </div>
                             <div id="jenjang_prodi_feedback" class="text-danger"></div>
                         </div>
 
                         <div>
-                            <label for="koordinator_prodi" class="form-label fw-bold">Koordinator program studi</label>
+                            <label for="koordinator_prodi" class="form-label fw-bold mb-0">Koordinator program studi</label>
+                            <div id="koordinator_help" class="form-text mb-2">* Dapat dikosongkan dahulu.</div>
                             <select class="form-select" id="koordinator_prodi" name="koordinator_prodi">
                                 <option value="" selected>Pilih dosen</option>
                                 @foreach ($dosen as $dsn)
-                                    <option value="{{ $dsn->nip }}">{{ $dsn->kode . ' - ' . $dsn->nama }}
-                                    </option>
+                                    <option value="{{ $dsn->kode }}">{{ $dsn->kode . ' - ' . $dsn->nama }}</option>
                                 @endforeach
                             </select>
                             <div id="koordinator_prodi_feedback" class="text-danger"></div>
@@ -293,6 +297,87 @@
                         <div class="col">
                             <button type="submit" class="btn btn-success w-100"
                                     form="tambahProgramStudiForm">Tambah
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Ubah Program Studi Modal --}}
+    <div class="modal fade" id="ubahProgramStudiModal" data-bs-backdrop="static" data-bs-keyboard="false"
+         tabindex="-1" aria-labelledby="ubahProgramStudiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="ubahProgramStudiModalLabel">Ubah Program Studi</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="alert"></div>
+                    <form action="" method="POST" autocomplete="off" id="ubahProgramStudiForm">
+                        @csrf
+                        @method('put')
+                        <input type="hidden" name="id_program_studi" id="id_program_studi">
+
+                        <div class="mb-4">
+                            <label for="nama_prodi_ubah" class="form-label fw-bold">Nama</label>
+                            <input type="text" class="form-control" id="nama_prodi_ubah" name="nama"
+                                   placeholder="Nama program studi">
+                            <div id="nama_prodi_ubah_feedback" class="text-danger"></div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="kode_prodi_ubah" class="form-label fw-bold">Kode</label>
+                            <input type="text" class="form-control" id="kode_prodi_ubah" name="kode"
+                                   placeholder="Kode program studi">
+                            <div id="kode_prodi_ubah_feedback" class="text-danger"></div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="jenjang_prodi_ubah" class="form-label fw-bold">Jenjang pendidikan</label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jenjang_pendidikan"
+                                           id="D3_ubah" value="D3">
+                                    <label class="form-check-label" for="D3_ubah">D3</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jenjang_pendidikan"
+                                           id="D4_ubah" value="D4">
+                                    <label class="form-check-label" for="D4_ubah">D4</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="jenjang_pendidikan"
+                                           id="S2_ubah" value="S2">
+                                    <label class="form-check-label" for="S2_ubah">S2</label>
+                                </div>
+                            </div>
+                            <div id="jenjang_prodi_ubah_feedback" class="text-danger"></div>
+                        </div>
+
+                        <div>
+                            <label for="koordinator_prodi_ubah" class="form-label fw-bold mb-0">Koordinator program studi</label>
+                            <div id="koordinator_ubah_help" class="form-text mb-2">* Dapat dikosongkan.</div>
+                            <select class="form-select" id="koordinator_prodi_ubah" name="koordinator_prodi">
+                                <option value="" selected>Pilih dosen</option>
+                                @foreach ($dosen as $dsn)
+                                    <option value="{{ $dsn->kode }}">{{ $dsn->kode . ' - ' . $dsn->nama }}</option>
+                                @endforeach
+                            </select>
+                            <div id="koordinator_prodi_ubah_feedback" class="text-danger"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-success w-100"
+                                    form="ubahProgramStudiForm" id="submit-edit-prodi">Ubah
                             </button>
                         </div>
                     </div>
@@ -339,13 +424,13 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button bg-light fw-bold" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#prodi{{ $prodi->id }}"
+                                                data-bs-toggle="collapse" data-bs-target="#prodi{{ $loop->parent->iteration . $loop->iteration }}"
                                                 aria-expanded="true" aria-controls="prodi{{ $loop->iteration }}">
                                             {{ $prodi->jenjang_pendidikan . ' ' . $prodi->nama }}
                                         </button>
                                     </h2>
-                                    <div id="prodi{{ $prodi->id }}" class="accordion-collapse collapse"
-                                         data-bs-parent="#daftarProdi">
+                                    <div id="prodi{{ $loop->parent->iteration . $loop->iteration }}" class="accordion-collapse collapse"
+                                         data-bs-parent="#daftarProdi{{ $loop->parent->iteration }}">
                                         <div class="accordion-body">
                                             <div class="mb-3">
                                                 <div class="fw-bold">Kode program studi</div>
@@ -365,10 +450,20 @@
                                                     @forelse($prodi->kurikulumAktif as $kurikulum)
                                                         <li>Kurikulum {{ $kurikulum->tahun }}</li>
                                                     @empty
-                                                        <li>Tidak ada data.</li>
+                                                        <li>Belum ada data.</li>
                                                     @endforelse
                                                 </ul>
                                             </div>
+
+                                            <button type="button" class="btn btn-warning btn-sm btn-edit-prodi" data-bs-toggle="modal"
+                                                    data-bs-target="#ubahProgramStudiModal"
+                                                    data-id="{{ $prodi->id }}"
+                                                    data-nama="{{ $prodi->nama }}"
+                                                    data-kode="{{ $prodi->kode }}"
+                                                    data-jenjang="{{ $prodi->jenjang_pendidikan }}"
+                                                    data-koordinator="{{ $prodi->kaprodi->kode ?? '' }}">Ubah Data
+                                                Program Studi
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -385,7 +480,7 @@
                                 Jurusan
                             </button>
                             <button type="button" class="btn btn-primary btn-sm btn-add-prodi" data-bs-toggle="modal"
-                                    data-bs-target="#tambahProgramStudiModal" data-nomor="{{ $jrsn->nomor }}">Tambah
+                                    data-bs-target="#tambahProgramStudiModal" data-id="{{ $jrsn->id }}">Tambah
                                 Program Studi
                             </button>
                         </d>
@@ -409,10 +504,12 @@
             const tambahJurusanModal = document.getElementById('tambahJurusanModal');
             const ubahJurusanModal = document.getElementById('ubahJurusanModal');
             const tambahProgramStudiModal = document.getElementById('tambahProgramStudiModal');
+            const ubahProgramStudiModal = document.getElementById('ubahProgramStudiModal');
 
             const tambahJurusanModalInstance = new bootstrap.Modal('#tambahJurusanModal');
             const ubahJurusanModalInstance = new bootstrap.Modal('#ubahJurusanModal');
             const tambahProgramStudiModalInstance = new bootstrap.Modal('#tambahProgramStudiModal');
+            const ubahProgramStudiModalInstance = new bootstrap.Modal('#ubahProgramStudiModal');
             const buttonLoading = `
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -442,28 +539,36 @@
             });
 
             ubahJurusanModal.addEventListener('hidden.bs.modal', event => {
-                $('#nomor_jurusan_ubah').val('');
                 $('#nama_jurusan_ubah').val('');
                 $('#rekayasa_ubah').prop('checked', false);
                 $('#nonrekayasa_ubah').prop('checked', false);
 
-                $('#nomor_jurusan_feedback_ubah').html('');
                 $('#nama_jurusan_feedback_ubah').html('');
-                $('#golongan_jurusan_feedback_ubah').html('');
+                $('#kategori_jurusan_feedback_ubah').html('');
             });
 
             tambahProgramStudiModal.addEventListener('hidden.bs.modal', event => {
                 $('#nama_prodi').val('');
-                $('#jenjang_prodi').prop('selectedIndex', 0);
-                $('#nomor_prodi').val('');
                 $('#kode_prodi').val('');
+                $('input[name="jenjang_pendidikan"]').attr('checked', false);
                 $('#koordinator_prodi').prop('selectedIndex', 0);
 
                 $('#nama_prodi_feedback').html('');
-                $('#jenjang_prodi_feedback').html('');
-                $('#nomor_prodi_feedback').html('');
                 $('#kode_prodi_feedback').html('');
+                $('#jenjang_prodi_feedback').html('');
                 $('#koordinator_prodi_feedback').html('');
+            });
+
+            ubahProgramStudiModal.addEventListener('hidden.bs.modal', event => {
+                $('#nama_prodi_ubah').val('');
+                $('#kode_prodi_ubah').val('');
+                $('input[name="jenjang_pendidikan"]').attr('checked', false);
+                $('#koordinator_prodi_ubah').prop('selectedIndex', 0);
+
+                $('#nama_prodi_ubah_feedback').html('');
+                $('#kode_prodi_ubah_feedback').html('');
+                $('#jenjang_prodi_ubah_feedback').html('');
+                $('#koordinator_prodi_ubah_feedback').html('');
             });
 
             $('#tambahJurusanForm').on('submit', function (e) {
@@ -551,8 +656,8 @@
             });
 
             $('.btn-add-prodi').on('click', function (e) {
-                const nomor = $(this).data('nomor');
-                $('#nomor_jurusan_prodi').val(nomor);
+                const id = $(this).data('id');
+                $('#id_jurusan_prodi').val(id);
             });
 
             $('#tambahProgramStudiForm').on('submit', function (e) {
@@ -571,17 +676,37 @@
                         // when status code is 422, it's a validation issue
                         if (err.status == 422) {
                             console.log(err.responseJSON);
-                            $('#nama_prodi_feedback').html(err.responseJSON.errors.nama[0]);
+                            if (err.responseJSON.errors.nama) {
+                                $('#nama_prodi_feedback').html(
+                                    err.responseJSON.errors.nama[0]
+                                );
+                            } else {
+                                $('#nama_prodi_feedback').html('');
+                            }
 
-                            $('#jenjang_prodi_feedback').html(err.responseJSON.errors
-                                .jenjang_pendidikan[0]);
+                            if (err.responseJSON.errors.kode) {
+                                $('#kode_prodi_feedback').html(
+                                    err.responseJSON.errors.kode[0]
+                                );
+                            } else {
+                                $('#kode_prodi_feedback').html('');
+                            }
 
-                            $('#nomor_prodi_feedback').html(err.responseJSON.errors.nomor[0]);
+                            if (err.responseJSON.errors.jenjang_pendidikan) {
+                                $('#jenjang_prodi_feedback').html(
+                                    err.responseJSON.errors.jenjang_pendidikan[0]
+                                );
+                            } else {
+                                $('#jenjang_prodi_feedback').html('');
+                            }
 
-                            $('#kode_prodi_feedback').html(err.responseJSON.errors.kode[0]);
-
-                            $('#koordinator_prodi_feedback').html(err.responseJSON.errors
-                                .koordinator_prodi[0]);
+                            if (err.responseJSON.errors.koordinator_prodi) {
+                                $('#koordinator_prodi_feedback').html(
+                                    err.responseJSON.errors.koordinator_prodi[0]
+                                );
+                            } else {
+                                $('#koordinator_prodi_feedback').html('');
+                            }
                         } else if (err.status == 500) {
                             console.log(err);
                         }
@@ -589,16 +714,97 @@
                 });
             });
 
-            $('.btn-hapus-jurusan, .btn-hapus-prodi').on('click', function (e) {
+            $('.btn-edit-prodi').on('click', function (e) {
+                const id = $(this).data('id');
+                const nama = $(this).data('nama');
+                const kode = $(this).data('kode');
+                const jenjang = $(this).data('jenjang');
+                const koordinator = $(this).data('koordinator');
+
+                $('#id_program_studi').val(id);
+                $('#nama_prodi_ubah').val(nama);
+                $('#kode_prodi_ubah').val(kode);
+                if (jenjang == 'D3') {
+                    $('#D3_ubah').prop('checked', true);
+                } else if (jenjang == 'D4') {
+                    $('#D4_ubah').prop('checked', true);
+                } else {
+                    $('#S2_ubah').prop('checked', true);
+                }
+                if (koordinator != '') {
+                    $('#koordinator_prodi_ubah').val(koordinator).change();
+                }
+            });
+
+            $('#ubahProgramStudiForm').on('submit', function (e) {
                 e.preventDefault();
+                $('#submit-edit-prodi').html(buttonLoading);
 
-                const nomor = $(this).data('nomor');
-                const route = $(this).hasClass('btn-hapus-jurusan') ?
-                    url + "/" + nomor :
-                    "{{ url('/') }}/admin/program-studi/" + nomor;
+                const id = $('#id_program_studi').val();
+                let link = url + "/" + id;
+                let route = link.replace('jurusan', 'program-studi');
 
-                $('#hapusForm').attr('action', route);
-            })
+                $.ajax({
+                    type: "put",
+                    url: route,
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (res) {
+                        console.log(res);
+                        $('#submit-edit-prodi').html('Ubah');
+                        ubahProgramStudiModalInstance.hide();
+                        location.reload();
+                    },
+                    error: function (err) {
+                        $('#submit-edit-prodi').html('Ubah');
+                        // when status code is 422, it's a validation issue
+                        if (err.status == 422) {
+                            console.log(err.responseJSON);
+                            if (err.responseJSON.errors.nama) {
+                                $('#nama_prodi_ubah_feedback').html(
+                                    err.responseJSON.errors.nama[0]
+                                );
+                            } else {
+                                $('#nama_prodi_ubah_feedback').html('');
+                            }
+
+                            if (err.responseJSON.errors.kode) {
+                                $('#kode_prodi_ubah_feedback').html(
+                                    err.responseJSON.errors.kode[0]
+                                );
+                            } else {
+                                $('#kode_prodi_ubah_feedback').html('');
+                            }
+
+                            if (err.responseJSON.errors.jenjang_pendidikan) {
+                                $('#jenjang_prodi_ubah_feedback').html(
+                                    err.responseJSON.errors.jenjang_pendidikan[0]
+                                );
+                            } else {
+                                $('#jenjang_prodi_ubah_feedback').html('');
+                            }
+
+                            if (err.responseJSON.errors.koordinator_prodi) {
+                                $('#koordinator_prodi_ubah_feedback').html(
+                                    err.responseJSON.errors.koordinator_prodi[0]
+                                );
+                            } else {
+                                $('#koordinator_prodi_ubah_feedback').html('');
+                            }
+                        } else if (err.status == 409) {
+                            console.log(err);
+                            $('#alert').html(`
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                  ${err.responseJSON.message}
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                `);
+                        } else if (err.status == 500) {
+                            console.log(err);
+                        }
+                    }
+                });
+            });
         });
     </script>
 @endpush

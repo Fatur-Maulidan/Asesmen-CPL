@@ -7,9 +7,6 @@ use App\Http\Requests\JurusanRequest;
 use App\Imports\JurusanImport;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_01_Jurusan;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 class JurusanController extends Controller
@@ -22,6 +19,7 @@ class JurusanController extends Controller
     public function index()
     {
         $jurusan = Master_01_Jurusan::with(['programStudi', 'programStudi.dosen:nip,nama', 'programStudi.kurikulumAktif']);
+        $dosen = Master_04_Dosen::role('dosen')->get(['kode', 'nama']);
 
         if (request('filter') == 'rekayasa') {
             $jurusan->rekayasa();
@@ -34,7 +32,7 @@ class JurusanController extends Controller
         return view('admin.jurusan.index', [
             'title' => 'Jurusan',
             'jurusan' => $jurusan->get(),
-            'dosen' => Master_04_Dosen::get(['nip', 'kode', 'nama'])
+            'dosen' => $dosen,
         ]);
     }
 
@@ -100,16 +98,18 @@ class JurusanController extends Controller
      * @param  int  $nomor
      * @return \Illuminate\Http\Response
      */
-    public function update(JurusanRequest $request, $nomor)
+    public function update(JurusanRequest $request, $id)
     {
-        $jurusan = Master_01_Jurusan::find($nomor);
-        $validated = $request->validated();
+        if ($request->ajax()) {
+            $jurusan = Master_01_Jurusan::find($id);
+            $validated = $request->validated();
 
-        $jurusan->update($validated);
+            $jurusan->update($validated);
 
-        return response()->json([
-            'message' => 'Data berhasil diubah.'
-        ], 200);
+            return response()->json([
+                'message' => 'Data berhasil diubah.'
+            ], 200);
+        }
     }
 
     /**

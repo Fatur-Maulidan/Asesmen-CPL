@@ -62,7 +62,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'a
         ->name('program-studi.downloadTemplate');
     Route::post('program-studi/import', [AdminProgramStudiController::class, 'import'])->name('program-studi.import');
     Route::resource('program-studi', AdminProgramStudiController::class)
-        ->only(['store', 'destroy']);
+        ->only(['store', 'update', 'destroy']);
 
     // # Dosen
     Route::get('dosen/download-template', [AdminDosenController::class, 'downloadTemplate'])->name('dosen.downloadTemplate');

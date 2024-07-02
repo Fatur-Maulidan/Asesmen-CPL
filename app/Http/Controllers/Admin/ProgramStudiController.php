@@ -40,15 +40,17 @@ class ProgramStudiController extends Controller
      */
     public function store(ProgramStudiRequest $request)
     {
-        $validated = $request->validated();
-        $validated['01_MASTER_jurusan_nomor'] = $validated['jurusan_nomor'];
-        $validated['04_MASTER_dosen_kode'] = $validated['koordinator_prodi'];
+        if ($request->ajax()) {
+            $validated = $request->validated();
+            $validated['01_MASTER_jurusan_id'] = $validated['id_jurusan'];
+            $validated['04_MASTER_dosen_kode'] = $validated['koordinator_prodi'];
 
-        Master_02_ProgramStudi::create($validated);
+            Master_02_ProgramStudi::create($validated);
 
-        return response()->json([
-            'message' => 'Data berhasil ditambah.'
-        ], 201);
+            return response()->json([
+                'message' => 'Data berhasil ditambah.'
+            ], 201);
+        }
     }
 
     /**
@@ -80,9 +82,29 @@ class ProgramStudiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProgramStudiRequest $request, $id)
     {
-        //
+        if ($request->ajax()) {
+            $program_studi = Master_02_ProgramStudi::find($id);
+
+            $validated = $request->validated();
+            $validated['04_MASTER_dosen_kode'] = $validated['koordinator_prodi'];
+
+            $program_studi_exist = Master_02_ProgramStudi::where('nama', $validated['nama'])
+                ->where('jenjang_pendidikan', $validated['jenjang_pendidikan'])->first();
+
+            if ($program_studi_exist) {
+                return response()->json([
+                    'message' => 'Program Studi sudah terdaftar.'
+                ], 409);
+            }
+
+            $program_studi->update($validated);
+
+            return response()->json([
+                'message' => 'Data berhasil diubah.'
+            ], 200);
+        }
     }
 
     /**
