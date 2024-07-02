@@ -34,7 +34,7 @@ class Master_02_ProgramStudi extends Model
      *
      * @var array
      */
-    protected $fillable = ['nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_id', '04_MASTER_dosen_kode'];
+    protected $fillable = ['nama', 'kode', 'jenjang_pendidikan', '01_MASTER_jurusan_id', '04_MASTER_dosen_id'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -65,12 +65,12 @@ class Master_02_ProgramStudi extends Model
 
     public function kaprodi()
     {
-        return $this->belongsTo(Master_04_Dosen::class, '04_MASTER_dosen_kode');
+        return $this->belongsTo(Master_04_Dosen::class, '04_MASTER_dosen_id');
     }
 
     public function dosen()
     {
-        return $this->belongsToMany(Master_04_Dosen::class, '05_MASTER_prodi_dosen', '02_MASTER_program_studi_id', '04_MASTER_dosen_kode');
+        return $this->belongsToMany(Master_04_Dosen::class, '05_MASTER_prodi_dosen', '02_MASTER_program_studi_id', '04_MASTER_dosen_id');
     }
 
     public function mahasiswa()

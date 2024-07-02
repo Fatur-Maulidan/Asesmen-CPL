@@ -8,7 +8,9 @@ use App\Http\Requests\ProgramStudiRequest;
 use App\Imports\JurusanImport;
 use App\Imports\ProgramStudiImport;
 use App\Models\Master_02_ProgramStudi;
+use App\Models\Master_04_Dosen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramStudiController extends Controller
@@ -100,16 +102,24 @@ class ProgramStudiController extends Controller
             $validated = $request->validated();
             $validated['04_MASTER_dosen_id'] = $validated['id_dosen'];
 
+            $dosen = Master_04_Dosen::find($validated['id_dosen']);
             $program_studi_exist = Master_02_ProgramStudi::where('nama', $validated['nama'])
                 ->where('jenjang_pendidikan', $validated['jenjang_pendidikan'])->first();
 
-            if ($program_studi_exist) {
+            if ($program_studi_exist->id != $program_studi->id) {
                 return response()->json([
                     'message' => 'Program Studi sudah terdaftar.'
                 ], 409);
             }
 
-            $program_studi->update($validated);
+            DB::transaction(function () use ($program_studi, $validated, $dosen) {
+                if ($dosen) {
+                    $dosen->syncRoles(['koordinator program studi']);
+                } else {
+                    $program_studi->kaprodi->syncRoles(['dosen']);
+                }
+                $program_studi->update($validated);
+            });
 
             return response()->json([
                 'message' => 'Data berhasil diubah.'

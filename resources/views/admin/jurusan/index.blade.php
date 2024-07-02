@@ -462,7 +462,7 @@
                                                     data-nama="{{ $prodi->nama }}"
                                                     data-kode="{{ $prodi->kode }}"
                                                     data-jenjang="{{ $prodi->jenjang_pendidikan }}"
-                                                    data-koordinator="{{ $prodi->kaprodi->kode ?? '' }}">Ubah Data
+                                                    data-koordinator="{{ $prodi->kaprodi->id ?? '' }}">Ubah Data
                                                 Program Studi
                                             </button>
                                         </div>
@@ -516,6 +516,18 @@
                 <span class="visually-hidden">Loading...</span>
             </div>`;
 
+            $('#koordinator_prodi').select2({
+                theme: "bootstrap-5",
+                closeOnSelect: false,
+                dropdownParent: $('#tambahProgramStudiModal')
+            });
+
+            $('#koordinator_prodi_ubah').select2({
+                theme: "bootstrap-5",
+                closeOnSelect: false,
+                dropdownParent: $('#ubahProgramStudiModal'),
+            });
+
             $('input[type=radio][name=golongan]').on('click', function () {
                 switch ($(this).val()) {
                     case 'semua':
@@ -552,7 +564,7 @@
                 $('#nama_prodi').val('');
                 $('#kode_prodi').val('');
                 $('input[name="jenjang_pendidikan"]').attr('checked', false);
-                $('#koordinator_prodi').prop('selectedIndex', 0);
+                $('#koordinator_prodi').val(null).trigger('change');
 
                 $('#nama_prodi_feedback').html('');
                 $('#kode_prodi_feedback').html('');
@@ -564,7 +576,7 @@
                 $('#nama_prodi_ubah').val('');
                 $('#kode_prodi_ubah').val('');
                 $('input[name="jenjang_pendidikan"]').attr('checked', false);
-                $('#koordinator_prodi_ubah').prop('selectedIndex', 0);
+                $('#koordinator_prodi_ubah').val(null).trigger('change');
 
                 $('#nama_prodi_ubah_feedback').html('');
                 $('#kode_prodi_ubah_feedback').html('');
@@ -739,8 +751,8 @@
                 } else {
                     $('#S2_ubah').prop('checked', true);
                 }
-                if (koordinator != '') {
-                    $('#koordinator_prodi_ubah').val(koordinator).change();
+                if (koordinator !== '') {
+                    $('#koordinator_prodi_ubah').val(koordinator).trigger('change');
                 }
             });
 
