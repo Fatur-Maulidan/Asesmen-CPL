@@ -106,7 +106,7 @@ class ProgramStudiController extends Controller
             $program_studi_exist = Master_02_ProgramStudi::where('nama', $validated['nama'])
                 ->where('jenjang_pendidikan', $validated['jenjang_pendidikan'])->first();
 
-            if ($program_studi_exist->id != $program_studi->id) {
+            if ($program_studi_exist && ($program_studi_exist->id != $program_studi->id)) {
                 return response()->json([
                     'message' => 'Program Studi sudah terdaftar.'
                 ], 409);
@@ -116,7 +116,9 @@ class ProgramStudiController extends Controller
                 if ($dosen) {
                     $dosen->syncRoles(['koordinator program studi']);
                 } else {
-                    $program_studi->kaprodi->syncRoles(['dosen']);
+                    if ($program_studi->kaprodi) {
+                        $program_studi->kaprodi->syncRoles(['dosen']);
+                    }
                 }
                 $program_studi->update($validated);
             });

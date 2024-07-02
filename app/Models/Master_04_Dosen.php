@@ -74,17 +74,17 @@ class Master_04_Dosen extends Authenticatable
 
     public function kaprodi()
     {
-        return $this->hasOne(Master_02_ProgramStudi::class, '04_MASTER_dosen_kode');
+        return $this->hasOne(Master_02_ProgramStudi::class, '04_MASTER_dosen_id');
     }
 
     public function programStudi()
     {
-        return $this->belongsToMany(Master_02_ProgramStudi::class, '05_MASTER_prodi_dosen', '04_MASTER_dosen_kode', '02_MASTER_program_studi_id');
+        return $this->belongsToMany(Master_02_ProgramStudi::class, '05_MASTER_prodi_dosen', '04_MASTER_dosen_id', '02_MASTER_program_studi_id');
     }
 
     public function mataKuliahRegister()
     {
-        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '17_MASTER_pengampu', '04_MASTER_dosen_kode', '11_MASTER_mk_register_id');
+        return $this->belongsToMany(Master_11_MataKuliahRegister::class, '17_MASTER_pengampu', '04_MASTER_dosen_id', '11_MASTER_mk_register_id');
     }
 
     // # Auth

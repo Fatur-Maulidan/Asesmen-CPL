@@ -75,7 +75,7 @@ class Master_11_MataKuliahRegister extends Model
 
     public function dosen()
     {
-        return $this->belongsToMany(Master_04_Dosen::class, '17_MASTER_pengampu', '11_MASTER_mk_register_id', '04_MASTER_dosen_kode');
+        return $this->belongsToMany(Master_04_Dosen::class, '17_MASTER_pengampu', '11_MASTER_mk_register_id', '04_MASTER_dosen_id');
     }
 
     public function mahasiswa()
