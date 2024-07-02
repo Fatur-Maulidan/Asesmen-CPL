@@ -28,12 +28,13 @@ class DosenController extends Controller
             $filter['jurusan'] = request('jurusan');
         }
 
+        $jurusan = Master_01_Jurusan::get(['id', 'nama']);
+        $program_studi = Master_02_ProgramStudi::orderBy('jenjang_pendidikan')->get(['id', 'nama', 'jenjang_pendidikan']);
+
         return $dataTable->with('filter', $filter)->render('admin.dosen.index', [
             'title' => 'Dosen',
-            'nama' => 'John Tyler',
-            'role' => 'Admin',
-            'jurusan' => Master_01_Jurusan::get(['nomor', 'nama']),
-            'prodi' => Master_02_ProgramStudi::orderBy('jenjang_pendidikan')->get(['nomor', 'nama', 'jenjang_pendidikan']),
+            'jurusan' => $jurusan,
+            'prodi' => $program_studi,
         ]);
     }
 

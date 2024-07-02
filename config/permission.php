@@ -26,6 +26,8 @@ return [
 
         'role' => Spatie\Permission\Models\Role::class,
 
+        'user' => \App\Models\Master_04_Dosen::class,
+
     ],
 
     'table_names' => [
@@ -86,7 +88,7 @@ return [
          * that case, name this `model_uuid`.
          */
 
-        'model_morph_key' => 'model_id',
+        'model_morph_key' => 'model_kode',
 
         /*
          * Change this if you want to use the teams feature and your related model's

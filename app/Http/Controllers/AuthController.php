@@ -24,9 +24,9 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            if (Auth::user()->roles[0]->name == 'admin') {
+            if (Auth::user()->hasRole('admin')) {
                 return redirect()->intended('/admin/dashboard');
-            } else if (Auth::user()->roles[0]->name == 'dosen') {
+            } else if (Auth::user()->hasRole('dosen')) {
                 return redirect()->intended('/dosen/mata-kuliah');
             } else {
                 return redirect()->intended('/kaprodi/kurikulum');

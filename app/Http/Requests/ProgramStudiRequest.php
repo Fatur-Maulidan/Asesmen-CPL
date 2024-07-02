@@ -15,7 +15,7 @@ class ProgramStudiRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->roles[0]->name == 'admin';
+        return Auth::user()->hasRole('admin');
     }
 
     /**

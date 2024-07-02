@@ -25,7 +25,7 @@ class DosenDataTable extends DataTable
             ->eloquent($query)
             // ->addColumn('action', 'dosen.action');
             ->addColumn('jurusan', function (Master_04_Dosen $dosen) {
-                return $dosen->jurusan->nama;
+                return $dosen->jurusan->nama ?? '';
             })
             ->addColumn('program_studi', function (Master_04_Dosen $dosen) {
                 $prodi_dosen = '';
@@ -68,15 +68,15 @@ class DosenDataTable extends DataTable
      */
     public function query(Master_04_Dosen $model)
     {
-        $query = $model->newQuery();
+        $query = $model->newQuery()->role('dosen');
 
         if ($this->kaprodi) {
-            $query->where('01_MASTER_jurusan_nomor', $this->jurusan_nomor);
+            $query->where('01_MASTER_jurusan_id', $this->jurusan_id);
         }
 
         if ($this->filter) {
             if ($this->filter['jurusan']) {
-                $query->where('01_MASTER_jurusan_nomor', $this->filter['jurusan']);
+                $query->where('01_MASTER_jurusan_id', $this->filter['jurusan']);
             }
         }
 
