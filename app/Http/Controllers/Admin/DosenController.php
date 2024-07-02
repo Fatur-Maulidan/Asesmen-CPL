@@ -11,6 +11,7 @@ use App\Models\Master_02_ProgramStudi;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_01_Jurusan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Stmt\Do_;
 
@@ -58,10 +59,12 @@ class DosenController extends Controller
     {
         if ($request->ajax()) {
             $validated = $request->validated();
-            $validated['01_MASTER_jurusan_nomor'] = $validated['jurusan'];
+            $validated['01_MASTER_jurusan_id'] = $validated['jurusan'];
             unset($validated['jurusan']);
+            $validated['kata_sandi'] = Hash::make('password');
 
             $dosen = Master_04_Dosen::create($validated);
+            $dosen->assignRole('dosen');
             $dosen->programStudi()->sync($validated['program_studi']);
 
             return response()->json([

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Master_04_Dosen;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class DosenRequest extends FormRequest
@@ -15,7 +16,7 @@ class DosenRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::user()->hasRole('admin');
     }
 
     /**
@@ -26,14 +27,50 @@ class DosenRequest extends FormRequest
     public function rules()
     {
         $kode = $this->segment(count($this->segments()));
+
         return [
-            'kode' => ['bail', 'required', Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')],
-            'nip' => ['bail', 'required', Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')],
-            'nama' => 'bail|required',
+            'kode' => [
+                'bail', 'required',
+                Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')
+            ],
+            'nip' => [
+                'bail', 'required',
+                Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')
+            ],
+            'nama' => 'bail|required|regex:/^[a-zA-Z\s.,]+$/',
             'jenis_kelamin' => 'bail|required',
-            'email' => ['bail', 'required', 'email', Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')],
+            'email' => [
+                'bail', 'required', 'email',
+                Rule::unique('04_MASTER_dosen')->ignore($kode, 'kode')
+            ],
             'jurusan' => 'bail|required',
             'program_studi' => 'sometimes|bail|required|array',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'kode.required' => 'Kode dosen perlu diisi.',
+            'kode.unique' => 'Kode dosen sudah terdaftar.',
+
+            'nip.required' => 'NIP dosen perlu diisi.',
+            'nip.unique' => 'NIP dosen sudah terdaftar.',
+
+            'nama.required' => 'Nama dosen perlu diisi.',
+            'nama.regex' => 'Nama dosen hanya diisi dengan huruf, spasi, titik dan koma.',
+
+            'jenis_kelamin.required' => 'Nama dosen perlu diisi.',
+
+            'email.required' => 'Email dosen perlu diisi.',
+            'email.email' => 'Email tidak valid.',
+
+            'jurusan.required' => 'Jurusan perlu diisi.',
         ];
     }
 }

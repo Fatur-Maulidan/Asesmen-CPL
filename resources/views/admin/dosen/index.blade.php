@@ -11,21 +11,6 @@
         <div class="col-auto">
             <form action="" method="GET">
                 <div class="row align-items-end">
-                    {{--<div class="col-auto">--}}
-                    {{--    <div>--}}
-                    {{--        <label for="filter_role" class="form-label fw-bold">Filter berdasarkan role</label>--}}
-                    {{--        <select class="form-select" id="filter_role" name="role">--}}
-                    {{--            <option value="">Pilih role</option>--}}
-                    {{--            <option value="{{ \App\Enums\RoleDosen::Dosen }}"--}}
-                    {{--                @if (request('role') == \App\Enums\RoleDosen::Dosen) selected @endif>Dosen</option>--}}
-                    {{--            <option value="{{ \App\Enums\RoleDosen::P2MPP }}"--}}
-                    {{--                @if (request('role') == \App\Enums\RoleDosen::P2MPP) selected @endif>P2MPP</option>--}}
-                    {{--            <option value="{{ \App\Enums\RoleDosen::KoorProgramStudi }}"--}}
-                    {{--                @if (request('role') == \App\Enums\RoleDosen::KoorProgramStudi) selected @endif>Koordinator Program Studi--}}
-                    {{--            </option>--}}
-                    {{--        </select>--}}
-                    {{--    </div>--}}
-                    {{--</div>--}}
                     <div class="col-auto">
                         <div>
                             <label for="filter_jurusan" class="form-label fw-bold">Filter berdasarkan jurusan</label>
@@ -37,18 +22,6 @@
                             </select>
                         </div>
                     </div>
-                    {{--<div class="col-auto">--}}
-                    {{--    <div>--}}
-                    {{--        <label for="filter_status" class="form-label fw-bold">Filter berdasarkan status</label>--}}
-                    {{--        <select class="form-select" id="filter_status" name="status">--}}
-                    {{--            <option value="">Pilih status</option>--}}
-                    {{--            <option value="{{ \App\Enums\StatusKeaktifan::Aktif }}"--}}
-                    {{--                @if (request('status') == \App\Enums\StatusKeaktifan::Aktif) selected @endif>Aktif</option>--}}
-                    {{--            <option value="{{ \App\Enums\StatusKeaktifan::Nonaktif }}"--}}
-                    {{--                @if (request('status') == \App\Enums\StatusKeaktifan::Nonaktif) selected @endif>Nonaktif</option>--}}
-                    {{--        </select>--}}
-                    {{--    </div>--}}
-                    {{--</div>--}}
                     <div class="col-auto">
                         <button type="submit" class="btn btn-outline-primary">Filter</button>
                     </div>
@@ -59,7 +32,7 @@
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importDosenModal">
                 Import Dosen
             </button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahDosenModal"
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#DosenModal"
                 id="btn-tambah">Tambah
                 Dosen</button>
         </div>
@@ -93,13 +66,13 @@
         </div>
     </div>
 
-    {{-- Tambah Dosen Modal --}}
-    <div class="modal fade" id="tambahDosenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="tambahDosenModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    {{-- Dosen Modal --}}
+    <div class="modal fade" id="DosenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="DosenModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="tambahDosenModalLabel">Tambah Dosen</h1>
+                    <h1 class="modal-title fs-5 fw-bold" id="DosenModalLabel">Tambah Dosen</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -107,72 +80,77 @@
                         @csrf
                         <div id="method_spoofing"></div>
 
-                        <div class="mb-3">
-                            <label for="kode" class="form-label fw-bold">Kode dosen</label>
-                            <input type="text" class="form-control" id="kode" name="kode"
-                                   placeholder="Kode dosen">
-                            <div id="kode_feedback" class="text-danger"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="nip" class="form-label fw-bold">NIP</label>
-                            <input type="text" class="form-control" id="nip" name="nip"
-                                   placeholder="Nomor Induk Pegawai">
-                            <div id="nip_feedback" class="text-danger"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="nama" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" id="nama" name="nama"
-                                placeholder="Nama Dosen">
-                            <div id="nama_feedback" class="text-danger"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="fw-bold mb-2">Jenis Kelamin</div>
-                            <div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="jenis_kelamin"
-                                        value="{{ \App\Enums\JenisKelamin::LakiLaki }}" id="jk_laki">
-                                    <label class="form-check-label" for="jk_laki">Laki-Laki</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="kode" class="form-label fw-bold">Kode dosen</label>
+                                    <input type="text" class="form-control" id="kode" name="kode"
+                                           placeholder="Kode dosen">
+                                    <div id="kode_feedback" class="text-danger"></div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="jenis_kelamin"
-                                        value="{{ \App\Enums\JenisKelamin::Perempuan }}" id="jk_perempuan">
-                                    <label class="form-check-label" for="jk_perempuan">Perempuan</label>
+
+                                <div class="mb-3">
+                                    <label for="nip" class="form-label fw-bold">NIP</label>
+                                    <input type="text" class="form-control" id="nip" name="nip"
+                                           placeholder="Nomor Induk Pegawai">
+                                    <div id="nip_feedback" class="text-danger"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label fw-bold">Nama</label>
+                                    <input type="text" class="form-control" id="nama" name="nama"
+                                           placeholder="Nama Dosen">
+                                    <div id="nama_feedback" class="text-danger"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="fw-bold mb-2">Jenis Kelamin</div>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                                   value="{{ \App\Enums\JenisKelamin::LakiLaki }}" id="jk_laki">
+                                            <label class="form-check-label" for="jk_laki">Laki-Laki</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="jenis_kelamin"
+                                                   value="{{ \App\Enums\JenisKelamin::Perempuan }}" id="jk_perempuan">
+                                            <label class="form-check-label" for="jk_perempuan">Perempuan</label>
+                                        </div>
+                                    </div>
+                                    <div id="jenis_kelamin_feedback" class="text-danger"></div>
                                 </div>
                             </div>
-                            <div id="jenis_kelamin_feedback" class="text-danger"></div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="email" class="form-label fw-bold">Email dosen</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                placeholder="Email dosen">
-                            <div id="email_feedback" class="text-danger"></div>
-                        </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label fw-bold">Email dosen</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                           placeholder="Email dosen">
+                                    <div id="email_feedback" class="text-danger"></div>
+                                </div>
 
-                        <div class="mb-3">
-                            <label for="jurusan" class="form-label fw-bold">Jurusan</label>
-                            <select class="form-select" id="jurusan" name="jurusan">
-                                <option value="" selected>Pilih jurusan</option>
-                                @foreach ($jurusan as $jrsn)
-                                    <option value="{{ $jrsn->nomor }}">{{ $jrsn->nama }}</option>
-                                @endforeach
-                            </select>
-                            <div id="jurusan_feedback" class="text-danger"></div>
-                        </div>
+                                <div class="mb-3">
+                                    <label for="jurusan" class="form-label fw-bold">Jurusan</label>
+                                    <select class="form-select" id="jurusan" name="jurusan">
+                                        <option value="" selected>Pilih jurusan</option>
+                                        @foreach ($jurusan as $jrsn)
+                                            <option value="{{ $jrsn->id }}">{{ $jrsn->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div id="jurusan_feedback" class="text-danger"></div>
+                                </div>
 
-                        <div class="mb-3">
-                            <label for="program_studi" class="form-label fw-bold">Program studi</label>
-                            <select class="form-select" id="program_studi" name="program_studi[]" multiple>
-                                <option value="">Pilih program studi</option>
-                                @foreach ($prodi as $p)
-                                    <option value="{{ $p->nomor }}">{{ $p->jenjang_pendidikan . ' ' .$p->nama }}</option>
-                                @endforeach
-                            </select>
+                                <div class="mb-3">
+                                    <label for="program_studi" class="form-label fw-bold">Program studi</label>
+                                    <select class="form-select" id="program_studi" name="program_studi[]" multiple>
+                                        <option value="">Pilih program studi</option>
+                                        @foreach ($prodi as $p)
+                                            <option value="{{ $p->id }}">{{ $p->jenjang_pendidikan . ' ' .$p->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -226,49 +204,6 @@
     {{-- Data Dosen --}}
     <div class="row">
         <div class="col-12">
-            {{-- <table class="table table-striped table-hover table-responsive table-sm">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">ID</th>
-                        <th scope="col">NIP</th>
-                        <th scope="col">Kode Dosen</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Email Polban</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Tindakan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($dosen as $dsn)
-                        <tr>
-                            <th scope="row" class="align-middle">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                </div>
-                            </th>
-                            <td class="align-middle">{{ $dsn->id }}</td>
-                            <td class="align-middle">{{ $dsn->nip }}</td>
-                            <td class="align-middle">{{ $dsn->kode }}</td>
-                            <td class="align-middle">{{ $dsn->nama }}</td>
-                            <td class="align-middle">{{ $dsn->email }}</td>
-                            <td class="align-middle">{{ \App\Enums\RoleDosen::getDescription($dsn->role) }}</td>
-                            <td class="align-middle">
-                                @if ($dsn->status->is(\App\Enums\StatusKeaktifan::Aktif))
-                                    <button type="button" class="btn btn-danger">Nonaktifkan</button>
-                                @else
-                                    <button type="button" class="btn btn-success">Aktifkan</button>
-                                @endif
-                            </td>
-                            <td class="align-middle">
-                                <a href="#">Ubah</a>
-                                <a href="#">Hapus</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table> --}}
             {{ $dataTable->table(['class' => 'table table-hover table-striped mt-3']) }}
         </div>
     </div>
@@ -278,10 +213,10 @@
     {{ $dataTable->scripts() }}
     <script>
         $(document).ready(function() {
-            const tambahDosenModal = document.getElementById('tambahDosenModal');
-            const tambahDosenModalInstance = new bootstrap.Modal('#tambahDosenModal');
+            const DosenModal = document.getElementById('DosenModal');
+            const DosenModalInstance = new bootstrap.Modal('#DosenModal');
 
-            tambahDosenModal.addEventListener('hidden.bs.modal', event => {
+            DosenModal.addEventListener('hidden.bs.modal', event => {
                 $('#kode').val('');
                 $('#nip').val('');
                 $('#nama').val('');
@@ -301,7 +236,7 @@
             $('#btn-tambah').on('click', function() {
                 const url = "{{ url()->current() }}";
                 $('#tambahDosenForm').attr('action', url);
-                $('#tambahDosenModalLabel').html('Tambah Dosen');
+                $('#DosenModalLabel').html('Tambah Dosen');
                 $('#btn-submit').html('Tambah');
             });
 
@@ -315,7 +250,7 @@
                     dataType: "JSON",
                     success: function(res) {
                         console.log(res)
-                        tambahDosenModalInstance.hide();
+                        DosenModalInstance.hide();
                         location.reload();
                     },
                     error: function(err) {
@@ -412,7 +347,7 @@
                     }
                 });
 
-                $('#tambahDosenModalLabel').html('Ubah Dosen');
+                $('#DosenModalLabel').html('Ubah Dosen');
                 $('#tambahDosenForm').attr('action', "{{ url()->current() }}/" + kode);
                 $('#method_spoofing').html('{{ method_field('patch') }}');
                 $('#btn-submit').html('Ubah');
@@ -421,7 +356,7 @@
             $('#program_studi').select2({
                 theme: "bootstrap-5",
                 closeOnSelect: false,
-                dropdownParent: $('#tambahDosenModal')
+                dropdownParent: $('#DosenModal')
             });
         });
     </script>
