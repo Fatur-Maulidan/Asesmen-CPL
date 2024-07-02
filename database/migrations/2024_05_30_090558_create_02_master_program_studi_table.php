@@ -21,7 +21,7 @@ class Create02MasterProgramStudiTable extends Migration
             $table->enum('jenjang_pendidikan', JenjangPendidikan::getValues());
             $table->timestamps();
             $table->foreignId('01_MASTER_jurusan_id')->constrained('01_MASTER_jurusan');
-            $table->string('04_MASTER_dosen_kode',6)->nullable();
+            $table->foreignId('04_MASTER_dosen_id',6)->nullable();
         });
     }
 

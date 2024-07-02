@@ -24,21 +24,14 @@ class Master_04_Dosen extends Authenticatable
      *
      * @var string
      */
-    protected $primaryKey = 'kode';
-
-    /**
-     * The "type" of the primary key ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
+    protected $primaryKey = 'id';
 
     /**
      * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $incrementing = false;
+    public $incrementing = true;
 
     /**
      * The attributes that are mass assignable.

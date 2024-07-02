@@ -14,7 +14,7 @@ class AddForeignKeyToProgramStudi extends Migration
     public function up()
     {
         Schema::table('02_MASTER_program_studi', function (Blueprint $table) {
-            $table->foreign('04_MASTER_dosen_kode')->references('kode')->on('04_MASTER_dosen')->comment('Field untuk menyimpan koordinator program studi.');
+            $table->foreign('04_MASTER_dosen_id')->references('id')->on('04_MASTER_dosen')->comment('Field untuk menyimpan koordinator program studi.');
         });
     }
 

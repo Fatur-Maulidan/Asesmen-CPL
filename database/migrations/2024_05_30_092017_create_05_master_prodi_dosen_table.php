@@ -15,8 +15,7 @@ class Create05MasterProdiDosenTable extends Migration
     {
         Schema::create('05_MASTER_prodi_dosen', function (Blueprint $table) {
             $table->foreignId('02_MASTER_program_studi_id')->constrained('02_MASTER_program_studi');
-            $table->string('04_MASTER_dosen_kode',6);
-            $table->foreign('04_MASTER_dosen_kode')->references('kode')->on('04_MASTER_dosen');
+            $table->foreignId('04_MASTER_dosen_kode')->constrained('04_MASTER_dosen');
         });
     }
 

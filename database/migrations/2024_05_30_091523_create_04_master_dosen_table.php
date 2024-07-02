@@ -18,11 +18,12 @@ class Create04MasterDosenTable extends Migration
     public function up()
     {
         Schema::create('04_MASTER_dosen', function (Blueprint $table) {
-            $table->string('kode',6)->primary();
+            $table->id();
+            $table->string('kode',6)->unique();
             $table->string('nip',18)->unique();
             $table->string('nama',50);
             $table->string('email',50)->unique();
-            $table->string('kata_sandi');
+            $table->string('kata_sandi')->default(Hash::make('password'));
             $table->enum('jenis_kelamin', JenisKelamin::getValues());
             $table->enum('status', StatusKeaktifan::getValues())->default('Aktif');
             $table->timestamps();

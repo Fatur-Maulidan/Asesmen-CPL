@@ -14,10 +14,8 @@ class Create17MasterPengampuTable extends Migration
     public function up()
     {
         Schema::create('17_MASTER_pengampu', function (Blueprint $table) {
-            $table->string('04_MASTER_dosen_kode', 6);
+            $table->foreignId('04_MASTER_dosen_id')->constrained('04_MASTER_dosen');
             $table->foreignId('11_MASTER_mk_register_id')->constrained('11_MASTER_mk_register');
-
-            $table->foreign('04_MASTER_dosen_kode')->references('kode')->on('04_MASTER_dosen');
         });
     }
 
