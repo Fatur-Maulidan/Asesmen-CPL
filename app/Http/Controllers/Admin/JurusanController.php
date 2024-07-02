@@ -18,8 +18,8 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusan = Master_01_Jurusan::with(['programStudi', 'programStudi.dosen:nip,nama', 'programStudi.kurikulumAktif']);
-        $dosen = Master_04_Dosen::role('dosen')->get(['kode', 'nama']);
+        $jurusan = Master_01_Jurusan::with(['programStudi', 'programStudi.kaprodi:id,nama', 'programStudi.kurikulumAktif']);
+        $dosen = Master_04_Dosen::role('dosen')->get(['id', 'kode', 'nama']);
 
         if (request('filter') == 'rekayasa') {
             $jurusan->rekayasa();

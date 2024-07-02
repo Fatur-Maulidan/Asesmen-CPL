@@ -33,7 +33,7 @@ class ProgramStudiRequest extends FormRequest
                 Rule::unique('02_MASTER_program_studi', 'kode')->ignore($this->route('program_studi'))
             ],
             'jenjang_pendidikan' => 'bail|required',
-            'koordinator_prodi' => 'bail|nullable',
+            'id_dosen' => 'bail|nullable',
         ];
     }
 

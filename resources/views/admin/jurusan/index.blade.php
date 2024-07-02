@@ -236,6 +236,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div id="alert_tambah"></div>
                     <form action="{{ route('admin.program-studi.store') }}" method="POST" autocomplete="off"
                           id="tambahProgramStudiForm">
                         @csrf
@@ -279,10 +280,10 @@
                         <div>
                             <label for="koordinator_prodi" class="form-label fw-bold mb-0">Koordinator program studi</label>
                             <div id="koordinator_help" class="form-text mb-2">* Dapat dikosongkan dahulu.</div>
-                            <select class="form-select" id="koordinator_prodi" name="koordinator_prodi">
+                            <select class="form-select" id="koordinator_prodi" name="id_dosen">
                                 <option value="" selected>Pilih dosen</option>
                                 @foreach ($dosen as $dsn)
-                                    <option value="{{ $dsn->kode }}">{{ $dsn->kode . ' - ' . $dsn->nama }}</option>
+                                    <option value="{{ $dsn->id }}">{{ $dsn->kode . ' - ' . $dsn->nama }}</option>
                                 @endforeach
                             </select>
                             <div id="koordinator_prodi_feedback" class="text-danger"></div>
@@ -315,7 +316,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="alert"></div>
+                    <div id="alert_ubah"></div>
                     <form action="" method="POST" autocomplete="off" id="ubahProgramStudiForm">
                         @csrf
                         @method('put')
@@ -360,10 +361,10 @@
                         <div>
                             <label for="koordinator_prodi_ubah" class="form-label fw-bold mb-0">Koordinator program studi</label>
                             <div id="koordinator_ubah_help" class="form-text mb-2">* Dapat dikosongkan.</div>
-                            <select class="form-select" id="koordinator_prodi_ubah" name="koordinator_prodi">
+                            <select class="form-select" id="koordinator_prodi_ubah" name="id_dosen">
                                 <option value="" selected>Pilih dosen</option>
                                 @foreach ($dosen as $dsn)
-                                    <option value="{{ $dsn->kode }}">{{ $dsn->kode . ' - ' . $dsn->nama }}</option>
+                                    <option value="{{ $dsn->id }}">{{ $dsn->kode . ' - ' . $dsn->nama }}</option>
                                 @endforeach
                             </select>
                             <div id="koordinator_prodi_ubah_feedback" class="text-danger"></div>
@@ -471,7 +472,7 @@
                         </div>
                     @endif
                     <div class="card-body text-body-secondary">
-                        <d class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-warning btn-sm btn-edit" data-bs-toggle="modal"
                                     data-bs-target="#ubahJurusanModal"
                                     data-id="{{ $jrsn->id }}"
@@ -483,7 +484,7 @@
                                     data-bs-target="#tambahProgramStudiModal" data-id="{{ $jrsn->id }}">Tambah
                                 Program Studi
                             </button>
-                        </d>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -707,6 +708,13 @@
                             } else {
                                 $('#koordinator_prodi_feedback').html('');
                             }
+                        } else if (err.status == 409) {
+                            $('#alert_tambah').html(`
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                  ${err.responseJSON.message}
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            `);
                         } else if (err.status == 500) {
                             console.log(err);
                         }
@@ -793,12 +801,12 @@
                             }
                         } else if (err.status == 409) {
                             console.log(err);
-                            $('#alert').html(`
+                            $('#alert_ubah').html(`
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                   ${err.responseJSON.message}
                                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
-                                `);
+                            `);
                         } else if (err.status == 500) {
                             console.log(err);
                         }

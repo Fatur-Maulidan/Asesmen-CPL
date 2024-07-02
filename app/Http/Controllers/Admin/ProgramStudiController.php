@@ -44,7 +44,16 @@ class ProgramStudiController extends Controller
         if ($request->ajax()) {
             $validated = $request->validated();
             $validated['01_MASTER_jurusan_id'] = $validated['id_jurusan'];
-            $validated['04_MASTER_dosen_kode'] = $validated['koordinator_prodi'];
+            $validated['04_MASTER_dosen_id'] = $validated['id_dosen'];
+
+            $program_studi_exist = Master_02_ProgramStudi::where('nama', $validated['nama'])
+                ->where('jenjang_pendidikan', $validated['jenjang_pendidikan'])->first();
+
+            if ($program_studi_exist) {
+                return response()->json([
+                    'message' => 'Program Studi sudah terdaftar.'
+                ], 409);
+            }
 
             Master_02_ProgramStudi::create($validated);
 
@@ -89,7 +98,7 @@ class ProgramStudiController extends Controller
             $program_studi = Master_02_ProgramStudi::find($id);
 
             $validated = $request->validated();
-            $validated['04_MASTER_dosen_kode'] = $validated['koordinator_prodi'];
+            $validated['04_MASTER_dosen_id'] = $validated['id_dosen'];
 
             $program_studi_exist = Master_02_ProgramStudi::where('nama', $validated['nama'])
                 ->where('jenjang_pendidikan', $validated['jenjang_pendidikan'])->first();
