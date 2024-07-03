@@ -30,7 +30,9 @@ class CapaianPembelajaranLulusanStoreRequest extends FormRequest
         ];
     }
 
-    public function message()
+
+
+    public function messages()
     {
         return [
             'domain.required' => 'Domain harus dipilih',

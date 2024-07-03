@@ -65,26 +65,32 @@ class CapaianPembelajaranLulusanController extends Controller
      */
     public function store(CapaianPembelajaranLulusanStoreRequest $request, $tahun_kurikulum)
     {
-        $validated = $request->validated();
-        $kode_domain = $this->kodeCP($validated['domain']);
+        if ($request->ajax()) {
+            $validated = $request->validated();
+            $kode_domain = $this->kodeCP($validated['domain']);
 
-        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
-        $data_cpl = Master_08_CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kode_domain . '%')
-            ->where('03_MASTER_kurikulum_id', $kurikulum->id)
-            ->get()
-            ->count();
+            $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+            $data_cpl = Master_08_CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kode_domain . '%')
+                ->where('03_MASTER_kurikulum_id', $kurikulum->id)
+                ->get()
+                ->count();
 
-        $cpl = new Master_08_CapaianPembelajaranLulusan([
-            'kode' => $kode_domain . "-" . ($data_cpl + 1),
-            'domain' => $validated['domain'],
-            'deskripsi' => $validated['deskripsi'],
-            '03_MASTER_kurikulum_id' => $kurikulum->id
-        ]);
+            $cpl = new Master_08_CapaianPembelajaranLulusan([
+                'kode' => $kode_domain . "-" . ($data_cpl + 1),
+                'domain' => $validated['domain'],
+                'deskripsi' => $validated['deskripsi'],
+                '03_MASTER_kurikulum_id' => $kurikulum->id
+            ]);
 
-        if ($cpl->save()) {
-            return redirect()->route('kaprodi.cpl.index', ['kurikulum' => $tahun_kurikulum]);
-        } else {
-            return redirect()->back()->with('error', 'Gagal menambahkan data.');
+            if ($cpl->save()) {
+                return response()->json([
+                    'message' => 'Data berhasil disimpan',
+                ], 201);
+            } else {
+                return response()->json([
+                    'message' => 'Data gagal disimpan',
+                ], 500);
+            }
         }
     }
 

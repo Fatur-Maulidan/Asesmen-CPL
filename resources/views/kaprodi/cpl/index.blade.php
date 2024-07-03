@@ -33,19 +33,19 @@
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importCplModal">
                 Import CP
             </button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahCplModal">
                 Tambah CP
             </button>
         </div>
     </div>
 
     {{-- Tambah CPL Modal --}}
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="tambahCplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="tambahCplModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Tambah Capaian Pembelajaran</h1>
+                    <h1 class="modal-title fs-5 fw-bold" id="tambahCplModalLabel">Tambah Capaian Pembelajaran</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -60,12 +60,14 @@
                                 <option value="Keterampilan Umum">Keterampilan Umum (KU)</option>
                                 <option value="Keterampilan Khusus">Keterampilan Khusus (KK)</option>
                             </select>
+                            <div id="domain_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label fw-bold">Deskripsi</label>
                             <textarea class="form-control" id="deskripsi" placeholder="Deskrispi Capaian Pembelajaran"
                                 name="deskripsi" rows="5"></textarea>
+                            <div id="deskripsi_feedback" class="text-danger"></div>
                         </div>
                     </form>
                 </div>
@@ -158,6 +160,17 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            const tambahCplModal = document.getElementById('tambahCplModal');
+            const tambahCplModalInstance = new bootstrap.Modal('#tambahCplModal');
+
+            tambahCplModal.addEventListener('hidden.bs.modal', event => {
+                $('#domain').prop('selectedIndex', 0);
+                $('#deskripsi').val('');
+
+                $('#domain_feedback').html('');
+                $('#deskripsi_feedback').html('');
+            });
+
             $('input[name="options"]').change(function() {
                 let filterValue = $('label[for="' + $(this).attr('id') + '"]').data('filter');
                 if (filterValue === 'Semua') {
@@ -170,6 +183,39 @@
                         }
                     });
                 }
+            });
+
+            $('#formTambahCpl').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "post",
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (res) {
+                        console.log(res)
+                        tambahCplModalInstance.hide();
+                        location.reload();
+                    },
+                    error: function (err) {
+                        // when status code is 422, it's a validation issue
+                        if (err.status == 422) {
+                            console.log(err.responseJSON);
+                            if (err.responseJSON.errors.domain) {
+                                $('#domain_feedback').html(err.responseJSON.errors.domain[0]);
+                            } else {
+                                $('#domain_feedback').html('');
+                            }
+
+                            if (err.responseJSON.errors.deskripsi) {
+                                $('#deskripsi_feedback').html(err.responseJSON.errors.deskripsi[0]);
+                            } else {
+                                $('#deskripsi_feedback').html('');
+                            }
+                        }
+                    }
+                });
             });
         });
     </script>
