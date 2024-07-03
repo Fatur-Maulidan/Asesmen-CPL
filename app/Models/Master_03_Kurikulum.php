@@ -133,8 +133,13 @@ class Master_03_Kurikulum extends Model
         return $this->getKurikulumByNomorProdi($kaprodi->programStudi->first()->nomor, $kurikulum);
     }
 
-    public function getKurikulumByYearAndProdi($tahun, $program_studi_nomor)
+    public function getKurikulumByYearAndProdi($tahun, $program_studi_id)
     {
-        return $this->where('tahun', $tahun)->where('02_MASTER_program_studi_nomor', $program_studi_nomor)->first();
+        return $this->where('tahun', $tahun)->where('02_MASTER_program_studi_id', $program_studi_id)->first();
+    }
+
+    public static function getKurikulumByYearAndProdiStatic($tahun, $program_studi_id)
+    {
+        return self::where('tahun', $tahun)->where('02_MASTER_program_studi_id', $program_studi_id)->first();
     }
 }

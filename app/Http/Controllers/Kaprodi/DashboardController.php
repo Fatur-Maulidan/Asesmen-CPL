@@ -6,22 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_03_Kurikulum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    protected $kaprodi;
-    protected $kaprodiNip;
-    protected $kurikulum;
-    public function __construct()
+    public function indexCpl($tahun_kurikulum)
     {
-        $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Master_04_Dosen();
-        $this->kurikulum = new Master_03_Kurikulum();
-    }
-    public function indexCpl($kurikulum)
-    {
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
 
         $ketercapaian_tp = DB::table('01_ANALISIS_ketercapaian_mahasiswa as cp_mahasiswa')
             ->join('13_MASTER_tujuan_pembelajaran as table_tp', 'table_tp.id', '=', 'cp_mahasiswa.id_tp')
@@ -88,13 +80,11 @@ class DashboardController extends Controller
             'data' => $data_cp,
         ];
 
-        //dd($data_chart_ik);
+        //dd($kurikulum->capaianPembelajaranLulusan->isEmpty());
 
         return view('kaprodi.kurikulum.dashboard_cpl', [
             'title' => 'Dashboard',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
+            'kurikulum' => $kurikulum,
             'data_chart_tp' => $data_chart_tp,
             'ketercapaian_tp' => $ketercapaian_tp,
             'data_chart_ik' => $data_chart_ik,
@@ -104,15 +94,14 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function indexMk($kurikulum)
+    public function indexMk($tahun_kurikulum)
     {
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+
 
         return view('kaprodi.kurikulum.dashboard_mk', [
             'title' => 'Dashboard',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum
+            'kurikulum' => $kurikulum
         ]);
     }
 }

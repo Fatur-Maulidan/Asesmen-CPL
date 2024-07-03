@@ -46,10 +46,9 @@
                     <div class="modal-footer">
                         <div class="row w-100">
                             <div class="col">
-                                <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Tidak
-                                </button>
+                                <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Tidak</button>
                             </div>
-                            @if(isset($kurikulum) && !$kurikulum)
+                            @if(isset($kurikulum))
                                 <div class="col">
                                     <form action="{{ route('kaprodi.kurikulum.update', ['kurikulum' => $kurikulum->id]) }}"
                                           method="post">
