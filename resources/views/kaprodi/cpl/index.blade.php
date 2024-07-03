@@ -33,7 +33,8 @@
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importCplModal">
                 Import CP
             </button>
-            <button type="button" class="btn btn-primary" id="btn-tambah-cpl" data-bs-toggle="modal" data-bs-target="#cplModal">
+            <button type="button" class="btn btn-primary" id="btn-tambah-cpl" data-bs-toggle="modal"
+                    data-bs-target="#cplModal">
                 Tambah CP
             </button>
         </div>
@@ -41,7 +42,7 @@
 
     {{-- CPL Modal --}}
     <div class="modal fade" id="cplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="cplModalLabel" aria-hidden="true">
+         aria-labelledby="cplModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -71,7 +72,7 @@
                         <div class="mb-3">
                             <label for="deskripsi" class="form-label fw-bold">Deskripsi</label>
                             <textarea class="form-control" id="deskripsi" placeholder="Deskrispi Capaian Pembelajaran"
-                                name="deskripsi" rows="5"></textarea>
+                                      name="deskripsi" rows="5"></textarea>
                             <div id="deskripsi_feedback" class="text-danger"></div>
                         </div>
                     </form>
@@ -80,10 +81,80 @@
                     <div class="row w-100">
                         <div class="col">
                             <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal"
-                                aria-label="Close">Batal</button>
+                                    aria-label="Close">Batal
+                            </button>
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-success w-100" id="btn-submit-cpl" form="formCpl">Tambah</button>
+                            <button type="submit" class="btn btn-success w-100" id="btn-submit-cpl" form="formCpl">
+                                Tambah
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- IK Modal --}}
+    <div class="modal fade" id="ikModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="ikModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="ikModalLabel">Tambah Indikator Kinerja</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="" autocomplete="off" id="formIk">
+                        @csrf
+                        <input type="hidden" name="id_cpl" value="">
+                        <div class="mb-3">
+                            <label for="cp_induk" class="form-label fw-bold">Capaian Pembelajaran Induk</label>
+                            <input type="text" class="form-control" id="cp_induk" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="deskripsi_ik" class="form-label fw-bold">Deskripsi</label>
+                            <textarea class="form-control" name="deskripsi_ik"
+                                      placeholder="Deskripsi Indikator Kinerja"
+                                      id="deskripsi_ik" rows="3"></textarea>
+                        </div>
+                        <hr class="my-4">
+                        <div class="mb-3">
+                            <label for="rubrik1" class="form-label fw-bold">Rubrik Sangat Kurang</label>
+                            <textarea class="form-control" id="rubrik1" name="rubrik[]" placeholder="Deskripsi Rubrik Sangat Kurang"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rubrik2" class="form-label fw-bold">Rubrik Kurang</label>
+                            <textarea class="form-control" id="rubrik2" name="rubrik[]" placeholder="Deskripsi Rubrik Kurang"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rubrik3" class="form-label fw-bold">Rubrik Cukup</label>
+                            <textarea class="form-control" id="rubrik3" name="rubrik[]" placeholder="Deskripsi Rubrik Cukup"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rubrik4" class="form-label fw-bold">Rubrik Baik</label>
+                            <textarea class="form-control" id="rubrik4" name="rubrik[]" placeholder="Deskripsi Rubrik Baik"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rubrik5" class="form-label fw-bold">Rubrik Sangat Baik</label>
+                            <textarea class="form-control" id="rubrik5" name="rubrik[]" placeholder="Deskripsi Rubrik Sangat Baik"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger w-100"
+                                    data-bs-dismiss="modal">Batal
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-success w-100" form="formIk">Tambah</button>
                         </div>
                     </div>
                 </div>
@@ -101,7 +172,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.kurikulum.cpl.import', ['kurikulum' => $kurikulum->tahun]) }}" method="POST" autocomplete="off"
+                    <form action="{{ route('kaprodi.kurikulum.cpl.import', ['kurikulum' => $kurikulum->tahun]) }}"
+                          method="POST" autocomplete="off"
                           enctype="multipart/form-data">
                         @csrf
                         <div class="mb-5">
@@ -109,7 +181,8 @@
                             <input class="form-control" type="file" id="formFileCpl" name="formFileCpl" accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('kaprodi.kurikulum.cpl.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}" class="btn btn-outline-success">Download Template</a>
+                            <a href="{{ route('kaprodi.kurikulum.cpl.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}"
+                               class="btn btn-outline-success">Download Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
                         </div>
                     </form>
@@ -153,8 +226,16 @@
                                         data-kode="{{ $cpl->kode }}"
                                         data-domain="{{ $cpl->domain }}"
                                         data-deskripsi="{{ $cpl->deskripsi }}"
-                                >Ubah CP</button>
-                                <button type="button" class="btn btn-primary">Tambah IK</button>
+                                >Ubah CP
+                                </button>
+                                <button type="button"
+                                        class="btn btn-primary btn-tambah-ik"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#ikModal"
+                                        data-id="{{ $cpl->id }}"
+                                        data-kode="{{ $cpl->kode }}"
+                                >Tambah IK
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -170,7 +251,7 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const cplModal = document.getElementById('cplModal');
             const cplModalInstance = new bootstrap.Modal('#cplModal');
 
@@ -183,13 +264,13 @@
                 $('#deskripsi_feedback').html('');
             });
 
-            $('input[name="options"]').change(function() {
+            $('input[name="options"]').change(function () {
                 let filterValue = $('label[for="' + $(this).attr('id') + '"]').data('filter');
                 if (filterValue === 'Semua') {
                     $('.accordion-item').show();
                 } else {
                     $('.accordion-item').hide();
-                    $('.accordion-item').each(function() {
+                    $('.accordion-item').each(function () {
                         if ($(this).find('button').text().includes(filterValue)) {
                             $(this).show();
                         }
@@ -207,24 +288,24 @@
             });
 
             $('.btn-ubah-cpl').on('click', function (e) {
-               const id = $(this).data('id');
-               const kode = $(this).data('kode');
-               const domain = $(this).data('domain');
-               const deskripsi = $(this).data('deskripsi');
+                const id = $(this).data('id');
+                const kode = $(this).data('kode');
+                const domain = $(this).data('domain');
+                const deskripsi = $(this).data('deskripsi');
 
-               $('#formCpl').attr('action', '{{ url()->current() }}' + '/' + id);
-               $('#id_cpl').val(id);
-               $('#method_spoofing_cpl').html('{{ method_field('put') }}');
-               $('#kode').html(`
+                $('#formCpl').attr('action', '{{ url()->current() }}' + '/' + id);
+                $('#id_cpl').val(id);
+                $('#method_spoofing_cpl').html('{{ method_field('put') }}');
+                $('#kode').html(`
                     <div class="mb-3">
                             <label for="kode" class="form-label fw-bold">Kode CP</label>
                             <input type="text" class="form-control" value="${kode}" disabled>
                         </div>
                `);
-               $('#domain').val(domain).attr('disabled', true);
-               $('#deskripsi').val(deskripsi);
-               $('#btn-submit-cpl').html('Ubah').removeClass('btn-success').addClass('btn-warning');
-               $('#cplModalLabel').html('Ubah Capaian Pembelajaran');
+                $('#domain').val(domain).attr('disabled', true);
+                $('#deskripsi').val(deskripsi);
+                $('#btn-submit-cpl').html('Ubah').removeClass('btn-success').addClass('btn-warning');
+                $('#cplModalLabel').html('Ubah Capaian Pembelajaran');
             });
 
             $('#formCpl').on('submit', function (e) {
