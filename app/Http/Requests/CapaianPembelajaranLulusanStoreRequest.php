@@ -25,12 +25,10 @@ class CapaianPembelajaranLulusanStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'domain' => 'bail|required',
+            'domain' => 'bail|sometimes|required',
             'deskripsi' => 'bail|required'
         ];
     }
-
-
 
     public function messages()
     {

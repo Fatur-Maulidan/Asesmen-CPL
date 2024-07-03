@@ -7,6 +7,7 @@ use App\Models\PetaCpIk;
 use Illuminate\Http\Request;
 use App\Models\Master_09_IndikatorKinerja;
 use App\Models\Master_08_CapaianPembelajaranLulusan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\IndikatorKinerjaStoreRequest;
 use App\Models\Master_10_Rubrik;
@@ -16,40 +17,20 @@ use App\Models\Master_03_Kurikulum;
 
 class IndikatorKinerjaController extends Controller
 {
-    protected $validator;
-    protected $kaprodiNip;
-    protected $kaprodi;
-    protected $kurikulum;
-    protected $capaianPembelajaranLulusan;
-    protected $indikatorKinerja;
-
-    public function __construct()
-    {
-        $this->validator = new IndikatorKinerjaStoreRequest();
-        $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Master_04_Dosen();
-        $this->kurikulum = new Master_03_Kurikulum();
-        $this->capaianPembelajaranLulusan = new Master_08_CapaianPembelajaranLulusan();
-        $this->indikatorKinerja = new Master_09_IndikatorKinerja();
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kurikulum)
+    public function index($tahun_kurikulum)
     {
-        // dd($kurikulum);
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id);
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+        $indikator_kinerja = [];
 
         return view('kaprodi.ik.index', [
             'title' => 'Indikator Kinerja',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
-            'data_ik' => $this->indikatorKinerja->sortBy('kode'),
+            'kurikulum' => $kurikulum,
+            'data_ik' => $indikator_kinerja,
         ]);
     }
 
@@ -74,7 +55,7 @@ class IndikatorKinerjaController extends Controller
         }
 
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        
+
         $this->capaianPembelajaranLulusan = $this->capaianPembelajaranLulusan
             ->getCplIdByKurikulum($request->input('cpInduk'),$this->kurikulum->id);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,$this->capaianPembelajaranLulusan->id);
@@ -115,7 +96,7 @@ class IndikatorKinerjaController extends Controller
 
         $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
         $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,'',$ik);
-        
+
         $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
         // dd($this->kurikulum->nilai_rentang_rubrik[1]['nilai']['awal']);
 
@@ -207,7 +188,7 @@ class IndikatorKinerjaController extends Controller
         $indikatorKinerja = Master_09_IndikatorKinerja::find($id);
 
         $rubrik = Master_10_Rubrik::where('09_MASTER_indikator_kinerja_id', $id)->get();
-        
+
         $indikatorKinerja->deskripsi = $request->input('deskripsi');
         if($indikatorKinerja->save()){
             if($rubrik->isEmpty()) {

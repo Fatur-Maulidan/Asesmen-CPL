@@ -117,8 +117,8 @@
         <div class="col-12">
             <div class="accordion" id="accordionExample">
                 @if (empty($data_ik))
-                    <div class="text-center">
-                        <p class="fs-4">Belum Ada Indikator Kinerja</p>
+                    <div class="alert alert-secondary" role="alert">
+                        Belum ada Indikator Kinerja.
                     </div>
                 @else
                     @foreach ($data_ik as $index => $ik)
@@ -189,6 +189,7 @@
         </div>
     </div>
 @endsection
+
 @push('scripts')
     <script>
         $(document).ready(function() {

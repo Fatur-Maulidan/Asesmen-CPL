@@ -33,24 +33,29 @@
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importCplModal">
                 Import CP
             </button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahCplModal">
+            <button type="button" class="btn btn-primary" id="btn-tambah-cpl" data-bs-toggle="modal" data-bs-target="#cplModal">
                 Tambah CP
             </button>
         </div>
     </div>
 
-    {{-- Tambah CPL Modal --}}
-    <div class="modal fade" id="tambahCplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="tambahCplModalLabel" aria-hidden="true">
+    {{-- CPL Modal --}}
+    <div class="modal fade" id="cplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="cplModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="tambahCplModalLabel">Tambah Capaian Pembelajaran</h1>
+                    <h1 class="modal-title fs-5 fw-bold" id="cplModalLabel">Tambah Capaian Pembelajaran</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.cpl.store', ['kurikulum' => $kurikulum->tahun]) }}" method="post" autocomplete="off" id="formTambahCpl">
+                    <form action="" method="post" autocomplete="off" id="formCpl">
+                        <input type="hidden" name="id_cpl" id="id_cpl" value="">
+                        <div id="method_spoofing_cpl"></div>
                         @csrf
+
+                        <div id="kode"></div>
+
                         <div class="mb-3">
                             <label for="domain" class="form-label fw-bold">Domain</label>
                             <select class="form-select" id="domain" name="domain">
@@ -78,7 +83,7 @@
                                 aria-label="Close">Batal</button>
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-success w-100" form="formTambahCpl">Tambah</button>
+                            <button type="submit" class="btn btn-success w-100" id="btn-submit-cpl" form="formCpl">Tambah</button>
                         </div>
                     </div>
                 </div>
@@ -131,7 +136,7 @@
                         <div id="collapse{{ $index }}"
                              class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
                              data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
+                            <div class="accordion-body py-4">
                                 <div class="fw-bold">Indikator Kinerja</div>
                                 @forelse($cpl->indikatorKinerja as $ik)
 
@@ -140,10 +145,16 @@
                                 @endforelse
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl['kode']]) }}"
-                                   class="me-3">Lihat
-                                    detail</a>
-                                {{-- <a href="">Ubah pembobotan</a> --}}
+                                <button type="button"
+                                        class="btn btn-warning btn-ubah-cpl"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#cplModal"
+                                        data-id="{{ $cpl->id }}"
+                                        data-kode="{{ $cpl->kode }}"
+                                        data-domain="{{ $cpl->domain }}"
+                                        data-deskripsi="{{ $cpl->deskripsi }}"
+                                >Ubah CP</button>
+                                <button type="button" class="btn btn-primary">Tambah IK</button>
                             </div>
                         </div>
                     </div>
@@ -160,11 +171,12 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            const tambahCplModal = document.getElementById('tambahCplModal');
-            const tambahCplModalInstance = new bootstrap.Modal('#tambahCplModal');
+            const cplModal = document.getElementById('cplModal');
+            const cplModalInstance = new bootstrap.Modal('#cplModal');
 
-            tambahCplModal.addEventListener('hidden.bs.modal', event => {
-                $('#domain').prop('selectedIndex', 0);
+            cplModal.addEventListener('hidden.bs.modal', event => {
+                $('#formCpl').attr('action', '');
+                $('#domain').prop('selectedIndex', 0).attr('disabled', false);
                 $('#deskripsi').val('');
 
                 $('#domain_feedback').html('');
@@ -185,7 +197,37 @@
                 }
             });
 
-            $('#formTambahCpl').on('submit', function (e) {
+            $('#btn-tambah-cpl').on('click', function (e) {
+                $('#formCpl').attr('action', "{{ route('kaprodi.cpl.store', ['kurikulum' => $kurikulum->tahun]) }}");
+                $('#id_cpl').val('');
+                $('#method_spoofing_cpl').html('');
+                $('#kode').html('');
+                $('#btn-submit-cpl').html('Tambah').removeClass('btn-warning').addClass('btn-success');
+                $('#cplModalLabel').html('Tambah Capaian Pembelajaran');
+            });
+
+            $('.btn-ubah-cpl').on('click', function (e) {
+               const id = $(this).data('id');
+               const kode = $(this).data('kode');
+               const domain = $(this).data('domain');
+               const deskripsi = $(this).data('deskripsi');
+
+               $('#formCpl').attr('action', '{{ url()->current() }}' + '/' + id);
+               $('#id_cpl').val(id);
+               $('#method_spoofing_cpl').html('{{ method_field('put') }}');
+               $('#kode').html(`
+                    <div class="mb-3">
+                            <label for="kode" class="form-label fw-bold">Kode CP</label>
+                            <input type="text" class="form-control" value="${kode}" disabled>
+                        </div>
+               `);
+               $('#domain').val(domain).attr('disabled', true);
+               $('#deskripsi').val(deskripsi);
+               $('#btn-submit-cpl').html('Ubah').removeClass('btn-success').addClass('btn-warning');
+               $('#cplModalLabel').html('Ubah Capaian Pembelajaran');
+            });
+
+            $('#formCpl').on('submit', function (e) {
                 e.preventDefault();
 
                 $.ajax({
@@ -195,7 +237,7 @@
                     dataType: "JSON",
                     success: function (res) {
                         console.log(res)
-                        tambahCplModalInstance.hide();
+                        cplModalInstance.hide();
                         location.reload();
                     },
                     error: function (err) {

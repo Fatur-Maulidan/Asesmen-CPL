@@ -19,24 +19,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CapaianPembelajaranLulusanController extends Controller
 {
-    protected $validation;
-    protected $kaprodiNip;
-    protected $kaprodi;
-    protected $kurikulum;
-    protected $indikatorKinerja;
-    protected $mataKuliah;
-    protected $dataIndikatorKinerja = [];
-
-    public function __construct()
-    {
-        $this->validation = new CapaianPembelajaranLulusanStoreRequest();
-        $this->kaprodiNip = '199301062019031017';
-        $this->kaprodi = new Master_04_Dosen();
-        $this->kurikulum = new Master_03_Kurikulum();
-        $this->indikatorKinerja = new Master_09_IndikatorKinerja();
-        $this->mataKuliah = new Master_07_MataKuliah();
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -175,28 +157,25 @@ class CapaianPembelajaranLulusanController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $kurikulum, $cpl)
+    public function update(CapaianPembelajaranLulusanStoreRequest $request, $tahun_kurikulum, $id)
     {
-        dd('test');
-        // $validator = $request->validated();
-        // dd($validator);
+        if ($request->ajax()) {
+            $validated = $request->validated();
 
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+            $cpl = Master_08_CapaianPembelajaranLulusan::find($id);
 
-        $dataCPL = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)
-                ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)->first();
+            $cpl->update($validated);
 
-        $dataCPL->deskripsi = $request->input('deskripsi');
-        $dataCPL->updated_at = date('Y-m-d H:i:s');
-
-        dd($dataCPL, $kurikulum);
-
-        if ($dataCPL->save()) {
-            return redirect()->route('kaprodi.cpl.show', compact('kurikulum', 'cpl'));
-        } else {
-            return redirect()->back()->with('error', 'Gagal menambahkan data');
+            if ($cpl->save()) {
+                return response()->json([
+                    'message' => 'Data berhasil disimpan.',
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Data gagal disimpan',
+                ], 500);
+            }
         }
     }
 
