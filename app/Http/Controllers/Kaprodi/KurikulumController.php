@@ -68,6 +68,7 @@ class KurikulumController extends Controller
             'status' => StatusKurikulum::Pengelolaan,
             'konf_tenggat_waktu_tp' => $validated['tenggat_tp'],
             'threshold' => $validated['threshold'],
+            'nilai_rubrik' => $validated['nilai'],
             '02_MASTER_program_studi_id' => $validated['program_studi_id']
         ]);
 

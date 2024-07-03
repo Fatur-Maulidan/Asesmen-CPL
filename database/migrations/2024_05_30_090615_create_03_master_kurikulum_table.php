@@ -20,6 +20,7 @@ class Create03MasterKurikulumTable extends Migration
             $table->year('tahun_berlaku');
             $table->year('tahun_berakhir')->nullable();
             $table->unsignedTinyInteger('threshold');
+            $table->json('nilai_rubrik');
             $table->enum('status', StatusKurikulum::getValues());
             $table->dateTime('konf_tenggat_waktu_tp');
             $table->timestamps();

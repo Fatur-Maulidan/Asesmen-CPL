@@ -27,7 +27,7 @@
             @endif
         @endif
 
-        @if (auth()->user()->hasRole('koordinator program studi') && isset($kurikulum))
+        @if (auth()->user()->hasRole('koordinator program studi') && ((!Route::is('kaprodi.kurikulum.create') && !Route::is('kaprodi.kurikulum.index')) && !$kurikulum->exists))
         {{-- Confirm modal --}}
         <div class="modal fade" id="confirmFinalisasiModal" data-bs-backdrop="static" data-bs-keyboard="false"
              aria-hidden="true" aria-labelledby="confirmFinalisasiModalLabel" tabindex="-1">

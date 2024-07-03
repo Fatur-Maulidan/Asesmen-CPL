@@ -29,6 +29,7 @@ class KurikulumRequest extends FormRequest
             'tahun' => 'bail|required|unique:03_MASTER_kurikulum,tahun',
             'tenggat_tp' => 'bail|required|date',
             'threshold' => 'bail|required|integer|min:1|max:100',
+            'nilai' => 'bail|required|array',
         ];
     }
 
@@ -52,6 +53,23 @@ class KurikulumRequest extends FormRequest
             'threshold.integer' => 'Threshold diisi dengan angka bulat.',
             'threshold.min' => 'Nilai threshold minimal 1.',
             'threshold.max' => 'Nilai threshold maksimal 100.',
+
+            'nilai.required' => 'Nilai perlu diisi.',
         ];
+    }
+
+    protected function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $nilai = $this->input('nilai', []);
+            foreach ($nilai as $item) {
+                foreach ($item as $value) {
+                    if (is_null($value)) {
+                        $validator->errors()->add('nilai', 'Mohon lengkapi data untuk nilai.');
+                        break;
+                    }
+                }
+            }
+        });
     }
 }
