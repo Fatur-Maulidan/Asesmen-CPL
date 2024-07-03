@@ -10,6 +10,7 @@ use App\Models\Master_11_MataKuliahRegister;
 use Illuminate\Http\Request;
 use App\Http\Requests\CapaianPembelajaranLulusanStoreRequest;
 use App\Models\Master_08_CapaianPembelajaranLulusan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_04_Dosen;
@@ -42,18 +43,17 @@ class CapaianPembelajaranLulusanController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index($kurikulum)
+    public function index($tahun_kurikulum)
     {
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-
-        $dataCPL = $this->getDataCPL($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode'));
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+        $data_cpl = Master_08_CapaianPembelajaranLulusan::with('indikatorKinerja')
+            ->where('03_MASTER_kurikulum_id', $kurikulum->id)
+            ->get();
 
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'data_cpl' => $dataCPL,
-            'kurikulum' => $this->kurikulum,
+            'kurikulum' => $kurikulum,
+            'data_cpl' => $data_cpl,
         ]);
     }
 
@@ -63,30 +63,28 @@ class CapaianPembelajaranLulusanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CapaianPembelajaranLulusanStoreRequest $request, $kurikulum)
+    public function store(CapaianPembelajaranLulusanStoreRequest $request, $tahun_kurikulum)
     {
-        $validator = $request->validated();
+        $validated = $request->validated();
+        $kode_domain = $this->kodeCP($validated['domain']);
 
-        $kodeDomain = $this->kodeCP($request->input('domain'));
-        // dd($request->input('domain'));
-
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $dataCpl = Master_08_CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kodeDomain . '%')
-            ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+        $data_cpl = Master_08_CapaianPembelajaranLulusan::where('kode', 'like', '%' . $kode_domain . '%')
+            ->where('03_MASTER_kurikulum_id', $kurikulum->id)
             ->get()
             ->count();
 
         $cpl = new Master_08_CapaianPembelajaranLulusan([
-            'kode' => $kodeDomain . "-" . ($dataCpl + 1),
-            'domain' => $request->input('domain'),
-            'deskripsi' => $request->input('deskripsi'),
-            '03_MASTER_kurikulum_id' => $this->kurikulum->id
+            'kode' => $kode_domain . "-" . ($data_cpl + 1),
+            'domain' => $validated['domain'],
+            'deskripsi' => $validated['deskripsi'],
+            '03_MASTER_kurikulum_id' => $kurikulum->id
         ]);
 
         if ($cpl->save()) {
-            return redirect()->route('kaprodi.cpl.index', compact('kurikulum'));
+            return redirect()->route('kaprodi.cpl.index', ['kurikulum' => $tahun_kurikulum]);
         } else {
-            return redirect()->back()->with('error', 'Gagal menambahkan data');
+            return redirect()->back()->with('error', 'Gagal menambahkan data.');
         }
     }
 
@@ -267,12 +265,12 @@ class CapaianPembelajaranLulusanController extends Controller
         return response()->download($file_path);
     }
 
-    public function import($kurikulum)
+    public function import($tahun_kurikulum)
     {
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
 
-        Excel::import(new CapaianPembelajaranLulusanImport($this->kurikulum->id), request()->file('formFileCpl'));
+        Excel::import(new CapaianPembelajaranLulusanImport($kurikulum->id), request()->file('formFileCpl'));
 
-        return redirect(route('kaprodi.cpl.index'))->with('success', 'All good!');
+        return redirect(route('kaprodi.cpl.index', ['kurikulum' => $tahun_kurikulum]))->with('success', 'All good!');
     }
 }

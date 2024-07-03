@@ -80,7 +80,7 @@ class DashboardController extends Controller
             'data' => $data_cp,
         ];
 
-        //dd($kurikulum->capaianPembelajaranLulusan->isEmpty());
+        //dd($data_chart_cp, $ketercapaian_cp);
 
         return view('kaprodi.kurikulum.dashboard_cpl', [
             'title' => 'Dashboard',

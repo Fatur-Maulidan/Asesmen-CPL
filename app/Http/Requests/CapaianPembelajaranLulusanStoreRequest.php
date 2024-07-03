@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CapaianPembelajaranLulusanStoreRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class CapaianPembelajaranLulusanStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::user()->hasRole('koordinator program studi');
     }
 
     /**
@@ -24,14 +25,17 @@ class CapaianPembelajaranLulusanStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'deskripsi' => 'required'
+            'domain' => 'bail|required',
+            'deskripsi' => 'bail|required'
         ];
     }
 
     public function message()
     {
         return [
-            'deskripsi.required' => 'Deskripsi harus diisi'
+            'domain.required' => 'Domain harus dipilih',
+
+            'deskripsi.required' => 'Deskripsi harus diisi.'
         ];
     }
 }

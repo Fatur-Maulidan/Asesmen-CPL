@@ -40,51 +40,49 @@
     </div>
 
     {{-- Tambah CPL Modal --}}
-    <form method="POST" action="{{ route('kaprodi.cpl.store', ['kurikulum' => $kurikulum->tahun]) }}">
-        @csrf
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Tambah Capaian Pembelajaran</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="">
-                            <div class="mb-3">
-                                <label for="domain" class="form-label fw-bold">Domain</label>
-                                <select class="form-select" id="domain" name="domain">
-                                    <option selected hidden>Pilih domain</option>
-                                    <option value="Sikap">Sikap (SP)</option>
-                                    <option value="Pengetahuan">Pengetahuan (PP)</option>
-                                    <option value="Keterampilan Umum">Keterampilan Umum (KU)</option>
-                                    <option value="Keterampilan Khusus">Keterampilan Khusus (KK)</option>
-                                </select>
-                            </div>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Tambah Capaian Pembelajaran</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('kaprodi.cpl.store', ['kurikulum' => $kurikulum->tahun]) }}" method="post" autocomplete="off" id="formTambahCpl">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="domain" class="form-label fw-bold">Domain</label>
+                            <select class="form-select" id="domain" name="domain">
+                                <option value="" selected>Pilih domain</option>
+                                <option value="Sikap">Sikap (SP)</option>
+                                <option value="Pengetahuan">Pengetahuan (PP)</option>
+                                <option value="Keterampilan Umum">Keterampilan Umum (KU)</option>
+                                <option value="Keterampilan Khusus">Keterampilan Khusus (KK)</option>
+                            </select>
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Deskrispi Capaian Pembelajaran"
-                                    name="deskripsi" rows="3"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="row w-100">
-                            <div class="col">
-                                <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal"
-                                    aria-label="Close">Batal</button>
-                            </div>
-                            <div class="col">
-                                <button type="submit" class="btn btn-success w-100">Tambah</button>
-                            </div>
+                        <div class="mb-3">
+                            <label for="deskripsi" class="form-label fw-bold">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" placeholder="Deskrispi Capaian Pembelajaran"
+                                name="deskripsi" rows="5"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row w-100">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal"
+                                aria-label="Close">Batal</button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-success w-100" form="formTambahCpl">Tambah</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 
     {{-- Import CPL Modal --}}
     <div class="modal fade" id="importCplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -117,79 +115,46 @@
     <div class="row">
         <div class="col-12">
             <div class="accordion" id="accordionExample">
-                @if ($data_cpl->isEmpty())
-                    <div class="text-center">
-                        <p class="fs-4">Belum Ada Data Capaian Pembelajaran</p>
-                    </div>
-                @else
-                    @foreach ($data_cpl as $index => $cpl)
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button {{ $loop->index === 0 ? '' : 'collapsed' }}"
+                @forelse ($data_cpl as $index => $cpl)
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button {{ $loop->index === 0 ? '' : 'collapsed' }}"
                                     type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapse{{ $index }}"
                                     aria-expanded="{{ $loop->index === 0 ? 'true' : 'false' }}"
                                     aria-controls="collapse{{ $index }}">
-                                    {{ $cpl['kode'] }} - {{ $cpl['deskripsi'] }}
-                                </button>
-                            </h2>
-                            <div id="collapse{{ $index }}"
-                                class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <p class="mb-0 fw-bold">Indikator Kinerja</p>
-                                    @php
-                                        $mataKuliahDitampilkan = false;
-                                    @endphp
-                                    @if ($cpl['indikatorKinerjaBelumDipetakan']->isEmpty())
-                                        <p class="mb-0">Belum ada pemetaan Indikator Kinerja</p>
-                                    @else
-                                        @foreach ($cpl['mataKuliahRegister'] as $mkRegister)
-                                            @if ($mataKuliahDitampilkan === false)
-                                                Nama Mata Kuliah: {{ $mkRegister['mataKuliah']->nama }}<br>
-                                                @php
-                                                    $mataKuliahDitampilkan = true;
-                                                @endphp
-                                            @endif
-                                            @foreach ($mkRegister['indikatorKinerja'] as $ik)
-                                                <ul>
-                                                    <li>
-                                                        {{ $ik->kode }}
-                                                    </li>
-                                                </ul>
-                                            @endforeach
-                                            @php
-                                                $mataKuliahDitampilkan = false;
-                                            @endphp
-                                        @endforeach
-                                    @endif
-                                    @if ($cpl['indikatorKinerjaBelumDipetakan']->isNotEmpty())
-                                        <br>
-                                        <p class="fw-bold">Indikator Kinerja yang belum dipetakan</p>
-                                        @foreach ($cpl['indikatorKinerjaBelumDipetakan'] as $ik)
-                                            <ul>
-                                                <li>
-                                                    {{ $ik->kode }}
-                                                </li>
-                                            </ul>
-                                        @endforeach
-                                    @endif
-                                </div>
-                                <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                    <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl['kode']]) }}"
-                                        class="me-3">Lihat
-                                        detail</a>
-                                    {{-- <a href="">Ubah pembobotan</a> --}}
-                                </div>
+                                {{ $cpl['kode'] }} - {{ $cpl['deskripsi'] }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ $index }}"
+                             class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
+                             data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="fw-bold">Indikator Kinerja</div>
+                                @forelse($cpl->indikatorKinerja as $ik)
+
+                                @empty
+                                    <div>Belum ada pemetaan.</div>
+                                @endforelse
+                            </div>
+                            <div class="accordion-footer bg-light mb-0 p-3 border-top ">
+                                <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl['kode']]) }}"
+                                   class="me-3">Lihat
+                                    detail</a>
+                                {{-- <a href="">Ubah pembobotan</a> --}}
                             </div>
                         </div>
-                    @endforeach
-                @endif
+                    </div>
+                @empty
+                    <div class="alert alert-secondary" role="alert">
+                        Belum ada data Capaian Pembelajaran.
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
-    </div>
 @endsection
+
 @push('scripts')
     <script>
         $(document).ready(function() {
