@@ -49,15 +49,17 @@
                                 <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Tidak
                                 </button>
                             </div>
-                            <div class="col">
-                                <form action="{{ route('kaprodi.kurikulum.update', ['kurikulum' => $kurikulum->id]) }}"
-                                      method="post">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="status" value="{{ \App\Enums\StatusKurikulum::Aktif }}">
-                                    <button type="submit" class="btn btn-success mb-0 w-100">Finalisasi</button>
-                                </form>
-                            </div>
+                            @if(isset($kurikulum) && !$kurikulum)
+                                <div class="col">
+                                    <form action="{{ route('kaprodi.kurikulum.update', ['kurikulum' => $kurikulum->id]) }}"
+                                          method="post">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status" value="{{ \App\Enums\StatusKurikulum::Aktif }}">
+                                        <button type="submit" class="btn btn-success mb-0 w-100">Finalisasi</button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

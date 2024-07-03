@@ -8,31 +8,14 @@
 @section('main')
     <form action="{{ route('kaprodi.kurikulum.store') }}" method="POST" autocomplete="off">
         @csrf
-        <input type="hidden" name="program_studi_nomor" value="{{ $program_studi_nomor }}">
+        <input type="hidden" name="program_studi_id" value="{{ $program_studi_id }}">
         {{-- Year input --}}
         <div class="row mb-4">
             <div class="col-5">
                 <div>
                     <label for="tahun" class="form-label fw-bold">Tahun Kurikulum</label>
-                    <input type="text" class="form-control @error('tahun') is-invalid @enderror" id="tahun" name="tahun" value="{{ date('Y') }}" readonly>
+                    <input type="text" class="form-control @error('tahun') is-invalid @enderror" id="tahun" name="tahun" value="{{ date('Y') }}">
                     @error('tahun')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-        </div>
-
-        {{-- Rubrik input --}}
-        <div class="row mb-4">
-            <div class="col-5">
-                <div>
-                    <label for="rubrik_maksimal" class="form-label fw-bold">Jumlah maksimal rubrik</label>
-                    <select class="form-select @error('jumlah_maksimal_rubrik') is-invalid @enderror" id="jumlah_maksimal_rubrik" name="jumlah_maksimal_rubrik">
-                        <option value="">Pilih jumlah maksimal rubrik</option>
-                        <option value="3" @if (old('jumlah_maksimal_rubrik') == 3) selected @endif>3</option>
-                        <option value="5" @if (old('jumlah_maksimal_rubrik') == 5) selected @endif>5</option>
-                    </select>
-                    @error('jumlah_maksimal_rubrik')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -52,38 +35,16 @@
             </div>
         </div>
 
-        {{-- Warning --}}
-        <div class="row mb-1">
-            <div class="col-8">
-                <p class="text-danger fw-bold">
-                    <i class="bi bi-exclamation-circle me-3"></i>
-                    Rentang yang sudah dipilih tidak akan bisa diubah kembali, pastikan rentang yang dimasukkan benar.
-                </p>
-            </div>
-        </div>
-
-        {{-- Rubrik detail --}}
+        {{-- Threshold input --}}
         <div class="row mb-4">
-            <div class="col-8">
-                <table class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <th scope="col" width="25%">Tingkat Kemampuan</th>
-                            <th scope="col">Makna</th>
-                            <th scope="col" width="25%">Rentang Nilai</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                <ul class="mb-0">
-                    @error('makna_tingkat_kemampuan')
-                        <li class="text-danger">{{ $message }}</li>
+            <div class="col-5">
+                <div>
+                    <label for="tahun" class="form-label fw-bold">Batas Minimum CP</label>
+                    <input type="number" class="form-control @error('threshold') is-invalid @enderror" id="threshold" name="threshold" value="{{ old('threshold') }}" min="1" max="100">
+                    @error('threshold')
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    @error('nilai')
-                        <li class="text-danger">{{ $message }}</li>
-                    @enderror
-                </ul>
+                </div>
             </div>
         </div>
 
@@ -91,7 +52,7 @@
         <div class="row">
             <div class="col-8 text-end">
                 <a href="{{ route('kaprodi.kurikulum.index') }}" class="btn btn-danger px-3 me-2">Batal</a>
-                <button type="submit" class="btn btn-primary px-3" id="btn-submit" disabled>Simpan</button>
+                <button type="submit" class="btn btn-primary px-3" id="btn-submit">Simpan</button>
             </div>
         </div>
     </form>

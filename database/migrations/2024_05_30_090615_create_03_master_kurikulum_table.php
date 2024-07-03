@@ -18,9 +18,10 @@ class Create03MasterKurikulumTable extends Migration
             $table->id();
             $table->year('tahun');
             $table->year('tahun_berlaku');
-            $table->year('tahun_berakhir');
+            $table->year('tahun_berakhir')->nullable();
+            $table->unsignedTinyInteger('threshold');
             $table->enum('status', StatusKurikulum::getValues());
-            $table->dateTime('konf_tenggat_waktu_tp')->nullable();
+            $table->dateTime('konf_tenggat_waktu_tp');
             $table->timestamps();
             $table->foreignId('02_MASTER_program_studi_id')->constrained('02_MASTER_program_studi');
         });

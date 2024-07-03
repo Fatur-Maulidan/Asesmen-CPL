@@ -21,7 +21,7 @@
 <nav class="navbar navbar-expand-lg bg-dark shadow shadow-sm py-3" data-bs-theme="dark">
     <div class="container-fluid">
         <ul class="navbar-nav nav-underline mx-auto">
-            @if (auth()->user()->getRoleNames()[0])
+            @if (auth()->user()->hasRole('admin'))
                 <li class="nav-item">
                     <a class="nav-link @if (Route::is('admin.dashboard.*')) active @endif"
                        href="{{ route('admin.dashboard.index') }}">Dashboard</a>

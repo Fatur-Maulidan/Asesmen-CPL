@@ -33,7 +33,7 @@ class Master_03_Kurikulum extends Model
      *
      * @var array
      */
-    protected $fillable = ['tahun', 'tahun_berlaku', 'tahun_berakhir', 'status', 'konf_tenggat_waktu_tp', '02_MASTER_program_studi_id'];
+    protected $fillable = ['tahun', 'tahun_berlaku', 'tahun_berakhir', 'threshold', 'status', 'konf_tenggat_waktu_tp', '02_MASTER_program_studi_id'];
 
     /**
      * Indicates if the model should be timestamped.

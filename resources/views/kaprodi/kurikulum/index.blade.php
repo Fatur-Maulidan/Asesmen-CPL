@@ -46,15 +46,15 @@
             <div class="col-4">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center py-3">
-                        <div class="d-inline">
-                            <span class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</span>
+                        <div>
+                            <div class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</div>
                             <span
                                 class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Arsip)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}
                             </span>
                         </div>
                         <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}"
                             class="link-secondary">
-                            <i class="bi bi-arrow-right-circle" style="font-size: 1.5rem;"></i>
+                            Lihat Kurikulum<i class="bi bi-arrow-right-circle fw-bold ms-2" style="font-size: 1.5rem;"></i>
                         </a>
                     </div>
                     <div class="card-body">
@@ -66,13 +66,6 @@
                                 <li>Belum ada mahasiswa terdaftar.</li>
                             @endforelse
                         </ul>
-                    </div>
-                    <div class="card-footer text-body-secondary py-3">
-                        <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat hasil Asesmen CPL</a>
-                        <a href="{{ route('kaprodi.cpl.index', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat Capaian Pembelajaran</a>
-                        <a href="{{ route('kaprodi.ik.index', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat Indikator Kinerja</a>
-                        <a href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat Tujuan Pembelajaran</a>
-                        <a href="{{ route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum->tahun]) }}" class="d-block">Lihat Mata Kuliah</a>
                     </div>
                 </div>
             </div>
