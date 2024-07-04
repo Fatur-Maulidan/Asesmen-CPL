@@ -8,87 +8,56 @@ use Illuminate\Http\Request;
 use App\Models\Master_09_IndikatorKinerja;
 use App\Models\Master_08_CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\IndikatorKinerjaStoreRequest;
 use App\Models\Master_10_Rubrik;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_03_Kurikulum;
 
-
 class IndikatorKinerjaController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($tahun_kurikulum)
-    {
-        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
-        $indikator_kinerja = [];
-
-        return view('kaprodi.ik.index', [
-            'title' => 'Indikator Kinerja',
-            'kurikulum' => $kurikulum,
-            'data_ik' => $indikator_kinerja,
-        ]);
-    }
-
-    /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $kurikulum)
+    public function store(IndikatorKinerjaStoreRequest $request, $tahun_kurikulum)
     {
-        $levelKemampuan = rubrik();
+        if ($request->ajax()) {
+            $validated = $request->validated();
 
-        $validation = Validator::make(
-            $request->all(),
-            $this->validator->rules(),
-            $this->validator->messages()
-        );
+            $cpl = Master_08_CapaianPembelajaranLulusan::with('indikatorKinerja')
+                ->find($validated['id_cpl']);
 
-        if ($validation->fails()) {
-            return redirect()->back()->withErrors($validation)->withInput();
-        }
+            try {
+                DB::transaction(function () use ($tahun_kurikulum, $cpl, $validated) {
+                    $ik = Master_09_IndikatorKinerja::create([
+                        'kode' => $validated['cp_induk'] . '.' . (count($cpl->indikatorKinerja) + 1),
+                        'deskripsi' => $validated['deskripsi_ik'],
+                        '08_MASTER_capaian_pembelajaran_lulusan_id' => $validated['id_cpl'],
+                    ]);
 
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+                    foreach ($validated['rubrik'] as $index => $rubrik) {
+                        Master_10_Rubrik::create([
+                            'urutan' => $index + 1,
+                            'deskripsi' => $rubrik,
+                            '09_MASTER_indikator_kinerja_id' => $ik->id,
+                        ]);
+                    }
+                });
 
-        $this->capaianPembelajaranLulusan = $this->capaianPembelajaranLulusan
-            ->getCplIdByKurikulum($request->input('cpInduk'),$this->kurikulum->id);
-        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,$this->capaianPembelajaranLulusan->id);
-
-        $indikatorKinerja = new Master_09_IndikatorKinerja([
-            'kode' => $request->input('cpInduk').'.'.(count($this->indikatorKinerja) + 1),
-            'deskripsi' => $request->input('deskripsi'),
-        '03_MASTER_kurikulum_id' => $this->kurikulum->id,
-            '08_MASTER_capaian_pembelajaran_lulusan_id' => $this->capaianPembelajaranLulusan->id,
-        ]);
-
-        if($indikatorKinerja->save()){
-            for($i = 0; $i < $this->kurikulum->jumlah_maksimal_rubrik; $i++){
-                $rubrik = new Master_10_Rubrik([
-                    'urutan' => $i+1,
-                    'level_kemampuan' => $levelKemampuan[$i],
-                    'deskripsi' => $request->input('rubrik-'.($i)),
-                    '09_MASTER_indikator_kinerja_id' => $indikatorKinerja->id
-                ]);
-
-                $rubrik->save();
+                return response()->json([
+                    'message' => 'Indikator Kinerja berhasil ditambahkan.',
+                ], 201);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
             }
-            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $kurikulum])->with('success', 'Data berhasil ditambahkan');
-        } else {
-            return redirect()->route('kaprodi.ik.index', ['kurikulum' => $kurikulum])->with('error', 'Data gagal ditambahkan');
         }
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($kurikulum, $ik)
     {
@@ -134,9 +103,6 @@ class IndikatorKinerjaController extends Controller
     // Method ini tidak digunakan karena kardinalitas antara CPL ke IK 1 ke M
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit($kurikulum, $ik)
     {
@@ -166,10 +132,6 @@ class IndikatorKinerjaController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $kurikulum, $id)
     {
@@ -216,9 +178,6 @@ class IndikatorKinerjaController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($kurikulum, $id)
     {

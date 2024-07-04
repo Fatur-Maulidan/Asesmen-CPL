@@ -94,11 +94,11 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
     Route::post('kurikulum/{kurikulum}/cpl/import', [KaprodiCPLController::class, 'import'])->name('kurikulum.cpl.import');
     Route::get('kurikulum/{kurikulum}/cpl/download-template', [KaprodiCPLController::class, 'downloadTemplate'])->name('kurikulum.cpl.downloadTemplate');
     Route::resource('kurikulum/{kurikulum}/cpl', KaprodiCPLController::class)
-        ->only(['index', 'show', 'store', 'edit', 'update']);
+        ->only(['index', 'store', 'show', 'update']);
 
     // # Indikator Kinerja
     Route::resource('kurikulum/{kurikulum}/ik', KaprodiIndikatorKinerjaController::class)
-        ->only(['index', 'show', 'store', 'edit', 'update', 'destroy']);
+        ->only(['show', 'store', 'edit', 'update', 'destroy']);
     Route::get('kurikulum/{kurikulum}/ik/{ik}/detail', [KaprodiIndikatorKinerjaController::class, 'detail'])
         ->name('ik.detail');
 

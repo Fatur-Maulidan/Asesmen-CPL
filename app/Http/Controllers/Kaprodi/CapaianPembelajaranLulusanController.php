@@ -21,10 +21,7 @@ class CapaianPembelajaranLulusanController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-
     public function index($tahun_kurikulum)
     {
         $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
@@ -41,9 +38,6 @@ class CapaianPembelajaranLulusanController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(CapaianPembelajaranLulusanStoreRequest $request, $tahun_kurikulum)
     {
@@ -78,9 +72,6 @@ class CapaianPembelajaranLulusanController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($kurikulum, $cpl)
     {
@@ -133,30 +124,7 @@ class CapaianPembelajaranLulusanController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($kurikulum, $cpl)
-    {
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $cpl = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)->first();
-        return view('kaprodi.cpl.edit', [
-            'title' => 'CPL',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
-            'data_cpl' => $this->kurikulum->capaianPembelajaranLulusan,
-            'cpl' => $cpl,
-        ]);
-    }
-
-    /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      */
     public function update(CapaianPembelajaranLulusanStoreRequest $request, $tahun_kurikulum, $id)
     {

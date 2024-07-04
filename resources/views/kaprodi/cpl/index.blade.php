@@ -107,10 +107,12 @@
                 <div class="modal-body">
                     <form method="POST" action="" autocomplete="off" id="formIk">
                         @csrf
-                        <input type="hidden" name="id_cpl" value="">
+                        <input type="hidden" name="id_cpl" id="id_cpl_ik" value="">
+
                         <div class="mb-3">
                             <label for="cp_induk" class="form-label fw-bold">Capaian Pembelajaran Induk</label>
-                            <input type="text" class="form-control" id="cp_induk" disabled>
+                            <input type="text" class="form-control" id="cp_induk" name="cp_induk" readonly>
+                            <div id="cp_induk_feedback" class="text-danger"></div>
                         </div>
 
                         <div class="mb-3">
@@ -118,32 +120,36 @@
                             <textarea class="form-control" name="deskripsi_ik"
                                       placeholder="Deskripsi Indikator Kinerja"
                                       id="deskripsi_ik" rows="3"></textarea>
+                            <div id="deskripsi_ik_feedback" class="text-danger"></div>
                         </div>
+
                         <hr class="my-4">
+
                         <div class="mb-3">
-                            <label for="rubrik1" class="form-label fw-bold">Rubrik Sangat Kurang</label>
+                            <label for="rubrik1" class="form-label fw-bold">Rubrik Sangat Kurang ({{ $kurikulum->nilai_rubrik['min'][0] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][0] }})</label>
                             <textarea class="form-control" id="rubrik1" name="rubrik[]" placeholder="Deskripsi Rubrik Sangat Kurang"></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label for="rubrik2" class="form-label fw-bold">Rubrik Kurang</label>
+                            <label for="rubrik2" class="form-label fw-bold">Rubrik Kurang ({{ $kurikulum->nilai_rubrik['min'][1] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][1] }})</label>
                             <textarea class="form-control" id="rubrik2" name="rubrik[]" placeholder="Deskripsi Rubrik Kurang"></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label for="rubrik3" class="form-label fw-bold">Rubrik Cukup</label>
+                            <label for="rubrik3" class="form-label fw-bold">Rubrik Cukup ({{ $kurikulum->nilai_rubrik['min'][2] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][2] }})</label>
                             <textarea class="form-control" id="rubrik3" name="rubrik[]" placeholder="Deskripsi Rubrik Cukup"></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label for="rubrik4" class="form-label fw-bold">Rubrik Baik</label>
+                            <label for="rubrik4" class="form-label fw-bold">Rubrik Baik ({{ $kurikulum->nilai_rubrik['min'][3] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][3] }})</label>
                             <textarea class="form-control" id="rubrik4" name="rubrik[]" placeholder="Deskripsi Rubrik Baik"></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label for="rubrik5" class="form-label fw-bold">Rubrik Sangat Baik</label>
+                            <label for="rubrik5" class="form-label fw-bold">Rubrik Sangat Baik ({{ $kurikulum->nilai_rubrik['min'][4] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][4] }})</label>
                             <textarea class="form-control" id="rubrik5" name="rubrik[]" placeholder="Deskripsi Rubrik Sangat Baik"></textarea>
                         </div>
+                        <div id="rubrik_ik_feedback" class="text-danger"></div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -210,12 +216,21 @@
                              class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
                              data-bs-parent="#accordionExample">
                             <div class="accordion-body py-4">
-                                <div class="fw-bold">Indikator Kinerja</div>
-                                @forelse($cpl->indikatorKinerja as $ik)
-
-                                @empty
+                                <div class="fw-bold mb-2">Indikator Kinerja</div>
+                                @if( $cpl->indikatorKinerja->isNotEmpty() )
+                                    <table class="table table-bordered table-hover">
+                                        <tbody>
+                                        @foreach($cpl->indikatorKinerja as $ik)
+                                            <tr>
+                                                <td class="fw-bold text-nowrap">{{ $ik['kode'] }}</td>
+                                                <td>{{ $ik['deskripsi'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
                                     <div>Belum ada pemetaan.</div>
-                                @endforelse
+                                @endif
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
                                 <button type="button"
@@ -254,6 +269,8 @@
         $(document).ready(function () {
             const cplModal = document.getElementById('cplModal');
             const cplModalInstance = new bootstrap.Modal('#cplModal');
+            const ikModal = document.getElementById('ikModal');
+            const ikModalInstance = new bootstrap.Modal('#ikModal');
 
             cplModal.addEventListener('hidden.bs.modal', event => {
                 $('#formCpl').attr('action', '');
@@ -262,6 +279,22 @@
 
                 $('#domain_feedback').html('');
                 $('#deskripsi_feedback').html('');
+            });
+
+            ikModal.addEventListener('hidden.bs.modal', event => {
+                $('#formIk').attr('action', '');
+                $('#id_cpl_ik').val('');
+                $('#cp_induk').val('');
+                $('#deskripsi_ik').val('');
+                $('#rubrik1').val('');
+                $('#rubrik2').val('');
+                $('#rubrik3').val('');
+                $('#rubrik4').val('');
+                $('#rubrik5').val('');
+
+                $('#cp_induk_feedback').html('');
+                $('#deskripsi_ik_feedback').html('');
+                $('#rubrik_ik_feedback').html('');
             });
 
             $('input[name="options"]').change(function () {
@@ -335,6 +368,55 @@
                                 $('#deskripsi_feedback').html(err.responseJSON.errors.deskripsi[0]);
                             } else {
                                 $('#deskripsi_feedback').html('');
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('.btn-tambah-ik').on('click', function (e) {
+               const id = $(this).data('id');
+               const kode = $(this).data('kode');
+               const route = '{{ route('kaprodi.ik.store', ['kurikulum' => $kurikulum->tahun]) }}';
+
+               $('#id_cpl_ik').val(id);
+               $('#cp_induk').val(kode);
+               $('#formIk').attr('action', route);
+            });
+
+            $('#formIk').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: "post",
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: "JSON",
+                    success: function (res) {
+                        console.log(res);
+                        ikModalInstance.hide();
+                        location.reload();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        // when status code is 422, it's a validation issue
+                        if (err.status == 422) {
+                            if (err.responseJSON.errors.cp_induk) {
+                                $('#cp_induk_feedback').html(err.responseJSON.errors.cp_induk[0]);
+                            } else {
+                                $('#cp_induk_feedback').html('');
+                            }
+
+                            if (err.responseJSON.errors.deskripsi_ik) {
+                                $('#deskripsi_ik_feedback').html(err.responseJSON.errors.deskripsi_ik[0]);
+                            } else {
+                                $('#deskripsi_ik_feedback').html('');
+                            }
+
+                            if (err.responseJSON.errors.rubrik) {
+                                $('#rubrik_ik_feedback').html(err.responseJSON.errors.rubrik[0]);
+                            } else {
+                                $('#rubrik_ik_feedback').html('');
                             }
                         }
                     }
