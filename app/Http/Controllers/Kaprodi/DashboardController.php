@@ -98,7 +98,6 @@ class DashboardController extends Controller
     {
         $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
 
-
         return view('kaprodi.kurikulum.dashboard_mk', [
             'title' => 'Dashboard',
             'kurikulum' => $kurikulum

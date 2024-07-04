@@ -41,7 +41,8 @@ Route::redirect('/', '/login');
 Route::get('login', [AuthController::class, 'index'])
     ->name('login')->middleware('guest');
 
-Route::post('login', [AuthController::class, 'authenticate'])->middleware('guest');
+Route::post('login', [AuthController::class, 'authenticate'])
+    ->middleware('guest');
 
 Route::post('logout', [AuthController::class, 'logout'])
     ->name('logout')->middleware('auth');
@@ -49,37 +50,38 @@ Route::post('logout', [AuthController::class, 'logout'])
 // # Route untuk admin
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'admin']], function () {
     // # Dashboard
-    Route::resource('dashboard', AdminDashboard::class);
+    Route::get('dashboard', [AdminDashboard::class, 'index'])
+        ->name('dashboard.index');
 
     // # Jurusan
+    Route::get('jurusan/download-template', [AdminJurusanController::class, 'downloadTemplate'])
+        ->name('jurusan.downloadTemplate');
+    Route::post('jurusan/import', [AdminJurusanController::class, 'import'])
+        ->name('jurusan.import');
     Route::resource('jurusan', AdminJurusanController::class)
-        ->only(['index', 'store', 'update', 'destroy']);
-    Route::get('jurusan/download-template', [AdminJurusanController::class, 'downloadTemplate'])->name('jurusan.downloadTemplate');
-    Route::post('jurusan/import', [AdminJurusanController::class, 'import'])->name('jurusan.import');
+        ->only(['index', 'store', 'update']);
 
     // # Program studi
     Route::get('program-studi/download-template', [AdminProgramStudiController::class, 'downloadTemplate'])
         ->name('program-studi.downloadTemplate');
-    Route::post('program-studi/import', [AdminProgramStudiController::class, 'import'])->name('program-studi.import');
+    Route::post('program-studi/import', [AdminProgramStudiController::class, 'import'])
+        ->name('program-studi.import');
     Route::resource('program-studi', AdminProgramStudiController::class)
-        ->only(['store', 'update', 'destroy']);
+        ->only(['store', 'update']);
 
     // # Dosen
-    Route::get('dosen/download-template', [AdminDosenController::class, 'downloadTemplate'])->name('dosen.downloadTemplate');
-    Route::post('dosen/import', [AdminDosenController::class, 'import'])->name('dosen.import');
-    Route::patch('dosen/toggle-status/{dosen}', [AdminDosenController::class, 'toggleStatus'])->name('dosen.toggleStatus');
-    Route::resource('dosen', AdminDosenController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
-
-    // # Mahasiswa
-    //    Route::get('mahasiswa/download-template', [AdminMahasiswaController::class, 'downloadTemplate'])->name('mahasiswa.downloadTemplate');
-    //    Route::post('mahasiswa/import', [AdminMahasiswaController::class, 'import'])->name('mahasiswa.import');
-    //    Route::patch('mahasiswa/toggle-status/{mahasiswa}', [AdminMahasiswaController::class, 'toggleStatus'])->name('mahasiswa.toggleStatus');
-    //    Route::resource('mahasiswa', AdminMahasiswaController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::get('dosen/download-template', [AdminDosenController::class, 'downloadTemplate'])
+        ->name('dosen.downloadTemplate');
+    Route::post('dosen/import', [AdminDosenController::class, 'import'])
+        ->name('dosen.import');
+    Route::patch('dosen/toggle-status/{dosen}', [AdminDosenController::class, 'toggleStatus'])
+        ->name('dosen.toggleStatus');
+    Route::resource('dosen', AdminDosenController::class)
+        ->only(['index', 'store', 'show', 'update']);
 });
 
 // # Route untuk kaprodi
-Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth', 'kaprodi']],
-    function () {
+Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth', 'kaprodi']], function () {
     // # Kurikulum
     Route::resource('kurikulum', KaprodiKurikulumController::class)
         ->only(['index', 'create', 'store', 'update']);
@@ -91,16 +93,16 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
         ->name('kurikulum.dashboard.mk');
 
     // # CPL
-    Route::post('kurikulum/{kurikulum}/cpl/import', [KaprodiCPLController::class, 'import'])->name('kurikulum.cpl.import');
-    Route::get('kurikulum/{kurikulum}/cpl/download-template', [KaprodiCPLController::class, 'downloadTemplate'])->name('kurikulum.cpl.downloadTemplate');
+    Route::get('kurikulum/{kurikulum}/cpl/download-template', [KaprodiCPLController::class, 'downloadTemplate'])
+        ->name('kurikulum.cpl.downloadTemplate');
+    Route::post('kurikulum/{kurikulum}/cpl/import', [KaprodiCPLController::class, 'import'])
+        ->name('kurikulum.cpl.import');
     Route::resource('kurikulum/{kurikulum}/cpl', KaprodiCPLController::class)
         ->only(['index', 'store', 'show', 'update']);
 
     // # Indikator Kinerja
     Route::resource('kurikulum/{kurikulum}/ik', KaprodiIndikatorKinerjaController::class)
-        ->only(['show', 'store', 'edit', 'update', 'destroy']);
-    Route::get('kurikulum/{kurikulum}/ik/{ik}/detail', [KaprodiIndikatorKinerjaController::class, 'detail'])
-        ->name('ik.detail');
+        ->only(['store', 'show', 'update']);
 
     // # Tujuan Pembelajaran
     Route::get('kurikulum/{kurikulum}/tp', [KaprodiTujuanPembelajaranController::class, 'index'])->name('tp.index');

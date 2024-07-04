@@ -44,15 +44,15 @@ class IndikatorKinerjaController extends Controller
                         ]);
                     }
                 });
-
-                return response()->json([
-                    'message' => 'Indikator Kinerja berhasil ditambahkan.',
-                ], 201);
             } catch (\Exception $e) {
                 return response()->json([
                     'message' => $e->getMessage(),
                 ], 500);
             }
+
+            return response()->json([
+                'message' => 'Data berhasil ditambahkan.',
+            ], 201);
         }
     }
 
@@ -76,57 +76,6 @@ class IndikatorKinerjaController extends Controller
             'kurikulum' => $this->kurikulum,
             'dataIk' => $dataIk,
             'ik' => $this->indikatorKinerja[0]
-        ]);
-    }
-
-    public function detail($kurikulum, $ik)
-    {
-        $dataIk = new Master_09_IndikatorKinerja();
-
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
-
-        $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
-
-        return view('kaprodi.ik.detail', [
-            'title' => 'IK',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
-            'ik' => $this->indikatorKinerja[0],
-            'dataCpl' => $this->indikatorKinerja[0]->capaianPembelajaranLulusan,
-            'dataIk' => $dataIk,
-        ]);
-    }
-
-
-    // Method ini tidak digunakan karena kardinalitas antara CPL ke IK 1 ke M
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($kurikulum, $ik)
-    {
-        $dataIk = new Master_09_IndikatorKinerja();
-
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
-        $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
-        $filteredDataCpl = $this->filterDataByKode(
-            $this->kurikulum->cpl,
-            $this->subStringKodeCpl($this->indikatorKinerja[0]->capaianPembelajaranLulusan[0]->kode)
-        );
-
-        return view('kaprodi.ik.edit', [
-            'title' => 'IK',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
-            'dataIk' => $dataIk,
-            'filteredDataCpl' => $filteredDataCpl,
-            'subStrCpl' => $this->subStringKodeCpl($this->indikatorKinerja[0]->capaianPembelajaranLulusan[0]->kode),
-            'ik' => $this->indikatorKinerja[0],
-            'dataCpl' => $this->kurikulum->cpl,
-            'domainCpl' => ['Pengetahuan', 'Sikap', 'Keterampilan Umum', 'Keterampilan Khusus'],
         ]);
     }
 
@@ -176,18 +125,24 @@ class IndikatorKinerjaController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($kurikulum, $id)
+    public function detail($kurikulum, $ik)
     {
-        $dataIk = Master_09_IndikatorKinerja::with('rubrik')->find($id);
-        $dataIk->rubrik()->delete();
-        if($dataIk->delete()) {
-            return redirect(route('kaprodi.ik.index',['kurikulum' => $kurikulum]))->with('success', 'Tujuan Pembelajaran berhasil dihapus');
-        } else {
-            return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal dihapus');
-        }
+        $dataIk = new Master_09_IndikatorKinerja();
+
+        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
+
+        $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
+
+        return view('kaprodi.ik.detail', [
+            'title' => 'IK',
+            'nama' => 'Jhon Doe',
+            'role' => 'Koordinator Program Studi',
+            'kurikulum' => $this->kurikulum,
+            'ik' => $this->indikatorKinerja[0],
+            'dataCpl' => $this->indikatorKinerja[0]->capaianPembelajaranLulusan,
+            'dataIk' => $dataIk,
+        ]);
     }
 
     // Substring Kode yang diambil hanya 2 huruf diawal

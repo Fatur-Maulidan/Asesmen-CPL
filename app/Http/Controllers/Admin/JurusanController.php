@@ -13,8 +13,6 @@ class JurusanController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -37,27 +35,20 @@ class JurusanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(JurusanRequest $request)
     {
         if ($request->ajax()) {
             $validated = $request->validated();
 
-            Master_01_Jurusan::create($validated);
+            try {
+                Master_01_Jurusan::create($validated);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
 
             return response()->json([
                 'message' => 'Data berhasil ditambah.'
@@ -66,37 +57,7 @@ class JurusanController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // $jurusan = Master01Jurusan::find($id);
-
-        // return response()->json([
-        //     'jurusan' => $jurusan
-        // ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $nomor
-     * @return \Illuminate\Http\Response
      */
     public function update(JurusanRequest $request, $id)
     {
@@ -104,30 +65,18 @@ class JurusanController extends Controller
             $jurusan = Master_01_Jurusan::find($id);
             $validated = $request->validated();
 
-            $jurusan->update($validated);
+            try {
+                $jurusan->update($validated);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
 
             return response()->json([
                 'message' => 'Data berhasil diubah.'
             ], 200);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $jurusan = Master_01_Jurusan::find($id);
-
-        if ($jurusan->programStudi()->exists()) {
-            return redirect()->back()->with('message', 'Tidak dapat menghapus jurusan yang memiliki program studi.');
-        }
-        Master_01_Jurusan::destroy($id);
-
-        return redirect()->back();
     }
 
     public function downloadTemplate()

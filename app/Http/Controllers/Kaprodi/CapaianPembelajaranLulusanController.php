@@ -51,22 +51,22 @@ class CapaianPembelajaranLulusanController extends Controller
                 ->get()
                 ->count();
 
-            $cpl = new Master_08_CapaianPembelajaranLulusan([
-                'kode' => $kode_domain . "-" . ($data_cpl + 1),
-                'domain' => $validated['domain'],
-                'deskripsi' => $validated['deskripsi'],
-                '03_MASTER_kurikulum_id' => $kurikulum->id
-            ]);
-
-            if ($cpl->save()) {
+            try {
+                Master_08_CapaianPembelajaranLulusan::create([
+                    'kode' => $kode_domain . "-" . ($data_cpl + 1),
+                    'domain' => $validated['domain'],
+                    'deskripsi' => $validated['deskripsi'],
+                    '03_MASTER_kurikulum_id' => $kurikulum->id
+                ]);
+            } catch (\Exception $e) {
                 return response()->json([
-                    'message' => 'Data berhasil disimpan',
-                ], 201);
-            } else {
-                return response()->json([
-                    'message' => 'Data gagal disimpan',
+                    'message' => $e->getMessage(),
                 ], 500);
             }
+
+            return response()->json([
+                'message' => 'Data berhasil disimpan',
+            ], 201);
         }
     }
 
@@ -147,6 +147,22 @@ class CapaianPembelajaranLulusanController extends Controller
         }
     }
 
+    public function downloadTemplate()
+    {
+        $file_path = public_path('files/templates/Template_CPL.xlsx');
+
+        return response()->download($file_path);
+    }
+
+    public function import($tahun_kurikulum)
+    {
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+
+        Excel::import(new CapaianPembelajaranLulusanImport($kurikulum->id), request()->file('formFileCpl'));
+
+        return redirect(route('kaprodi.cpl.index', ['kurikulum' => $tahun_kurikulum]))->with('success', 'All good!');
+    }
+
     // Fungsi ini digunakan untuk mengambil inisial dari domain CPL
     private function kodeCP($domain)
     {
@@ -171,6 +187,7 @@ class CapaianPembelajaranLulusanController extends Controller
         }
         return $kode;
     }
+
     /*
         Fungsi ini digunakan untuk mengambil data CPL dan mengubah struktur data CPL
         yang awalnya CPL -> IK -> MKRegister -> MK
@@ -209,21 +226,5 @@ class CapaianPembelajaranLulusanController extends Controller
             $dataCPL->push($cplData);
         }
         return $dataCPL;
-    }
-
-    public function downloadTemplate()
-    {
-        $file_path = public_path('files/templates/Template_CPL.xlsx');
-
-        return response()->download($file_path);
-    }
-
-    public function import($tahun_kurikulum)
-    {
-        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
-
-        Excel::import(new CapaianPembelajaranLulusanImport($kurikulum->id), request()->file('formFileCpl'));
-
-        return redirect(route('kaprodi.cpl.index', ['kurikulum' => $tahun_kurikulum]))->with('success', 'All good!');
     }
 }

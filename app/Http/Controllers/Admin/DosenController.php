@@ -10,19 +10,14 @@ use App\Imports\DosenImport;
 use App\Models\Master_02_ProgramStudi;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_01_Jurusan;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpParser\Node\Stmt\Do_;
-use Spatie\Permission\Models\Role;
 
 class DosenController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(DosenDataTable $dataTable)
     {
@@ -42,20 +37,7 @@ class DosenController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(DosenRequest $request)
     {
@@ -65,9 +47,17 @@ class DosenController extends Controller
             unset($validated['jurusan']);
             $validated['kata_sandi'] = Hash::make('password');
 
-            $dosen = Master_04_Dosen::create($validated);
-            $dosen->assignRole('dosen');
-            $dosen->programStudi()->sync($validated['program_studi']);
+            try {
+                DB::transaction(function () use ($validated) {
+                    $dosen = Master_04_Dosen::create($validated);
+                    $dosen->assignRole('dosen');
+                    $dosen->programStudi()->sync($validated['program_studi']);
+                });
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 500);
+            }
 
             return response()->json([
                 'message' => 'Data berhasil ditambah.'
@@ -77,9 +67,6 @@ class DosenController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -93,22 +80,7 @@ class DosenController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(DosenRequest $request, $id)
     {
@@ -139,19 +111,6 @@ class DosenController extends Controller
                 'message' => 'Data berhasil diubah.'
             ]);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($kode)
-    {
-        Master_04_Dosen::destroy($kode);
-
-        return redirect()->back();
     }
 
     public function toggleStatus($id)
