@@ -22,15 +22,7 @@ Breadcrumbs::for('admin.mahasiswa.index', function (BreadcrumbTrail $trail) {
 // --- end of Admin
 
 // --- Kaprodi
-Breadcrumbs::for('kaprodi.dashboard.index', function (BreadcrumbTrail $trail, $kurikulum) {
-    $trail->push('Home', route('kaprodi.dashboard.index'));
-});
-
-// Kurikulum
-Breadcrumbs::for('kaprodi.kurikulum.index', function (BreadcrumbTrail $trail) {
-    $trail->push('Home', route('kaprodi.kurikulum.index'));
-});
-
+// Dashboard
 Breadcrumbs::for('kaprodi.kurikulum.dashboard.cpl', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->parent('kaprodi.kurikulum.index');
     $trail->push('Kurikulum ' . $kurikulum, route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum]));
@@ -41,9 +33,19 @@ Breadcrumbs::for('kaprodi.kurikulum.dashboard.mk', function (BreadcrumbTrail $tr
     $trail->push('Kurikulum ' . $kurikulum, route('kaprodi.kurikulum.dashboard.mk', ['kurikulum' => $kurikulum]));
 });
 
+// Kurikulum
+Breadcrumbs::for('kaprodi.kurikulum.index', function (BreadcrumbTrail $trail) {
+    $trail->push('Home', route('kaprodi.kurikulum.index'));
+});
+
 Breadcrumbs::for('kaprodi.kurikulum.create', function (BreadcrumbTrail $trail) {
     $trail->parent('kaprodi.kurikulum.index');
     $trail->push('Tambah Kurikulum Baru', route('kaprodi.kurikulum.create'));
+});
+
+Breadcrumbs::for('kaprodi.kurikulum.edit', function (BreadcrumbTrail $trail, $kurikulum) {
+    $trail->parent('kaprodi.kurikulum.index');
+    $trail->push('Ubah Kurikulum', route('kaprodi.kurikulum.edit', ['kurikulum' => $kurikulum]));
 });
 
 // CPL

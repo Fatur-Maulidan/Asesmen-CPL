@@ -11,7 +11,7 @@
 
         @yield('breadcrumb')
 
-        @if(!auth()->user()->hasRole('admin') && (!Route::is('kaprodi.kurikulum.create') && !Route::is('kaprodi.kurikulum.index')))
+        @if(!auth()->user()->hasRole('admin') && (!Route::is('kaprodi.kurikulum.create') && !Route::is('kaprodi.kurikulum.index') && !Route::is('kaprodi.kurikulum.edit')))
             @if(isset($kurikulum) && !$kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif))
                 <div class="d-flex justify-content-end mt-4">
                     @if(auth()->user()->hasRole('koordinator program studi') && $kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
@@ -19,7 +19,7 @@
                     @endif
                     <h3 class="mb-0">
                 <span
-                    class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan)) text-bg-warning @else text-bg-primary) @endif rounded-bottom-0">
+                    class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan)) text-bg-info @else text-bg-primary) @endif rounded-bottom-0">
                     {{ $kurikulum->status }}
                 </span>
                     </h3>

@@ -46,16 +46,10 @@
             <div class="col-4">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center py-3">
-                        <div>
-                            <div class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</div>
-                            <span
-                                class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Arsip)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}
-                            </span>
-                        </div>
-                        <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}"
-                            class="link-secondary">
-                            Lihat Kurikulum<i class="bi bi-arrow-right-circle fw-bold ms-2" style="font-size: 1.5rem;"></i>
-                        </a>
+                        <div class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</div>
+                        <span
+                            class="badge rounded rounded-pill fs-6 @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Arsip)) text-bg-danger @else text-bg-info @endif">{{ $kurikulum->status->key }}
+                        </span>
                     </div>
                     <div class="card-body">
                         <h6 class="card-title fw-bold ">Mahasiswa Aktif</h6>
@@ -66,6 +60,15 @@
                                 <li>Belum ada mahasiswa terdaftar.</li>
                             @endforelse
                         </ul>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('kaprodi.kurikulum.edit', ['kurikulum' => $kurikulum->id]) }}" class="btn btn-warning btn-sm">Ubah</a>
+                            <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}"
+                               class="btn btn-primary btn-sm">
+                                Lihat Kurikulum<i class="bi bi-arrow-right-circle fw-bold ms-2"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

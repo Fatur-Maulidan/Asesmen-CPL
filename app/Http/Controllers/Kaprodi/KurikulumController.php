@@ -68,14 +68,33 @@ class KurikulumController extends Controller
         return redirect()->to(route('kaprodi.kurikulum.index'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
+    public function edit($id)
     {
         $kurikulum = Master_03_Kurikulum::find($id);
 
-        $kurikulum->update($request->except('_method', '_token'));
+        return view('kaprodi.kurikulum.edit', [
+            'title' => 'Ubah Kurikulum',
+            'program_studi_id' => Auth::user()->kaprodi->id,
+            'kurikulum' => $kurikulum,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(KurikulumRequest $request, $id)
+    {
+        $validated = $request->validated();
+
+        $kurikulum = Master_03_Kurikulum::find($id);
+
+        $kurikulum->update([
+            'tahun' => $validated['tahun'],
+            'tahun_berlaku' => $validated['tahun'],
+            'konf_tenggat_waktu_tp' => $validated['tenggat_tp'],
+            'threshold' => $validated['threshold'],
+            'nilai_rubrik' => $validated['nilai'],
+        ]);
 
         return redirect()->to(route('kaprodi.kurikulum.index'));
     }

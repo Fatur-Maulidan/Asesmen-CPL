@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class KurikulumRequest extends FormRequest
 {
@@ -26,7 +27,10 @@ class KurikulumRequest extends FormRequest
     {
         return [
             'program_studi_id' => 'bail|required',
-            'tahun' => 'bail|required|unique:03_MASTER_kurikulum,tahun',
+            'tahun' => [
+                'bail', 'required',
+                Rule::unique('03_MASTER_kurikulum', 'tahun')->ignore($this->route('kurikulum'))
+            ],
             'tenggat_tp' => 'bail|required|date',
             'threshold' => 'bail|required|integer|min:1|max:100',
             'nilai' => 'bail|required|array',

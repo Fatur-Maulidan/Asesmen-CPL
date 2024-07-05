@@ -84,7 +84,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'a
 Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth', 'kaprodi']], function () {
     // # Kurikulum
     Route::resource('kurikulum', KaprodiKurikulumController::class)
-        ->only(['index', 'create', 'store', 'update']);
+        ->only(['index', 'create', 'store', 'edit', 'update']);
 
     // # Dashboard
     Route::get('kurikulum/{kurikulum}/dashboard-cpl', [KaprodiDashboardController::class, 'indexCpl'])
