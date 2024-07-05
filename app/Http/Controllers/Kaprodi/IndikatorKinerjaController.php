@@ -9,6 +9,7 @@ use App\Models\Master_09_IndikatorKinerja;
 use App\Models\Master_08_CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\IndikatorKinerjaRequest;
 use App\Models\Master_10_Rubrik;
@@ -73,13 +74,10 @@ class IndikatorKinerjaController extends Controller
                     ]);
 
                     foreach ($validated['rubrik'] as $index => $rubrik) {
-                        $rub = Master_10_Rubrik::where('urutan', $index + 1)
+                        DB::table('10_MASTER_rubrik')
+                            ->where('urutan', $index + 1)
                             ->where('09_MASTER_indikator_kinerja_id', $ik->id)
-                            ->first();
-
-                        $rub->update([
-                            'deskripsi' => $rubrik,
-                        ]);
+                            ->update(['deskripsi' => $rubrik]);
                     }
                 });
             } catch (\Exception $e) {

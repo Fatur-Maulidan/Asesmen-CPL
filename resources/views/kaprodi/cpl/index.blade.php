@@ -189,18 +189,28 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">1</th>
-                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">2</th>
-                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">3</th>
-                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">4</th>
-                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">5</th>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Sangat Kurang</th>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Kurang</th>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Cukup</th>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Baik</th>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Sangat Baik</th>
                             </tr>
                             <tr>
-                                <td class="fw-bold text-center bg-body-tertiary">Sangat Kurang</td>
-                                <td class="fw-bold text-center bg-body-tertiary">Kurang</td>
-                                <td class="fw-bold text-center bg-body-tertiary">Cukup</td>
-                                <td class="fw-bold text-center bg-body-tertiary">Baik</td>
-                                <td class="fw-bold text-center bg-body-tertiary">Sangat Baik</td>
+                                <td class="fw-bold text-center bg-body-tertiary">
+                                    {{ $kurikulum->nilai_rubrik['min'][0] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][0] }}
+                                </td>
+                                <td class="fw-bold text-center bg-body-tertiary">
+                                    {{ $kurikulum->nilai_rubrik['min'][1] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][1] }}
+                                </td>
+                                <td class="fw-bold text-center bg-body-tertiary">
+                                    {{ $kurikulum->nilai_rubrik['min'][2] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][2] }}
+                                </td>
+                                <td class="fw-bold text-center bg-body-tertiary">
+                                    {{ $kurikulum->nilai_rubrik['min'][3] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][3] }}
+                                </td>
+                                <td class="fw-bold text-center bg-body-tertiary">
+                                    {{ $kurikulum->nilai_rubrik['min'][4] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][4] }}
+                                </td>
                             </tr>
                             <tr>
                                 <td id="td_rubrik1"></td>
