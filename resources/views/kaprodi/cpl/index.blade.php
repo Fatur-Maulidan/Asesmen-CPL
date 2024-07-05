@@ -172,6 +172,50 @@
         </div>
     </div>
 
+    {{-- Rubrik Modal --}}
+    <div class="modal fade" id="rubrikModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="rubrikModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="rubrikModalLabel">Rubrik Indikator Kinerja</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-4">
+                        <div class="fw-bold" id="kode_ik_rubrik"></div>
+                        <div id="deskripsi_ik_rubrik"></div>
+                    </div>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">1</th>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">2</th>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">3</th>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">4</th>
+                                <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">5</th>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-center bg-body-tertiary">Sangat Kurang</td>
+                                <td class="fw-bold text-center bg-body-tertiary">Kurang</td>
+                                <td class="fw-bold text-center bg-body-tertiary">Cukup</td>
+                                <td class="fw-bold text-center bg-body-tertiary">Baik</td>
+                                <td class="fw-bold text-center bg-body-tertiary">Sangat Baik</td>
+                            </tr>
+                            <tr>
+                                <td id="td_rubrik1"></td>
+                                <td id="td_rubrik2"></td>
+                                <td id="td_rubrik3"></td>
+                                <td id="td_rubrik4"></td>
+                                <td id="td_rubrik5"></td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Import CPL Modal --}}
     <div class="modal fade" id="importCplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          aria-labelledby="importCplModalLabel" aria-hidden="true">
@@ -230,7 +274,7 @@
                                                 <td>{{ $ik->deskripsi }}</td>
                                                 <td>
                                                     <button type="button"
-                                                            class="btn btn-warning btn-sm btn-ubah-ik text-nowrap"
+                                                            class="btn btn-warning btn-sm btn-ubah-ik text-nowrap mb-2"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#ikModal"
                                                             data-cpl="{{ $ik->capaianPembelajaranLulusan->kode }}"
@@ -243,6 +287,17 @@
                                                             data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
                                                             data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}"
                                                     >Ubah IK</button>
+                                                    <button type="button"
+                                                            class="btn btn-info btn-sm btn-show-rubrik"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#rubrikModal"
+                                                            data-kode="{{ $ik->kode }}"
+                                                            data-deskripsi="{{ $ik->deskripsi }}"
+                                                            data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}">Lihat Rubrik</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -481,6 +536,24 @@
                         }
                     }
                 });
+            });
+
+            $('.btn-show-rubrik').on('click', function (e) {
+                const kode = $(this).data('kode');
+                const deskripsi = $(this).data('deskripsi');
+                const rubrik1 = $(this).data('rubrik1');
+                const rubrik2 = $(this).data('rubrik2');
+                const rubrik3 = $(this).data('rubrik3');
+                const rubrik4 = $(this).data('rubrik4');
+                const rubrik5 = $(this).data('rubrik5');
+
+                $('#kode_ik_rubrik').html(kode);
+                $('#deskripsi_ik_rubrik').html(deskripsi);
+                $('#td_rubrik1').html(rubrik1);
+                $('#td_rubrik2').html(rubrik2);
+                $('#td_rubrik3').html(rubrik3);
+                $('#td_rubrik4').html(rubrik4);
+                $('#td_rubrik5').html(rubrik5);
             });
         });
     </script>
