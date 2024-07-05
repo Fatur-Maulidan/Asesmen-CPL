@@ -15,7 +15,7 @@ class Create10MasterRubrikTable extends Migration
     {
         Schema::create('10_MASTER_rubrik', function (Blueprint $table) {
             $table->unsignedTinyInteger('urutan');
-            $table->string('deskripsi', 100);
+            $table->string('deskripsi', 1000);
             $table->timestamps();
             $table->foreignId('09_MASTER_indikator_kinerja_id')->constrained('09_MASTER_indikator_kinerja');
         });

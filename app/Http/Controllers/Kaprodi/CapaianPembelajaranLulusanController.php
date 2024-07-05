@@ -8,7 +8,7 @@ use App\Imports\JurusanImport;
 use App\Models\Master_07_MataKuliah;
 use App\Models\Master_11_MataKuliahRegister;
 use Illuminate\Http\Request;
-use App\Http\Requests\CapaianPembelajaranLulusanStoreRequest;
+use App\Http\Requests\CapaianPembelajaranLulusanRequest;
 use App\Models\Master_08_CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +25,7 @@ class CapaianPembelajaranLulusanController extends Controller
     public function index($tahun_kurikulum)
     {
         $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
-        $data_cpl = Master_08_CapaianPembelajaranLulusan::with('indikatorKinerja')
+        $data_cpl = Master_08_CapaianPembelajaranLulusan::with('indikatorKinerja.rubrik')
             ->where('03_MASTER_kurikulum_id', $kurikulum->id)
             ->get();
 
@@ -39,7 +39,7 @@ class CapaianPembelajaranLulusanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CapaianPembelajaranLulusanStoreRequest $request, $tahun_kurikulum)
+    public function store(CapaianPembelajaranLulusanRequest $request, $tahun_kurikulum)
     {
         if ($request->ajax()) {
             $validated = $request->validated();
@@ -122,28 +122,27 @@ class CapaianPembelajaranLulusanController extends Controller
         ]);
     }
 
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(CapaianPembelajaranLulusanStoreRequest $request, $tahun_kurikulum, $id)
+    public function update(CapaianPembelajaranLulusanRequest $request, $tahun_kurikulum, $id)
     {
         if ($request->ajax()) {
             $validated = $request->validated();
 
             $cpl = Master_08_CapaianPembelajaranLulusan::find($id);
 
-            $cpl->update($validated);
-
-            if ($cpl->save()) {
+            try {
+                $cpl->update($validated);
+            } catch (\Exception $e) {
                 return response()->json([
-                    'message' => 'Data berhasil disimpan.',
-                ]);
-            } else {
-                return response()->json([
-                    'message' => 'Data gagal disimpan',
+                    'message' => $e->getMessage(),
                 ], 500);
             }
+
+            return response()->json([
+                'message' => 'Data berhasil disimpan.',
+            ]);
         }
     }
 

@@ -107,13 +107,17 @@
                 <div class="modal-body">
                     <form method="POST" action="" autocomplete="off" id="formIk">
                         @csrf
-                        <input type="hidden" name="id_cpl" id="id_cpl_ik" value="">
+                        <div id="method_spoofing_ik"></div>
+                        <div id="id_cpl_ik"></div>
+                        <div id="id_ik"></div>
 
                         <div class="mb-3">
                             <label for="cp_induk" class="form-label fw-bold">Capaian Pembelajaran Induk</label>
                             <input type="text" class="form-control" id="cp_induk" name="cp_induk" readonly>
                             <div id="cp_induk_feedback" class="text-danger"></div>
                         </div>
+
+                        <div id="field_kode_ik"></div>
 
                         <div class="mb-3">
                             <label for="deskripsi_ik" class="form-label fw-bold">Deskripsi</label>
@@ -160,7 +164,7 @@
                             </button>
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-success w-100" form="formIk">Tambah</button>
+                            <button type="submit" class="btn btn-success w-100" id="btn-submit-ik" form="formIk">Tambah</button>
                         </div>
                     </div>
                 </div>
@@ -222,8 +226,24 @@
                                         <tbody>
                                         @foreach($cpl->indikatorKinerja as $ik)
                                             <tr>
-                                                <td class="fw-bold text-nowrap">{{ $ik['kode'] }}</td>
-                                                <td>{{ $ik['deskripsi'] }}</td>
+                                                <td class="fw-bold text-nowrap">{{ $ik->kode }}</td>
+                                                <td>{{ $ik->deskripsi }}</td>
+                                                <td>
+                                                    <button type="button"
+                                                            class="btn btn-warning btn-sm btn-ubah-ik text-nowrap"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#ikModal"
+                                                            data-cpl="{{ $ik->capaianPembelajaranLulusan->kode }}"
+                                                            data-id="{{ $ik->id }}"
+                                                            data-kode="{{ $ik->kode }}"
+                                                            data-deskripsi="{{ $ik->deskripsi }}"
+                                                            data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}"
+                                                    >Ubah IK</button>
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
@@ -241,16 +261,14 @@
                                         data-kode="{{ $cpl->kode }}"
                                         data-domain="{{ $cpl->domain }}"
                                         data-deskripsi="{{ $cpl->deskripsi }}"
-                                >Ubah CP
-                                </button>
+                                >Ubah CP</button>
                                 <button type="button"
                                         class="btn btn-primary btn-tambah-ik"
                                         data-bs-toggle="modal"
                                         data-bs-target="#ikModal"
                                         data-id="{{ $cpl->id }}"
                                         data-kode="{{ $cpl->kode }}"
-                                >Tambah IK
-                                </button>
+                                >Tambah IK</button>
                             </div>
                         </div>
                     </div>
@@ -283,8 +301,11 @@
 
             ikModal.addEventListener('hidden.bs.modal', event => {
                 $('#formIk').attr('action', '');
-                $('#id_cpl_ik').val('');
+                $('#method_spoofing_ik').html('');
+                $('#id_cpl_ik').html('');
+                $('#id_ik').html('');
                 $('#cp_induk').val('');
+                $('#field_kode_ik').html('');
                 $('#deskripsi_ik').val('');
                 $('#rubrik1').val('');
                 $('#rubrik2').val('');
@@ -379,9 +400,48 @@
                const kode = $(this).data('kode');
                const route = '{{ route('kaprodi.ik.store', ['kurikulum' => $kurikulum->tahun]) }}';
 
-               $('#id_cpl_ik').val(id);
-               $('#cp_induk').val(kode);
+               $('#ikModalLabel').html('Tambah Indikator Kinerja');
+
                $('#formIk').attr('action', route);
+               $('#id_cpl_ik').html(`<input type="hidden" name="id_cpl" value="${id}">`);
+               $('#cp_induk').val(kode);
+
+               $('#btn-submit-ik').html('Tambah').addClass('btn-success').removeClass('btn-warning');
+            });
+
+            $('.btn-ubah-ik').on('click', function (e) {
+                const cpl = $(this).data('cpl');
+                const id = $(this).data('id');
+                const kode = $(this).data('kode');
+                const deskripsi = $(this).data('deskripsi');
+                const rubrik1 = $(this).data('rubrik1');
+                const rubrik2 = $(this).data('rubrik2');
+                const rubrik3 = $(this).data('rubrik3');
+                const rubrik4 = $(this).data('rubrik4');
+                const rubrik5 = $(this).data('rubrik5');
+                const route = `{{ route('kaprodi.ik.store', ['kurikulum' => $kurikulum->tahun]) }}` + `/${id}`;
+
+                $('#ikModalLabel').html('Ubah Indikator Kinerja');
+
+                $('#formIk').attr('action', route);
+                $('#method_spoofing_ik').html('{{ method_field('patch') }}');
+                $('#id_ik').html(`<input type="hidden" name="id_ik" value="${id}">`);
+                $('#cp_induk').val(cpl);
+                $('#field_kode_ik').html(`
+                    <div class="mb-3">
+                        <label for="kode_ik" class="form-label fw-bold">Kode Indikator Kinerja</label>
+                        <input type="text" class="form-control" id="kode_ik" readonly value="${kode}">
+                        <div id="kode_ik_feedback" class="text-danger"></div>
+                    </div>
+                `);
+                $('#deskripsi_ik').val(deskripsi);
+                $('#rubrik1').val(rubrik1);
+                $('#rubrik2').val(rubrik2);
+                $('#rubrik3').val(rubrik3);
+                $('#rubrik4').val(rubrik4);
+                $('#rubrik5').val(rubrik5);
+
+                $('#btn-submit-ik').html('Ubah').addClass('btn-warning').removeClass('btn-success');
             });
 
             $('#formIk').on('submit', function (e) {

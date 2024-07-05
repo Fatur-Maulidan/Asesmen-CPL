@@ -10,7 +10,7 @@ use App\Models\Master_08_CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\IndikatorKinerjaStoreRequest;
+use App\Http\Requests\IndikatorKinerjaRequest;
 use App\Models\Master_10_Rubrik;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_03_Kurikulum;
@@ -20,7 +20,7 @@ class IndikatorKinerjaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(IndikatorKinerjaStoreRequest $request, $tahun_kurikulum)
+    public function store(IndikatorKinerjaRequest $request, $tahun_kurikulum)
     {
         if ($request->ajax()) {
             $validated = $request->validated();
@@ -57,71 +57,40 @@ class IndikatorKinerjaController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show($kurikulum, $ik)
-    {
-        $dataIk = new Master_09_IndikatorKinerja();
-
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id,'',$ik);
-
-        $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
-        // dd($this->kurikulum->nilai_rentang_rubrik[1]['nilai']['awal']);
-
-        return view('kaprodi.ik.show', [
-            'title' => 'IK',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
-            'dataIk' => $dataIk,
-            'ik' => $this->indikatorKinerja[0]
-        ]);
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $kurikulum, $id)
+    public function update(IndikatorKinerjaRequest $request, $tahun_kurikulum, $id)
     {
-        $levelKemampuan = rubrik();
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
+        if ($request->ajax()) {
+            $validated = $request->validated();
 
-        $validation = Validator::make(
-            $request->all(),
-            $this->validator->rules(),
-            $this->validator->messages()
-        );
+            $ik = Master_09_IndikatorKinerja::find($id);
 
-        if ($validation->fails()) {
-            return redirect()->back()->withErrors($validation)->withInput();
-        }
-        $indikatorKinerja = Master_09_IndikatorKinerja::find($id);
-
-        $rubrik = Master_10_Rubrik::where('09_MASTER_indikator_kinerja_id', $id)->get();
-
-        $indikatorKinerja->deskripsi = $request->input('deskripsi');
-        if($indikatorKinerja->save()){
-            if($rubrik->isEmpty()) {
-                for($i = 0; $i < $this->kurikulum->jumlah_maksimal_rubrik; $i++){
-                    $rubrik = new Master_10_Rubrik([
-                        'urutan' => $i+1,
-                        'level_kemampuan' => $levelKemampuan[$i],
-                        'deskripsi' => $request->input('rubrik-'.($i)),
-                        '09_MASTER_indikator_kinerja_id' => $indikatorKinerja->id
+            try {
+                DB::transaction(function () use ($ik, $validated) {
+                    $ik->update([
+                        'deskripsi' => $validated['deskripsi_ik'],
                     ]);
-                    $rubrik->save();
-                }
-            } else {
-                for($i = 0; $i < $this->kurikulum->jumlah_maksimal_rubrik; $i++){
-                    Master_10_Rubrik::where('09_MASTER_indikator_kinerja_id', $id)
-                        ->where('urutan', $i+1)
-                        ->update(['deskripsi' => $request->input('rubrik-'.($i+1))]);
-                }
-        }
-            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $indikatorKinerja->kode])->with('success', 'Data berhasil ditambahkan');
-        } else {
-            return redirect()->route('kaprodi.ik.show', ['kurikulum' => $kurikulum, 'ik' => $indikatorKinerja->kode])->with('error', 'Data gagal ditambahkan');
+
+                    foreach ($validated['rubrik'] as $index => $rubrik) {
+                        $rub = Master_10_Rubrik::where('urutan', $index + 1)
+                            ->where('09_MASTER_indikator_kinerja_id', $ik->id)
+                            ->first();
+
+                        $rub->update([
+                            'deskripsi' => $rubrik,
+                        ]);
+                    }
+                });
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
+
+            return response()->json([
+                'message' => 'Data berhasil disimpan.',
+            ]);
         }
     }
 
