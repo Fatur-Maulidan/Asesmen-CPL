@@ -34,6 +34,10 @@
                     <a class="nav-link @if (Route::is('admin.dosen.*')) active @endif"
                        href="{{ route('admin.dosen.index') }}">Dosen</a>
                 </li>
+                {{--<li class="nav-item">--}}
+                {{--    <a class="nav-link @if (Route::is('admin.mahasiswa.*')) active @endif"--}}
+                {{--       href="{{ route('admin.mahasiswa.index') }}">Mahasiswa</a>--}}
+                {{--</li>--}}
             @elseif(auth()->user()->hasRole('koordinator program studi'))
                 @if (Route::is('kaprodi.kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard.*'))
                     <li class="nav-item">
@@ -49,11 +53,6 @@
                            href="{{ route('kaprodi.cpl.index', ['kurikulum' => $kurikulum->tahun]) }}">Capaian
                             Pembelajaran</a>
                     </li>
-                    {{--<li class="nav-item">--}}
-                    {{--    <a class="nav-link @if (Route::is('kaprodi.ik.*')) active @endif"--}}
-                    {{--       href="{{ route('kaprodi.ik.index', ['kurikulum' => $kurikulum->tahun]) }}">Indikator--}}
-                    {{--        Kinerja</a>--}}
-                    {{--</li>--}}
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.tp.*')) active @endif"
                            href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum->tahun]) }}">Tujuan

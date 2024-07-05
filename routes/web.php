@@ -78,6 +78,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'a
         ->name('dosen.toggleStatus');
     Route::resource('dosen', AdminDosenController::class)
         ->only(['index', 'store', 'show', 'update']);
+
+    // # Mahasiswa
+    //Route::get('mahasiswa/download-template', [AdminMahasiswaController::class, 'downloadTemplate'])
+    //    ->name('mahasiswa.downloadTemplate');
+    //Route::post('mahasiswa/import', [AdminMahasiswaController::class, 'import'])
+    //    ->name('mahasiswa.import');
+    //Route::patch('mahasiswa/toggle-status/{dosen}', [AdminMahasiswaController::class, 'toggleStatus'])
+    //    ->name('mahasiswa.toggleStatus');
+    //Route::resource('mahasiswa', AdminMahasiswaController::class)
+    //    ->only(['index', 'store', 'show', 'update']);
 });
 
 // # Route untuk kaprodi
