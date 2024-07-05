@@ -101,6 +101,10 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
         ->only(['index', 'store', 'show', 'update']);
 
     // # Indikator Kinerja
+    Route::get('kurikulum/{kurikulum}/ik/download-template', [KaprodiIndikatorKinerjaController::class, 'downloadTemplate'])
+        ->name('kurikulum.ik.downloadTemplate');
+    Route::post('kurikulum/{kurikulum}/ik/import', [KaprodiIndikatorKinerjaController::class, 'import'])
+        ->name('kurikulum.ik.import');
     Route::resource('kurikulum/{kurikulum}/ik', KaprodiIndikatorKinerjaController::class)
         ->only(['store', 'update']);
 

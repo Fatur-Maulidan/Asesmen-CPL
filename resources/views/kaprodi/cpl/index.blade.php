@@ -30,6 +30,9 @@
         </div>
         <div class="col text-end">
             {{-- Button trigger modal --}}
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importIkModal" @if($data_cpl->isEmpty()) disabled @endif>
+                Import IK
+            </button>
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importCplModal">
                 Import CP
             </button>
@@ -213,11 +216,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td id="td_rubrik1"></td>
-                                <td id="td_rubrik2"></td>
-                                <td id="td_rubrik3"></td>
-                                <td id="td_rubrik4"></td>
-                                <td id="td_rubrik5"></td>
+                                <td id="td_rubrik1" class="align-text-top"></td>
+                                <td id="td_rubrik2" class="align-text-top"></td>
+                                <td id="td_rubrik3" class="align-text-top"></td>
+                                <td id="td_rubrik4" class="align-text-top"></td>
+                                <td id="td_rubrik5" class="align-text-top"></td>
                             </tr>
                         </thead>
                     </table>
@@ -255,6 +258,35 @@
         </div>
     </div>
 
+    {{-- Import IK Modal --}}
+    <div class="modal fade" id="importIkModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="importIkModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 fw-bold" id="importIkModalLabel">Import Indikator Kinerja</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('kaprodi.kurikulum.ik.import', ['kurikulum' => $kurikulum->tahun]) }}"
+                          method="POST" autocomplete="off"
+                          enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-5">
+                            <label for="formFileIk" class="form-label fw-bold">Upload File Excel</label>
+                            <input class="form-control" type="file" id="formFileIk" name="formFileIk" accept=".xlsx">
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('kaprodi.kurikulum.ik.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}"
+                               class="btn btn-outline-success">Download Template</a>
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Data CPL --}}
     <div class="row">
         <div class="col-12">
@@ -280,34 +312,36 @@
                                         <tbody>
                                         @foreach($cpl->indikatorKinerja as $ik)
                                             <tr>
-                                                <td class="fw-bold text-nowrap">{{ $ik->kode }}</td>
-                                                <td>{{ $ik->deskripsi }}</td>
-                                                <td>
-                                                    <button type="button"
-                                                            class="btn btn-warning btn-sm btn-ubah-ik text-nowrap mb-2"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#ikModal"
-                                                            data-cpl="{{ $ik->capaianPembelajaranLulusan->kode }}"
-                                                            data-id="{{ $ik->id }}"
-                                                            data-kode="{{ $ik->kode }}"
-                                                            data-deskripsi="{{ $ik->deskripsi }}"
-                                                            data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
-                                                            data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
-                                                            data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
-                                                            data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
-                                                            data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}"
-                                                    >Ubah IK</button>
-                                                    <button type="button"
-                                                            class="btn btn-info btn-sm btn-show-rubrik"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#rubrikModal"
-                                                            data-kode="{{ $ik->kode }}"
-                                                            data-deskripsi="{{ $ik->deskripsi }}"
-                                                            data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
-                                                            data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
-                                                            data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
-                                                            data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
-                                                            data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}">Lihat Rubrik</button>
+                                                <td class="fw-bold text-nowrap align-middle">{{ $ik->kode }}</td>
+                                                <td class="align-middle">{{ $ik->deskripsi }}</td>
+                                                <td scope="col" class="align-middle" style="width: 10%">
+                                                    <div>
+                                                        <button type="button"
+                                                                class="btn btn-warning btn-sm btn-ubah-ik text-nowrap mb-2"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#ikModal"
+                                                                data-cpl="{{ $ik->capaianPembelajaranLulusan->kode }}"
+                                                                data-id="{{ $ik->id }}"
+                                                                data-kode="{{ $ik->kode }}"
+                                                                data-deskripsi="{{ $ik->deskripsi }}"
+                                                                data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
+                                                                data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
+                                                                data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
+                                                                data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
+                                                                data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}"
+                                                        >Ubah IK</button>
+                                                        <button type="button"
+                                                                class="btn btn-info btn-sm btn-show-rubrik"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#rubrikModal"
+                                                                data-kode="{{ $ik->kode }}"
+                                                                data-deskripsi="{{ $ik->deskripsi }}"
+                                                                data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
+                                                                data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
+                                                                data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
+                                                                data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
+                                                                data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}">Lihat Rubrik</button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

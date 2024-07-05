@@ -7,9 +7,7 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
-use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Row;
 
 class CapaianPembelajaranLulusanImport implements OnEachRow, WithHeadingRow, SkipsOnError
@@ -32,7 +30,7 @@ class CapaianPembelajaranLulusanImport implements OnEachRow, WithHeadingRow, Ski
 
         $exist = $this->cpl->where('kode', $row['kode'])->first();
         if (!$exist) {
-            $cpl = Master_08_CapaianPembelajaranLulusan::create([
+            Master_08_CapaianPembelajaranLulusan::create([
                 'kode' => $row['kode'],
                 'domain' => $row['domain'],
                 'deskripsi' => $row['deskripsi'],

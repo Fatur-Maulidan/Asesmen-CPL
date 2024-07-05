@@ -4,17 +4,10 @@ namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
 use App\Imports\CapaianPembelajaranLulusanImport;
-use App\Imports\JurusanImport;
-use App\Models\Master_07_MataKuliah;
-use App\Models\Master_11_MataKuliahRegister;
-use Illuminate\Http\Request;
 use App\Http\Requests\CapaianPembelajaranLulusanRequest;
 use App\Models\Master_08_CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Master_03_Kurikulum;
-use App\Models\Master_04_Dosen;
-use App\Models\Master_09_IndikatorKinerja;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CapaianPembelajaranLulusanController extends Controller

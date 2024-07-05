@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\Kaprodi;
 
 use App\Http\Controllers\Controller;
-use App\Models\PetaCpIk;
-use Illuminate\Http\Request;
+use App\Imports\IndikatorKinerjaImport;
 use App\Models\Master_09_IndikatorKinerja;
 use App\Models\Master_08_CapaianPembelajaranLulusan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\IndikatorKinerjaRequest;
 use App\Models\Master_10_Rubrik;
-use App\Models\Master_04_Dosen;
 use App\Models\Master_03_Kurikulum;
+use Maatwebsite\Excel\Facades\Excel;
 
 class IndikatorKinerjaController extends Controller
 {
@@ -92,24 +89,20 @@ class IndikatorKinerjaController extends Controller
         }
     }
 
-    public function detail($kurikulum, $ik)
+    public function downloadTemplate()
     {
-        $dataIk = new Master_09_IndikatorKinerja();
+        $file_path = public_path('files/templates/Template_IK.xlsx');
 
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id, $ik);
+        return response()->download($file_path);
+    }
 
-        $dataIk = $dataIk->getDataIndikatorKinerja($this->kurikulum->id);
+    public function import($tahun_kurikulum)
+    {
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
 
-        return view('kaprodi.ik.detail', [
-            'title' => 'IK',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
-            'ik' => $this->indikatorKinerja[0],
-            'dataCpl' => $this->indikatorKinerja[0]->capaianPembelajaranLulusan,
-            'dataIk' => $dataIk,
-        ]);
+        Excel::import(new IndikatorKinerjaImport($kurikulum->id), request()->file('formFileIk'));
+
+        return redirect(route('kaprodi.cpl.index', ['kurikulum' => $tahun_kurikulum]))->with('success', 'All good!');
     }
 
     // Substring Kode yang diambil hanya 2 huruf diawal
