@@ -28,9 +28,9 @@ class MataKuliahImport implements ToModel, WithHeadingRow, SkipsOnError
     public function model(array $row)
     {
         return new Master_07_MataKuliah([
-            'kode' => $row['kode'],
-            'nama' => $row['nama'],
-            'deskripsi' => $row['deskripsi'],
+            'kode' => $row['kode_mata_kuliah'],
+            'nama' => $row['nama_mata_kuliah'],
+            'deskripsi' => $row['deskripsi_mata_kuliah'],
             '03_MASTER_kurikulum_id' => $this->kurikulum_id,
         ]);
     }

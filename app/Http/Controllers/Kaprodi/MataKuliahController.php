@@ -5,75 +5,50 @@ namespace App\Http\Controllers\Kaprodi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MataKuliahRequest;
 use App\Imports\MataKuliahImport;
-use App\Models\Master_04_Dosen;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_07_MataKuliah;
 use App\Models\Master_09_IndikatorKinerja;
 use App\Models\Master_11_MataKuliahRegister;
 use App\Models\Master_12_PetaIkMk;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MataKuliahController extends Controller
 {
-    protected $user;
-    protected $kurikulum;
-
-    protected $kaprodiNip;
-    protected $indikatorKinerja;
-
-    public function __construct() {
-        $this->user = Master_04_Dosen::with('kaprodi')->find('KO042N');
-        $this->kurikulum = new Master_03_Kurikulum();
-        $this->kaprodiNip = '199301062019031017';
-        $this->indikatorKinerja = new Master_09_IndikatorKinerja();
-    }
-
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index($kurikulum)
+    public function index($tahun_kurikulum)
     {
-        $this->kurikulum = $this->kurikulum->getKurikulumByYearAndProdi($kurikulum, $this->user->kaprodi->nomor);
-        $mata_kuliah = Master_07_MataKuliah::where('03_MASTER_kurikulum_id', $this->kurikulum->id)->get();
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+        $mata_kuliah = Master_07_MataKuliah::where('03_MASTER_kurikulum_id', $kurikulum->id)->get();
 
         return view('kaprodi.mk.index', [
             'title' => 'Mata Kuliah',
-            'nama' => $this->user->nama,
-            'role' => 'Koordinator Program Studi',
-            'mata_kuliah' => $mata_kuliah,
-            'kurikulum' => $this->kurikulum
+            'kurikulum' => $kurikulum,
+            'mata_kuliah' => $mata_kuliah->sortBy('kode', SORT_NATURAL),
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(MataKuliahRequest $request, $kurikulum)
+    public function store(MataKuliahRequest $request, $tahun_kurikulum)
     {
-        $this->kurikulum = $this->kurikulum->getKurikulumByYearAndProdi($kurikulum, $this->user->kaprodi->nomor);
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
 
         if ($request->ajax()) {
             $validated = $request->validated();
-            $validated['03_MASTER_kurikulum_id'] = $this->kurikulum->id;
+            $validated['03_MASTER_kurikulum_id'] = $kurikulum->id;
 
-            Master_07_MataKuliah::create($validated);
+            try {
+                Master_07_MataKuliah::create($validated);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
 
             return response()->json([
                 'message' => 'Data berhasil disimpan',
@@ -83,9 +58,6 @@ class MataKuliahController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($kurikulum, $kode)
     {
@@ -119,40 +91,26 @@ class MataKuliahController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(MataKuliahRequest $request, $kurikulum, $id)
+    public function update(MataKuliahRequest $request, $tahun_kurikulum, $id)
     {
-        $validated = $request->validated();
+        if ($request->ajax()) {
+            $validated = $request->validated();
+            $mata_kuliah = Master_07_MataKuliah::find($id);
 
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $mataKuliah = Master_07_MataKuliah::find($id);
+            try {
+                $mata_kuliah->update($validated);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
 
-        $mataKuliah->update($validated);
-
-        // return response()->json([
-        //     'message' => 'Data berhasil disimpan',
-        // ]);
-
-        return redirect()->route('kaprodi.mata-kuliah.show', [
-            'kurikulum' => $kurikulum,
-            'mata_kuliah' => $mataKuliah->kode
-        ]);
+            return response()->json([
+                'message' => 'Data berhasil diubah.',
+            ], 200);
+        }
     }
 
     public function pemetaan(Request $request, $kurikulum, $id)
@@ -184,29 +142,18 @@ class MataKuliahController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function downloadTemplate()
+    public function downloadTemplate($tahun_kurikulum)
     {
         $file_path = public_path('files/templates/Template_Mata_Kuliah.xlsx');
 
         return response()->download($file_path);
     }
 
-    public function import($kurikulum)
+    public function import($tahun_kurikulum)
     {
-        $this->kurikulum = $this->kurikulum->getKurikulumByYearAndProdi($kurikulum, $this->user->kaprodi->nomor);
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
 
-        Excel::import(new MataKuliahImport($this->kurikulum->id), request()->file('formFile'));
+        Excel::import(new MataKuliahImport($kurikulum->id), request()->file('formFile'));
 
         return redirect()->back();
     }

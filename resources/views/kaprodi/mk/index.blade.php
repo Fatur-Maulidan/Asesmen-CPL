@@ -14,7 +14,7 @@
                 Import Mata Kuliah
             </button>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#tambahMataKuliahModal">
+                    data-bs-target="#mataKuliahModal" id="btn-tambah">
                 Tambah Mata Kuliah
             </button>
         </div>
@@ -49,19 +49,20 @@
         </div>
     </div>
 
-    {{-- Tambah Mata Kuliah Modal --}}
-    <div class="modal fade" id="tambahMataKuliahModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="tambahMataKuliahModalLabel" aria-hidden="true">
+    {{-- Mata Kuliah Modal --}}
+    <div class="modal fade" id="mataKuliahModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="mataKuliahModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="tambahMataKuliahModalLabel">Tambah Mata Kuliah</h1>
+                    <h1 class="modal-title fs-5 fw-bold" id="mataKuliahModalLabel">Tambah Mata Kuliah</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.mata-kuliah.store', ['kurikulum' => $kurikulum->tahun]) }}" method="post"
-                          autocomplete="off" id="tambahMataKuliahForm">
+                    <form action="" method="post" autocomplete="off" id="mataKuliahForm">
                         @csrf
+                        <div id="method_spoofing"></div>
+                        <div id="id_mata_kuliah"></div>
                         <div class="mb-3">
                             <label for="kode" class="form-label fw-bold">Kode</label>
                             <input type="text" class="form-control" id="kode" name="kode"
@@ -89,8 +90,8 @@
                             <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
                         </div>
                         <div class="col">
-                            <button type="submit" class="btn btn-success w-100"
-                                    form="tambahMataKuliahForm">Tambah
+                            <button type="submit" class="btn btn-success w-100" id="btn-submit"
+                                    form="mataKuliahForm">Tambah
                             </button>
                         </div>
                     </div>
@@ -125,8 +126,16 @@
                                 <p class="mb-0">Belum ada pemetaan</p>
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mk->kode]) }}"
-                                   class="me-3">Lihat detail</a>
+                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mk->kode]) }}" class="btn btn-info">Lihat Detail</a>
+                                <button type="button"
+                                        class="btn btn-warning btn-ubah"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#mataKuliahModal"
+                                        data-id="{{ $mk->id }}"
+                                        data-kode="{{ $mk->kode }}"
+                                        data-nama="{{ $mk->nama }}"
+                                        data-deskripsi="{{ $mk->deskripsi }}"
+                                >Ubah</button>
                             </div>
                         </div>
                     </div>
@@ -143,22 +152,45 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
-            const tambahMataKuliahModal = document.getElementById('tambahMataKuliahModal');
-            const tambahMataKuliahModalInstance = new bootstrap.Modal('#tambahMataKuliahModal');
+            const mataKuliahModal = document.getElementById('mataKuliahModal');
+            const mataKuliahModalInstance = new bootstrap.Modal('#mataKuliahModal');
 
-            tambahMataKuliahModal.addEventListener('hidden.bs.modal', event => {
+            mataKuliahModal.addEventListener('hidden.bs.modal', event => {
+                $('#method_spoofing').html('');
+                $('#mataKuliahForm').attr('action', '');
+                $('#id_mata_kuliah').html('');
                 $('#kode').val('');
                 $('#nama').val('');
-                $('#deskripsi').html('');
-                $('#jumlah_sks').val('');
+                $('#deskripsi').val('');
 
                 $('#kode_feedback').html('');
                 $('#nama_feedback').html('');
                 $('#deskripsi_feedback').html('');
-                $('#jumlah_sks_feedback').html('');
             });
 
-            $('#tambahMataKuliahForm').on('submit', function (e) {
+            $('#btn-tambah').on('click', function () {
+                $('#mataKuliahModalLabel').html('Tambah Mata Kuliah');
+                $('#mataKuliahForm').attr('action', '{{ route('kaprodi.mata-kuliah.store', ['kurikulum' => $kurikulum->tahun]) }}');
+                $('#btn-submit').html('Tambah').addClass('btn-success').removeClass('btn-warning');
+            });
+
+            $('.btn-ubah').on('click', function (e) {
+               const id = $(this).data('id');
+               const kode = $(this).data('kode');
+               const nama = $(this).data('nama');
+               const deskripsi = $(this).data('deskripsi');
+
+               $('#mataKuliahModalLabel').html('Ubah Mata Kuliah');
+               $('#mataKuliahForm').attr('action', '{{ route('kaprodi.mata-kuliah.store', ['kurikulum' => $kurikulum->tahun]) }}' + '/' + id);
+               $('#method_spoofing').html('{{ method_field('patch') }}');
+               $('#id_mata_kuliah').html(`<input type="hidden" name="id" value="${id}">`);
+               $('#kode').val(kode);
+               $('#nama').val(nama);
+               $('#deskripsi').val(deskripsi);
+               $('#btn-submit').html('Ubah').addClass('btn-warning').removeClass('btn-success');
+            });
+
+            $('#mataKuliahForm').on('submit', function (e) {
                 e.preventDefault();
 
                 $.ajax({
@@ -168,7 +200,7 @@
                     dataType: "JSON",
                     success: function (res) {
                         console.log(res)
-                        tambahMataKuliahModalInstance.hide();
+                        mataKuliahModalInstance.hide();
                         location.reload();
                     },
                     error: function (err) {
@@ -177,31 +209,27 @@
                             console.log(err.responseJSON);
 
                             if ('kode' in err.responseJSON.errors) {
-                                $('#kode_feedback').html(err.responseJSON.errors
-                                    .kode[0]);
+                                $('#kode_feedback').html(
+                                    err.responseJSON.errors.kode[0]
+                                );
                             } else {
                                 $('#kode_feedback').html('');
                             }
 
                             if ('nama' in err.responseJSON.errors) {
-                                $('#nama_feedback').html(err.responseJSON.errors
-                                    .nama[0]);
+                                $('#nama_feedback').html(
+                                    err.responseJSON.errors.nama[0]
+                                );
                             } else {
                                 $('#nama_feedback').html('');
                             }
 
                             if ('deskripsi' in err.responseJSON.errors) {
-                                $('#deskripsi_feedback').html(err.responseJSON.errors
-                                    .deskripsi[0]);
+                                $('#deskripsi_feedback').html(
+                                    err.responseJSON.errors.deskripsi[0]
+                                );
                             } else {
                                 $('#deskripsi_feedback').html('');
-                            }
-
-                            if ('jumlah_sks' in err.responseJSON.errors) {
-                                $('#jumlah_sks_feedback').html(err.responseJSON.errors
-                                    .jumlah_sks[0]);
-                            } else {
-                                $('#jumlah_sks_feedback').html('');
                             }
                         } else if (err.status == 500) {
                             console.log(err);
