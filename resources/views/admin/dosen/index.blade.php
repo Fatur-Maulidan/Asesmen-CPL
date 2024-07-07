@@ -196,6 +196,7 @@
                 $('#jk_perempuan').prop('checked', false);
                 $('#email').val('');
                 $('#jurusan').prop('selectedIndex', 0);
+                $('#program_studi').val('').trigger('change');
 
                 $('#nama_feedback').html('');
                 $('#nip_feedback').html('');

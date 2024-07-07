@@ -16,7 +16,7 @@ class DosenRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->hasRole('admin');
+        return Auth::user()->hasRole('admin') || Auth::user()->hasRole('koordinator program studi');
     }
 
     /**
@@ -44,7 +44,7 @@ class DosenRequest extends FormRequest
                 'bail', 'required', 'email',
                 Rule::unique('04_MASTER_dosen')->ignore($kode, 'id')
             ],
-            'jurusan' => 'bail|required',
+            'jurusan' => 'bail|sometimes|required',
             'program_studi' => 'sometimes|bail|required|array',
         ];
     }

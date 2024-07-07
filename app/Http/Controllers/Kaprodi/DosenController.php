@@ -6,69 +6,75 @@ use App\DataTables\DosenDataTable;
 use App\Enums\StatusKeaktifan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DosenRequest;
+use App\Imports\DosenImport;
+use App\Models\Master_01_Jurusan;
+use App\Models\Master_02_ProgramStudi;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_03_Kurikulum;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DosenController extends Controller
 {
-    protected $user;
-    protected $kurikulum;
-
-    public function __construct()
-    {
-        $this->user = Master_04_Dosen::with('kaprodi')->find('KO042N');
-        $this->kurikulum = Master_03_Kurikulum::where('02_MASTER_program_studi_nomor', $this->user->kaprodi->nomor)
-            ->where('tahun', request('kurikulum'))->first();
-    }
-
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index(DosenDataTable $dataTable, $kurikulum)
+    public function index(DosenDataTable $dataTable, $tahun_kurikulum)
     {
-        return $dataTable->with(['kaprodi' => true, 'jurusan_nomor' => $this->user->jurusan->nomor])
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+        $jurusan_id = Auth::user()->jurusan->id;
+        $program_studi = Master_02_ProgramStudi::orderBy('jenjang_pendidikan')->get(['id', 'nama', 'jenjang_pendidikan']);
+
+        return $dataTable->with([
+            'kaprodi' => true,
+            'kurikulum' => $kurikulum,
+            'jurusan_id' => $jurusan_id,
+        ])
             ->render('kaprodi.dosen.index', [
             'title' => 'Dosen',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
+            'kurikulum' => $kurikulum,
+            'program_studi' => $program_studi,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DosenRequest $request)
     {
-        //
+        if ($request->ajax()) {
+            $validated = $request->validated();
+            $validated['01_MASTER_jurusan_id'] = Auth::user()->jurusan->id;
+            $validated['kata_sandi'] = Hash::make('password');
+
+            try {
+                DB::transaction(function () use ($validated) {
+                    $dosen = Master_04_Dosen::create($validated);
+                    $dosen->assignRole('dosen');
+                    $dosen->programStudi()->sync($validated['program_studi']);
+                });
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 500);
+            }
+
+            return response()->json([
+                'message' => 'Data berhasil ditambah.'
+            ], 201);
+        }
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($kurikulum, $nip)
+    public function show($tahun_kurikulum, $id)
     {
         if (request()->ajax()) {
-            $dosen = Master_04_Dosen::find($nip);
+            $dosen = Master_04_Dosen::with('programStudi:id,nama,jenjang_pendidikan')->find($id);
 
             return response()->json([
                 'dosen' => $dosen
@@ -77,31 +83,30 @@ class DosenController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(DosenRequest $request, $kurikulum, $nip)
+    public function update(DosenRequest $request, $tahun_kurikulum, $id)
     {
-        $dosen = Master_04_Dosen::find($nip);
-
         if ($request->ajax()) {
+            $dosen = Master_04_Dosen::find($id);
+
             $validated = $request->validated();
 
-            $dosen->update($validated);
+            $old_prodi = [];
+            foreach ($dosen->programStudi as $prodi) {
+                $old_prodi[] = $prodi->id;
+            }
+
+            if ($old_prodi != $validated['program_studi']) {
+                foreach ($old_prodi as $prodi) {
+                    $dosen->programStudi()->detach($prodi);
+                }
+            }
+
+            DB::transaction(function () use ($dosen, $validated) {
+                $dosen->update($validated);
+                $dosen->programStudi()->sync($validated['program_studi']);
+            });
 
             return response()->json([
                 'message' => 'Data berhasil diubah.'
@@ -109,27 +114,28 @@ class DosenController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($kurikulum, $nip)
+    public function toggleStatus($tahun_kurikulum, $id)
     {
-        Master_04_Dosen::destroy($nip);
-
-        return redirect()->back();
-    }
-
-    public function toggleStatus($nip)
-    {
-        $dosen = Master_04_Dosen::find($nip);
+        $dosen = Master_04_Dosen::find($id);
 
         $dosen->update([
             'status' => ($dosen->status->is(StatusKeaktifan::Aktif)) ? StatusKeaktifan::Nonaktif : StatusKeaktifan::Aktif
         ]);
 
         return redirect()->back();
+    }
+
+    public function downloadTemplate()
+    {
+        $file_path = public_path('files/templates/Template_Dosen_Jurusan.xlsx');
+
+        return response()->download($file_path);
+    }
+
+    public function import()
+    {
+        Excel::import(new DosenImport, request()->file('formFile'));
+
+        return redirect(route('kaprodi.kurikulum.dosen.index'))->with('success', 'All good!');
     }
 }

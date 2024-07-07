@@ -118,16 +118,14 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
     Route::resource('kurikulum/{kurikulum}/ik', KaprodiIndikatorKinerjaController::class)
         ->only(['store', 'update']);
 
-    // # Tujuan Pembelajaran
-    Route::get('kurikulum/{kurikulum}/tp', [KaprodiTujuanPembelajaranController::class, 'index'])->name('tp.index');
-    Route::get('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'validasi'])->name('tp.validasi');
-    Route::patch('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'update'])->name('tp.update');
-
-    // # Mata kuliah
-    Route::get('kurikulum/{kurikulum}/mata-kuliah/download-template', [KaprodiMataKuliahController::class, 'downloadTemplate'])->name('mata-kuliah.downloadTemplate');
-    Route::post('kurikulum/{kurikulum}/mata-kuliah/import', [KaprodiMataKuliahController::class, 'import'])->name('mata-kuliah.import');
-    Route::patch('kurikulum/{kurikulum}/mata-kuliah/{mata_kuliah}/pemetaan', [KaprodiMataKuliahController::class, 'pemetaan'])->name('mata-kuliah.pemetaan');
-    Route::resource('kurikulum/{kurikulum}/mata-kuliah', KaprodiMataKuliahController::class)
+    // # Dosen
+    Route::get('kurikulum/{kurikulum}/dosen/download-template', [KaprodiDosenController::class, 'downloadTemplate'])
+        ->name('kurikulum.dosen.downloadTemplate');
+    Route::post('kurikulum/{kurikulum}/dosen/import', [KaprodiDosenController::class, 'import'])
+        ->name('kurikulum.dosen.import');
+    Route::patch('kurikulum/{kurikulum}/dosen/toggle-status/{dosen}', [KaprodiDosenController::class, 'toggleStatus'])
+        ->name('kurikulum.dosen.toggleStatus');
+    Route::resource('kurikulum/{kurikulum}/dosen', KaprodiDosenController::class)
         ->only(['index', 'store', 'show', 'update']);
 
     // # Mahasiswa
@@ -137,10 +135,17 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
     Route::resource('kurikulum/{kurikulum}/mahasiswa', KaprodiMahasiswaController::class)
         ->only(['index', 'store', 'show', 'update', 'destroy']);
 
-    // # Dosen
-    Route::patch('dosen/toggle-status/{dosen}', [KaprodiDosenController::class, 'toggleStatus'])->name('dosen.toggleStatus');
-    Route::resource('kurikulum/{kurikulum}/dosen', KaprodiDosenController::class)
-        ->only(['index', 'show', 'update', 'destroy']);
+    // # Mata kuliah
+    Route::get('kurikulum/{kurikulum}/mata-kuliah/download-template', [KaprodiMataKuliahController::class, 'downloadTemplate'])->name('mata-kuliah.downloadTemplate');
+    Route::post('kurikulum/{kurikulum}/mata-kuliah/import', [KaprodiMataKuliahController::class, 'import'])->name('mata-kuliah.import');
+    Route::patch('kurikulum/{kurikulum}/mata-kuliah/{mata_kuliah}/pemetaan', [KaprodiMataKuliahController::class, 'pemetaan'])->name('mata-kuliah.pemetaan');
+    Route::resource('kurikulum/{kurikulum}/mata-kuliah', KaprodiMataKuliahController::class)
+        ->only(['index', 'store', 'show', 'update']);
+
+    // # Tujuan Pembelajaran
+    Route::get('kurikulum/{kurikulum}/tp', [KaprodiTujuanPembelajaranController::class, 'index'])->name('tp.index');
+    Route::get('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'validasi'])->name('tp.validasi');
+    Route::patch('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'update'])->name('tp.update');
 });
 
 // # Route untuk dosen

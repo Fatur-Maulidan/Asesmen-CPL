@@ -5,16 +5,19 @@ namespace App\Imports;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_01_Jurusan;
 use App\Models\Master_02_ProgramStudi;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Row;
 
 class DosenSheetImport implements OnEachRow, WithHeadingRow
 {
+    private $jurusan;
     private $program_studi;
 
     public function __construct()
     {
+        $this->jurusan = Master_01_Jurusan::select('id', 'nama')->get();
         $this->program_studi = Master_02_ProgramStudi::select('id', 'nama', 'jenjang_pendidikan')->get();
     }
 
@@ -34,8 +37,13 @@ class DosenSheetImport implements OnEachRow, WithHeadingRow
             'nama' => $row['nama'],
             'email' => $row['email'],
             'jenis_kelamin' => $row['jenis_kelamin'],
-            '01_MASTER_jurusan_id' => Master_01_Jurusan::where('nama', $row['homebase_jurusan'])->pluck('id')->first(),
         ];
+
+        if (Auth::user()->hasRole('admin')) {
+            $data['01_MASTER_jurusan_id'] = $this->jurusan->where('nama', $row['homebase_jurusan'])->pluck('id')->first();
+        } else if (Auth::user()->hasRole('koordinator program studi')) {
+            $data['01_MASTER_jurusan_id'] = Auth::user()->jurusan->id;
+        }
 
         $dosen = Master_04_Dosen::where('kode', $row['kode_dosen'])->first();
         if ($dosen) {

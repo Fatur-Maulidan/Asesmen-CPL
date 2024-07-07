@@ -5,6 +5,7 @@ namespace App\DataTables;
 use App\Enums\RoleDosen;
 use App\Enums\StatusKeaktifan;
 use App\Models\Master_04_Dosen;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -42,7 +43,15 @@ class DosenDataTable extends DataTable
                     $button = '<button type="submit" class="btn btn-success">Aktifkan</button>';
                 }
 
-                $form = '<form action="' . route('admin.dosen.toggleStatus', ['dosen' => $dosen->id]) . '" method="post">
+                $route = '';
+                if (Auth::user()->hasRole('admin')) {
+                    $route = route('admin.dosen.toggleStatus', ['dosen' => $dosen->id]);
+                } else if (Auth::user()->hasRole('koordinator program studi')) {
+                    $route = route('kaprodi.kurikulum.dosen.toggleStatus', ['kurikulum' => $this->kurikulum->tahun, 'dosen'
+                    => $dosen->id]);
+                }
+
+                $form = '<form action="' . $route . '" method="post">
                     ' . csrf_field() . '
                     ' . method_field('PATCH') . '
                     ' . $button . '
