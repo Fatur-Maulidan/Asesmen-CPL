@@ -15,6 +15,7 @@ use App\Http\Controllers\Kaprodi\CapaianPembelajaranLulusanController as Kaprodi
 use App\Http\Controllers\Kaprodi\IndikatorKinerjaController as KaprodiIndikatorKinerjaController;
 use App\Http\Controllers\Kaprodi\TujuanPembelajaranController as KaprodiTujuanPembelajaranController;
 use App\Http\Controllers\Kaprodi\MataKuliahController as KaprodiMataKuliahController;
+use App\Http\Controllers\Kaprodi\MataKuliahRegisterController as KaprodiMataKuliahRegisterController;
 use App\Http\Controllers\Kaprodi\MahasiswaController as KaprodiMahasiswaController;
 use App\Http\Controllers\Kaprodi\DosenController as KaprodiDosenController;
 
@@ -141,6 +142,8 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
     Route::patch('kurikulum/{kurikulum}/mata-kuliah/{mata_kuliah}/pemetaan', [KaprodiMataKuliahController::class, 'pemetaan'])->name('mata-kuliah.pemetaan');
     Route::resource('kurikulum/{kurikulum}/mata-kuliah', KaprodiMataKuliahController::class)
         ->only(['index', 'store', 'show', 'update']);
+    Route::post('kurikulum/{kurikulum}/mata-kuliah-register', [KaprodiMataKuliahRegisterController::class, 'store'])
+        ->name('kurikulum.mata-kuliah-register.store');
 
     // # Tujuan Pembelajaran
     Route::get('kurikulum/{kurikulum}/tp', [KaprodiTujuanPembelajaranController::class, 'index'])->name('tp.index');

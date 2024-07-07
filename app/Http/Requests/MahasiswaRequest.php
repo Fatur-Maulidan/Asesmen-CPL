@@ -66,6 +66,7 @@ class MahasiswaRequest extends FormRequest
             'nama.regex' => 'Nama tidak valid.',
 
             'jenis_kelamin.required' => 'Jenis kelamin perlu diisi.',
+            'jenis_kelamin.enum' => 'Jenis kelamin tidak valid.',
 
             'email.required' => 'Email perlu diisi.',
             'email.email' => 'Email tidak valid.',
@@ -73,7 +74,6 @@ class MahasiswaRequest extends FormRequest
             'email.ends_with' => 'Email harus menggunakan domain @polban.ac.id',
 
             'tahun_angkatan.required' => 'Tahun angkatan perlu diisi.',
-            'tahun_angkatan.digits' => 'Tahun angkatan harus berupa 4 digit angka.',
 
             'kelas.required' => 'Kelas perlu diisi.',
         ];

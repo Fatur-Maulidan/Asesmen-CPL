@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MataKuliahRequest;
 use App\Imports\MataKuliahImport;
 use App\Models\Master_03_Kurikulum;
+use App\Models\Master_04_Dosen;
 use App\Models\Master_07_MataKuliah;
+use App\Models\Master_08_CapaianPembelajaranLulusan;
 use App\Models\Master_09_IndikatorKinerja;
 use App\Models\Master_11_MataKuliahRegister;
 use App\Models\Master_12_PetaIkMk;
@@ -59,34 +61,20 @@ class MataKuliahController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($kurikulum, $kode)
+    public function show($tahun_kurikulum, $id)
     {
-        $dataIkChecked = collect();
-        $mataKuliah = new Master_07_MataKuliah;
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+        $mata_kuliah = Master_07_MataKuliah::with('mataKuliahRegister')->find($id);
+        $dosen = Master_04_Dosen::where('01_MASTER_jurusan_id', Auth::user()->jurusan->id)->get();
+        $cpl = Master_08_CapaianPembelajaranLulusan::with('indikatorKinerja')
+            ->where('03_MASTER_kurikulum_id', $kurikulum->id)->get();
 
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $daftarMataKuliah = Master_07_MataKuliah::where('03_MASTER_kurikulum_id',$this->kurikulum->id)->get();
-        $mataKuliah = $mataKuliah->getMataKuliahByKodeAndKurikulum($kode, $this->kurikulum->id);
-
-        foreach($mataKuliah->mataKuliahRegister as $mkr) {
-            foreach($mkr->indikatorKinerja as $ik){
-                if(!$dataIkChecked->contains($ik)){
-                    $dataIkChecked->push($ik);
-                }
-            }
-        }
-
-        // dd($dataIkChecked->unique('kode')->pluck('kode')->toArray());
-        $this->indikatorKinerja = $this->indikatorKinerja->getDataIndikatorKinerja($this->kurikulum->id);
         return view('kaprodi.mk.show', [
-            'title' => 'Mata Kuliah',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
-            'daftar_mata_kuliah' => $daftarMataKuliah,
-            'detail_mata_kuliah' => $mataKuliah,
-            'indikator_kinerja' => $this->indikatorKinerja,
-            'selected_data_ik' => $dataIkChecked->unique('kode')->pluck('kode')->toArray()
+            'title' => 'Detail Mata Kuliah',
+            'kurikulum' => $kurikulum,
+            'mata_kuliah' => $mata_kuliah,
+            'dosen' => $dosen,
+            'cpl' => $cpl,
         ]);
     }
 
