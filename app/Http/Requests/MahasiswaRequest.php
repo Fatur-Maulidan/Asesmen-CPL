@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\JenisKelamin;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 class MahasiswaRequest extends FormRequest
@@ -14,15 +18,8 @@ class MahasiswaRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::user()->hasRole('koordinator program studi');
     }
-
-    /**
-     * Indicates if the validator should stop on the first rule failure.
-     *
-     * @var bool
-     */
-    protected $stopOnFirstFailure = false;
 
     /**
      * Get the validation rules that apply to the request.
@@ -31,19 +28,24 @@ class MahasiswaRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'nim' => ['required', 'numeric', 'regex:/^\w{9}$/'],
-            'nama' => 'required',
-            'jenis_kelamin' => ['required', 'regex:/^\w{1}$/'],
-            'email' => ['required', 'email:rfc,dns', 'regex:/polban\.ac\.id/', 'required'],
-            'tahun_angkatan' => ['required', 'regex:/^\w{4}$/', 'required'],
-            'kelas' => ['required', 'regex:/^\w{1}$/', 'required'],
-        ];
+        $nim = $this->segment(count($this->segments()));
 
-        // Additional rules for AJAX requests
-        if ($this->ajax()) {
-            $rules['status'] = 'required';
-        }
+        $rules = [
+            'nim' => [
+                'bail', 'required', 'digits:9',
+                Rule::unique('06_MASTER_mahasiswa','nim')
+                    ->ignore($nim, 'nim'),
+            ],
+            'nama' => 'bail|required|regex:/^[a-zA-Z\s.]+$/',
+            'jenis_kelamin' => ['bail', 'required', new EnumValue(JenisKelamin::class)],
+            'email' => [
+                'bail', 'required', 'email', 'ends_with:polban.ac.id',
+                Rule::unique('06_MASTER_mahasiswa','email')
+                    ->ignore($nim, 'nim'),
+            ],
+            'tahun_angkatan' => 'bail|required|digits:4',
+            'kelas' => 'bail|required',
+        ];
 
         return $rules;
     }
@@ -56,31 +58,24 @@ class MahasiswaRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // NIM error messages
-            'nim.numeric' => 'NIM harus berupa angka',
-            'nim.regex' => 'NIM harus 9 karakter',
-            'nim.required' => 'NIM harus diisi',
+            'nim.required' => 'NIM perlu diisi.',
+            'nim.digits' => 'NIM harus berupa 9 digit angka.',
+            'nim.unique' => 'NIM sudah terdaftar.',
 
-            // Nama error messages
-            'nama.alpha' => 'Nama harus berupa huruf',
-            'nama.required' => 'Nama harus diisi',
+            'nama.required' => 'Nama perlu diisi.',
+            'nama.regex' => 'Nama tidak valid.',
 
-            // Jenis Kelamin error messages
-            'jenis_kelamin.required' => 'Jenis Kelamin harus diisi',
-            'jenis_kelamin.regex' => 'Pilih salah satu',
+            'jenis_kelamin.required' => 'Jenis kelamin perlu diisi.',
 
-            // Email error messages
-            'email.email' => 'Email tidak valid',
-            'email.required' => 'Email harus diisi',
-            'email.regex' => 'Email harus menggunakan domain polban.ac.id',
+            'email.required' => 'Email perlu diisi.',
+            'email.email' => 'Email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'email.ends_with' => 'Email harus menggunakan domain @polban.ac.id',
 
-            // Tahun Angkatan error messages
-            'tahun_angkatan.required' => 'Tahun Angkatan harus diisi',
-            'tahun_angkatan.regex' => 'Pilih salah satu',
+            'tahun_angkatan.required' => 'Tahun angkatan perlu diisi.',
+            'tahun_angkatan.digits' => 'Tahun angkatan harus berupa 4 digit angka.',
 
-            // Kelas error messages
-            'kelas.required' => 'Kelas harus diisi',
-            'kelas.regex' => 'Pilih salah satu'
+            'kelas.required' => 'Kelas perlu diisi.',
         ];
     }
 }

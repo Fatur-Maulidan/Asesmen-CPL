@@ -3,17 +3,23 @@
 namespace App\Imports;
 
 use App\Models\Master_06_Mahasiswa;
-use App\Models\Master_02_ProgramStudi;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class MahasiswaSheetImport implements ToModel, WithHeadingRow
+class MahasiswaSheetImport implements ToModel, WithHeadingRow, SkipsOnError
 {
-    protected static $program_studi_id;
+    use Importable, SkipsErrors;
 
-    public function __construct($program_studi_id)
+    private $program_studi_id;
+    private $kurikulum_id;
+
+    public function __construct($program_studi_id, $kurikulum_id)
     {
-        self::$program_studi_id = $program_studi_id;
+        $this->program_studi_id = $program_studi_id;
+        $this->kurikulum_id = $kurikulum_id;
     }
 
     /**
@@ -30,10 +36,8 @@ class MahasiswaSheetImport implements ToModel, WithHeadingRow
             'email' => $row['email'],
             'kelas' => $row['kelas'],
             'tahun_angkatan' => $row['tahun_angkatan'],
-            '02_MASTER_program_studi_id' => (self::$program_studi_id == null)
-                ? Master_02_ProgramStudi::where('jenjang_pendidikan', explode(" ", $row['program_studi'], 2)[0])
-                    ->where('nama', explode(" ", $row['program_studi'], 2)[1])->pluck('id')->first()
-                : self::$program_studi_id,
+            '02_MASTER_program_studi_id' => $this->program_studi_id,
+            '03_MASTER_kurikulum_id' => $this->kurikulum_id
         ]);
     }
 }

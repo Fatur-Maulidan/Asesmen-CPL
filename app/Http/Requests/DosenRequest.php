@@ -41,7 +41,7 @@ class DosenRequest extends FormRequest
             'nama' => 'bail|required|regex:/^[a-zA-Z\s.,]+$/',
             'jenis_kelamin' => 'bail|required',
             'email' => [
-                'bail', 'required', 'email',
+                'bail', 'required', 'email', 'ends_with:@polban.ac.id',
                 Rule::unique('04_MASTER_dosen')->ignore($kode, 'id')
             ],
             'jurusan' => 'bail|sometimes|required',

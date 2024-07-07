@@ -133,7 +133,7 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
     Route::post('kurikulum/{kurikulum}/mahasiswa/import', [KaprodiMahasiswaController::class, 'import'])->name('mahasiswa.import');
     Route::patch('kurikulum/{kurikulum}/mahasiswa/toggle-status/{mahasiswa}', [KaprodiMahasiswaController::class, 'toggleStatus'])->name('mahasiswa.toggleStatus');
     Route::resource('kurikulum/{kurikulum}/mahasiswa', KaprodiMahasiswaController::class)
-        ->only(['index', 'store', 'show', 'update', 'destroy']);
+        ->only(['index', 'store', 'show', 'update']);
 
     // # Mata kuliah
     Route::get('kurikulum/{kurikulum}/mata-kuliah/download-template', [KaprodiMataKuliahController::class, 'downloadTemplate'])->name('mata-kuliah.downloadTemplate');

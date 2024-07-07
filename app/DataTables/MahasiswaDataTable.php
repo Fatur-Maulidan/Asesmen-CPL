@@ -30,7 +30,7 @@ class MahasiswaDataTable extends DataTable
                     $button = '<button type="submit" class="btn btn-success">Aktifkan</button>';
                 }
 
-                $form = '<form action="' . $this->getRoute($mhs->nim, $this->kurikulum) . '" method="post">
+                $form = '<form action="' . $this->getRoute($mhs->nim, $this->kurikulum->tahun) . '" method="post">
                     ' . csrf_field() . '
                     ' . method_field('patch') . '
                     ' . $button . '
@@ -39,8 +39,7 @@ class MahasiswaDataTable extends DataTable
                 return $form;
             })
             ->addColumn('tindakan', function (Master_06_Mahasiswa $mhs) {
-                $content = '<a href="#" class="btn-ubah" data-bs-toggle="modal" data-bs-target="#ubahMahasiswaModal" data-nim="' . $mhs->nim . '">Ubah</a>
-                <a href="#" class="btn-hapus" data-bs-toggle="modal" data-bs-target="#hapusMahasiswaModal" data-nim="' . $mhs->nim . '">Hapus</a>';
+                $content = '<button type="button" class="btn btn-warning btn-ubah" data-bs-toggle="modal" data-bs-target="#mahasiswaModal" data-nim="' . $mhs->nim . '">Ubah</a>';
 
                 return $content;
             })
