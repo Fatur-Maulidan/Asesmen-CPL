@@ -54,9 +54,12 @@
                             Pembelajaran</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Route::is('kaprodi.tp.*')) active @endif"
-                           href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum->tahun]) }}">Tujuan
-                            Pembelajaran</a>
+                        <a class="nav-link @if (Route::is('kaprodi.dosen.*')) active @endif"
+                           href="{{ route('kaprodi.dosen.index', ['kurikulum' => $kurikulum->tahun]) }}">Dosen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (Route::is('kaprodi.mahasiswa.*')) active @endif"
+                           href="{{ route('kaprodi.mahasiswa.index', ['kurikulum' => $kurikulum->tahun]) }}">Mahasiswa</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.mata-kuliah.*')) active @endif"
@@ -64,12 +67,9 @@
                             Kuliah</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if (Route::is('kaprodi.mahasiswa.*')) active @endif"
-                           href="{{ route('kaprodi.mahasiswa.index', ['kurikulum' => $kurikulum->tahun]) }}">Mahasiswa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if (Route::is('kaprodi.dosen.*')) active @endif"
-                           href="{{ route('kaprodi.dosen.index', ['kurikulum' => $kurikulum->tahun]) }}">Dosen</a>
+                        <a class="nav-link @if (Route::is('kaprodi.tp.*')) active @endif"
+                           href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum->tahun]) }}">Tujuan
+                            Pembelajaran</a>
                     </li>
                 @endif
             @else

@@ -66,52 +66,16 @@ class CapaianPembelajaranLulusanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($kurikulum, $cpl)
+    public function show($tahun_kurikulum, $id)
     {
-        $this->kurikulum = $this->kurikulum->getDataIfKurikulumProgramStudiIsExist($this->kaprodiNip, $kurikulum);
-        $cpl = Master_08_CapaianPembelajaranLulusan::where('kode', $cpl)->with('indikatorKinerja.mataKuliahRegister.mataKuliah')->first();
-        $dataCPL = $this->getDataCPL($this->kurikulum->capaianPembelajaranLulusan->sortBy('kode'));
+        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+        $cpl = Master_08_CapaianPembelajaranLulusan::with('indikatorKinerja.rubrik')
+            ->find($id);
 
-        $dataMk = collect();
-        foreach ($cpl->indikatorKinerja as $ik) {
-            foreach($ik->mataKuliahRegister as $mkr) {
-                $namaMataKuliah = $mkr->mataKuliah->nama;
-                if (!$dataMk->has($namaMataKuliah)) {
-                    $dataMk->put($namaMataKuliah,[
-                        'mataKuliah' => $mkr->mataKuliah,
-                        'indikatorKinerja' => collect()
-                    ]);
-                }
-                if (!$dataMk[$namaMataKuliah]['indikatorKinerja']->contains('id', $ik->id)) {
-                    $dataMk[$namaMataKuliah]['indikatorKinerja']->push([
-                        'id' => $ik->id,
-                        'indikatorKinerja' => $ik,
-                        'tujuanPembelajaran' => collect()
-                    ]);
-                }
-
-                $index = $dataMk[$namaMataKuliah]['indikatorKinerja']->search(function ($item) use ($ik) {
-                    return $item['id'] === $ik->id;
-                });
-
-                foreach ($mkr->tujuanPembelajaran as $tp) {
-                    if (!$dataMk[$namaMataKuliah]['indikatorKinerja'][$index]['tujuanPembelajaran']->contains('kode', $tp->kode)) {
-                        $dataMk[$namaMataKuliah]['indikatorKinerja'][$index]['tujuanPembelajaran']->push([
-                            'kode' => $tp->kode,
-                            'deskripsi' => $tp->deskripsi
-                        ]);
-                    }
-                }
-            }
-        }
         return view('kaprodi.cpl.show', [
             'title' => 'Capaian Pembelajaran',
-            'nama' => 'Jhon Doe',
-            'role' => 'Koordinator Program Studi',
-            'kurikulum' => $this->kurikulum,
-            'data_cpl' => $dataCPL,
+            'kurikulum' => $kurikulum,
             'cpl' => $cpl,
-            'data_mk' => $dataMk
         ]);
     }
 

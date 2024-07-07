@@ -361,6 +361,7 @@
                                         data-domain="{{ $cpl->domain }}"
                                         data-deskripsi="{{ $cpl->deskripsi }}"
                                 >Ubah CP</button>
+                                <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->id]) }}" class="btn btn-info">Detail CP</a>
                                 <button type="button"
                                         class="btn btn-primary btn-tambah-ik"
                                         data-bs-toggle="modal"
