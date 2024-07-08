@@ -25,7 +25,7 @@ return [
 
     JenisPerkuliahan::class => [
         JenisPerkuliahan::Teori => 'Teori',
-        JenisPerkuliahan::Praktik => 'Praktik'
+        JenisPerkuliahan::Praktikum => 'Praktikum'
     ],
 
     JenjangPendidikan::class => [

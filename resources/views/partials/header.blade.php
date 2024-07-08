@@ -9,7 +9,6 @@
                 <div class="fw-bold">{{ auth()->user()->nama }}</div>
                 <div>{{ Str::title(auth()->user()->getRoleNames()[0]) }}</div>
             </div>
-            <img src="{{ asset('images/logo-polban2.png') }}" alt="polban" width=40>
             <form action="{{ route('logout') }}" method="post">
                 @csrf
                 <button type="submit" class="btn btn-outline-danger ms-3">Logout</button>

@@ -126,7 +126,7 @@
                                 <p class="mb-0">Belum ada pemetaan</p>
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mk->kode]) }}" class="btn btn-info">Lihat Detail</a>
+                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mk->id]) }}" class="btn btn-info">Lihat Detail</a>
                                 <button type="button"
                                         class="btn btn-warning btn-ubah"
                                         data-bs-toggle="modal"

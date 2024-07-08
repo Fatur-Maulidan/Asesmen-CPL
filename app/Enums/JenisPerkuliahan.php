@@ -11,5 +11,5 @@ use BenSampo\Enum\Enum;
 final class JenisPerkuliahan extends Enum
 {
     const Teori =   'Teori';
-    const Praktik =   'Praktikum';
+    const Praktikum =   'Praktikum';
 }
