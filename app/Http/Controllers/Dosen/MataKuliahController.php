@@ -15,15 +15,6 @@ use Illuminate\Support\Facades\Auth;
 
 class MataKuliahController extends Controller
 {
-    protected $user;
-    protected $kurikulum;
-
-    public function __construct()
-    {
-        $this->user = Master_04_Dosen::find('KO042N');
-        $this->kurikulum = Master_03_Kurikulum::find(1);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -31,20 +22,14 @@ class MataKuliahController extends Controller
      */
     public function index()
     {
-        $mata_kuliah = Master_07_MataKuliah::with(['mataKuliahRegister' => function($query) {
-            $query->select('id', 'tahun_akademik', 'semester', '07_MASTER_mata_kuliah_id');
-        }])
-            ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)
-            ->whereHas('mataKuliahRegister.dosen', function($query) {
-                $query->where('04_MASTER_dosen_kode', $this->user->kode);
-            })
+        $mata_kuliah = Master_11_MataKuliahRegister::with(['dosen' => function($query) {
+                $query->where('04_MASTER_dosen_id', Auth::user()->id);
+            }], 'mataKuliah')
             ->get();
-
-        //dd($mata_kuliah);
 
         return view('dosen.mata-kuliah.index', [
             'title' => 'Mata Kuliah',
-            'nama' => $this->user->nama,
+            'nama' => Auth::user()->nama,
             'role' => 'Dosen',
             'title'=> 'Home',
             'mata_kuliah' => $mata_kuliah,
