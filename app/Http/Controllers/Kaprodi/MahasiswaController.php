@@ -42,7 +42,7 @@ class MahasiswaController extends Controller
                 'jenis_kelamin' => $validated['jenis_kelamin'],
                 'email' => $validated['email'],
                 'tahun_angkatan' => $validated['tahun_angkatan'],
-                'kelas' => ($validated['tahun_angkatan'] - date('Y') + 1) . $validated['kelas'],
+                'kelas' => $validated['kelas'],
                 '02_MASTER_program_studi_id' => Auth::user()->kaprodi->id,
                 '03_MASTER_kurikulum_id' => $kurikulum->id,
             ]);
@@ -76,7 +76,13 @@ class MahasiswaController extends Controller
             if ($request->ajax()) {
                 $validated = $request->validated();
 
-                $mahasiswa->update($validated);
+                $mahasiswa->update([
+                    'nama' => $validated['nama'],
+                    'jenis_kelamin' => $validated['jenis_kelamin'],
+                    'email' => $validated['email'],
+                    'tahun_angkatan' => $validated['tahun_angkatan'],
+                    'kelas' => $validated['kelas'],
+                ]);
 
                 return response()->json([
                     'message' => 'Data berhasil diubah.'
