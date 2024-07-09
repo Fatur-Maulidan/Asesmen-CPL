@@ -120,10 +120,31 @@
                                 <p class="mb-4">{{ $mk->deskripsi }}</p>
 
                                 <p class="fw-bold mb-1">Capaian Pembelajaran</p>
-                                <p class="mb-4">Belum ada pemetaan</p>
+                                <ul class="mb-0">
+                                    @foreach($cp_mata_kuliah as $key => $cp)
+                                        @if ($key == $mk->kode)
+                                            @foreach($cp as $value)
+                                                <li class="mb-2">{{ $value['kode'] }}<br> {{ $value['deskripsi'] }}</li>
+                                            @endforeach
+                                        @else
+                                            <li>Belum ada pemetaan.</li>
+                                        @endif
+                                    @endforeach
+                                </ul>
 
-                                <p class="fw-bold mb-1">Indikator Kinerja</p>
-                                <p class="mb-0">Belum ada pemetaan</p>
+                                <p class="fw-bold mb-1 mt-4">Indikator Kinerja</p>
+                                <ul class="mb-0">
+                                    @foreach($ik_mata_kuliah as $key => $ik)
+                                        @if ($key == $mk->kode)
+                                            @foreach($ik as $value)
+                                                <li class="mb-2">{{ $value['kode'] }}<br> {{ $value['deskripsi'] }}</li>
+                                            @endforeach
+                                        @else
+                                            <li>Belum ada pemetaan.</li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
                                 <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mk->id]) }}" class="btn btn-info">Lihat Detail</a>

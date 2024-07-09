@@ -71,8 +71,7 @@
                                         <ul class="mb-0">
                                             @foreach($tp->petaIkMk as $peta)
                                                 <li class="mb-3">
-                                                    {{ $peta->indikatorKinerja->kode }} (Bobot: {{ $peta->pivot->bobot_tp }} &mdash; {{ \App\Enums\BobotTP::getDescription($peta->pivot->bobot_tp) }})<br>
-                                                    {{ $peta->indikatorKinerja->deskripsi }}
+                                                    {{ $peta->indikatorKinerja->kode }} (Bobot: {{ $peta->pivot->bobot_tp }} &mdash; {{ \App\Enums\BobotTP::getDescription($peta->pivot->bobot_tp) }})<br>{{ $peta->indikatorKinerja->deskripsi }}
                                                 </li>
                                             @endforeach
                                         </ul>
