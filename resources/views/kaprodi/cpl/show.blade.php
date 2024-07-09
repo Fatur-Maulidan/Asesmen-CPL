@@ -133,6 +133,8 @@
                 </div>
             </div>
 
+            <hr class="my-5">
+
             <div class="row mb-4">
                 <div class="col-12">
                     <div class="row mb-3">
@@ -142,10 +144,43 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            @if( $cpl->indikatorKinerja->isNotEmpty() )
+                            @if( $pemetaan_mk->isNotEmpty() )
                                 <table class="table table-bordered table-hover">
                                     <tbody>
-
+                                    @foreach($pemetaan_mk as $kode_mk => $pmk)
+                                        <tr>
+                                            <td rowspan="3" class="fw-bold align-middle text-center" style="width: 10%">{{ $kode_mk }}</td>
+                                            <td class="align-middle fw-bold">{{ $pmk['nama'] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-middle">
+                                                <div class="m-2">
+                                                    <div class="fw-bold mb-2">Indikator Kinerja</div>
+                                                    <ul class="mb-0">
+                                                        @foreach($pmk['indikator_kinerja'] as $kode_ik => $ik)
+                                                            <li>{{ $kode_ik . ' - ' . $ik['deskripsi'] }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-middle">
+                                                <div class="m-2">
+                                                    <div class="fw-bold mb-2">Tujuan Pembelajaran</div>
+                                                    @if ($pmk['tujuan_pembelajaran']->isNotEmpty())
+                                                        <ul class="mb-0">
+                                                            @foreach($pmk['tujuan_pembelajaran'] as $kode_tp => $tp)
+                                                                <li>{{ $kode_tp . ' - ' . $tp['deskripsi'] }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @else
+                                                        <div>Belum ada tujuan pembelajaran.</div>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             @else

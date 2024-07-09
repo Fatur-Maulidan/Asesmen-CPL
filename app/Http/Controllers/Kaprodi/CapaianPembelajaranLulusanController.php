@@ -72,10 +72,41 @@ class CapaianPembelajaranLulusanController extends Controller
         $cpl = Master_08_CapaianPembelajaranLulusan::with(['indikatorKinerja.rubrik', 'indikatorKinerja.mataKuliahRegister.mataKuliah'])
             ->find($id);
 
+        $pemetaan_mk = collect();
+        foreach ($cpl->indikatorKinerja as $ik) {
+            foreach($ik->mataKuliahRegister as $mkr) {
+                $kode_mk = $mkr->mataKuliah->kode;
+
+                if (!$pemetaan_mk->has($kode_mk)) {
+                    $pemetaan_mk->put($kode_mk, [
+                        'nama' => $mkr->mataKuliah->nama,
+                        'indikator_kinerja' => collect(),
+                        'tujuan_pembelajaran' => collect()
+                    ]);
+                }
+
+                if (!$pemetaan_mk[$kode_mk]['indikator_kinerja']->has($ik->kode)) {
+                    $pemetaan_mk[$kode_mk]['indikator_kinerja']->put($ik->kode, [
+                        'deskripsi' => $ik->deskripsi
+                    ]);
+                }
+
+                foreach ($mkr->tujuanPembelajaran as $tp) {
+                    if (!$pemetaan_mk[$kode_mk]['tujuan_pembelajaran']->has($tp->kode)) {
+                        $pemetaan_mk[$kode_mk]['tujuan_pembelajaran']->put($tp->kode, [
+                            'deskripsi' => $tp->deskripsi
+                        ]);
+                    }
+                }
+
+            }
+        }
+
         return view('kaprodi.cpl.show', [
             'title' => 'Capaian Pembelajaran',
             'kurikulum' => $kurikulum,
             'cpl' => $cpl,
+            'pemetaan_mk' => $pemetaan_mk,
         ]);
     }
 
