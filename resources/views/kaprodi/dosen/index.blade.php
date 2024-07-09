@@ -28,7 +28,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.kurikulum.dosen.import', ['kurikulum' => $kurikulum->tahun]) }}" method="POST" autocomplete="off"
+                    <form action="{{ route('kaprodi.dosen.import', ['kurikulum' => $kurikulum->tahun]) }}" method="POST" autocomplete="off"
                           enctype="multipart/form-data">
                         @csrf
                         <div class="mb-5">
@@ -36,7 +36,7 @@
                             <input class="form-control" type="file" id="formFile" name="formFile" accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('kaprodi.kurikulum.dosen.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}" class="btn btn-outline-success">Download
+                            <a href="{{ route('kaprodi.dosen.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}" class="btn btn-outline-success">Download
                                 Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
                         </div>

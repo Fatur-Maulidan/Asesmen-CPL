@@ -105,27 +105,27 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
 
     // # CPL
     Route::get('kurikulum/{kurikulum}/cpl/download-template', [KaprodiCPLController::class, 'downloadTemplate'])
-        ->name('kurikulum.cpl.downloadTemplate');
+        ->name('cpl.downloadTemplate');
     Route::post('kurikulum/{kurikulum}/cpl/import', [KaprodiCPLController::class, 'import'])
-        ->name('kurikulum.cpl.import');
+        ->name('cpl.import');
     Route::resource('kurikulum/{kurikulum}/cpl', KaprodiCPLController::class)
         ->only(['index', 'store', 'show', 'update']);
 
     // # Indikator Kinerja
     Route::get('kurikulum/{kurikulum}/ik/download-template', [KaprodiIndikatorKinerjaController::class, 'downloadTemplate'])
-        ->name('kurikulum.ik.downloadTemplate');
+        ->name('ik.downloadTemplate');
     Route::post('kurikulum/{kurikulum}/ik/import', [KaprodiIndikatorKinerjaController::class, 'import'])
-        ->name('kurikulum.ik.import');
+        ->name('ik.import');
     Route::resource('kurikulum/{kurikulum}/ik', KaprodiIndikatorKinerjaController::class)
         ->only(['store', 'update']);
 
     // # Dosen
     Route::get('kurikulum/{kurikulum}/dosen/download-template', [KaprodiDosenController::class, 'downloadTemplate'])
-        ->name('kurikulum.dosen.downloadTemplate');
+        ->name('dosen.downloadTemplate');
     Route::post('kurikulum/{kurikulum}/dosen/import', [KaprodiDosenController::class, 'import'])
-        ->name('kurikulum.dosen.import');
+        ->name('dosen.import');
     Route::patch('kurikulum/{kurikulum}/dosen/toggle-status/{dosen}', [KaprodiDosenController::class, 'toggleStatus'])
-        ->name('kurikulum.dosen.toggleStatus');
+        ->name('dosen.toggleStatus');
     Route::resource('kurikulum/{kurikulum}/dosen', KaprodiDosenController::class)
         ->only(['index', 'store', 'show', 'update']);
 

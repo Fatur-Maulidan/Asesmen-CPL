@@ -19,7 +19,7 @@
                     @endif
                     <h3 class="mb-0">
                 <span
-                    class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan)) text-bg-info @else text-bg-primary) @endif rounded-bottom-0">
+                    class="badge @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan)) text-bg-warning @else text-bg-primary) @endif rounded-bottom-0">
                     {{ $kurikulum->status }}
                 </span>
                     </h3>

@@ -87,7 +87,7 @@ Breadcrumbs::for('kaprodi.mata-kuliah.show', function (BreadcrumbTrail $trail, $
     $trail->push($nama_mata_kuliah, route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum, 'mata_kuliah' => $kode_mata_kuliah]));
 });
 
-// TP
+// Tujuan Pembelajaran
 Breadcrumbs::for('kaprodi.tp.index', function (BreadcrumbTrail $trail, $kurikulum) {
     $trail->parent('kaprodi.kurikulum.dashboard.cpl', $kurikulum);
     $trail->push('Tujuan Pembelajaran', route('kaprodi.tp.index', ['kurikulum' => $kurikulum]));
