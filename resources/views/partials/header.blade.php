@@ -79,31 +79,31 @@
                 @else
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.dashboard')) active @endif"
-                            href="{{ route('dosen.mata-kuliah.dashboard', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Dashboard</a>
+                            href="{{ route('dosen.mata-kuliah.dashboard', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.show')) active @endif"
-                            href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Informasi
+                            href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Informasi
                             Umum</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.indikator-kinerja.*')) active @endif"
-                            href="{{ route('dosen.mata-kuliah.indikator-kinerja.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Indikator
+                            href="{{ route('dosen.mata-kuliah.indikator-kinerja.index', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Indikator
                             Kinerja</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.tujuan-pembelajaran.*')) active @endif"
-                            href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Tujuan
+                            href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Tujuan
                             Pembelajaran</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.rencana-asesmen.*')) active @endif"
-                            href="{{ route('dosen.mata-kuliah.rencana-asesmen.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Rencana
+                            href="{{ route('dosen.mata-kuliah.rencana-asesmen.index', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Rencana
                             Asesmen</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.nilai-mahasiswa.*')) active @endif"
-                            href="{{ route('dosen.mata-kuliah.nilai-mahasiswa.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Nilai
+                            href="{{ route('dosen.mata-kuliah.nilai-mahasiswa.index', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Nilai
                             Mahasiswa</a>
                     </li>
                 @endif

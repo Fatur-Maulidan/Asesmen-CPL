@@ -159,18 +159,15 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'd
             ->name('mata-kuliah.index');
 
         /* Route ini digunakan ketika jenis pada mata kuliah dipisah*/
-        // Route::get('{kodeMataKuliah}/{jenis}', [DosenMataKuliahController::class, 'show'])
-        //     ->name('mata-kuliah.show');
-        
-        Route::get('{kodeMataKuliah}', [DosenMataKuliahController::class, 'show'])
+        Route::get('{kodeMataKuliah}/{jenis}', [DosenMataKuliahController::class, 'show'])
             ->name('mata-kuliah.show');
 
         // # Dashboard
-        Route::get('{kodeMataKuliah}/dashboard', [DosenDashboardController::class, 'index'])
+        Route::get('{kodeMataKuliah}/{jenis}/dashboard', [DosenDashboardController::class, 'index'])
             ->name('mata-kuliah.dashboard');
 
         // # Indikator Kinerja
-        Route::prefix('{kodeMataKuliah}/indikator-kinerja')->group(function () {
+        Route::prefix('{kodeMataKuliah}/{jenis}/indikator-kinerja')->group(function () {
             Route::get('/', [DosenIndikatorKinerjaController::class, 'index'])
                 ->name('mata-kuliah.indikator-kinerja.index');
 
@@ -179,7 +176,7 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'd
         });
 
         // # Tujuan Pembelajaran
-        Route::prefix('{kodeMataKuliah}/tujuan-pembelajaran')->group(function () {
+        Route::prefix('{kodeMataKuliah}/{jenis}/tujuan-pembelajaran')->group(function () {
             Route::get('/', [DosenTujuanPembelajaranController::class, 'index'])
                 ->name('mata-kuliah.tujuan-pembelajaran');
 
@@ -197,7 +194,7 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'd
         });
 
         // # Rencana Asesmen
-        Route::prefix('{kodeMataKuliah}/rencana-asesmen')->group(function () {
+        Route::prefix('{kodeMataKuliah}/{jenis}/rencana-asesmen')->group(function () {
             Route::get('/', [DosenRencanaAsesmenController::class, 'index'])
                 ->name('mata-kuliah.rencana-asesmen.index');
 
@@ -209,7 +206,7 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'd
         });
 
         // # Nilai Mahasiswa
-        Route::get('{kodeMataKuliah}/nilai-mahasiswa', [DosenNilaiMahasiswaController::class, 'index'])
+        Route::get('{kodeMataKuliah}/{jenis}/nilai-mahasiswa', [DosenNilaiMahasiswaController::class, 'index'])
         ->name('mata-kuliah.nilai-mahasiswa.index');
     });
 });
