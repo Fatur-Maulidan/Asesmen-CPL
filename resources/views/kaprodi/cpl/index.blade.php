@@ -306,7 +306,16 @@
                              class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
                              data-bs-parent="#accordionExample">
                             <div class="accordion-body py-4">
-                                <div class="fw-bold mb-2">Indikator Kinerja</div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="fw-bold">Indikator Kinerja</div>
+                                    <button type="button"
+                                            class="btn btn-primary btn-tambah-ik btn-sm ms-3"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#ikModal"
+                                            data-id="{{ $cpl->id }}"
+                                            data-kode="{{ $cpl->kode }}"
+                                    >Tambah IK</button>
+                                </div>
                                 @if( $cpl->indikatorKinerja->isNotEmpty() )
                                     <table class="table table-bordered table-hover">
                                         <tbody>
@@ -362,13 +371,6 @@
                                         data-deskripsi="{{ $cpl->deskripsi }}"
                                 >Ubah CP</button>
                                 <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->id]) }}" class="btn btn-info">Detail CP</a>
-                                <button type="button"
-                                        class="btn btn-primary btn-tambah-ik"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#ikModal"
-                                        data-id="{{ $cpl->id }}"
-                                        data-kode="{{ $cpl->kode }}"
-                                >Tambah IK</button>
                             </div>
                         </div>
                     </div>

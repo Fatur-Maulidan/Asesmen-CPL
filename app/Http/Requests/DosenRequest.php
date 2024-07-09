@@ -45,7 +45,7 @@ class DosenRequest extends FormRequest
                 Rule::unique('04_MASTER_dosen')->ignore($kode, 'id')
             ],
             'jurusan' => 'bail|sometimes|required',
-            'program_studi' => 'sometimes|bail|required|array',
+            'program_studi' => 'bail|sometimes|required|array',
         ];
     }
 
@@ -72,6 +72,8 @@ class DosenRequest extends FormRequest
             'email.email' => 'Email tidak valid.',
 
             'jurusan.required' => 'Jurusan perlu diisi.',
+
+            'program_studi.required' => 'Program studi perlu diisi.',
         ];
     }
 }

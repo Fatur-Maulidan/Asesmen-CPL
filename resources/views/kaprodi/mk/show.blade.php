@@ -76,12 +76,14 @@
                                     <div class="mb-4">
                                         <label for="tahun_mulai" class="form-label fw-bold">Tahun Mulai</label>
                                         <input type="text" class="form-control" id="tahun_mulai" name="tahun_mulai" value="{{ date('Y') }}">
+                                        <div id="tahun_mulai_feedback" class="text-danger"></div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-4">
                                         <label for="tahun_selesai" class="form-label fw-bold">Tahun Selesai</label>
                                         <input type="text" class="form-control" id="tahun_selesai" name="tahun_selesai" value="{{ date('Y') + 1 }}">
+                                        <div id="tahun_selesai_feedback" class="text-danger"></div>
                                     </div>
                                 </div>
                             </div>
@@ -96,6 +98,7 @@
                                                 <option value="{{ $i }}">{{ $i }}</option>
                                             @endfor
                                         </select>
+                                        <div id="semester_feedback" class="text-danger"></div>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -106,6 +109,7 @@
                                             <option value="{{ \App\Enums\JenisPerkuliahan::Teori }}">Teori</option>
                                             <option value="{{ \App\Enums\JenisPerkuliahan::Praktikum }}">Praktikum</option>
                                         </select>
+                                        <div id="jenis_feedback" class="text-danger"></div>
                                     </div>
                                 </div>
                             </div>
@@ -120,6 +124,7 @@
                                                 <option value="{{ $dsn->id }}">{{ $dsn->kode . ' - ' . $dsn->nama }}</option>
                                             @endforeach
                                         </select>
+                                        <div id="dosen_pengampu_feedback" class="text-danger"></div>
                                     </div>
                                 </div>
                             </div>
@@ -227,6 +232,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="indikator_kinerja_feedback" class="text-danger"></div>
 
                             <div class="row justify-content-center mt-5">
                                 <div class="col">
@@ -315,6 +321,22 @@
                 $('#kode_feedback').html('');
                 $('#nama_feedback').html('');
                 $('#deskripsi_feedback').html('');
+            });
+
+            tahunAkademikModal.addEventListener('hidden.bs.modal', event => {
+                $('#tahun_mulai').val('{{ date('Y') }}');
+                $('#tahun_selesai').val('{{ date('Y') + 1 }}');
+                $('#semester').prop('selectedIndex', 0);
+                $('#jenis').prop('selectedIndex', 0);
+                $('#dosen_pengampu').prop('selectedIndex', 0);
+                $('input[name="indikator_kinerja[]"]').prop('checked', false);
+
+                $('#tahun_mulai_feedback').html('');
+                $('#tahun_selesai_feedback').html('');
+                $('#semester_feedback').html('');
+                $('#jenis_feedback').html('');
+                $('#dosen_pengampu_feedback').html('');
+                $('#indikator_kinerja_feedback').html('');
             });
 
             $('#mataKuliahForm').on('submit', function (e) {
@@ -407,6 +429,54 @@
                         // when status code is 422, it's a validation issue
                         if (err.status == 422) {
                             console.log(err.responseJSON);
+
+                            if ('tahun_mulai' in err.responseJSON.errors) {
+                                $('#tahun_mulai_feedback').html(
+                                    err.responseJSON.errors.tahun_mulai[0]
+                                );
+                            } else {
+                                $('#tahun_mulai_feedback').html('');
+                            }
+
+                            if ('tahun_selesai' in err.responseJSON.errors) {
+                                $('#tahun_selesai_feedback').html(
+                                    err.responseJSON.errors.tahun_selesai[0]
+                                );
+                            } else {
+                                $('#tahun_selesai_feedback').html('');
+                            }
+
+                            if ('semester' in err.responseJSON.errors) {
+                                $('#semester_feedback').html(
+                                    err.responseJSON.errors.semester[0]
+                                );
+                            } else {
+                                $('#semester_feedback').html('');
+                            }
+
+                            if ('jenis' in err.responseJSON.errors) {
+                                $('#jenis_feedback').html(
+                                    err.responseJSON.errors.jenis[0]
+                                );
+                            } else {
+                                $('#jenis_feedback').html('');
+                            }
+
+                            if ('dosen_pengampu' in err.responseJSON.errors) {
+                                $('#dosen_pengampu_feedback').html(
+                                    err.responseJSON.errors.dosen_pengampu[0]
+                                );
+                            } else {
+                                $('#dosen_pengampu_feedback').html('');
+                            }
+
+                            if ('indikator_kinerja' in err.responseJSON.errors) {
+                                $('#indikator_kinerja_feedback').html(
+                                    err.responseJSON.errors.indikator_kinerja[0]
+                                );
+                            } else {
+                                $('#indikator_kinerja_feedback').html('');
+                            }
 
                         } else if (err.status == 500) {
                             console.log(err);
