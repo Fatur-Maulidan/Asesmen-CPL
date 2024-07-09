@@ -83,7 +83,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.show')) active @endif"
-                            href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Informasi
+                            href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Informasi
                             Umum</a>
                     </li>
                     <li class="nav-item">

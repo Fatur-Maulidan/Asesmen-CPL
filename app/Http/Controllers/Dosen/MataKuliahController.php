@@ -41,14 +41,19 @@ class MataKuliahController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($kodeMataKuliah, $jenis)
+    public function show($kodeMataKuliah)
     {
-        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
-            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
-                $query->where('jenis', $jenis);
-            }],'mataKuliahRegister.indikatorKinerja.capaianPembelajaranLulusan', 'mataKuliahRegister.tujuanPembelajaran')
-            ->first();
+        /* Kode ini digunakan ketika jenis MK Teori dan Praktek dipisah */
+        // $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+        //     ->with(['mataKuliahRegister' => function($query) use ($jenis) {
+        //         $query->where('jenis', $jenis);
+        //     }],'mataKuliahRegister.indikatorKinerja.capaianPembelajaranLulusan', 'mataKuliahRegister.tujuanPembelajaran')
+        //     ->first();
         
+        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+            ->with('mataKuliahRegister.indikatorKinerja.capaianPembelajaranLulusan', 'mataKuliahRegister.tujuanPembelajaran')
+            ->first();
+
         $cpl_mata_kuliah = $this->extractCapaianPembelajaran($mata_kuliah);
         $ik_mata_kuliah = $this->extractIndikatorKinerja($mata_kuliah);
         $tp_mata_kuliah = $this->extractTujuanPembelajaran($mata_kuliah);
