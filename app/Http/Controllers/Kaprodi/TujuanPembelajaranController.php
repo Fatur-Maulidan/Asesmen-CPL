@@ -18,12 +18,37 @@ class TujuanPembelajaranController extends Controller
     public function index($tahun_kurikulum)
     {
         $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
-        $mata_kuliah = Master_07_MataKuliah::where('03_MASTER_kurikulum_id', $kurikulum->id)->get();
+        $daftar_mata_kuliah = Master_07_MataKuliah::where('03_MASTER_kurikulum_id', $kurikulum->id)->get();
+
+        $data_mata_kuliah = null;
+        $tahun_akademik = collect();
+
+        if (request('mata_kuliah') != '') {
+            $mata_kuliah = Master_07_MataKuliah::with('mataKuliahRegister')
+                ->find(request('mata_kuliah'));
+
+            foreach ($mata_kuliah->mataKuliahRegister as $mkr) {
+                $tahun_akademik->push([
+                    'tahun_akademik_awal' => $mkr->tahun_akademik_awal,
+                    'tahun_akademik_akhir' => $mkr->tahun_akademik_akhir,
+                ]);
+            }
+        }
+
+        if (request('mata_kuliah') != '' && request('tahun_akademik') != '') {
+            $data_mata_kuliah = Master_07_MataKuliah::with(['mataKuliahRegister' => function ($query) {
+                $query->where('tahun_akademik_awal', request('tahun_akademik'))->with('tujuanPembelajaran.petaIkMk.indikatorKinerja');
+            }])->find(request('mata_kuliah'));
+        }
+
+        //dd($data_mata_kuliah);
 
         return view('kaprodi.tp.index', [
             'title' => 'Tujuan Pembelajaran',
             'kurikulum' => $kurikulum,
-            'mata_kuliah' => $mata_kuliah,
+            'daftar_mata_kuliah' => $daftar_mata_kuliah,
+            'tahun_akademik' => $tahun_akademik->unique('tahun_akademik_awal'),
+            'data_mata_kuliah' => $data_mata_kuliah,
         ]);
     }
 
