@@ -9,18 +9,11 @@ use App\Models\Master_04_Dosen;
 use App\Models\Master_07_MataKuliah;
 use App\Models\Master_15_RencanaAsesmen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RencanaAsesmenController extends Controller
 {
-    protected $user;
-    protected $kurikulum;
-
-    public function __construct()
-    {
-        $this->user = Master_04_Dosen::find('KO042N');
-        $this->kurikulum = Master_03_Kurikulum::find(1);
-    }
 
     /**
      * Display a listing of the resource.
@@ -37,7 +30,7 @@ class RencanaAsesmenController extends Controller
 
         return view('dosen.rencana-asesmen.index', [
             'title' => 'Rencana Asesmen',
-            'nama' => $this->user->nama,
+            'nama' => Auth::user()->nama,
             'role' => 'Dosen',
             'kurikulum' => $this->kurikulum,
             'mata_kuliah' => $mata_kuliah,

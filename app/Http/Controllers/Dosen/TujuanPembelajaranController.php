@@ -9,20 +9,11 @@ use App\Models\Master_07_MataKuliah;
 use Illuminate\Http\Request;
 use App\Http\Requests\TujuanPembelajaranStoreRequest;
 use App\Models\Master_13_TujuanPembelajaran;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TujuanPembelajaranController extends Controller
 {
-    protected $validation;
-    protected $user;
-    protected $kurikulum;
-
-    public function __construct(){
-        $this->validation = new TujuanPembelajaranStoreRequest();
-        $this->user = Master_04_Dosen::find('KO042N');
-        $this->kurikulum = Master_03_Kurikulum::find(1);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -33,11 +24,10 @@ class TujuanPembelajaranController extends Controller
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
             ->first();
 
-        $dataTp = Master_13_TujuanPembelajaran::all();
+        $dataTp = Master_13_TujuanPembelajaran::with('mataKuliahRegister')->get();
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
-            'nama' => 'John Doe',
-            'role' => 'Dosen',
+            'nama' => Auth::user()->nama,
             'dataTp' => $dataTp,
             'mata_kuliah' => $mata_kuliah
         ]);
@@ -49,17 +39,9 @@ class TujuanPembelajaranController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TujuanPembelajaranStoreRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            $this->validation->rules(),
-            $this->validation->message()
-        );
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        $validated = $request->validated(); 
 
         $dataTp = Master_13_TujuanPembelajaran::get()->count();
         $tujuanPembelajaran = new Master_13_TujuanPembelajaran([

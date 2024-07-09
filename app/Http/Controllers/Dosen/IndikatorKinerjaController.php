@@ -8,18 +8,10 @@ use App\Models\Master_04_Dosen;
 use App\Models\Master_07_MataKuliah;
 use App\Models\Master_09_IndikatorKinerja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IndikatorKinerjaController extends Controller
 {
-    protected $user;
-    protected $kurikulum;
-
-    public function __construct()
-    {
-        $this->user = Master_04_Dosen::find('KO042N');
-        $this->kurikulum = Master_03_Kurikulum::find(1);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -60,37 +52,14 @@ class IndikatorKinerjaController extends Controller
             }
         }
 
-        //dd($ik_mata_kuliah->values());
-
         return view('dosen.indikator-kinerja.index', [
             'title' => 'Indikator Kinerja',
-            'nama' => $this->user->nama,
+            'nama' => Auth::user()->nama,
             'role' => 'Dosen',
-            'kurikulum' => $this->kurikulum,
+            // 'kurikulum' => $this->kurikulum,
             'mata_kuliah' => $mata_kuliah,
             'ik_mata_kuliah' => $ik_mata_kuliah->sort()->all()
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -101,27 +70,21 @@ class IndikatorKinerjaController extends Controller
      */
     public function show($kodeMataKuliah, $kodeIk)
     {
+
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
             ->with('mataKuliahRegister.indikatorKinerja', 'mataKuliahRegister.tujuanPembelajaran.petaIkMk')
             ->first();
 
-        $ik = Master_09_IndikatorKinerja::with('mataKuliahRegister')
+        $indikator_kinerja = Master_09_IndikatorKinerja::with('mataKuliahRegister')
             ->where('kode', $kodeIk)
-            ->where('03_MASTER_kurikulum_id', $this->kurikulum->id)
             ->first();
-
-        //dd($ik->mataKuliahRegister[0]->pivot->tujuanPembelajaran);
-
-        //$link_ik = Master_09_IndikatorKinerja::where('03_MASTER_kurikulum_id', $this->kurikulum->id)->get();
 
         return view('dosen.indikator-kinerja.show', [
             'title' => 'Detail Indikator Kinerja',
-            'nama' => $this->user->nama,
+            'nama' => Auth::user()->nama,
             'role' => 'Dosen',
-            'kurikulum' => $this->kurikulum,
             'mata_kuliah' => $mata_kuliah,
-            'ik' => $ik,
-            //'link_ik' => $link_ik
+            'indikator_kinerja' => $indikator_kinerja,
         ]);
     }
 
