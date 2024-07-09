@@ -98,6 +98,8 @@ Breadcrumbs::for('kaprodi.tp.validasi', function (BreadcrumbTrail $trail, $kurik
     $trail->push('Validasi Tujuan Pembelajaran', route('kaprodi.tp.validasi', ['kurikulum' => $kurikulum]));
 });
 
+
+
 // --- end of Kaprodi
 
 // Breadcrumb Dosen/Mata Kuliah

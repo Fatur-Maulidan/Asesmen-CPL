@@ -157,6 +157,11 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'd
 
         Route::get('/', [DosenMataKuliahController::class, 'index'])
             ->name('mata-kuliah.index');
+
+        /* Route ini digunakan ketika jenis pada mata kuliah dipisah*/
+        // Route::get('{kodeMataKuliah}/{jenis}', [DosenMataKuliahController::class, 'show'])
+        //     ->name('mata-kuliah.show');
+        
         Route::get('{kodeMataKuliah}', [DosenMataKuliahController::class, 'show'])
             ->name('mata-kuliah.show');
 
