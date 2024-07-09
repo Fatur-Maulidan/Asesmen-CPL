@@ -3,21 +3,12 @@
 namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
-use App\Models\Master_03_Kurikulum;
-use App\Models\Master_04_Dosen;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Master_07_MataKuliah;
 use Illuminate\Http\Request;
 
 class NilaiMahasiswaController extends Controller
 {
-    protected $user;
-    protected $kurikulum;
-
-    public function __construct()
-    {
-        $this->user = Master_04_Dosen::find('KO042N');
-        $this->kurikulum = new Master_03_Kurikulum;
-    }
 
     /**
      * Display a listing of the resource.
@@ -32,7 +23,7 @@ class NilaiMahasiswaController extends Controller
 
         return view('dosen.nilai-mahasiswa.index', [
             'title' => 'Nilai Mahasiswa',
-            'nama' => $this->user->nama,
+            'nama' => Auth::user()->nama,
             'role' => 'Dosen',
             'mata_kuliah' => $mata_kuliah,
         ]);
