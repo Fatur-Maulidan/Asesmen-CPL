@@ -6,39 +6,55 @@
 @endsection
 
 @section('main')
-    {{-- Modal --}}
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    {{-- Rubrik Modal --}}
+    <div class="modal fade" id="rubrikModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="rubrikModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="staticBackdropLabel">Ubah Capaian Pembelajaran</h1>
+                    <h1 class="modal-title fs-5 fw-bold" id="rubrikModalLabel">Rubrik Indikator Kinerja</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form
-                        id="ubahCplForm"
-                        action="{{ route('kaprodi.cpl.update', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->kode]) }}">
-                        @csrf
-                        @method('PATCH')
-                        <div class="mb-3">
-                            <label for="exampleFormControlTextarea1" class="form-label fw-bold">Deskripsi</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" name="deskripsi"
-                                      rows="6">{{ $cpl->deskripsi }}</textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <div class="row w-100">
-                        <div class="col">
-                            <button type="button" class="btn btn-danger w-100"
-                                    data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Batal
-                            </button>
-                        </div>
-                        <div class="col">
-                            <button type="submit" class="btn btn-success w-100" form="ubahCplForm">Ubah</button>
-                        </div>
+                    <div class="mb-4">
+                        <div class="fw-bold" id="kode_ik_rubrik"></div>
+                        <div id="deskripsi_ik_rubrik"></div>
                     </div>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Sangat Kurang</th>
+                            <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Kurang</th>
+                            <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Cukup</th>
+                            <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Baik</th>
+                            <th scope="col" style="width: 20%" class="text-center bg-body-tertiary">Sangat Baik</th>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-center bg-body-tertiary">
+                                {{ $kurikulum->nilai_rubrik['min'][0] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][0] }}
+                            </td>
+                            <td class="fw-bold text-center bg-body-tertiary">
+                                {{ $kurikulum->nilai_rubrik['min'][1] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][1] }}
+                            </td>
+                            <td class="fw-bold text-center bg-body-tertiary">
+                                {{ $kurikulum->nilai_rubrik['min'][2] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][2] }}
+                            </td>
+                            <td class="fw-bold text-center bg-body-tertiary">
+                                {{ $kurikulum->nilai_rubrik['min'][3] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][3] }}
+                            </td>
+                            <td class="fw-bold text-center bg-body-tertiary">
+                                {{ $kurikulum->nilai_rubrik['min'][4] }} &mdash; {{ $kurikulum->nilai_rubrik['max'][4] }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="td_rubrik1" class="align-text-top"></td>
+                            <td id="td_rubrik2" class="align-text-top"></td>
+                            <td id="td_rubrik3" class="align-text-top"></td>
+                            <td id="td_rubrik4" class="align-text-top"></td>
+                            <td id="td_rubrik5" class="align-text-top"></td>
+                        </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
@@ -48,7 +64,7 @@
     <div class="row">
         <div class="col-12">
             <div class="row mb-4">
-                <div class="col-12 d-flex">
+                <div class="col-12 d-flex align-items-center">
                     <div class="me-4">
                         <div class="fw-bold">Ditambahkan pada</div>
                         <div id="created_at">{{ $cpl->created_at->translatedFormat('d F Y H:i') }}</div>
@@ -57,11 +73,12 @@
                         <div class="fw-bold">Diperbarui pada</div>
                         <div id="updated_at">{{ $cpl->updated_at->translatedFormat('d F Y H:i') }}</div>
                     </div>
-                    <a href="{{ route('kaprodi.cpl.index', ['kurikulum' => $kurikulum->tahun]) }}" class="btn btn-secondary ms-auto">Kembali</a>
-                    <button type="button" class="btn btn-warning ms-2" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">Ubah CP</button>
+                    <div class="ms-auto">
+                        <a href="{{ route('kaprodi.cpl.index', ['kurikulum' => $kurikulum->tahun]) }}" class="btn btn-secondary">Kembali</a>
+                    </div>
                 </div>
             </div>
+
             <div class="row mb-4">
                 <div class="col-1">
                     <div class="fw-bold">Kode CP</div>
@@ -72,54 +89,96 @@
                     <p id="deskripsi">{{ $cpl->deskripsi }}</p>
                 </div>
             </div>
+
             <div class="row mb-4">
                 <div class="col-12">
-                    <div class="fw-bold mb-3">Indikator Kinerja</div>
-                    @if( $cpl->indikatorKinerja->isNotEmpty() )
-                        <table class="table table-bordered table-hover">
-                            <tbody>
-                            @foreach($cpl->indikatorKinerja as $ik)
-                                <tr>
-                                    <td class="fw-bold text-nowrap align-middle">{{ $ik->kode }}</td>
-                                    <td class="align-middle">{{ $ik->deskripsi }}</td>
-                                    <td scope="col" class="align-middle" style="width: 10%">
-                                        <div>
-                                            <button type="button"
-                                                    class="btn btn-warning btn-sm btn-ubah-ik text-nowrap mb-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#ikModal"
-                                                    data-cpl="{{ $ik->capaianPembelajaranLulusan->kode }}"
-                                                    data-id="{{ $ik->id }}"
-                                                    data-kode="{{ $ik->kode }}"
-                                                    data-deskripsi="{{ $ik->deskripsi }}"
-                                                    data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
-                                                    data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
-                                                    data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
-                                                    data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
-                                                    data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}"
-                                            >Ubah IK</button>
-                                            <button type="button"
-                                                    class="btn btn-info btn-sm btn-show-rubrik"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#rubrikModal"
-                                                    data-kode="{{ $ik->kode }}"
-                                                    data-deskripsi="{{ $ik->deskripsi }}"
-                                                    data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
-                                                    data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
-                                                    data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
-                                                    data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
-                                                    data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}">Lihat Rubrik</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    @else
-                        <div>Belum ada indikator kinerja.</div>
-                    @endif
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="fw-bold mb-3 d-inline me-2">Indikator Kinerja</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            @if( $cpl->indikatorKinerja->isNotEmpty() )
+                                <table class="table table-bordered table-hover">
+                                    <tbody>
+                                    @foreach($cpl->indikatorKinerja as $ik)
+                                        <tr>
+                                            <td class="fw-bold text-nowrap align-middle">{{ $ik->kode }}</td>
+                                            <td class="align-middle">{{ $ik->deskripsi }}</td>
+                                            <td scope="col" class="align-middle text-center" style="width: 10%">
+                                                <div>
+                                                    <button type="button"
+                                                            class="btn btn-info btn-sm btn-show-rubrik"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#rubrikModal"
+                                                            data-kode="{{ $ik->kode }}"
+                                                            data-deskripsi="{{ $ik->deskripsi }}"
+                                                            data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
+                                                            data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}">Lihat Rubrik</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <div>Belum ada indikator kinerja.</div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="fw-bold mb-3 d-inline me-2">Mata Kuliah yang dibebankan</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            @if( $cpl->indikatorKinerja->isNotEmpty() )
+                                <table class="table table-bordered table-hover">
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            @else
+                                <div>Belum ada pemetaan.</div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('.btn-show-rubrik').on('click', function (e) {
+                const kode = $(this).data('kode');
+                const deskripsi = $(this).data('deskripsi');
+                const rubrik1 = $(this).data('rubrik1');
+                const rubrik2 = $(this).data('rubrik2');
+                const rubrik3 = $(this).data('rubrik3');
+                const rubrik4 = $(this).data('rubrik4');
+                const rubrik5 = $(this).data('rubrik5');
+
+                $('#kode_ik_rubrik').html(kode);
+                $('#deskripsi_ik_rubrik').html(deskripsi);
+                $('#td_rubrik1').html(rubrik1);
+                $('#td_rubrik2').html(rubrik2);
+                $('#td_rubrik3').html(rubrik3);
+                $('#td_rubrik4').html(rubrik4);
+                $('#td_rubrik5').html(rubrik5);
+            });
+        });
+    </script>
+@endpush

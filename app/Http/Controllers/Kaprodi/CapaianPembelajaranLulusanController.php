@@ -69,7 +69,7 @@ class CapaianPembelajaranLulusanController extends Controller
     public function show($tahun_kurikulum, $id)
     {
         $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
-        $cpl = Master_08_CapaianPembelajaranLulusan::with('indikatorKinerja.rubrik')
+        $cpl = Master_08_CapaianPembelajaranLulusan::with(['indikatorKinerja.rubrik', 'indikatorKinerja.mataKuliahRegister.mataKuliah'])
             ->find($id);
 
         return view('kaprodi.cpl.show', [
