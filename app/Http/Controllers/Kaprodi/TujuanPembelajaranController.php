@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_07_MataKuliah;
 use App\Models\Master_09_IndikatorKinerja;
-use App\Models\Master_13_TujuanPembelajaran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TujuanPembelajaranController extends Controller
 {
@@ -41,8 +39,6 @@ class TujuanPembelajaranController extends Controller
                 $query->where('tahun_akademik_awal', request('tahun_akademik'))->with('tujuanPembelajaran.petaIkMk.indikatorKinerja');
             }])->find(request('mata_kuliah'));
         }
-
-        //dd($data_mata_kuliah);
 
         return view('kaprodi.tp.index', [
             'title' => 'Tujuan Pembelajaran',
