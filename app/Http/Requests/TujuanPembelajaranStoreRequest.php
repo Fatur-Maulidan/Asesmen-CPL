@@ -24,7 +24,8 @@ class TujuanPembelajaranStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'deskripsi' => 'required|string'
+            'deskripsi' => 'bail|required|string',
+            'bobot' => 'bail|required|numeric',
         ];
     }
 
@@ -32,6 +33,7 @@ class TujuanPembelajaranStoreRequest extends FormRequest
     {
         return [
             'deskripsi.required' => 'Deskripsi harus diisi',
+            'bobot.required' => 'Bobot harus diisi',
         ];
     }
 }
