@@ -107,13 +107,13 @@
                 @forelse($mata_kuliah as $mk)
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                            <button class="accordion-button @if( !$loop->first ) collapsed @endif fw-bold" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#accordion{{ $loop->iteration }}" aria-expanded="false"
                                     aria-controls="{{ $loop->iteration }}">
                                 {{ $mk->kode . ' ' . $mk->nama }}
                             </button>
                         </h2>
-                        <div id="accordion{{ $loop->iteration }}" class="accordion-collapse collapse"
+                        <div id="accordion{{ $loop->iteration }}" class="accordion-collapse collapse @if( $loop->first ) show @endif"
                              data-bs-parent="#daftarMataKuliah">
                             <div class="accordion-body">
                                 <p class="fw-bold mb-1">Deskripsi</p>
