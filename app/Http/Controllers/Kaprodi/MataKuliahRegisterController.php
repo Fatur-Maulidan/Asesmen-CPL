@@ -17,10 +17,10 @@ class MataKuliahRegisterController extends Controller
      */
     public function store(MataKuliahRegisterRequest $request, $tahun_kurikulum)
     {
-        $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
-        $mahasiswa = Master_06_Mahasiswa::where('03_MASTER_kurikulum_id', $kurikulum->id)->get(['nim']);
-
         if ($request->ajax()) {
+            $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
+            $mahasiswa = Master_06_Mahasiswa::where('03_MASTER_kurikulum_id', $kurikulum->id)->get(['nim']);
+
             $validated = $request->validated();
 
             try {

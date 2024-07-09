@@ -45,12 +45,23 @@ class MataKuliahRegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'kode.required' => 'Kode mata kuliah perlu diisi.',
-            'kode.unique' => 'Kode mata kuliah sudah terdaftar.',
+            'id_mata_kuliah.required' => 'ID mata kuliah perlu diisi.',
+            'id_mata_kuliah.exists' => 'ID mata kuliah tidak valid.',
 
-            'nama.required' => 'Nama mata kuliah perlu diisi.',
+            'tahun_mulai.required' => 'Tahun mulai perkuliahan perlu diisi.',
+            'tahun_mulai.digits' => 'Tahun mulai perkuliahan harus berupa 4 digit angka.',
 
-            'deskripsi.required' => 'Deskripsi mata kuliah perlu diisi.',
+            'tahun_selesai.required' => 'Tahun selesai perkuliahan perlu diisi.',
+            'tahun_selesai.digits' => 'Tahun selesai perkuliahan harus berupa 4 digit angka.',
+
+            'semester.required' => 'Semester perkuliahan perlu diisi.',
+            'semester.digits' => 'Semester harus berupa angka.',
+
+            'jenis.required' => 'Jenis perkuliahan perlu diisi.',
+
+            'dosen_pengampu.required' => 'Dosen pengampu perlu diisi.',
+
+            'indikator_kinerja.required' => 'Indikator kinerja perlu diisi.',
         ];
     }
 }
