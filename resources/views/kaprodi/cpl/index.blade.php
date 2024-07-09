@@ -239,7 +239,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.kurikulum.cpl.import', ['kurikulum' => $kurikulum->tahun]) }}"
+                    <form action="{{ route('kaprodi.cpl.import', ['kurikulum' => $kurikulum->tahun]) }}"
                           method="POST" autocomplete="off"
                           enctype="multipart/form-data">
                         @csrf
@@ -248,7 +248,7 @@
                             <input class="form-control" type="file" id="formFileCpl" name="formFileCpl" accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('kaprodi.kurikulum.cpl.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}"
+                            <a href="{{ route('kaprodi.cpl.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}"
                                class="btn btn-outline-success">Download Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
                         </div>
@@ -268,7 +268,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('kaprodi.kurikulum.ik.import', ['kurikulum' => $kurikulum->tahun]) }}"
+                    <form action="{{ route('kaprodi.ik.import', ['kurikulum' => $kurikulum->tahun]) }}"
                           method="POST" autocomplete="off"
                           enctype="multipart/form-data">
                         @csrf
@@ -277,7 +277,7 @@
                             <input class="form-control" type="file" id="formFileIk" name="formFileIk" accept=".xlsx">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('kaprodi.kurikulum.ik.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}"
+                            <a href="{{ route('kaprodi.ik.downloadTemplate', ['kurikulum' => $kurikulum->tahun]) }}"
                                class="btn btn-outline-success">Download Template</a>
                             <button class="btn btn-success" type="submit">Submit</button>
                         </div>

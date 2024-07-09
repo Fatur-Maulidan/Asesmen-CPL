@@ -47,7 +47,7 @@ class DosenDataTable extends DataTable
                 if (Auth::user()->hasRole('admin')) {
                     $route = route('admin.dosen.toggleStatus', ['dosen' => $dosen->id]);
                 } else if (Auth::user()->hasRole('koordinator program studi')) {
-                    $route = route('kaprodi.kurikulum.dosen.toggleStatus', ['kurikulum' => $this->kurikulum->tahun, 'dosen'
+                    $route = route('kaprodi.dosen.toggleStatus', ['kurikulum' => $this->kurikulum->tahun, 'dosen'
                     => $dosen->id]);
                 }
 
