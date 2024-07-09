@@ -98,6 +98,8 @@ Breadcrumbs::for('kaprodi.tp.validasi', function (BreadcrumbTrail $trail, $kurik
     $trail->push('Validasi Tujuan Pembelajaran', route('kaprodi.tp.validasi', ['kurikulum' => $kurikulum]));
 });
 
+
+
 // --- end of Kaprodi
 
 // Breadcrumb Dosen/Mata Kuliah
@@ -112,10 +114,10 @@ Breadcrumbs::for('dosen.mata-kuliah.dashboard', function (BreadcrumbTrail $trail
 });
 
 // Breadcrumb Dosen/Mata Kuliah/Informasi Umum
-Breadcrumbs::for('dosen.mata-kuliah.show', function (BreadcrumbTrail $trail, $kodeMataKuliah): void {
+Breadcrumbs::for('dosen.mata-kuliah.show', function (BreadcrumbTrail $trail, $kodeMataKuliah, $jenis): void {
     $trail->parent('dosen.mata-kuliah.index');
     $trail->push($kodeMataKuliah, route('dosen.mata-kuliah.index'));
-    $trail->push('Informasi Umum mata Kuliah', route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $kodeMataKuliah]));
+    $trail->push('Informasi Umum mata Kuliah', route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $kodeMataKuliah, 'jenis' => $jenis]));
 });
 
 // Breadcrumb Dosen/mata Kuliah/Indikator Kinerja

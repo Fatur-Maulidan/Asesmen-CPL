@@ -23,20 +23,20 @@
             @if (auth()->user()->hasRole('admin'))
                 <li class="nav-item">
                     <a class="nav-link @if (Route::is('admin.dashboard.*')) active @endif"
-                       href="{{ route('admin.dashboard.index') }}">Dashboard</a>
+                        href="{{ route('admin.dashboard.index') }}">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @if (Route::is('admin.jurusan.*')) active @endif"
-                       href="{{ route('admin.jurusan.index') }}">Jurusan</a>
+                        href="{{ route('admin.jurusan.index') }}">Jurusan</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @if (Route::is('admin.dosen.*')) active @endif"
-                       href="{{ route('admin.dosen.index') }}">Dosen</a>
+                        href="{{ route('admin.dosen.index') }}">Dosen</a>
                 </li>
-                {{--<li class="nav-item">--}}
-                {{--    <a class="nav-link @if (Route::is('admin.mahasiswa.*')) active @endif"--}}
-                {{--       href="{{ route('admin.mahasiswa.index') }}">Mahasiswa</a>--}}
-                {{--</li>--}}
+                {{-- <li class="nav-item"> --}}
+                {{--    <a class="nav-link @if (Route::is('admin.mahasiswa.*')) active @endif" --}}
+                {{--       href="{{ route('admin.mahasiswa.index') }}">Mahasiswa</a> --}}
+                {{-- </li> --}}
             @elseif(auth()->user()->hasRole('koordinator program studi'))
                 @if (Route::is('kaprodi.kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard.*'))
                     <li class="nav-item">
@@ -45,29 +45,29 @@
                 @else
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.kurikulum.dashboard.*')) active @endif"
-                           href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}">Dashboard</a>
+                            href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.cpl.*')) active @endif"
-                           href="{{ route('kaprodi.cpl.index', ['kurikulum' => $kurikulum->tahun]) }}">Capaian
+                            href="{{ route('kaprodi.cpl.index', ['kurikulum' => $kurikulum->tahun]) }}">Capaian
                             Pembelajaran</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.dosen.*')) active @endif"
-                           href="{{ route('kaprodi.dosen.index', ['kurikulum' => $kurikulum->tahun]) }}">Dosen</a>
+                            href="{{ route('kaprodi.dosen.index', ['kurikulum' => $kurikulum->tahun]) }}">Dosen</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.mahasiswa.*')) active @endif"
-                           href="{{ route('kaprodi.mahasiswa.index', ['kurikulum' => $kurikulum->tahun]) }}">Mahasiswa</a>
+                            href="{{ route('kaprodi.mahasiswa.index', ['kurikulum' => $kurikulum->tahun]) }}">Mahasiswa</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.mata-kuliah.*')) active @endif"
-                           href="{{ route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum->tahun]) }}">Mata
+                            href="{{ route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum->tahun]) }}">Mata
                             Kuliah</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.tp.*')) active @endif"
-                           href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum->tahun]) }}">Tujuan
+                            href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum->tahun]) }}">Tujuan
                             Pembelajaran</a>
                     </li>
                 @endif
@@ -79,31 +79,31 @@
                 @else
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.dashboard')) active @endif"
-                           href="{{ route('dosen.mata-kuliah.dashboard', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Dashboard</a>
+                            href="{{ route('dosen.mata-kuliah.dashboard', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.show')) active @endif"
-                           href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Informasi
+                            href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Informasi
                             Umum</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.indikator-kinerja.*')) active @endif"
-                           href="{{ route('dosen.mata-kuliah.indikator-kinerja.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Indikator
+                            href="{{ route('dosen.mata-kuliah.indikator-kinerja.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Indikator
                             Kinerja</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.tujuan-pembelajaran.*')) active @endif"
-                           href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Tujuan
+                            href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Tujuan
                             Pembelajaran</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.rencana-asesmen.*')) active @endif"
-                           href="{{ route('dosen.mata-kuliah.rencana-asesmen.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Rencana
+                            href="{{ route('dosen.mata-kuliah.rencana-asesmen.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Rencana
                             Asesmen</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.nilai-mahasiswa.*')) active @endif"
-                           href="{{ route('dosen.mata-kuliah.nilai-mahasiswa.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Nilai
+                            href="{{ route('dosen.mata-kuliah.nilai-mahasiswa.index', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">Nilai
                             Mahasiswa</a>
                     </li>
                 @endif

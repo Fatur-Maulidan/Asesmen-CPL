@@ -157,7 +157,7 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'd
 
         Route::get('/', [DosenMataKuliahController::class, 'index'])
             ->name('mata-kuliah.index');
-        Route::get('{kodeMataKuliah}', [DosenMataKuliahController::class, 'show'])
+        Route::get('{kodeMataKuliah}/{jenis}', [DosenMataKuliahController::class, 'show'])
             ->name('mata-kuliah.show');
 
         // # Dashboard

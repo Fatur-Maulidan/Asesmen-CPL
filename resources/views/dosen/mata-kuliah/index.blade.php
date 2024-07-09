@@ -33,9 +33,10 @@
                                 <div class="d-flex flex-row align-items-center">
                                     <div class="fs-5 fw-bold me-2">{{ $mk_register->mataKuliah->kode }}</div>
                                 </div>
-                                <div class="">{{ $mk_register->mataKuliah->nama }}</div>
+                                <div class="">{{ $mk_register->mataKuliah->nama }} -
+                                    {{ $mk_register->jenis }}</div>
                             </div>
-                            <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode]) }}"
+                            <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode, 'jenis' => $mk_register->jenis]) }}"
                                 class="link-dark">
                                 <i class="bi bi-arrow-right-circle"></i>
                             </a>
@@ -70,7 +71,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-body-secondary py-3">
-                        <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode]) }}"
+                        <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode, 'jenis' => $mk_register->jenis]) }}"
                             class="d-block">Lihat Detailnya</a>
                         <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mk_register->mataKuliah->kode]) }}"
                             class="d-block">Lihat Tujuan Pembelajaran</a>
