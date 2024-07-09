@@ -6,36 +6,36 @@
 @endsection
 
 @section('main')
-    {{--<div class="d-flex flex-row mb-4 me-4" style="width: 50%;">--}}
-    {{--    <select class="form-select" id="tahun-akademik" style="width:50%;padding-left:-200px"--}}
-    {{--        data-placeholder="Pilih Tahun Akademik">--}}
-    {{--        <option></option>--}}
-    {{--        @for ($index = 0; $index < 5; $index++)--}}
-    {{--            <option style="color:black" value="202{{ $index }}/202{{ $index + 1 }}">--}}
-    {{--                202{{ $index }}/202{{ $index + 1 }}--}}
-    {{--            </option>--}}
-    {{--        @endfor--}}
-    {{--    </select>--}}
+    {{-- <div class="d-flex flex-row mb-4 me-4" style="width: 50%;"> --}}
+    {{--    <select class="form-select" id="tahun-akademik" style="width:50%;padding-left:-200px" --}}
+    {{--        data-placeholder="Pilih Tahun Akademik"> --}}
+    {{--        <option></option> --}}
+    {{--        @for ($index = 0; $index < 5; $index++) --}}
+    {{--            <option style="color:black" value="202{{ $index }}/202{{ $index + 1 }}"> --}}
+    {{--                202{{ $index }}/202{{ $index + 1 }} --}}
+    {{--            </option> --}}
+    {{--        @endfor --}}
+    {{--    </select> --}}
 
-    {{--    <div class="ms-4 position-relative" style="width:50%;">--}}
-    {{--        <input type="text" class="form-control" placeholder="Cari" style="padding-left:35px">--}}
-    {{--        <i class="bi bi-search position-absolute" style="left:5%;top:18%"></i>--}}
-    {{--    </div>--}}
-    {{--</div>--}}
+    {{--    <div class="ms-4 position-relative" style="width:50%;"> --}}
+    {{--        <input type="text" class="form-control" placeholder="Cari" style="padding-left:35px"> --}}
+    {{--        <i class="bi bi-search position-absolute" style="left:5%;top:18%"></i> --}}
+    {{--    </div> --}}
+    {{-- </div> --}}
 
     <div class="row">
-        @foreach ($mata_kuliah as $mk)
+        @foreach ($mata_kuliah as $index => $mk_register)
             <div class="col-4">
                 <div class="card mb-3">
                     <div class="card-header d-flex flex-column">
                         <div class=" d-flex flex-row justify-content-between align-items-center mb-3">
                             <div class="d-flex flex-column">
                                 <div class="d-flex flex-row align-items-center">
-                                    <div class="fs-5 fw-bold me-2">{{ $mk->kode }}</div>
+                                    <div class="fs-5 fw-bold me-2">{{ $mk_register->mataKuliah->kode }}</div>
                                 </div>
-                                <div class="">{{ $mk->nama }}</div>
+                                <div class="">{{ $mk_register->mataKuliah->nama }}</div>
                             </div>
-                            <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk->kode]) }}"
+                            <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode]) }}"
                                 class="link-dark">
                                 <i class="bi bi-arrow-right-circle"></i>
                             </a>
@@ -46,16 +46,16 @@
                         <div class="d-flex flex-column mb-3">
                             <div class="fw-bold">Tahun Akademik</div>
                             <ul class="mb-0">
-                                @foreach($mk->mataKuliahRegister->unique('tahun_akademik') as $mkr)
-                                    <li>{{ $mkr->tahun_akademik }}</li>
+                                @foreach ($mk_register->mataKuliah->mataKuliahRegister->unique('tahun_akademik') as $mk_register->mataKuliahr)
+                                    <li>{{ $mk_register->mataKuliahr->tahun_akademik }}</li>
                                 @endforeach
                             </ul>
                         </div>
                         <div class="d-flex flex-column mb-3">
                             <div class="fw-bold">Semester</div>
                             <ul class="mb-0">
-                                @foreach($mk->mataKuliahRegister->unique('semester') as $mkr)
-                                    <li>{{ $mkr->semester }}</li>
+                                @foreach ($mk_register->mataKuliah->mataKuliahRegister->unique('semester') as $mk_register->mataKuliahr)
+                                    <li>{{ $mk_register->mataKuliahr->semester }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -70,9 +70,9 @@
                         </div>
                     </div>
                     <div class="card-footer text-body-secondary py-3">
-                        <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk->kode]) }}"
+                        <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode]) }}"
                             class="d-block">Lihat Detailnya</a>
-                        <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mk->kode]) }}"
+                        <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mk_register->mataKuliah->kode]) }}"
                             class="d-block">Lihat Tujuan Pembelajaran</a>
                         <a href="" class="d-block">Lihat Asesmen Pembelajaran</a>
                     </div>
