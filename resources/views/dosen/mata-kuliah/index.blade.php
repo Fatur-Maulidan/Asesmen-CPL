@@ -73,7 +73,7 @@
                     <div class="card-footer text-body-secondary py-3">
                         <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode, 'jenis' => $mk_register->jenis]) }}"
                             class="d-block">Lihat Detailnya</a>
-                        <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mk_register->mataKuliah->kode]) }}"
+                        <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mk_register->mataKuliah->kode, 'jenis' => $mk_register->jenis]) }}"
                             class="d-block">Lihat Tujuan Pembelajaran</a>
                         <a href="" class="d-block">Lihat Asesmen Pembelajaran</a>
                     </div>

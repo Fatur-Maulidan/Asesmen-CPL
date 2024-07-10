@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('dosen.mata-kuliah.indikator-kinerja.index', $mata_kuliah->kode) }}
+    {{ Breadcrumbs::render('dosen.mata-kuliah.indikator-kinerja.index', $mata_kuliah->kode, $mata_kuliah->mataKuliahRegister[0]->jenis) }}
     <h1 class="fw-bold mb-4">{{ $title }}</h1>
 @endsection
 
@@ -12,37 +12,37 @@
                 <tr class="text-center align-middle">
                     <th scope="col">Nim</th>
                     <th scope="col">Nama Mahasiswa</th>
-                    @for ($i = 1; $i <= 8; $i++)
+                    @foreach ($mata_kuliah->mataKuliahRegister[0]->rencanaAsesmen as $index => $rencanaAsesmen)
                         <th scope="col">
-                            <button class="btn ubah-nilai border-0" onclick="enableInput({{ $i }})">Ubah
-                                Nilai</button>
+                            <button type="button" class="btn btn-primary border-0" id="button-{{ $index }}"
+                                onclick="enableInput({{ $index }})">Ubah Nilai</button>
                             <div class="">
-                                {{ 'Tugas#' . $i }}
+                                {{ $rencanaAsesmen->kode }}
                             </div>
                         </th>
-                    @endfor
-                    <th scope="col">Kuis#1</th>
-                    <th scope="col">Kuis#2</th>
-                    <th scope="col">Tugas Besar</th>
-                    <th scope="col">UTS</th>
-                    <th scope="col">UAS</th>
+                    @endforeach
                 </tr>
             </thead>
             <tbody>
-                <?php
-                $mahasiswa = getMahasiswa();
-                $count = countMahasiswa($mahasiswa);
-                ?>
-                @foreach ($mahasiswa as $mhs)
+                @foreach ($mata_kuliah->mataKuliahRegister[0]->mahasiswa as $mhs)
                     <tr>
-                        <td scope="col">{{ $mhs['nim'] }}</td>
-                        <td scope="col">{{ $mhs['nama'] }}</td>
-                        @for ($j = 1; $j <= 13; $j++)
-                            <td class="text-center align-middle">
-                                <input class="text-center nilai-input" type="text" value="88" style="width: 40px"
-                                    disabled>
-                            </td>
-                        @endfor
+                        <td scope="col">{{ $mhs->nim }}</td>
+                        <td scope="col">{{ $mhs->nama }}</td>
+                        @foreach ($mata_kuliah->mataKuliahRegister[0]->rencanaAsesmen as $index => $rencanaAsesmen)
+                            @foreach ($rencanaAsesmen->mahasiswa as $nilaiMhs)
+                                @if ($nilaiMhs->nim == $mhs->nim)
+                                    <td class="text-center align-middle">
+                                        <form id="form-{{ $index }}-{{ $mhs->nim }}" method="POST"
+                                            action="{{ route('dosen.mata-kuliah.nilai-mahasiswa.update', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis, 'nim' => $mhs->nim, 'rencanaAsesmen' => $rencanaAsesmen->id]) }}">
+                                            @csrf
+                                            <input class="text-center nilai-input" type="text" id="nilai"
+                                                name="nilai" value="{{ $nilaiMhs->pivot->nilai }}" style="width: 40px"
+                                                disabled>
+                                        </form>
+                                    </td>
+                                @endif
+                            @endforeach
+                        @endforeach
                     </tr>
                 @endforeach
             </tbody>
@@ -53,12 +53,43 @@
 @push('scripts')
     <script>
         function enableInput(columnIndex) {
-            var rows = document.querySelectorAll('tbody tr');
-            rows.forEach(function(row) {
-                var inputs = row.querySelectorAll('td input');
-                var input = inputs[columnIndex - 1];
-                input.disabled = false;
-                input.focus();
+            var button = document.getElementById('button-' + columnIndex);
+            if (button.textContent === 'Ubah Nilai') {
+                button.textContent = 'Simpan';
+                var rows = document.querySelectorAll('tbody tr');
+                rows.forEach(function(row) {
+                    var inputs = row.querySelectorAll('td input');
+                    var input = inputs[columnIndex];
+                    console.log('Enabling input:', input); // Debugging line
+                    input.disabled = false;
+                    input.focus();
+                });
+            } else {
+                var rows = document.querySelectorAll('tbody tr');
+                rows.forEach(function(row) {
+                    var inputs = row.querySelectorAll('td input');
+                    var input = inputs[columnIndex];
+                    var form = input.closest('form');
+                    console.log('Submitting form:', form); // Debugging line
+                    form.submit();
+                });
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            let nilaiInputs = document.querySelectorAll('.nilai-input');
+            nilaiInputs.forEach(function(input) {
+                validateInput(input);
+            });
+        });
+
+        function validateInput(inputElement) {
+            inputElement.addEventListener('input', function() {
+                let value = inputElement.value;
+                if (value >= 0 && value <= 100) {
+                    inputElement.value = value;
+                } else {
+                    inputElement.value = value.slice(0, -1);
+                }
             });
         }
     </script>
