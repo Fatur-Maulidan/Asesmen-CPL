@@ -4,185 +4,157 @@
     {{ Breadcrumbs::render('kaprodi.tp.validasi', $kurikulum->tahun) }}
     <h1 class="fw-bold mb-0">{{ $title }}</h1>
 @endsection
-<style>
-    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear {
-        display: none;
-    }
-</style>
+
 @section('main')
     <div class="row mb-4">
-        <div class="col-12">
-            <form action="" class="d-flex flex-row">
-                <div class="row">
-                    <div class="col-auto">
-                        <select class="form-select me-3" name="filter" id="mata-kuliah" style="width:100%;">
-                            @foreach ($data_mata_kuliah as $mata_kuliah)
-                                <option value="{{ $mata_kuliah->nama }}"
-                                    {{ $selected_mata_kuliah->nama == $mata_kuliah->nama ? 'selected' : '' }}>
-                                    {{ $mata_kuliah->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select" id="indikator-kinerja">
-                            @foreach ($ik_mata_kuliah as $ik)
-                                <option value="{{ $ik['kode'] }}"
-                                    {{ $selected_indikator_kinerja->kode == $ik['kode'] ? 'selected' : '' }}>
-                                    {{ $ik['kode'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+        <div class="col-12 d-flex justify-content-between">
+            <form action="" method="get" class="d-flex align-items-center">
+                <label for="mata_kuliah" class="fw-bold me-3">Mata Kuliah</label>
+                <select class="form-select w-auto" id="mata_kuliah" name="mata_kuliah">
+                    <option value="" selected>Pilih mata kuliah</option>
+                    @foreach($daftar_mata_kuliah as $mk)
+                        <option value="{{ $mk->id }}"
+                                @if(request('mata_kuliah') == $mk->id) selected @endif>{{ $mk->kode . ' - ' . $mk->nama }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-outline-primary ms-3">Pilih</button>
             </form>
+            <a href="{{ route('kaprodi.tp.index', ['kurikulum' => $kurikulum->tahun]) }}"
+               class="btn btn-secondary me-2">Kembali</a>
         </div>
     </div>
-    <div class="row">
-        <div class="col-6">
-            <div class="fw-bold">{{ $selected_mata_kuliah->kode }} - {{ $selected_mata_kuliah->nama }}</div>
-            <p>{{ $selected_mata_kuliah->deskripsi }}</p>
-            @if ($selected_indikator_kinerja === null)
-                <div class="fw-bold">IK</div>
-                <p>Belum terdapat IK</p>
-            @else
-                <div class="fw-bold">{{ $selected_indikator_kinerja->kode }}</div>
-                <ul>
-                    <li>{{ $selected_indikator_kinerja->deskripsi }}</li>
-                </ul>
-            @endif
+
+    @if($tahun_akademik->isNotEmpty() && request('mata_kuliah') != '')
+        <div class="row mb-5">
+            <div class="col-12 d-flex justify-content-between">
+                <form action="" method="get" class="d-flex align-items-center">
+                    <input type="hidden" name="mata_kuliah" value="{{ request('mata_kuliah') }}">
+                    <label for="tahun_akademik" class="fw-bold me-3">Tahun Akademik</label>
+                    <select class="form-select w-auto" id="tahun_akademik" name="tahun_akademik">
+                        <option value="" selected>Pilih tahun akademik</option>
+                        @foreach($tahun_akademik as $ta)
+                            <option value="{{ $ta['tahun_akademik_awal'] }}"
+                                    @if(request('tahun_akademik') == $ta['tahun_akademik_awal']) selected @endif>{{ $ta['tahun_akademik_awal'] . ' / ' . $ta['tahun_akademik_akhir'] }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn btn-outline-primary ms-3">Pilih</button>
+                </form>
+            </div>
         </div>
-    </div>
-    <form method="POST" action="{{ route('kaprodi.tp.update', ['kurikulum' => $kurikulum->tahun]) }}">
-        @csrf
-        @method('PATCH')
+    @elseif ($tahun_akademik->isEmpty() && request('mata_kuliah') != '')
+        <div class="row">
+            <div class="col-auto">
+                <div class="alert alert-secondary" role="alert">
+                    Belum ada tahun akademik.
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if($data_mata_kuliah != null)
         <div class="row mb-4">
             <div class="col-12">
-                <table class="table table-responsive">
+                <table class="table table-responsive table-hover table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Kode TP</th>
-                            <th scope="col" width="45%">Deskripsi TP</th>
+                            <th scope="col" style="width: 45%">Deskripsi TP</th>
                             <th scope="col">Tindakan</th>
                             <th scope="col">Alasan Penolakan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <form id="formData">
-                            @if ($ik_mata_kuliah->isEmpty() || $ik_mata_kuliah->where('id', $selected_indikator_kinerja->id)->first()['tp'] == null)
+                        @php $index = 0; @endphp
+                        <form action="{{ route('kaprodi.tp.update', ['kurikulum', $kurikulum->tahun]) }}" method="post" autocomplete="off" id="validasiTp">
+                            @csrf
+                            @method('patch')
+
+                            @foreach($data_mata_kuliah->mataKuliahRegister as $mkr)
                                 <tr>
-                                    <td colspan="4" class="text-center">Belum terdapat TP</td>
+                                    <td colspan="4" class="text-center bg-body-secondary">{{ $mkr->jenis }}</td>
                                 </tr>
-                            @else
-                                @foreach ($ik_mata_kuliah->where('id', $selected_indikator_kinerja->id)->first()['tp'] as $tp)
+                                @forelse($mkr->tujuanPembelajaran->where('status', \App\Enums\StatusValidasiTP::Proses) as $tp)
                                     <tr>
-                                        <input type="hidden" name="tp_id[]" value="{{ $tp['id'] }}">
-                                        <td class="py-3 align-content-center">
-                                            {{ $tp['kode'] }}</td>
-                                        <td class="py-3">
-                                            <p class="mb-0">{{ $tp['deskripsi'] }}</p>
-                                        </td>
-                                        <td class="py-3 align-content-center ">
-                                            <div class="d-flex">
+                                        <input type="hidden" name="tp[{{ $index }}][id]" value="{{ $tp->id }}">
+                                        <td class="align-middle">{{ $tp->kode }}</td>
+                                        <td class="align-middle">{{ $tp->deskripsi }}</td>
+                                        <td class="align-middle">
+                                            <div class="d-flex justify-content-center">
                                                 <div class="form-check me-3">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="status-{{ $tp['id'] }}" id="tolak"
-                                                        id="flexRadioDefault1" data-tp-id="{{ $tp['id'] }}">
-                                                    <label class="form-check-label" for="flexRadioDefault1">
+                                                    <input class="form-check-input" type="radio" name="tp[{{ $index }}][status]" id="tolak{{ $loop->parent->iteration . '-' . $loop->iteration }}" value="{{ \App\Enums\StatusValidasiTP::Ditolak }}">
+                                                    <label class="form-check-label" for="tolak{{ $loop->parent->iteration . '-' . $loop->iteration }}">
                                                         Tolak
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="status-{{ $tp['id'] }}" id="setujui"
-                                                        id="flexRadioDefault2" data-tp-id="{{ $tp['id'] }}">
-                                                    <label class="form-check-label" for="flexRadioDefault2">
+                                                    <input class="form-check-input" type="radio" name="tp[{{ $index }}][status]" id="setujui{{ $loop->parent->iteration . '-' . $loop->iteration }}" value="{{ \App\Enums\StatusValidasiTP::Disetujui }}">
+                                                    <label class="form-check-label" for="setujui{{ $loop->parent->iteration . '-' . $loop->iteration }}">
                                                         Setujui
                                                     </label>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="align-content-center">
-                                            <textarea class="form-control" id="exampleFormControlTextarea2" name="alasan_penolakan-{{ $tp['id'] }}"
-                                                placeholder="Masukkan alasan penolakan" disabled></textarea>
+                                        <td class="">
+                                            <textarea class="form-control" id="alasan_penolakan" name="tp[{{ $index }}][alasan_penolakan]" placeholder="Masukkan alasan penolakan" disabled></textarea>
                                         </td>
                                     </tr>
-                                @endforeach
-                            @endif
+                                    @php $index++; @endphp
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="align-middle text-center">Tidak ada tujuan pembelajaran yang perlu divalidasi.</td>
+                                    </tr>
+                                @endforelse
+                            @endforeach
                         </form>
                     </tbody>
                 </table>
             </div>
         </div>
+
         <div class="row">
             <div class="col-12 text-end">
-                <button class="btn btn-outline-danger" id="resetCheckbox">Reset ulang</button>
-                <button type="submit" class="btn btn-outline-danger sendData" name="btn" value="tolak_semua"
-                    data-action="tolak_semua">Tolak
-                    semua</button>
-                <button type="submit" class="btn btn-outline-primary sendData" name="btn" value="setujui_semua"
-                    data-action="setujui_semua">Setujui
-                    semua</button>
-                <button class="btn btn-primary sendData" name="btn" value="simpan" data-action="simpan">Simpan</button>
-                <button type="submit" class="btn btn-success" name="btn" value="finalisasi"
-                    disabled>Finalisasi</button>
+                <button type="button" class="btn btn-outline-danger" id="atur_ulang">Atur Ulang</button>
+                <button type="button" class="btn btn-outline-danger" id="tolak_semua">Tolak Semua</button>
+                <button type="button" class="btn btn-outline-success" id="setujui_semua">Setujui Semua</button>
+                <button type="submit" class="btn btn-primary" form="validasiTp">Submit</button>
             </div>
         </div>
-    </form>
+    @endif
 @endsection
+
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('input[type=radio]').change(function() {
-                if ($(this).attr('id') == 'tolak') {
-                    $(this).closest('tr').find('textarea').removeAttr('disabled');
-                } else {
-                    $(this).closest('tr').find('textarea').attr('disabled', 'disabled');
-                    $(this).closest('tr').find('textarea').val('');
-                }
+            $('input[type="radio"][value="Ditolak"]').change(function() {
+                $(this).closest('tr').find('textarea').attr('disabled', false);
             });
-        });
 
-        $(document).ready(function() {
-            $('#resetCheckbox').click(function() {
+            $('input[type="radio"][value="Disetujui"]').change(function() {
+                $(this).closest('tr').find('textarea').attr('disabled', true).val('');
+            });
+
+            $('#atur_ulang').click(function() {
                 $('input[type="radio"]').prop('checked', false).each(function() {
-                    $(this).closest('tr').find('textarea').attr('disabled', 'disabled');
-                    $(this).closest('tr').find('textarea').val('');
+                    $(this).closest('tr').find('textarea').attr('disabled', true).val('');
                 });
             });
-        });
 
-        $('#mata-kuliah').select2({
-            theme: "bootstrap-5",
-            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-            placeholder: $(this).data('placeholder'),
-            allowClear: true
-        });
-
-        const url = "{{ url()->current() }}";
-
-        $(document).ready(function() {
-            function updatePage() {
-                var selectedMataKuliah = $('#mata-kuliah').val();
-                var selectedIndikatorKinerja = $('#indikator-kinerja').val();
-
-                var params = {};
-                if (selectedMataKuliah) {
-                    params.mata_kuliah = selectedMataKuliah;
-                }
-                if (selectedIndikatorKinerja) {
-                    params.indikator_kinerja = selectedIndikatorKinerja;
-                }
-
-                var queryString = $.param(params);
-                location.href = url + '?' + queryString;
-            }
-
-            $('#mata-kuliah').change(function() {
-                $('#indikator-kinerja').val(null);
-                updatePage();
+            $('#tolak_semua').on('click', function (e) {
+                $('input[type="radio"][value="Ditolak"]').prop('checked', true).each(function() {
+                    $(this).closest('tr').find('textarea').attr('disabled', false);
+                });
             });
 
-            $('#indikator-kinerja').change(function() {
-                updatePage();
+            $('#setujui_semua').on('click', function (e) {
+                $('input[type="radio"][value="Disetujui"]').prop('checked', true).each(function() {
+                    $(this).closest('tr').find('textarea').attr('disabled', true).val('');
+                });
+            });
+
+            $('#mata_kuliah').select2({
+                theme: "bootstrap-5",
+                closeOnSelect: false,
+                allowClear: true
             });
         });
     </script>

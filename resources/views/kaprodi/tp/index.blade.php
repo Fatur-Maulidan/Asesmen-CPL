@@ -60,20 +60,22 @@
                         @forelse($mkr->tujuanPembelajaran as $tp)
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button @if( !$loop->first ) collapsed @endif" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapse{{ $loop->iteration }}" aria-expanded="true" aria-controls="collapse{{ $loop->iteration }}">
+                                    <button class="accordion-button @if(! ($loop->parent->first && $loop->first)) collapsed @endif" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}" aria-expanded="true" aria-controls="collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}">
                                         {{ $tp->kode . ' - ' . $tp->deskripsi }} <span class="badge @if($tp->status == 'Disetujui') text-bg-success @elseif($tp->status == 'Ditolak') text-bg-danger @else text-bg-warning @endif rounded rounded-pill ms-3">{{ $tp->status }}</span>
                                     </button>
                                 </h2>
-                                <div id="collapse{{ $loop->iteration }}" class="accordion-collapse collapse @if($loop->first) show @endif" data-bs-parent="#daftarTp{{ $loop->parent->iteration }}">
+                                <div id="collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}" class="accordion-collapse collapse @if($loop->parent->first && $loop->first) show @endif" data-bs-parent="#daftarTp{{ $loop->parent->iteration }}">
                                     <div class="accordion-body p-4">
                                         <div class="fw-bold mb-2">Dipetakan terhadap Indikator Kinerja</div>
                                         <ul class="mb-0">
-                                            @foreach($tp->petaIkMk as $peta)
+                                            @forelse($tp->petaIkMk as $peta)
                                                 <li class="mb-3">
                                                     {{ $peta->indikatorKinerja->kode }} (Bobot: {{ $peta->pivot->bobot_tp }} &mdash; {{ \App\Enums\BobotTP::getDescription($peta->pivot->bobot_tp) }})<br>{{ $peta->indikatorKinerja->deskripsi }}
                                                 </li>
-                                            @endforeach
+                                            @empty
+                                                <li>Belum ada pemetaan.</li>
+                                            @endforelse
                                         </ul>
                                     </div>
                                 </div>
