@@ -48,7 +48,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center py-3">
                         <div class="fs-5 fw-bold me-2">Kurikulum {{ $kurikulum->tahun }}</div>
                         <span
-                            class="badge rounded rounded-pill fs-6 @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Arsip)) text-bg-danger @else text-bg-info @endif">{{ $kurikulum->status->key }}
+                            class="badge rounded rounded-pill fs-6 @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Aktif)) text-bg-success @elseif ($kurikulum->status->is(\App\Enums\StatusKurikulum::Arsip)) text-bg-danger @else text-bg-warning @endif">{{ $kurikulum->status->key }}
                         </span>
                     </div>
                     <div class="card-body">
