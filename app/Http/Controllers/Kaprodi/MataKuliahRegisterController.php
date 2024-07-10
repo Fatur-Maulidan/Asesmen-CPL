@@ -23,6 +23,17 @@ class MataKuliahRegisterController extends Controller
 
             $validated = $request->validated();
 
+            $exists = Master_11_MataKuliahRegister::where('tahun_akademik_awal', $validated['tahun_mulai'])
+                ->where('jenis', $validated['jenis'])
+                ->where('07_MASTER_mata_kuliah_id', $validated['id_mata_kuliah'])
+                ->first();
+
+            if ($exists) {
+                return response()->json([
+                    'message' => 'Tahun akademik sudah terdaftar.',
+                ], 409);
+            }
+
             try {
                 DB::transaction(function () use ($validated, $mahasiswa) {
                     $mkr = Master_11_MataKuliahRegister::create([
