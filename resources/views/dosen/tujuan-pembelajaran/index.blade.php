@@ -57,9 +57,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="ms-4">
-                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-                                                        sunt
-                                                        repellat culpa sit saepe a rerum quibusdam nobis, in velit.
+                                                        {{ $ik->deskripsi }}
                                                     </div>
                                                 </div>
                                             </div>
