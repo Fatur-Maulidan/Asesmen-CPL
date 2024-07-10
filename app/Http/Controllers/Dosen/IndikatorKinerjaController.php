@@ -17,10 +17,12 @@ class IndikatorKinerjaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kodeMataKuliah)
+    public function index($kodeMataKuliah, $jenis)
     {
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
-            ->with('mataKuliahRegister.indikatorKinerja', 'mataKuliahRegister.tujuanPembelajaran.petaIkMk')
+            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
+                $query->where('jenis', $jenis);
+            }] ,'mataKuliahRegister.indikatorKinerja', 'mataKuliahRegister.tujuanPembelajaran.petaIkMk')
             ->first();
 
         $ik_mata_kuliah = collect();
@@ -51,7 +53,6 @@ class IndikatorKinerjaController extends Controller
                 }
             }
         }
-
         return view('dosen.indikator-kinerja.index', [
             'title' => 'Indikator Kinerja',
             'nama' => Auth::user()->nama,
@@ -68,13 +69,13 @@ class IndikatorKinerjaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($kodeMataKuliah, $kodeIk)
+    public function show($kodeMataKuliah, $jenis ,$kodeIk)
     {
 
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
             ->with('mataKuliahRegister.indikatorKinerja', 'mataKuliahRegister.tujuanPembelajaran.petaIkMk')
             ->first();
-
+            
         $indikator_kinerja = Master_09_IndikatorKinerja::with('mataKuliahRegister')
             ->where('kode', $kodeIk)
             ->first();

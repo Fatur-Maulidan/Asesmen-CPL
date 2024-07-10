@@ -20,19 +20,18 @@ class RencanaAsesmenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kodeMataKuliah)
+    public function index($kodeMataKuliah, $jenis)
     {
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
-            ->with('mataKuliahRegister.rencanaAsesmen.tujuanPembelajaran', 'mataKuliahRegister.tujuanPembelajaran')
+            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
+                $query->where('jenis', $jenis);
+            }],'mataKuliahRegister.rencanaAsesmen.tujuanPembelajaran', 'mataKuliahRegister.tujuanPembelajaran')
             ->first();
-
-        //dd($mata_kuliah);
 
         return view('dosen.rencana-asesmen.index', [
             'title' => 'Rencana Asesmen',
             'nama' => Auth::user()->nama,
             'role' => 'Dosen',
-            'kurikulum' => $this->kurikulum,
             'mata_kuliah' => $mata_kuliah,
         ]);
     }
@@ -43,7 +42,7 @@ class RencanaAsesmenController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RencanaAsesmenRequest $request, $kodeMataKuliah)
+    public function store(RencanaAsesmenRequest $request, $kodeMataKuliah, $jenis)
     {
         $validated = $request->validated();
 
@@ -63,8 +62,7 @@ class RencanaAsesmenController extends Controller
             //dd($mahasiswa);
             $rencana_asesmen->mahasiswa()->attach($mahasiswa);
         });
-
-        return redirect()->route('dosen.mata-kuliah.rencana-asesmen.index', $kodeMataKuliah);
+        return redirect()->route('dosen.mata-kuliah.rencana-asesmen.index', ['kodeMataKuliah' => $kodeMataKuliah, 'jenis' => $jenis]);
     }
 
     /**
@@ -112,7 +110,7 @@ class RencanaAsesmenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($kodeMataKuliah, $id)
+    public function destroy($kodeMataKuliah, $jenis,$id)
     {
         DB::transaction(function () use ($id) {
             $rencana_asesmen = Master_15_RencanaAsesmen::find($id);
@@ -123,6 +121,6 @@ class RencanaAsesmenController extends Controller
             $rencana_asesmen->delete();
         });
 
-        return redirect()->route('dosen.mata-kuliah.rencana-asesmen.index', $kodeMataKuliah);
+        return redirect()->route('dosen.mata-kuliah.rencana-asesmen.index', ['kodeMataKuliah' => $kodeMataKuliah, 'jenis' => $jenis]);
     }
 }
