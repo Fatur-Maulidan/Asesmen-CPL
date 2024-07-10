@@ -6,56 +6,6 @@
 @endsection
 
 @section('main')
-    {{-- Mata Kuliah Modal --}}
-    <div class="modal fade" id="mataKuliahModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-         aria-labelledby="mataKuliahModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="mataKuliahModalLabel">Ubah Mata Kuliah</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('kaprodi.mata-kuliah.update', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mata_kuliah->id]) }}" method="post" autocomplete="off" id="mataKuliahForm">
-                        @csrf
-                        @method('patch')
-
-                        <div class="mb-3">
-                            <label for="kode" class="form-label fw-bold">Kode</label>
-                            <input type="text" class="form-control" id="kode" name="kode"
-                                   placeholder="Kode mata kuliah" value="{{ $mata_kuliah->kode }}">
-                            <div id="kode_feedback" class="text-danger"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="nama" class="form-label fw-bold">Nama</label>
-                            <input type="text" class="form-control" id="nama" name="nama"
-                                   placeholder="Nama mata kuliah" value="{{ $mata_kuliah->nama }}">
-                            <div id="nama_feedback" class="text-danger"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="deskripsi" class="form-label fw-bold">Deskripsi</label>
-                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="6">{{ $mata_kuliah->deskripsi }}</textarea>
-                            <div id="deskripsi_feedback" class="text-danger"></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <div class="row w-100">
-                        <div class="col">
-                            <button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal">Batal</button>
-                        </div>
-                        <div class="col">
-                            <button type="submit" class="btn btn-warning w-100" id="btn-submit"
-                                    form="mataKuliahForm">Ubah</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{-- Tahun Akademik Modal --}}
     <div class="modal fade" id="tahunAkademikModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          aria-labelledby="tahunAkademikModalLabel" aria-hidden="true">
@@ -234,6 +184,8 @@
                             </div>
                             <div id="indikator_kinerja_feedback" class="text-danger"></div>
 
+                            <div id="alert-message" class="my-4"></div>
+
                             <div class="row justify-content-center mt-5">
                                 <div class="col">
                                     <button type="button" class="btn btn-secondary prev-step w-100">Sebelumnya</button>
@@ -264,7 +216,6 @@
                 <div class="col-8 text-end">
                     <a href="{{ route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum->tahun]) }}" class="btn btn-secondary ms-auto me-2">Kembali</a>
                     <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#tahunAkademikModal">Tambah Data Tahun Akademik</button>
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mataKuliahModal">Ubah Data Mata Kuliah</button>
                 </div>
             </div>
             <div class="row mb-5">
@@ -289,9 +240,11 @@
                                             <div class="accordion-body py-4">
                                                 <div class="fw-bold">Dosen Pengampu</div>
                                                 <ul class="mb-0">
-                                                    @foreach($mkr->dosen as $pengampu)
+                                                    @forelse($mkr->dosen as $pengampu)
                                                         <li>{{ $pengampu->kode . ' - ' . $pengampu->nama }}</li>
-                                                    @endforeach
+                                                    @empty
+                                                        <li>Belum ada dosen pengampu.</li>
+                                                    @endforelse
                                                 </ul>
                                             </div>
                                         </div>
@@ -300,7 +253,7 @@
                         </div>
                     @else
                         <div class="alert alert-secondary" role="alert">
-                            Belum ada mata kuliah register.
+                            Belum ada mata tahun akademik.
                         </div>
                     @endif
                 </div>
@@ -312,16 +265,9 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            const mataKuliahModal = document.getElementById('mataKuliahModal');
             const tahunAkademikModal = document.getElementById('tahunAkademikModal');
-            const mataKuliahModalInstance = new bootstrap.Modal('#mataKuliahModal');
             const tahunAkademikModalInstance = new bootstrap.Modal('#tahunAkademikModal');
-
-            mataKuliahModal.addEventListener('hidden.bs.modal', event => {
-                $('#kode_feedback').html('');
-                $('#nama_feedback').html('');
-                $('#deskripsi_feedback').html('');
-            });
+            let currentStep = 1;
 
             tahunAkademikModal.addEventListener('hidden.bs.modal', event => {
                 $('#tahun_mulai').val('{{ date('Y') }}');
@@ -337,54 +283,8 @@
                 $('#jenis_feedback').html('');
                 $('#dosen_pengampu_feedback').html('');
                 $('#indikator_kinerja_feedback').html('');
-            });
-
-            $('#mataKuliahForm').on('submit', function (e) {
-                e.preventDefault();
-
-                $.ajax({
-                    type: "post",
-                    url: $(this).attr('action'),
-                    data: $(this).serialize(),
-                    dataType: "JSON",
-                    success: function (res) {
-                        console.log(res)
-                        tahunModalInstance.hide();
-                        location.reload();
-                    },
-                    error: function (err) {
-                        // when status code is 422, it's a validation issue
-                        if (err.status == 422) {
-                            console.log(err.responseJSON);
-
-                            if ('kode' in err.responseJSON.errors) {
-                                $('#kode_feedback').html(
-                                    err.responseJSON.errors.kode[0]
-                                );
-                            } else {
-                                $('#kode_feedback').html('');
-                            }
-
-                            if ('nama' in err.responseJSON.errors) {
-                                $('#nama_feedback').html(
-                                    err.responseJSON.errors.nama[0]
-                                );
-                            } else {
-                                $('#nama_feedback').html('');
-                            }
-
-                            if ('deskripsi' in err.responseJSON.errors) {
-                                $('#deskripsi_feedback').html(
-                                    err.responseJSON.errors.deskripsi[0]
-                                );
-                            } else {
-                                $('#deskripsi_feedback').html('');
-                            }
-                        } else if (err.status == 500) {
-                            console.log(err);
-                        }
-                    }
-                });
+                $('#alert-message').html('');
+                currentStep = 1;
             });
 
             $('#dosen_pengampu').select2({
@@ -392,8 +292,6 @@
                 closeOnSelect: false,
                 dropdownParent: $('#tahunAkademikModal')
             });
-
-            let currentStep = 1;
 
             function showStep(step) {
                 $('.step').addClass('d-none');
@@ -478,6 +376,11 @@
                                 $('#indikator_kinerja_feedback').html('');
                             }
 
+                        } else if (err.status == 409) {
+                            console.log(err)
+                            $('#alert-message').html(`
+                                <div class="alert alert-danger" role="alert">${err.responseJSON.message}</div>
+                            `);
                         } else if (err.status == 500) {
                             console.log(err);
                         }

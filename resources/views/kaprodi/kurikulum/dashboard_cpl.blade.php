@@ -7,83 +7,39 @@
 
 @section('main')
     @if( $kurikulum->capaianPembelajaranLulusan->isEmpty() )
-        <div class="alert alert-secondary" role="alert">
-            Belum ada data.
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-secondary" role="alert">
+                    Belum ada data.
+                </div>
+            </div>
         </div>
     @else
         <div class="row">
-            <div class="col-8">
-                <canvas id="barChartCp"></canvas>
-            </div>
-
-            <div class="col-4">
-                @forelse($ketercapaian_cp as $cp)
-                    <div class="mb-3">
-                        <div>{{ $cp->kode_cpl }}</div>
-                        <div>{{ $cp->deskripsi }}</div>
-                    </div>
-                @empty
+            @if($ketercapaian_cp->isEmpty())
+                <div class="col-12">
                     <div class="alert alert-secondary" role="alert">
                         Belum ada data.
                     </div>
-                @endforelse
-            </div>
-        </div>
+                </div>
+            @else
+                <div class="col-8">
+                    <canvas id="barChartCp"></canvas>
+                </div>
 
-        <div class="row">
-            <div class="col-8">
-                <canvas id="barChartIk"></canvas>
-            </div>
-
-            <div class="col-4">
-                @forelse($ketercapaian_ik as $ik)
-                    <div class="mb-3">
-                        <div>{{ $ik->kode_ik }}</div>
-                        <div>{{ $ik->deskripsi }}</div>
-                    </div>
-                @empty
-                    <div class="alert alert-secondary" role="alert">
-                        Belum ada data.
-                    </div>
-                @endforelse
-            </div>
-        </div>
-
-        <div class="row">
-            {{-- Side Option --}}
-            {{--<div class="col-2">--}}
-            {{--    <label for="" class="fw-bold mb-3">Pilihan dashboard</label>--}}
-            {{--    <div class="form-check">--}}
-            {{--        <input class="form-check-input" type="radio" name="dashboard_type" id="dashboard_cpl" checked>--}}
-            {{--        <label class="form-check-label" for="dashboard_cpl">--}}
-            {{--            <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}" class="text-decoration-none link-dark">Capaian Pembelajaran</a>--}}
-            {{--        </label>--}}
-            {{--    </div>--}}
-            {{--    <div class="form-check">--}}
-            {{--        <input class="form-check-input" type="radio" name="dashboard_type" id="dashboard_mk">--}}
-            {{--        <label class="form-check-label" for="dashboard_mk">--}}
-            {{--            <a href="{{ route('kaprodi.kurikulum.dashboard.mk', ['kurikulum' => $kurikulum->tahun]) }}" class="text-decoration-none link-dark">Mata Kuliah</a>--}}
-            {{--        </label>--}}
-            {{--    </div>--}}
-            {{--</div>--}}
-
-            {{-- Content --}}
-            <div class="col-8">
-                <canvas id="barChartTp"></canvas>
-            </div>
-
-            <div class="col-4">
-                @forelse($ketercapaian_tp as $tp)
-                    <div class="mb-3">
-                        <div>{{ $tp->kode_tp }}</div>
-                        <div>{{ $tp->deskripsi }}</div>
-                    </div>
-                @empty
-                    <div class="alert alert-secondary" role="alert">
-                        Belum ada data.
-                    </div>
-                @endforelse
-            </div>
+                <div class="col-4">
+                    @forelse($ketercapaian_cp as $cp)
+                        <div class="mb-3">
+                            <div>{{ $cp->kode_cpl }}</div>
+                            <div>{{ $cp->deskripsi }}</div>
+                        </div>
+                    @empty
+                        <div class="alert alert-secondary" role="alert">
+                            Belum ada data.
+                        </div>
+                    @endforelse
+                </div>
+            @endif
         </div>
     @endif
 @endsection
