@@ -148,7 +148,7 @@ class TujuanPembelajaranController extends Controller
     }
 
     private function getDataTP($mata_kuliah){
-        $data_tp = Master_13_TujuanPembelajaran::with(['petaIkMk' => function($query) use ($mata_kuliah) {
+        $data_tp = Master_13_TujuanPembelajaran::where('11_MASTER_mk_register_id', $mata_kuliah->mataKuliahRegister[0]->id)->with(['petaIkMk' => function($query) use ($mata_kuliah) {
             $query->where('11_MASTER_mk_register_id', $mata_kuliah->mataKuliahRegister[0]->id);
         }])->get();
 

@@ -14,11 +14,7 @@
                     <th scope="col">Nama Mahasiswa</th>
                     @foreach ($mata_kuliah->mataKuliahRegister[0]->rencanaAsesmen as $index => $rencanaAsesmen)
                         <th scope="col">
-                            <button type="button" class="btn btn-primary border-0" id="button-{{ $index }}"
-                                onclick="enableInput({{ $index }})">Ubah Nilai</button>
-                            <div class="">
-                                {{ $rencanaAsesmen->kode }}
-                            </div>
+                            <div>{{ $rencanaAsesmen->kode }}</div>
                         </th>
                     @endforeach
                 </tr>
@@ -35,9 +31,11 @@
                                         <form id="form-{{ $index }}-{{ $mhs->nim }}" method="POST"
                                             action="{{ route('dosen.mata-kuliah.nilai-mahasiswa.update', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis, 'nim' => $mhs->nim, 'rencanaAsesmen' => $rencanaAsesmen->id]) }}">
                                             @csrf
-                                            <input class="text-center nilai-input" type="text" id="nilai"
-                                                name="nilai" value="{{ $nilaiMhs->pivot->nilai }}" style="width: 40px"
-                                                disabled>
+                                            <input class="text-center nilai-input" type="text"
+                                                id="nilai-{{ $index }}-{{ $mhs->nim }}" name="nilai"
+                                                value="{{ $nilaiMhs->pivot->nilai }}" style="width: 40px"
+                                                data-column="{{ $index }}" data-nim="{{ $mhs->nim }}"
+                                                data-rencana-asesmen = "{{ $rencanaAsesmen->kode }}">
                                         </form>
                                     </td>
                                 @endif
@@ -52,33 +50,58 @@
 
 @push('scripts')
     <script>
-        function enableInput(columnIndex) {
-            var button = document.getElementById('button-' + columnIndex);
-            if (button.textContent === 'Ubah Nilai') {
-                button.textContent = 'Simpan';
-                var rows = document.querySelectorAll('tbody tr');
-                rows.forEach(function(row) {
-                    var inputs = row.querySelectorAll('td input');
-                    var input = inputs[columnIndex];
-                    console.log('Enabling input:', input); // Debugging line
-                    input.disabled = false;
-                    input.focus();
-                });
-            } else {
-                var rows = document.querySelectorAll('tbody tr');
-                rows.forEach(function(row) {
-                    var inputs = row.querySelectorAll('td input');
-                    var input = inputs[columnIndex];
-                    var form = input.closest('form');
-                    console.log('Submitting form:', form); // Debugging line
-                    form.submit();
-                });
-            }
-        }
+        // $(document).ready(function() {
+        //     $('.nilai-input').on('blur', function() {
+        //         var input = $(this);
+        //         var value = input.val();
+        //         var form = input.closest('form');
+        //         var columnIndex = input.data('column');
+
+        //         // Disable input to prevent further edits
+        //         input.prop('disabled', true);
+
+        //         // AJAX request to update nilai
+        //         $.ajax({
+        //             url: form.attr('action'),
+        //             method: 'POST',
+        //             data: form.serialize(), // Serialize form data
+        //             success: function(response) {
+        //                 console.log('Nilai updated:', response);
+        //             },
+        //             error: function(xhr, status, error) {
+        //                 console.error('Error updating nilai:', error);
+        //             }
+        //         });
+        //     });
+        // });
+
+        $(document).ready(function() {
+            $('.nilai-input').on('blur', function() {
+                var input = $(this);
+                var form = input.closest('form');
+
+                // Submit form synchronously
+                form.submit();
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             let nilaiInputs = document.querySelectorAll('.nilai-input');
             nilaiInputs.forEach(function(input) {
                 validateInput(input);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let nilaiInputs = document.querySelectorAll('.nilai-input');
+            nilaiInputs.forEach(function(input) {
+                validateInput(input);
+                input.addEventListener('focus', function() {
+                    console.log('NIM:', input.getAttribute('data-nim'));
+                    console.log('Rencana Asesmen Kode:', input.getAttribute(
+                        'data-rencana-asesmen'));
+                    console.log('Nilai:', input.value);
+                });
             });
         });
 

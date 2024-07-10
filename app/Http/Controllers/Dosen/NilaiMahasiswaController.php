@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dosen;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Master_07_MataKuliah;
+use App\Models\Master_19_NilaiMahasiswa;
 use Illuminate\Http\Request;
 
 class NilaiMahasiswaController extends Controller
@@ -32,59 +33,31 @@ class NilaiMahasiswaController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function update(Request $request, $kodeMataKuliah, $jenis, $nim, $rencanaAsesmen)
     {
-        //
-    }
+        $this->validate($request, [
+            'nilai' => 'required|numeric',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
+                $query->where('jenis', $jenis);
+            }],'mataKuliahRegister.rencanaAsesmen.mahasiswa', 'mataKuliahRegister.mahasiswa')
+            ->first();
+        
+        // $nilai_mahasiswa = Master_19_NilaiMahasiswa::where('06_MASTER_mahasiswa_nim', $nim)
+        //     ->where('15_MASTER_rencana_asesmen_id', $rencanaAsesmen)
+        //     ->first();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        // $nilai_mahasiswa->nilai = $request->nilai;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        if(Master_19_NilaiMahasiswa::where('06_MASTER_mahasiswa_nim', $nim)
+        ->where('15_MASTER_rencana_asesmen_id', $rencanaAsesmen)
+        ->update(['nilai' => $request->nilai])) {
+            return redirect()->route('dosen.mata-kuliah.nilai-mahasiswa.index', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis])->with('success', 'Nilai berhasil diupdate');
+        } else {
+            return redirect()->route('dosen.mata-kuliah.nilai-mahasiswa.index', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis])->with('error', 'Nilai gagal diupdate');
+        };
     }
 
     /**
