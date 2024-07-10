@@ -80,7 +80,7 @@ class Master_09_IndikatorKinerja extends Model
         $indikatorKinerja = $mataKuliah == false ? $indikatorKinerja : $indikatorKinerja->with('mataKuliahRegister')->whereHas('mataKuliahRegister', function($query) use ($kurikulum) {
             $query->where('03_MASTER_kurikulum_id', $kurikulum);
         });
-        $indikatorKinerja = $indikatorKinerja->where('03_MASTER_kurikulum_id',$kurikulum)->with('rubrik')->get();
-        return $indikatorKinerja;
+        $indikatorKinerja = $indikatorKinerja->with('rubrik')->get();
+        return $indikatorKinerja->isEmpty() ? "Indikator Kinerja belum tersedia" : $indikatorKinerja;
     }
 }

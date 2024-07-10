@@ -15,16 +15,19 @@ class NilaiMahasiswaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kodeMataKuliah)
+    public function index($kodeMataKuliah, $jenis)
     {
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
-            ->with('mataKuliahRegister.rencanaAsesmen')
+            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
+                $query->where('jenis', $jenis);
+            }],'mataKuliahRegister.rencanaAsesmen.mahasiswa', 'mataKuliahRegister.mahasiswa')
             ->first();
 
         return view('dosen.nilai-mahasiswa.index', [
             'title' => 'Nilai Mahasiswa',
             'nama' => Auth::user()->nama,
             'role' => 'Dosen',
+            'jenis' => $jenis,
             'mata_kuliah' => $mata_kuliah,
         ]);
     }

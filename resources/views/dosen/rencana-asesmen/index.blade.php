@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('dosen.mata-kuliah.rencana-asesmen.index', $mata_kuliah->kode) }}
+    {{ Breadcrumbs::render('dosen.mata-kuliah.rencana-asesmen.index', $mata_kuliah->kode, $mata_kuliah->mataKuliahRegister[0]->jenis) }}
     <h1 class="fw-bold mb-4">{{ $title }}</h1>
 @endsection
 
@@ -10,14 +10,14 @@
     <div class="row mb-4">
         <div class="col-12">
             <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
-                    data-bs-target="#tambahRencanaAsesmenModal">Tambah Rencana Asesmen
+                data-bs-target="#tambahRencanaAsesmenModal">Tambah Rencana Asesmen
             </button>
         </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="tambahRencanaAsesmenModal" data-bs-backdrop="static" data-bs-keyboard="false"
-         tabindex="-1" aria-labelledby="tambahRencanaAsesmenModalLabel" aria-hidden="true">
+    <div class="modal fade" id="tambahRencanaAsesmenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="tambahRencanaAsesmenModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -26,13 +26,13 @@
                 </div>
                 <div class="modal-body">
                     <form
-                        action="{{ route('dosen.mata-kuliah.rencana-asesmen.store', ['kodeMataKuliah' => $mata_kuliah->kode]) }}"
+                        action="{{ route('dosen.mata-kuliah.rencana-asesmen.store', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}"
                         method="post" autocomplete="off" id="formTambahRencanaAsesmen">
                         @csrf
                         <div class="mb-3">
                             <label for="urutan" class="form-label fw-bold">Urutan Asesmen</label>
-                            <input type="number" class="form-control" id="urutan" name="urutan" min="1" max="20"
-                                   placeholder="Contoh: 1">
+                            <input type="number" class="form-control" id="urutan" name="urutan" min="1"
+                                max="20" placeholder="Contoh: 1">
                         </div>
                         <div class="mb-3">
                             <label for="kategori" class="form-label fw-bold">Kategori</label>
@@ -46,16 +46,15 @@
                         </div>
                         <div class="mb-3">
                             <label for="minggu" class="form-label fw-bold">Minggu ke Berapa Asesmen Diujikan</label>
-                            <input type="number" class="form-control" id="minggu" name="minggu" min="1" max="16"
-                                   placeholder="Contoh: 1">
+                            <input type="number" class="form-control" id="minggu" name="minggu" min="1"
+                                max="16" placeholder="Contoh: 1">
                         </div>
                         <div class="mb-3">
                             <label for="" class="form-label fw-bold d-block">Jenis Mata Kuliah</label>
-                            @foreach($mata_kuliah->mataKuliahRegister as $mkr)
+                            @foreach ($mata_kuliah->mataKuliahRegister as $mkr)
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="mata_kuliah"
-                                           id="{{ $mkr->jenis }}"
-                                           value="{{ $mkr->id }}">
+                                        id="{{ $mkr->jenis }}" value="{{ $mkr->id }}">
                                     <label class="form-check-label" for="{{ $mkr->jenis }}">{{ $mkr->jenis }}</label>
                                 </div>
                             @endforeach
@@ -63,9 +62,9 @@
                         <div class="mb-3">
                             <label for="tp" class="form-label fw-bold">TP yang Diujikan</label>
                             <select class="form-select" id="tp" name="tp[]" multiple>
-                                @foreach($mata_kuliah->mataKuliahRegister as $mkr)
+                                @foreach ($mata_kuliah->mataKuliahRegister as $mkr)
                                     <optgroup label="{{ $mkr->jenis }}">
-                                        @foreach($mkr->tujuanPembelajaran as $tp)
+                                        @foreach ($mkr->tujuanPembelajaran as $tp)
                                             <option value="{{ $tp->id }}"><span>{{ $tp->kode }}</span>
                                                 - {{ $tp->deskripsi }}</option>
                                         @endforeach
@@ -86,15 +85,15 @@
     {{-- Data Rencana Asesmen --}}
     <div class="row">
         <div class="col-12">
-            @foreach($mata_kuliah->mataKuliahRegister as $mkr)
+            @foreach ($mata_kuliah->mataKuliahRegister as $mkr)
                 <h2>{{ $mkr->jenis }}</h2>
                 <div class="accordion accordion-flush border border-2 mb-4"
-                     id="daftarRencanaAsesmen{{ $loop->iteration }}">
+                    id="daftarRencanaAsesmen{{ $loop->iteration }}">
                     @forelse($mkr->rencanaAsesmen as $ra)
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button
-                                    class="accordion-button fw-bold bg-body-tertiary @if(!$loop->first) collapsed @endif"
+                                    class="accordion-button fw-bold bg-body-tertiary @if (!$loop->first) collapsed @endif"
                                     type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}"
                                     aria-expanded="true"
@@ -103,36 +102,36 @@
                                 </button>
                             </h2>
                             <div id="collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}"
-                                 class="accordion-collapse collapse @if($loop->first) show @endif"
-                                 data-bs-parent="#daftarRencanaAsesmen{{ $loop->parent->iteration }}">
+                                class="accordion-collapse collapse @if ($loop->first) show @endif"
+                                data-bs-parent="#daftarRencanaAsesmen{{ $loop->parent->iteration }}">
                                 <div class="accordion-body">
                                     <table class="table table-hover table-bordered my-2">
                                         <tbody>
-                                        <tr>
-                                            <td class="fw-bold">Kategori</td>
-                                            <td class="fw-bold text-nowrap">Minggu ke-</td>
-                                            <td class="fw-bold">TP yang diujikan</td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ $ra->kategori }}</td>
-                                            <td>{{ $ra->minggu }}</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <ul class="mb-0">
-                                                        @foreach($ra->tujuanPembelajaran as $tp)
-                                                            {{--<span class="badge rounded-pill text-bg-primary me-2 fs-6">{{ $tp->kode }}</span>--}}
-                                                            <li>{{ $tp->kode }} - {{ $tp->deskripsi }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td class="fw-bold">Kategori</td>
+                                                <td class="fw-bold text-nowrap">Minggu ke-</td>
+                                                <td class="fw-bold">TP yang diujikan</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ $ra->kategori }}</td>
+                                                <td>{{ $ra->minggu }}</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        <ul class="mb-0">
+                                                            @foreach ($ra->tujuanPembelajaran as $tp)
+                                                                {{-- <span class="badge rounded-pill text-bg-primary me-2 fs-6">{{ $tp->kode }}</span> --}}
+                                                                <li>{{ $tp->kode }} - {{ $tp->deskripsi }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
-                                    {{--<button type="button" class="btn btn-danger btn-hapus mt-2" data-bs-toggle="modal"--}}
-                                    {{--        data-bs-target="#confirmModal" data-id="{{ $ra->id }}">Hapus--}}
-                                    {{--</button>--}}
-                                    {{--<button type="button" class="btn btn-success mt-2">Input Nilai</button>--}}
+                                    {{-- <button type="button" class="btn btn-danger btn-hapus mt-2" data-bs-toggle="modal" --}}
+                                    {{--        data-bs-target="#confirmModal" data-id="{{ $ra->id }}">Hapus --}}
+                                    {{-- </button> --}}
+                                    {{-- <button type="button" class="btn btn-success mt-2">Input Nilai</button> --}}
                                 </div>
                             </div>
                         </div>
@@ -147,8 +146,8 @@
     </div>
 
     {{-- Confirm modal --}}
-    <div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false"
-         aria-hidden="true" aria-labelledby="confirmModalLabel" tabindex="-1">
+    <div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
+        aria-labelledby="confirmModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -183,7 +182,7 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             let url = "{{ url()->current() }}";
             // $('input[type=radio]').on('change', function (e) {
             //    $('#tp').attr('disabled', false);
@@ -197,7 +196,7 @@
                 allowClear: true
             });
 
-            $('.btn-hapus').on('click', function () {
+            $('.btn-hapus').on('click', function() {
                 const id = $(this).data('id');
                 const route = url + `/${id}`;
 

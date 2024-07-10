@@ -76,7 +76,13 @@ class Master_07_MataKuliah extends Model
     }
 
     public function getMataKuliahByKurikulum($kurikulum) {
-        return $this->where('03_MASTER_kurikulum_id', $kurikulum)->get();
+        $result = $this->where('03_MASTER_kurikulum_id', $kurikulum)->get();
+
+        if ($result->isEmpty()) {
+            return "Belum ada Mata Kuliah";
+        }
+
+        return $result;
     }
 
     public function getMataKuliahByNamaAndKurikulum($nama, $kurikulum) {

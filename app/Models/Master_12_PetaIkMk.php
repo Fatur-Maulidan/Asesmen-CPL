@@ -42,9 +42,9 @@ class Master_12_PetaIkMk extends Pivot
     public $timestamps = false;
 
     // Relations
-    public function tujuanPembelajaran()
+    public function mataKuliahRegister()
     {
-        return $this->belongsToMany(Master_13_TujuanPembelajaran::class, '14_MASTER_peta_ik_tp', '12_MASTER_peta_ik_mk_id', '13_MASTER_tujuan_pembelajaran_id')->withPivot('bobot_tp');
+        return $this->belongsTo(Master_11_MataKuliahRegister::class, '11_MASTER_mk_register_id');
     }
 
     public function indikatorKinerja()
@@ -52,8 +52,8 @@ class Master_12_PetaIkMk extends Pivot
         return $this->belongsTo(Master_09_IndikatorKinerja::class, '09_MASTER_indikator_kinerja_id');
     }
 
-    public function mataKuliahRegister()
+    public function tujuanPembelajaran()
     {
-        return $this->belongsTo(Master_11_MataKuliahRegister::class, '11_MASTER_mata_kuliah_register_id');
+        return $this->belongsToMany(Master_13_TujuanPembelajaran::class, '14_MASTER_peta_ik_tp', '12_MASTER_peta_ik_mk_id', '13_MASTER_tujuan_pembelajaran_id')->withPivot('bobot_tp');
     }
 }

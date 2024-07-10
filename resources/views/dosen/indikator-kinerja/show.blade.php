@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('dosen.mata-kuliah.indikator-kinerja.show', $mata_kuliah->kode, $indikator_kinerja->kode) }}
+    {{ Breadcrumbs::render('dosen.mata-kuliah.indikator-kinerja.show', $mata_kuliah->kode, $mata_kuliah->mataKuliahRegister[0]->jenis, $indikator_kinerja->kode) }}
     <h1 class="fw-bold mb-4">{{ $title . ' ' . $indikator_kinerja->kode }}</h1>
 @endsection
 

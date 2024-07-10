@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('dosen.mata-kuliah.tujuan-pembelajaran', $mata_kuliah->kode) }}
+    {{ Breadcrumbs::render('dosen.mata-kuliah.tujuan-pembelajaran', $mata_kuliah->kode, $mata_kuliah->mataKuliahRegister[0]->jenis) }}
     <h1 class="fw-bold mb-4">{{ $title }}</h1>
 @endsection
 
@@ -14,9 +14,9 @@
     <div class="modal fade" id="tambah-tujuan-pembelajaran" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <form method="POST"
-            action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.store', ['kodeMataKuliah' => $mata_kuliah->kode]) }}">
+            action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.store', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">
             @csrf
-            <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Buat Tujuan Pembelajaran</h5>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="modal-body" style="width: 100%">
                         <div class="d-flex flex-row">
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column" style="width: 50%">
                                 <div class="d-flex flex-column mb-2">
                                     <label for="exampleFormControlInput1" class="form-label fw-bold">Deskripsi</label>
                                     <textarea class="form-control" id="exampleFormControlInput1" rows="3" name="deskripsi"></textarea>
@@ -47,23 +47,21 @@
                                 <div class="card">
                                     <h5 class="card-header">Sudah ada pemetaan dengan TP</h5>
                                     <div class="card-body py-4 px-4 overflow-auto" style="height: 350px">
-                                        @for ($i = 1; $i <= 3; $i++)
+                                        @foreach ($mata_kuliah->mataKuliahRegister[0]->IndikatorKinerja as $ik)
                                             <div class="d-flex flex-column mb-4">
                                                 <div class="d-flex flex-column">
                                                     <div class="d-flex flex-row">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" name="checkbox[{{ $ik->id }}]">
                                                         <div class="fw-bold" style="margin-left: 10px">
-                                                            SS-{{ $i }}
+                                                            {{ $ik->kode }}
                                                         </div>
                                                     </div>
                                                     <div class="ms-4">
-                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-                                                        sunt
-                                                        repellat culpa sit saepe a rerum quibusdam nobis, in velit.
+                                                        {{ $ik->deskripsi }}
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endfor
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -77,14 +75,19 @@
             </div>
         </form>
     </div>
+    @if (session('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="d-flex flex-column">
         <div class="accordion accordion-flush" id="accordionFlushExample">
-            @if ($dataTp->isEmpty())
+            @if ($data_tp->isEmpty())
                 <div class="text-center">
                     <p class="fs-4">Belum Ada Tujuan Pembelajaran</p>
                 </div>
             @else
-                @foreach ($dataTp as $index => $tp)
+                @foreach ($data_tp as $index => $tp)
                     <div class="accordion-item">
                         <h2 class="accordion-header d-flex flex-row" id="flush-headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -105,16 +108,16 @@
                                 <div class="">
                                     <div class="fw-bold">Indikator Kinerja</div>
                                     <ul>
-                                        @for ($j = 1; $j <= 3; $j++)
-                                            <li>{{ 'SS-1.' . $j }}</li>
-                                        @endfor
+                                        @foreach ($tp->petaIkMk as $petaIkMk)
+                                            <li>{{ $petaIkMk->indikatorKinerja->kode }}</li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
                             <div class="d-flex flex-row align-items-center px-3 rounded-sm border border-1"
                                 style="height:60px">
                                 <a
-                                    href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $mata_kuliah->kode, 'id' => $tp->id]) }}">Lihat
+                                    href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis, 'id' => $tp->id]) }}">Lihat
                                     Detail</a>
                             </div>
                         </div>

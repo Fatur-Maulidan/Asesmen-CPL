@@ -128,8 +128,9 @@ Breadcrumbs::for('dosen.mata-kuliah.indikator-kinerja.index', function (Breadcru
 });
 
 // Breadcrumb Dosen/mata Kuliah/Indikator Kinerja/Detail Informasi
-Breadcrumbs::for('dosen.mata-kuliah.indikator-kinerja.show', function (BreadcrumbTrail $trail, $kodeMataKuliah, $jenis ,$kodeIk): void {
-    $trail->parent('dosen.mata-kuliah.indikator-kinerja.index', $kodeMataKuliah);
+Breadcrumbs::for('dosen.mata-kuliah.indikator-kinerja.show', function (BreadcrumbTrail $trail, $kodeMataKuliah, $jenis, $kodeIk): void {
+    $trail->parent('dosen.mata-kuliah.index');
+    $trail->push($kodeMataKuliah, route('dosen.mata-kuliah.index'));
     $trail->push('Detail Informasi Indikator Kinerja', route('dosen.mata-kuliah.indikator-kinerja.show', ['kodeMataKuliah' => $kodeMataKuliah, 'jenis' => $jenis, 'kodeIk' => $kodeIk]));
 });
 
@@ -142,7 +143,8 @@ Breadcrumbs::for('dosen.mata-kuliah.tujuan-pembelajaran', function (BreadcrumbTr
 
 // Breadcrumb Dosen/mata Kuliah/Tujuan Pembelajaran/Detail Informasi
 Breadcrumbs::for('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', function (BreadcrumbTrail $trail, $kodeMataKuliah, $jenis ,$id): void {
-    $trail->parent('dosen.mata-kuliah.tujuan-pembelajaran', $kodeMataKuliah);
+    $trail->parent('dosen.mata-kuliah.index');
+    $trail->push($kodeMataKuliah, route('dosen.mata-kuliah.index'));
     $trail->push('Detail Informasi Tujuan Pembelajaran', route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $kodeMataKuliah, 'jenis' => $jenis, 'id' => $id]));
 });
 
@@ -151,7 +153,7 @@ Breadcrumbs::for('dosen.mata-kuliah.rencana-asesmen.index', function (Breadcrumb
     $trail->parent('dosen.mata-kuliah.index');
     $trail->push($kodeMataKuliah, route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $kodeMataKuliah, 'jenis' => $jenis]));
     $trail->push('Rencana Asesmen', route('dosen.mata-kuliah.rencana-asesmen.index', ['kodeMataKuliah' =>
-        $kodeMataKuliah]));
+        $kodeMataKuliah, 'jenis' => $jenis]));
 });
 
 // Breadcrumb Dosen/mata Kuliah/Rencana Asesmen/Detail Informasi

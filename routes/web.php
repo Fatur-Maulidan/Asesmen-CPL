@@ -207,5 +207,9 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'd
         // # Nilai Mahasiswa
         Route::get('{kodeMataKuliah}/{jenis}/nilai-mahasiswa', [DosenNilaiMahasiswaController::class, 'index'])
         ->name('mata-kuliah.nilai-mahasiswa.index');
+
+        Route::get('{kodeMataKuliah}/{jenis}/nilai-mahasiswa/{nim}', [DosenNilaiMahasiswaController::class, 'update'])
+        ->name('mata-kuliah.nilai-mahasiswa.update');
+        
     });
 });
