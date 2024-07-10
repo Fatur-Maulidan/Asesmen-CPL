@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\BobotTP;
 use App\Enums\DomainCPL;
 use App\Enums\JenisKelamin;
 use App\Enums\JenisPerkuliahan;
@@ -11,6 +12,12 @@ use App\Enums\StatusKurikulum;
 use App\Enums\StatusMataKuliah;
 
 return [
+    BobotTP::class => [
+        BobotTP::KurangRelevan => 'Kurang Relevan',
+        BobotTP::Relevan => 'Relevan',
+        BobotTP::SangatRelevan => 'Sangat Relevan',
+    ],
+
     DomainCPL::class => [
         DomainCPL::Sikap => 'Sikap',
         DomainCPL::Pengetahuan => 'Pengetahuan',
