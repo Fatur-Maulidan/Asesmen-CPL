@@ -29,8 +29,9 @@ class TujuanPembelajaranController extends Controller
                 $query->where('jenis', $jenis);
             }],'mataKuliahRegister.indikatorKinerja')
             ->first();
-
-        $data_tp = Master_13_TujuanPembelajaran::with('petaIkMk.indikatorKinerja')->get();
+        $data_tp = Master_13_TujuanPembelajaran::where('11_MASTER_mk_register_id', $mata_kuliah->mataKuliahRegister[0]->id)
+            ->with('petaIkMk.indikatorKinerja')
+            ->get();
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => Auth::user()->nama,
