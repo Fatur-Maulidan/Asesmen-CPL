@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('breadcrumb')
-    {{ Breadcrumbs::render('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', $kodeMataKuliah, $tp->kode) }}
+    {{ Breadcrumbs::render('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', $mata_kuliah->kode, $jenis, $tp->kode) }}
     <h1 class="fw-bold mb-0">
         {{ $title }}</h1>
 @endsection
@@ -16,7 +16,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="POST"
-                    action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.update', ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $tp->id]) }}">
+                    action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.update', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis, 'id' => $tp->id]) }}">
                     @csrf
                     <div class="modal-body" style="width: 100%">
                         <div class="d-flex flex-column">
@@ -24,7 +24,7 @@
                                 <div class="fw-bold mb-2">Deskripsi</div>
                                 <textarea class="form-control" name="deskripsi" rows="3">{{ $tp->deskripsi }}</textarea>
                             </div>
-                            <div class="d-flex flex-column mb-4">
+                            {{-- <div class="d-flex flex-column mb-4">
                                 <div class="fw-bold mb-2">Indikator Kinerja Induk</div>
                                 <select class="form-select">
                                     @for ($i = 1; $i <= 5; $i++)
@@ -40,13 +40,11 @@
                                 <div class="fw-bold mb-2">Bobot</div>
                                 <select class="form-select">
                                     @for ($i = 1; $i <= 5; $i++)
-                                        <option <?php if ($tp->bobot == $i) {
-                                            echo 'selected';
-                                        } ?>>{{ $i }}</option>
+                                        <option <//?php //if ($tp->bobot == $i) { echo 'selected';} ?>>{{ $i }}</option>
                                     @endfor
                                 </select>
                                 <div class="">Pilih bobot berdasarkan rentang bobot yang tersedia pada IK induk</div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -94,8 +92,10 @@
 
     <div class="d-flex flex-row justify-content-center">
         <div class="d-flex flex-column pt-3 px-4 border border-1 rounded" style="width: 30%; height:100vh;">
-            @foreach ($dataTp as $index => $data)
-                <div id="{{ $tp['kode'] }}"
+            @foreach ($data_tp as $index => $data)
+                <div type="button"
+                    data-href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis, 'id' => $data->id]) }}"
+                    id="{{ $data->kode }}"
                     class="d-flex flex-row py-2 px-3 rounded justify-content-between mb-2 btn-tp {{ $data->kode == $tp->kode ? 'border border-1' : '' }}">
                     <div class="">{{ $data->kode }}</div>
                     <div class="{{ checkStatusTP($data->tanggal_divalidasi, $data->alasan_penolakan)['class'] }}">
@@ -123,7 +123,7 @@
                     </div>
                     <div class="d-flex flex-row" style="height: 40px">
                         <form
-                            action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.destroy', ['kodeMataKuliah' => $kodeMataKuliah, 'id' => $tp->id]) }}"
+                            action="{{ route('dosen.mata-kuliah.tujuan-pembelajaran.destroy', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis, 'id' => $tp->id]) }}"
                             method="POST">
                             @csrf
                             @method('DELETE')
@@ -138,16 +138,26 @@
                     <div class="">{{ $tp->deskripsi }}
                     </div>
                 </div>
-                <div class="d-flex flex-column mb-4">
-                    <div class="fw-bold">Indikator Kinerja Induk</div>
-                    <div class="d-flex flex-column">
-                        <div class="">SS-1.{{ $i }}</div>
+                @if ($tp->petaIkMk->isEmpty())
+                    <div class="d-flex flex-column mb-4">
+                        <div class="fw-bold">Indikator Kinerja Induk</div>
+                        <div class="">Belum ada pemetaan ke IK</div>
                     </div>
-                </div>
-                <div class="d-flex flex-column">
-                    <div class="fw-bold">Bobot berdasarkan Indikator Kinerja</div>
-                    <div class="">1</div>
-                </div>
+                    <div class="d-flex flex-column">
+                        <div class="fw-bold">Bobot berdasarkan Indikator Kinerja</div>
+                    </div>
+                @else
+                    <div class="d-flex flex-column mb-4">
+                        <div class="fw-bold">Indikator Kinerja Induk</div>
+                        @foreach ($tp->petaIkMK as $petaIkMk)
+                            <div class="">{{ $petaIkMk->indikatorKinerja->kode }}</div>
+                        @endforeach
+                    </div>
+                    <div class="d-flex flex-column">
+                        <div class="fw-bold">Bobot berdasarkan Indikator Kinerja</div>
+                        <div class="">{{ $tp->petaIkMk[0]->pivot->bobot_tp }}</div>
+                    </div>
+                @endif
             </div>
         </div>
     @endsection
@@ -156,6 +166,9 @@
         <script>
             $(document).ready(function() {
                 $('.btn-tp').click(function() {
+                    var href = this.getAttribute('data-href');
+                    window.location.href = href;
+
                     $('.btn-tp').removeClass('border border-1');
                     $(this).addClass('border border-1');
                 });

@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_04_Dosen;
 use App\Models\Master_07_MataKuliah;
+use App\Models\Master_14_PetaIkTp;
 use Illuminate\Http\Request;
 use App\Http\Requests\TujuanPembelajaranStoreRequest;
+use App\Http\Requests\TujuanPembelajaranUpdateRequest;
+use App\Models\Master_12_PetaIkMk;
 use App\Models\Master_13_TujuanPembelajaran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -19,16 +22,19 @@ class TujuanPembelajaranController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kodeMataKuliah)
+    public function index($kodeMataKuliah, $jenis)
     {
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
+                $query->where('jenis', $jenis);
+            }],'mataKuliahRegister.indikatorKinerja')
             ->first();
 
-        $dataTp = Master_13_TujuanPembelajaran::with('mataKuliahRegister')->get();
+        $data_tp = Master_13_TujuanPembelajaran::with('petaIkMk.indikatorKinerja')->get();
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => Auth::user()->nama,
-            'dataTp' => $dataTp,
+            'data_tp' => $data_tp,
             'mata_kuliah' => $mata_kuliah
         ]);
     }
@@ -39,18 +45,35 @@ class TujuanPembelajaranController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TujuanPembelajaranStoreRequest $request)
-    {
-        $validated = $request->validated(); 
+    public function store(TujuanPembelajaranStoreRequest $request, $kodeMataKuliah, $jenis)
+    { 
+        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
+                $query->where('jenis', $jenis);
+            }])
+            ->first();
 
-        $dataTp = Master_13_TujuanPembelajaran::get()->count();
-        $tujuanPembelajaran = new Master_13_TujuanPembelajaran([
-            'kode' => "TP-".($dataTp + 1),
+        $data_tp = $this->getDataTP($mata_kuliah)->count();
+
+        $tujuan_pembelajaran = new Master_13_TujuanPembelajaran([
+            'kode' => "TP-".($data_tp + 1),
             'deskripsi' => $request->input('deskripsi'),
-            'tanggal_diajukan' => date('Y-m-d H:i:s'),
+            '11_MASTER_mk_register_id' => $mata_kuliah->mataKuliahRegister[0]->id,
         ]);
 
-        if($tujuanPembelajaran->save()) {
+        if($tujuan_pembelajaran->save()) {
+            foreach($request->input('checkbox') as $index => $value){
+                $pemetaan_id =  Master_12_PetaIkMk::where('09_MASTER_indikator_kinerja_id', $index)
+                    ->where('11_MASTER_mk_register_id', $mata_kuliah->mataKuliahRegister[0]->id)
+                    ->first()->id;
+                $pemetaan = new Master_14_PetaIkTp([
+                    '12_MASTER_peta_ik_mk_id' => $pemetaan_id,
+                    '13_MASTER_tujuan_pembelajaran_id' => $tujuan_pembelajaran->id,
+                    'bobot_tp' => $request->input('bobot')
+                ]);
+
+                $pemetaan->save();
+            }
             return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil ditambahkan');
         } else {
             return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal ditambahkan');
@@ -64,26 +87,22 @@ class TujuanPembelajaranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $kodeMataKuliah, $id)
+    public function update(TujuanPembelajaranUpdateRequest $request, $kodeMataKuliah, $jenis ,$id)
     {
-        $validator = Validator::make(
-            $request->all(),
-            $this->validation->rules(),
-            $this->validation->message()
-        );
+        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
+                $query->where('jenis', $jenis);
+            }])
+            ->first();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        $data_tp = Master_13_TujuanPembelajaran::find($id);
+        $data_tp->deskripsi = $request->input('deskripsi');
+        $data_tp->updated_at = date('Y-m-d H:i:s');
 
-        $dataTp = Master_13_TujuanPembelajaran::find($id);
-        $dataTp->deskripsi = $request->input('deskripsi');
-        $dataTp->tanggal_diajukan = date('Y-m-d H:i:s');
-
-        if($dataTp->save()) {
-            return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil diperbaharui');
+        if($data_tp->save()) {
+            return redirect()->route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis, 'id' => $id])->with('success', 'Tujuan Pembelajaran berhasil diperbaharui');
         } else {
-            return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal diperbaharui');
+            return redirect()->route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis, 'id' => $id])->with('error', 'Tujuan Pembelajaran gagal diperbaharui');
         }
     }
 
@@ -93,26 +112,45 @@ class TujuanPembelajaranController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($kodeMataKuliah,$id)
+    public function destroy($kodeMataKuliah,$jenis,$id)
     {
-        $dataTp = Master_13_TujuanPembelajaran::find($id);
-        if($dataTp->delete()) {
-            return redirect(route('dosen.mata-kuliah.tujuan-pembelajaran',['kodeMataKuliah' => $kodeMataKuliah]))->with('success', 'Tujuan Pembelajaran berhasil dihapus');
+        $data_tp = Master_13_TujuanPembelajaran::find($id);
+        if($data_tp->petaIkMk->isNotEmpty()){
+            foreach($data_tp->petaIkMk as $peta_ik_mk){
+                $peta_ik_mk->pivot->delete();
+            }
+        }
+        if($data_tp->delete()) {
+            return redirect(route('dosen.mata-kuliah.tujuan-pembelajaran',['kodeMataKuliah' => $kodeMataKuliah, 'jenis' => $jenis]))->with('success', 'Tujuan Pembelajaran berhasil dihapus');
         } else {
             return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal dihapus');
         }
     }
 
-    public function detailInformasi($kodeMataKuliah, $id) {
-        $tp = Master_13_TujuanPembelajaran::find($id);
-        $dataTp = Master_13_TujuanPembelajaran::get();
+    public function detailInformasi($kodeMataKuliah, $jenis ,$id) {
+        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
+            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
+                $query->where('jenis', $jenis);
+            }],'mataKuliahRegister.indikatorKinerja')
+            ->first();
+        $tp = Master_13_TujuanPembelajaran::with('petaIkMk.indikatorKinerja')->find($id);
+        $data_tp = $this->getDataTP($mata_kuliah);
         return view('dosen.tujuan-pembelajaran.detail-informasi', [
             'title' => 'Detail Informasi Tujuan Pembelajaran',
             'nama' => 'John Doe',
             'role' => 'Dosen',
             'tp' => $tp,
-            'dataTp' => $dataTp,
-            'kodeMataKuliah' => $kodeMataKuliah
+            'data_tp' => $data_tp,
+            'mata_kuliah' => $mata_kuliah,
+            'jenis' => $jenis
         ]);
+    }
+
+    private function getDataTP($mata_kuliah){
+        $data_tp = Master_13_TujuanPembelajaran::with(['petaIkMk' => function($query) use ($mata_kuliah) {
+            $query->where('11_MASTER_mk_register_id', $mata_kuliah->mataKuliahRegister[0]->id);
+        }])->get();
+
+        return $data_tp;
     }
 }
