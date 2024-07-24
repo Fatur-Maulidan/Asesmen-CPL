@@ -126,8 +126,6 @@
                                             @foreach($cp as $value)
                                                 <li class="mb-2">{{ $value['kode'] }}<br> {{ $value['deskripsi'] }}</li>
                                             @endforeach
-                                        @else
-                                            <li>Belum ada pemetaan.</li>
                                         @endif
                                     @endforeach
                                 </ul>
@@ -139,8 +137,6 @@
                                             @foreach($ik as $value)
                                                 <li class="mb-2">{{ $value['kode'] }}<br> {{ $value['deskripsi'] }}</li>
                                             @endforeach
-                                        @else
-                                            <li>Belum ada pemetaan.</li>
                                         @endif
                                     @endforeach
                                 </ul>

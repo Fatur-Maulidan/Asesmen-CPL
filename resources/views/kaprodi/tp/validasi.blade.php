@@ -65,7 +65,7 @@
                     </thead>
                     <tbody>
                         @php $index = 0; @endphp
-                        <form action="{{ route('kaprodi.tp.update', ['kurikulum', $kurikulum->tahun]) }}" method="post" autocomplete="off" id="validasiTp">
+                        <form action="{{ route('kaprodi.tp.update', ['kurikulum' => $kurikulum->tahun]) }}" method="post" autocomplete="off" id="validasiTp">
                             @csrf
                             @method('patch')
 

@@ -32,3 +32,8 @@ window.Popper = require('@popperjs/core');
 window.bootstrap = require('bootstrap');
 require('select2');
 require('datatables.net-bs5');
+
+import Chart from 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation';
+window.Chart = Chart;
+window.Chart.register(annotationPlugin);

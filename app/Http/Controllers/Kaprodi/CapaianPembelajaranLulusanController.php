@@ -174,44 +174,4 @@ class CapaianPembelajaranLulusanController extends Controller
         }
         return $kode;
     }
-
-    /*
-        Fungsi ini digunakan untuk mengambil data CPL dan mengubah struktur data CPL
-        yang awalnya CPL -> IK -> MKRegister -> MK
-        menjadi CPL -> MKRegister -> MK -> IK
-    */
-    private function getDataCPL($dataCpl) {
-        $dataCPL = collect();
-
-        foreach ($dataCpl as $cpl) {
-            $cplData = collect([
-                'kode' => $cpl->kode,
-                'domain' => $cpl->domain,
-                'deskripsi' => $cpl->deskripsi,
-                'mataKuliahRegister' => collect(),
-                'indikatorKinerjaBelumDipetakan' => collect()
-            ]);
-
-            foreach ($cpl->indikatorKinerja as $ik) {
-                $mapped = false;
-                foreach ($ik->mataKuliahRegister as $mkr) {
-                    $mapped = true;
-                    $mataKuliahNama = $mkr->mataKuliah->nama;
-                    if (!isset($cplData['mataKuliahRegister'][$mataKuliahNama])) {
-                        $cplData['mataKuliahRegister'][$mataKuliahNama] = [
-                            'mataKuliah' => $mkr->mataKuliah,
-                            'indikatorKinerja' => collect()
-                        ];
-                    }
-                    if(!$cplData['mataKuliahRegister'][$mataKuliahNama]['indikatorKinerja']->contains($ik))
-                        $cplData['mataKuliahRegister'][$mataKuliahNama]['indikatorKinerja']->push($ik);
-                }
-                if (!$mapped) {
-                    $cplData['indikatorKinerjaBelumDipetakan']->push($ik);
-                }
-            }
-            $dataCPL->push($cplData);
-        }
-        return $dataCPL;
-    }
 }

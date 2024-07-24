@@ -81,7 +81,7 @@
         </div>
     @endif
     <div class="d-flex flex-column">
-        <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion accordion-flush border border-1" id="accordionFlushExample">
             @if ($data_tp->isEmpty())
                 <div class="text-center">
                     <p class="fs-4">Belum Ada Tujuan Pembelajaran</p>
@@ -90,7 +90,7 @@
                 @foreach ($data_tp as $index => $tp)
                     <div class="accordion-item">
                         <h2 class="accordion-header d-flex flex-row" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            <button class="accordion-button collapsed bg-body-tertiary" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#flush-collapse{{ $index }}" aria-expanded="false"
                                 aria-controls="flush-collapse{{ $index }}">
                                 {{ $tp->kode }}

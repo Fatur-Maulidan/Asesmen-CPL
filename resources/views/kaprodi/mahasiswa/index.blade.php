@@ -214,9 +214,9 @@
                         $('#email').val(res.mahasiswa.email);
                         $('#tahun_angkatan').val(res.mahasiswa.tahun_angkatan).change();
 
-                        if ((res.mahasiswa.kelas).slice(1, 2) == 'A') {
+                        if ((res.mahasiswa.kelas) == 'A') {
                             $('#kelas_A').prop('checked', true);
-                        } else if ((res.mahasiswa.kelas).slice(1, 2) == 'B') {
+                        } else if ((res.mahasiswa.kelas) == 'B') {
                             $('#kelas_B').prop('checked', true);
                         } else {
                             $('#kelas_C').prop('checked', true);

@@ -6,167 +6,144 @@
 @endsection
 
 @section('main')
-    @if( $kurikulum->capaianPembelajaranLulusan->isEmpty() )
-        <div class="row">
-            <div class="col-12">
-                <div class="alert alert-secondary" role="alert">
-                    Belum ada data.
-                </div>
+    <div class="row mb-5">
+        <div class="col-auto">
+            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="SP" for="option2">Sikap
+                (SP)</label>
+
+            <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="PP" for="option3">Pengetahuan
+                (PP)</label>
+
+            <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off" checked>
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KU" for="option4">Keterampilan Umum
+                (KU)</label>
+
+            <input type="radio" class="btn-check" name="options" id="option5" autocomplete="off">
+            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KK" for="option5">Keterampilan Khusus
+                (KK)</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-8">
+            <canvas id="barChartCp"></canvas>
+        </div>
+
+        <div class="col-4 overflow-y-scroll" style="max-height: 400px;">
+            <div class="mb-3">
+                <div class="fw-bold">KU-1</div>
+                <div>Mampu menyelesaikan pekerjaan berlingkup luas melalui pengembangan perangkat lunak aplikasi dengan menerapkan beragam metode yang sesuai, baik yang belum maupun yang sudah baku;</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-2</div>
+                <div>Mampu menunjukkan kinerja bermutu dan terukur;</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-3</div>
+                <div>Mampu melakukan transformasi model penyelesaian masalah menjadi algoritma didasarkan pada pemikiran logis, inovatif, dan bertanggung jawab atas hasilnya secara mandiri;</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-4</div>
+                <div>Mampu melakukan transformasi algoritma menjadi source program dengan bahasa pemrograman tertentu</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-5</div>
+                <div>Mampu mendokumentasikan perangkat lunak aplikasi secara akurat dan sahih serta mengomunikasikannya secara efektif kepada pihak lain yang membutuhkan;</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-6</div>
+                <div>Mampu bekerja sama, berkomunikasi, dan berinovatif dalam pekerjaannya;</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-7</div>
+                <div>Mampu bertanggungjawab atas pencapaian hasil kerja kelompok dan melakukan supervisi dan evaluasi terhadap penyelesaian pekerjaan yang ditugaskan kepada pekerja yang berada di bawah tanggungjawabnya;</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-8</div>
+                <div>Mampu melakukan proses evaluasi diri terhadap kelompok kerja yang berada dibawah tanggung jawabnya, dan mengelola pengembangan kompetensi kerja secara mandiri;</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-9</div>
+                <div>Mampu mendokumentasikan, menyimpan, mengamankan, dan menemukan kembali data untukmenjamin kesahihan dan mencegah plagiasi.</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-10</div>
+                <div>Mampu mengenali kebutuhan, melakukan adaptasi dan mendemonstrasikan kemampuan dalam melanjutkan pengembangan diri (belajar sepanjang hayat).</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="fw-bold">KU-11</div>
+                <div>Mampu berkomunikasi dengan menggunakan bahasa internasional secara lisan dan tulisan untuk kebutuhan pengembangan perangkat lunak aplikasi.</div>
             </div>
         </div>
-    @else
-        <div class="row">
-            @if($ketercapaian_cp->isEmpty())
-                <div class="col-12">
-                    <div class="alert alert-secondary" role="alert">
-                        Belum ada data.
-                    </div>
-                </div>
-            @else
-                <div class="col-8">
-                    <canvas id="barChartCp"></canvas>
-                </div>
-
-                <div class="col-4">
-                    @forelse($ketercapaian_cp as $cp)
-                        <div class="mb-3">
-                            <div>{{ $cp->kode_cpl }}</div>
-                            <div>{{ $cp->deskripsi }}</div>
-                        </div>
-                    @empty
-                        <div class="alert alert-secondary" role="alert">
-                            Belum ada data.
-                        </div>
-                    @endforelse
-                </div>
-            @endif
-        </div>
-    @endif
+    </div>
 @endsection
 
 @push("scripts")
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    @if( ! $kurikulum->capaianPembelajaranLulusan->isEmpty() )
-        <script>
-            @if ( isset($data_chart_tp) && !$ketercapaian_tp->isEmpty() )
-                var ctx = document.getElementById('barChartTp').getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: @json($data_chart_tp['labels']),
-                        datasets: [{
-                            label: 'Tujuan Pembelajaran',
-                            data: @json($data_chart_tp['data']),
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                suggestedMin: 0,
-                                suggestedMax: 100,
+    <script>
+        var ctx3 = document.getElementById('barChartCp').getContext('2d');
+        var myChart3 = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['KU-1', 'KU-2', 'KU-3', 'KU-4', 'KU-5', 'KU-6', 'KU-7', 'KU-8', 'KU-9', 'KU-10', 'KU-11'],
+                datasets: [{
+                    label: 'Ketercapaian (dalam %)',
+                    data: [92, 76, 83, 88, 77, 90, 70, 89, 82, 69, 74],
+                    backgroundColor: 'rgba(54, 162, 235)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 16
                             }
                         },
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Ketercapaian TP Mahasiswa {{ $ketercapaian_tp[0]->nim }}  pada MK {{ $ketercapaian_tp[0]->nama_mata_kuliah }}'
-                            },
-                            legend: {
-                                labels: {
-                                    // This more specific font property overrides the global property
-                                    font: {
-                                        size: 20
-                                    }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Ketercapaian CP Program Studi Domain KU',
+                        font: {
+                            size: 18
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: 75,
+                                yMax: 75,
+                                borderColor: 'rgb(0, 0, 0)',
+                                borderWidth: 3,
+                                label: {
+                                    display: false,
+                                    content: 'Batas Minimum Ketercapaian'
                                 }
                             }
                         }
                     }
-                });
-            @endif
-
-            @if( isset($data_chart_ik) && !$ketercapaian_ik->isEmpty() )
-                var ctx2 = document.getElementById('barChartIk').getContext('2d');
-                var myChart2 = new Chart(ctx2, {
-                    type: 'bar',
-                    data: {
-                        labels: @json($data_chart_ik['labels']),
-                        datasets: [{
-                            label: 'Indikator Kinerja',
-                            data: @json($data_chart_ik['data']),
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                suggestedMin: 0,
-                                suggestedMax: 100,
-                            }
-                        },
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Ketercapaian IK Mahasiswa {{ $ketercapaian_ik[0]->nim }}'
-                            },
-                            legend: {
-                                labels: {
-                                    // This more specific font property overrides the global property
-                                    font: {
-                                        size: 20
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            @endif
-
-            @if ( isset($data_chart_cp) && !$ketercapaian_cp->isEmpty() )
-                var ctx3 = document.getElementById('barChartCp').getContext('2d');
-                var myChart3 = new Chart(ctx3, {
-                    type: 'bar',
-                    data: {
-                        labels: @json($data_chart_cp['labels']),
-                        datasets: [{
-                            label: 'Capaian Pembelajaran',
-                            data: @json($data_chart_cp['data']),
-                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                            borderColor: 'rgba(153, 102, 255, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                suggestedMin: 0,
-                                suggestedMax: 100,
-                            }
-                        },
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Ketercapaian CP Mahasiswa {{ $ketercapaian_cp[0]->nim }}'
-                            },
-                            legend: {
-                                labels: {
-                                    // This more specific font property overrides the global property
-                                    font: {
-                                        size: 20
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            @endif
-        </script>
-    @endif
+                }
+            }
+        });
+    </script>
 @endpush

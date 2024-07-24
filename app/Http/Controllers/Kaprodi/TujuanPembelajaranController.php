@@ -6,7 +6,6 @@ use App\Enums\StatusValidasiTP;
 use App\Http\Controllers\Controller;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_07_MataKuliah;
-use App\Models\Master_09_IndikatorKinerja;
 use App\Models\Master_13_TujuanPembelajaran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -89,16 +88,18 @@ class TujuanPembelajaranController extends Controller
 
     public function update(Request $request, $tahun_kurikulum)
     {
-        DB::transaction(function () use ($request) {
-            foreach ($request->post('tp') as $key => $value) {
+        $data_tp = $request->post('tp');
+
+        DB::transaction(function () use ($data_tp) {
+            foreach ($data_tp as $value) {
                 $tp = Master_13_TujuanPembelajaran::find($value['id']);
 
-                if ($value['status'] == StatusValidasiTP::Disetujui) {
+                if ($value['status'] == 'Disetujui') {
                     $tp->update([
                         'status' => $value['status'],
                         'tanggal_divalidasi' => now(),
                     ]);
-                } else if ($value['status'] == StatusValidasiTP::Ditolak) {
+                } else if ($value['status'] == 'Ditolak') {
                     $tp->update([
                         'status' => $value['status'],
                         'alasan_penolakan' => $value['alasan_penolakan'],

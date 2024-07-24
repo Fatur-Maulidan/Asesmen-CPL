@@ -146,8 +146,8 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
 
     // # Tujuan Pembelajaran
     Route::get('kurikulum/{kurikulum}/tp', [KaprodiTujuanPembelajaranController::class, 'index'])->name('tp.index');
-    Route::get('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'validasi'])->name('tp.validasi');
     Route::patch('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'update'])->name('tp.update');
+    Route::get('kurikulum/{kurikulum}/tp/validasi', [KaprodiTujuanPembelajaranController::class, 'validasi'])->name('tp.validasi');
 });
 
 // # Route untuk dosen
@@ -210,6 +210,6 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'd
 
         Route::post('{kodeMataKuliah}/{jenis}/nilai-mahasiswa/{nim}/{rencanaAsesmen}', [DosenNilaiMahasiswaController::class, 'update'])
         ->name('mata-kuliah.nilai-mahasiswa.update');
-        
+
     });
 });

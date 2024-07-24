@@ -21,11 +21,11 @@ class ProgramStudiSheetImport implements ToModel, WithHeadingRow, SkipsOnError
     public function model(array $row)
     {
         return new Master_02_ProgramStudi([
-            'nomor' => $row['nomor'],
-            'nama' => $row['nama'],
-            'kode' => $row['kode'],
+            'nama' => $row['nama_program_studi'],
+            'kode' => $row['kode_program_studi'],
             'jenjang_pendidikan' => $row['jenjang_pendidikan'],
-            '01_MASTER_jurusan_nomor' => Master_01_Jurusan::where('nama', $row['jurusan'])->pluck('nomor')->first(),
+            '01_MASTER_jurusan_id' => Master_01_Jurusan::where('nama', $row['nama_jurusan'])->pluck('id')
+                ->first(),
         ]);
     }
 }
