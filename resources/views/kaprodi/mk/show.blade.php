@@ -12,13 +12,14 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 fw-bold" id="tahunAkademikModalLabel">Tambah Tahun Akademik</h1>
+                    <h1 class="modal-title fs-5 fw-bold" id="tahunAkademikModalLabel">Tambah Data Tahun Akademik</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('kaprodi.kurikulum.mata-kuliah-register.store', ['kurikulum' => $kurikulum->tahun]) }}" method="post" autocomplete="off" id="tahunAkademikForm">
                         @csrf
                         <input type="hidden" name="id_mata_kuliah" value="{{ $mata_kuliah->id }}">
+                        <div id="method"></div>
 
                         <div class="step step-1">
                             <div class="row">
@@ -96,7 +97,7 @@
                                             @forelse($cpl->where('domain', \App\Enums\DomainCPL::Sikap) as $sikap)
                                                 @foreach($sikap->indikatorKinerja as $ik)
                                                     <div class="form-check mb-4">
-                                                        <input class="form-check-input" type="checkbox" value="{{ $ik->id }}" id="{{ $ik->kode }}" name="indikator_kinerja[]">
+                                                        <input class="form-check-input" type="checkbox" value="{{ $ik->id }}" id="ik{{ $ik->id }}" name="indikator_kinerja[]">
                                                         <label class="form-check-label fw-bold" for="{{ $ik->kode }}">
                                                             {{ $ik->kode }}
                                                         </label>
@@ -120,7 +121,7 @@
                                             @forelse($cpl->where('domain', \App\Enums\DomainCPL::Pengetahuan) as $pengetahuan)
                                                 @foreach($pengetahuan->indikatorKinerja as $ik)
                                                     <div class="form-check mb-4">
-                                                        <input class="form-check-input" type="checkbox" value="{{ $ik->id }}" id="{{ $ik->kode }}" name="indikator_kinerja[]">
+                                                        <input class="form-check-input" type="checkbox" value="{{ $ik->id }}" id="ik{{ $ik->id }}" name="indikator_kinerja[]">
                                                         <label class="form-check-label fw-bold" for="{{ $ik->kode }}">
                                                             {{ $ik->kode }}
                                                         </label>
@@ -144,7 +145,7 @@
                                             @forelse($cpl->where('domain', \App\Enums\DomainCPL::KeterampilanUmum) as $ku)
                                                 @foreach($ku->indikatorKinerja as $ik)
                                                     <div class="form-check mb-4">
-                                                        <input class="form-check-input" type="checkbox" value="{{ $ik->id }}" id="{{ $ik->kode }}" name="indikator_kinerja[]">
+                                                        <input class="form-check-input" type="checkbox" value="{{ $ik->id }}" id="ik{{ $ik->id }}" name="indikator_kinerja[]">
                                                         <label class="form-check-label fw-bold" for="{{ $ik->kode }}">
                                                             {{ $ik->kode }}
                                                         </label>
@@ -168,7 +169,7 @@
                                             @forelse($cpl->where('domain', \App\Enums\DomainCPL::KeterampilanKhusus) as $kk)
                                                 @foreach($kk->indikatorKinerja as $ik)
                                                     <div class="form-check mb-4">
-                                                        <input class="form-check-input" type="checkbox" value="{{ $ik->id }}" id="{{ $ik->kode }}" name="indikator_kinerja[]">
+                                                        <input class="form-check-input" type="checkbox" value="{{ $ik->id }}" id="ik{{ $ik->id }}" name="indikator_kinerja[]">
                                                         <label class="form-check-label fw-bold" for="{{ $ik->kode }}">
                                                             {{ $ik->kode }}
                                                         </label>
@@ -191,7 +192,7 @@
                                     <button type="button" class="btn btn-secondary prev-step w-100">Sebelumnya</button>
                                 </div>
                                 <div class="col">
-                                    <button type="submit" class="btn btn-success w-100" form="tahunAkademikForm">Submit</button>
+                                    <button type="submit" class="btn btn-success w-100" form="tahunAkademikForm" id="btn-submit">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -215,7 +216,9 @@
                 </div>
                 <div class="col-8 text-end">
                     <a href="{{ route('kaprodi.mata-kuliah.index', ['kurikulum' => $kurikulum->tahun]) }}" class="btn btn-secondary ms-auto me-2">Kembali</a>
-                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#tahunAkademikModal">Tambah Data Tahun Akademik</button>
+                    @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#tahunAkademikModal">Tambah Data Tahun Akademik</button>
+                    @endif
                 </div>
             </div>
             <div class="row mb-5">
@@ -226,7 +229,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="fw-bold mb-3">Dosen pengampu berdasarkan tahun akademik</div>
+                    <div class="fw-bold mb-3">Data Tahun Akademik Mata Kuliah</div>
                     @if($mata_kuliah->mataKuliahRegister->isNotEmpty())
                         <div class="accordion" id="daftarTahunAkademik">
                             @foreach($mata_kuliah->mataKuliahRegister as $mkr)
@@ -238,14 +241,41 @@
                                         </h2>
                                         <div id="{{ $loop->iteration }}" class="accordion-collapse collapse" data-bs-parent="#daftarTahunAkademik">
                                             <div class="accordion-body py-4">
-                                                <div class="fw-bold">Dosen Pengampu</div>
-                                                <ul class="mb-0">
-                                                    @forelse($mkr->dosen as $pengampu)
-                                                        <li>{{ $pengampu->kode . ' - ' . $pengampu->nama }}</li>
-                                                    @empty
-                                                        <li>Belum ada dosen pengampu.</li>
-                                                    @endforelse
-                                                </ul>
+                                                <div class="mb-3">
+                                                    <div class="fw-bold">Semester</div>
+                                                    <div class="">{{ $mkr->semester }}</div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div class="fw-bold">Dosen Pengampu</div>
+                                                    <ul class="mb-0">
+                                                        @forelse($mkr->dosen as $pengampu)
+                                                            <li>{{ $pengampu->kode . ' - ' . $pengampu->nama }}</li>
+                                                        @empty
+                                                            <li>Belum ada dosen pengampu.</li>
+                                                        @endforelse
+                                                    </ul>
+                                                </div>
+
+                                                <div>
+                                                    <div class="fw-bold">Indikator Kinerja</div>
+                                                    <table class="table table-bordered table-hover border">
+                                                        <tbody>
+                                                        @foreach($mkr->indikatorKinerja as $ik)
+                                                            <tr>
+                                                                <td class="fw-bold text-nowrap align-middle">{{ $ik->kode }}</td>
+                                                                <td class="align-middle">{{ $ik->deskripsi }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                                                    <div>
+                                                        <button class="btn btn-warning btn-edit" data-url="{{ route('kaprodi.kurikulum.mata-kuliah-register.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah_register' => $mkr->id]) }}" data-bs-toggle="modal" data-bs-target="#tahunAkademikModal">Ubah Data</button>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -270,11 +300,16 @@
             let currentStep = 1;
 
             tahunAkademikModal.addEventListener('hidden.bs.modal', event => {
+                $('#tahunAkademikModalLabel').html('Tambah Data Tahun Akademik');
+                $('#btn-submit').html('Submit').addClass('btn-success').removeClass('btn-warning');
+                $('#method').html('');
+                $('#tahunAkademikForm').attr('action', "{{ route('kaprodi.kurikulum.mata-kuliah-register.store', ['kurikulum' => $kurikulum->tahun]) }}");
+
                 $('#tahun_mulai').val('{{ date('Y') }}');
                 $('#tahun_selesai').val('{{ date('Y') + 1 }}');
                 $('#semester').prop('selectedIndex', 0);
                 $('#jenis').prop('selectedIndex', 0);
-                $('#dosen_pengampu').prop('selectedIndex', 0);
+                $('#dosen_pengampu').val('').trigger('change');
                 $('input[name="indikator_kinerja[]"]').prop('checked', false);
 
                 $('#tahun_mulai_feedback').html('');
@@ -285,6 +320,7 @@
                 $('#indikator_kinerja_feedback').html('');
                 $('#alert-message').html('');
                 currentStep = 1;
+                showStep(currentStep);
             });
 
             $('#dosen_pengampu').select2({
@@ -388,6 +424,35 @@
                 });
             });
 
+            $('.btn-edit').on('click', function (e) {
+                const url = $(this).data('url');
+
+                $('#tahunAkademikModalLabel').html('Ubah Data Tahun Akademik');
+                $('#btn-submit').html('Ubah').addClass('btn-warning').removeClass('btn-success');
+                $('#method').html('@method('patch')');
+                $('#tahunAkademikForm').attr('action', url);
+
+                $.ajax({
+                    type: "get",
+                    url: url,
+                    dataType: "JSON",
+                    success: function(res) {
+                        console.log(res);
+
+                        $('#tahun_mulai').val(res.mkr.tahun_akademik_awal);
+                        $('#tahun_selesai').val(res.mkr.tahun_akademik_akhir);
+                        $('#semester').val(res.mkr.semester);
+                        $('#jenis').val(res.mkr.jenis);
+                        $('#dosen_pengampu').val(res.dosen).trigger('change');
+                        res.indikator_kinerja.forEach((element) => {
+                            $('#ik' + element).prop('checked', true);
+                        });
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+            });
         });
     </script>
 @endpush

@@ -29,7 +29,10 @@ class KurikulumRequest extends FormRequest
             'program_studi_id' => 'bail|required',
             'tahun' => [
                 'bail', 'required',
-                Rule::unique('03_MASTER_kurikulum', 'tahun')->ignore($this->route('kurikulum'))
+                Rule::unique('03_MASTER_kurikulum')->where(function ($query) {
+                    return $query->where('tahun', $this->post('tahun'))
+                        ->where('02_MASTER_program_studi_id', $this->post('program_studi_id'));
+                })->ignore($this->route('kurikulum'))
             ],
             'tenggat_tp' => 'bail|required|date',
             'threshold' => 'bail|required|integer|min:1|max:100',
@@ -53,7 +56,7 @@ class KurikulumRequest extends FormRequest
             'tenggat_tp.required' => 'Tanggal batas perlu diisi.',
             'tenggat_tp.date' => 'Tanggal batas tidak valid.',
 
-            'threshold.required' => 'Threshold perlu diisi.',
+            'threshold.required' => 'Batas  perlu diisi.',
             'threshold.integer' => 'Threshold diisi dengan angka bulat.',
             'threshold.min' => 'Nilai threshold minimal 1.',
             'threshold.max' => 'Nilai threshold maksimal 100.',

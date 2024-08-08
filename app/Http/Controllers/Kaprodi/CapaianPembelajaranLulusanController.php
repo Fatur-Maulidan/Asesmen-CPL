@@ -19,13 +19,29 @@ class CapaianPembelajaranLulusanController extends Controller
     {
         $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
         $data_cpl = Master_08_CapaianPembelajaranLulusan::with('indikatorKinerja.rubrik')
-            ->where('03_MASTER_kurikulum_id', $kurikulum->id)
-            ->get();
+            ->where('03_MASTER_kurikulum_id', $kurikulum->id);
+
+        if (request('domain')) {
+            switch (request('domain')) {
+                case 'sikap':
+                    $data_cpl->sikap();
+                    break;
+                case 'pengetahuan':
+                    $data_cpl->pengetahuan();
+                    break;
+                case 'keterampilan-umum':
+                    $data_cpl->keterampilanUmum();
+                    break;
+                case 'keterampilan-khusus':
+                    $data_cpl->keterampilanKhusus();
+                    break;
+            }
+        }
 
         return view('kaprodi.cpl.index', [
             'title' => 'Capaian Pembelajaran',
             'kurikulum' => $kurikulum,
-            'data_cpl' => $data_cpl,
+            'data_cpl' => $data_cpl->get(),
         ]);
     }
 

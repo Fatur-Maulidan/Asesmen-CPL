@@ -30,6 +30,7 @@ class NilaiMahasiswaController extends Controller
             'role' => 'Dosen',
             'jenis' => $jenis,
             'mata_kuliah' => $mata_kuliah,
+            'kurikulum' => $mata_kuliah->kurikulum,
         ]);
     }
 
@@ -44,7 +45,7 @@ class NilaiMahasiswaController extends Controller
                 $query->where('jenis', $jenis);
             }],'mataKuliahRegister.rencanaAsesmen.mahasiswa', 'mataKuliahRegister.mahasiswa')
             ->first();
-        
+
         // $nilai_mahasiswa = Master_19_NilaiMahasiswa::where('06_MASTER_mahasiswa_nim', $nim)
         //     ->where('15_MASTER_rencana_asesmen_id', $rencanaAsesmen)
         //     ->first();

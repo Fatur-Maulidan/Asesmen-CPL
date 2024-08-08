@@ -94,14 +94,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'a
 // # Route untuk kaprodi
 Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth', 'kaprodi']], function () {
     // # Kurikulum
+    Route::patch('kurikulum/finalize/{kurikulum}', [KaprodiKurikulumController::class, 'finalize'])
+        ->name('kurikulum.finalize');
     Route::resource('kurikulum', KaprodiKurikulumController::class)
         ->only(['index', 'create', 'store', 'edit', 'update']);
 
     // # Dashboard
     Route::get('kurikulum/{kurikulum}/dashboard-cpl', [KaprodiDashboardController::class, 'indexCpl'])
         ->name('kurikulum.dashboard.cpl');
-    Route::get('kurikulum/{kurikulum}/dashboard-mk', [KaprodiDashboardController::class, 'indexMk'])
-        ->name('kurikulum.dashboard.mk');
+    //Route::get('kurikulum/{kurikulum}/dashboard-mk', [KaprodiDashboardController::class, 'indexMk'])
+    //    ->name('kurikulum.dashboard.mk');
 
     // # CPL
     Route::get('kurikulum/{kurikulum}/cpl/download-template', [KaprodiCPLController::class, 'downloadTemplate'])
@@ -143,6 +145,12 @@ Route::group(['prefix' => 'kaprodi', 'as' => 'kaprodi.', 'middleware' => ['auth'
         ->only(['index', 'store', 'show', 'update']);
     Route::post('kurikulum/{kurikulum}/mata-kuliah-register', [KaprodiMataKuliahRegisterController::class, 'store'])
         ->name('kurikulum.mata-kuliah-register.store');
+    Route::patch('kurikulum/{kurikulum}/mata-kuliah-register/{mata_kuliah_register}',
+        [KaprodiMataKuliahRegisterController::class, 'update'])
+        ->name('kurikulum.mata-kuliah-register.update');
+    Route::get('kurikulum/{kurikulum}/mata-kuliah-register/{mata_kuliah_register}',
+        [KaprodiMataKuliahRegisterController::class, 'show'])
+        ->name('kurikulum.mata-kuliah-register.show');
 
     // # Tujuan Pembelajaran
     Route::get('kurikulum/{kurikulum}/tp', [KaprodiTujuanPembelajaranController::class, 'index'])->name('tp.index');
@@ -185,7 +193,10 @@ Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'middleware' => ['auth', 'd
             Route::get('detail-informasi/{id}', [DosenTujuanPembelajaranController::class, 'detailInformasi'])
                 ->name('mata-kuliah.tujuan-pembelajaran.detail-informasi');
 
-            Route::post('/{id}', [DosenTujuanPembelajaranController::class, 'update'])
+            Route::get('/{id}', [DosenTujuanPembelajaranController::class, 'show'])
+                ->name('mata-kuliah.tujuan-pembelajaran.show');
+
+            Route::patch('/{id}', [DosenTujuanPembelajaranController::class, 'update'])
                 ->name('mata-kuliah.tujuan-pembelajaran.update');
 
             Route::delete('/{id}', [DosenTujuanPembelajaranController::class, 'destroy'])

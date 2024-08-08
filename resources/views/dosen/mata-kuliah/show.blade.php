@@ -47,27 +47,7 @@
             </div>
         </div>
 
-        {{-- <div class="d-flex flex-row mb-4"> --}}
-        {{--    <div class="d-flex flex-column"> --}}
-        {{--        <div class="fw-bold">Sifat Pengambilan</div> --}}
-        {{--        <div class="">Wajib</div> --}}
-        {{--    </div> --}}
-        {{--    <div class="d-flex flex-column ms-4"> --}}
-        {{--        <div class="fw-bold">Bentuk Pembelajaran</div> --}}
-        {{--        <li>Ceramah</li> --}}
-        {{--        <li>Diskusi</li> --}}
-        {{--    </div> --}}
-        {{--    <div class="d-flex flex-column ms-4"> --}}
-        {{--        <div class="fw-bold">Metode Pembelajaran</div> --}}
-        {{--        <div class="">Problem Based Learning (PBL)</div> --}}
-        {{--    </div> --}}
-        {{--    <div class="d-flex flex-column ms-4"> --}}
-        {{--        <div class="fw-bold">Kelompok Mata Kuliah</div> --}}
-        {{--        <div class="">MKK</div> --}}
-        {{--    </div> --}}
-        {{-- </div> --}}
-
-        <div class="d-flex flex-row mb-4">
+        <div class="d-flex flex-row mb-3">
             <div class="d-flex flex-column">
                 <div class="fw-bold">Tahun Akademik</div>
                 <div class="">
@@ -81,10 +61,6 @@
                     {{ $mata_kuliah->mataKuliahRegister[0]->semester % 2 == 0 ? 'Genap' : 'Ganjil' }}
                 </div>
             </div>
-            {{-- <div class="d-flex flex-column ms-4"> --}}
-            {{--    <div class="fw-bold">Jumlah SKS</div> --}}
-            {{--    <div class="">{{ $mata_kuliah->jumlah_sks }}</div> --}}
-            {{-- </div> --}}
             <div class="d-flex flex-column ms-4">
                 <div class="fw-bold">Jenis</div>
                 <div>
@@ -95,18 +71,7 @@
             </div>
         </div>
 
-        {{-- <div class="mb-4"> --}}
-        {{--    <div class="fw-bold">Daftar Referensi Utama</div> --}}
-        {{--    <ul> --}}
-        {{--        <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates suscipit repellendus</li> --}}
-        {{--        <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates suscipit repellendus</li> --}}
-        {{--        <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates suscipit repellendus</li> --}}
-        {{--        <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates suscipit repellendus</li> --}}
-        {{--        <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates suscipit repellendus</li> --}}
-        {{--        <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates suscipit repellendus</li> --}}
-        {{--        <li>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptates suscipit repellendus</li> --}}
-        {{--    </ul> --}}
-        {{-- </div> --}}
+        <hr class="hr mb-4" />
 
         <div class="mb-3">
             <div class="fw-bold mb-3">Capaian Pembelajaran</div>
@@ -138,19 +103,20 @@
 
         <div class="mb-0">
             <div class="fw-bold mb-3">Tujuan Pembelajaran</div>
-            <table class="table table-bordered table-hover">
-                <tbody>
+            @if($tp_mata_kuliah->isEmpty())
+                <div>Belum ada tujuan pembelajaran.</div>
+            @else
+                <table class="table table-bordered table-hover">
+                    <tbody>
                     @foreach ($tp_mata_kuliah as $tp)
                         <tr>
                             <td class="fw-bold text-nowrap">{{ $tp['kode'] }}</td>
                             <td>{{ $tp['deskripsi'] }}</td>
                         </tr>
                     @endforeach
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            @endif
         </div>
     </div>
 @endsection
-
-@push('scripts')
-@endpush

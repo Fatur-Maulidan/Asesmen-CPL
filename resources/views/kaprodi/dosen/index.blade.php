@@ -7,16 +7,18 @@
 
 @section('main')
     {{-- Button --}}
-    <div class="row align-items-end mb-4">
-        <div class="col text-end">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importDosenModal">
-                Import Dosen
-            </button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#DosenModal"
-                    id="btn-tambah">Tambah
-                Dosen</button>
+    @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+        <div class="row align-items-end mb-4">
+            <div class="col text-end">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importDosenModal">
+                    Import Dosen
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#DosenModal"
+                        id="btn-tambah">Tambah
+                    Dosen</button>
+            </div>
         </div>
-    </div>
+    @endif
 
     {{-- Import Dosen Modal --}}
     <div class="modal fade" id="importDosenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

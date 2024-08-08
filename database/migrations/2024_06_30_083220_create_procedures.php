@@ -15,32 +15,7 @@ class CreateProcedures extends Migration
     public function up()
     {
         DB::unprepared('
-            CREATE DEFINER=`root`@`%` PROCEDURE `GET_LATEST_ID`(OUT latest_id BIGINT UNSIGNED)
-            BEGIN
-                DECLARE no_rows_found TINYINT DEFAULT 0;
-
-                DECLARE CONTINUE HANDLER FOR NOT FOUND SET no_rows_found = 1;
-
-                SET latest_id = NULL;
-
-                SELECT
-                    id
-                INTO
-                    latest_id
-                FROM
-                    `01_ANALISIS_ketercapaian_mahasiswa`
-                ORDER BY
-                    id DESC
-                LIMIT 1;
-
-                IF no_rows_found THEN
-                    SET latest_id = -1;
-                END IF;
-            END;
-        ');
-
-        DB::unprepared('
-            CREATE DEFINER=`root`@`%` PROCEDURE `GET_MATA_KULIAH_INFO`(
+            CREATE PROCEDURE `GET_MATA_KULIAH_INFO`(
                 IN id_ra_in BIGINT UNSIGNED,
                 OUT id_mk_register_out BIGINT UNSIGNED,
                 OUT id_mata_kuliah_out BIGINT UNSIGNED,
@@ -76,7 +51,7 @@ class CreateProcedures extends Migration
         ');
 
         DB::unprepared('
-            CREATE DEFINER=`root`@`%` PROCEDURE `GET_TOTAL_BOBOT_TP_MK`(
+            CREATE PROCEDURE `GET_TOTAL_BOBOT_TP_MK`(
                 IN id_mr_in BIGINT UNSIGNED,
                 IN id_mk_in BIGINT UNSIGNED,
                 OUT total_bobot_tp_out TINYINT UNSIGNED
@@ -95,7 +70,7 @@ class CreateProcedures extends Migration
         ');
 
         DB::unprepared('
-            CREATE DEFINER=`root`@`%` PROCEDURE `SET_KETERCAPAIAN_TP`(IN nim_mhs VARCHAR(9), IN id_ra_in BIGINT UNSIGNED, IN nilai_ra TINYINT UNSIGNED)
+            CREATE PROCEDURE `SET_KETERCAPAIAN_TP`(IN nim_mhs VARCHAR(9), IN id_ra_in BIGINT UNSIGNED, IN nilai_ra TINYINT UNSIGNED)
             BEGIN
                 DECLARE id_mkr BIGINT UNSIGNED;
                 DECLARE id_mk BIGINT UNSIGNED;
@@ -116,6 +91,7 @@ class CreateProcedures extends Migration
                 DECLARE total_bobot_tp_v DECIMAL(3,0);
                 DECLARE jumlah_pemetaan_ra_v INT;
                 DECLARE nilai_maksimal_tp INT;
+                DECLARE new_collate_nim VARCHAR(9);
                 DECLARE bobot_tp_v DECIMAL(4,2);
                 DECLARE done INT DEFAULT 0;
 
@@ -169,18 +145,18 @@ class CreateProcedures extends Migration
                     SET
                         ketercapaian_tp = ketercapaian_tp
                     WHERE
-                        nim = nim_mhs
+                        nim COLLATE utf8mb4_0900_ai_ci = nim_mhs
                         AND id_mk_register = id_mkr
                         AND id_mata_kuliah = id_mk
                         AND id_cpl = id_cpl_v
                         AND id_ik = id_ik_v
                         AND id_tp = id_tp_v
                         AND id_ra = id_ra_in
-                        AND kode_mata_kuliah = kode_mk
-                        AND nama_mata_kuliah = nama_mk
-                        AND tahun_akademik_awal = thn_akademik_awal
-                        AND tahun_akademik_akhir = thn_akademik_akhir
-                        AND jenis = jenis_mk;
+                        AND kode_mata_kuliah COLLATE utf8mb4_0900_ai_ci = kode_mk
+                        AND nama_mata_kuliah COLLATE utf8mb4_0900_ai_ci = nama_mk
+                        AND tahun_akademik_awal COLLATE utf8mb4_0900_ai_ci = thn_akademik_awal
+                        AND tahun_akademik_akhir COLLATE utf8mb4_0900_ai_ci = thn_akademik_akhir
+                        AND jenis COLLATE utf8mb4_0900_ai_ci = jenis_mk;
                 END LOOP;
 
                 CLOSE tp_cursor;
@@ -198,6 +174,5 @@ class CreateProcedures extends Migration
         DB::unprepared('DROP PROCEDURE IF EXISTS `SET_KETERCAPAIAN_TP`');
         DB::unprepared('DROP PROCEDURE IF EXISTS `GET_TOTAL_BOBOT_TP_MK`');
         DB::unprepared('DROP PROCEDURE IF EXISTS `GET_MATA_KULIAH_INFO`');
-        DB::unprepared('DROP PROCEDURE IF EXISTS `GET_LATEST_ID`');
     }
 }

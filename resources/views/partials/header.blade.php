@@ -33,10 +33,6 @@
                     <a class="nav-link @if (Route::is('admin.dosen.*')) active @endif"
                         href="{{ route('admin.dosen.index') }}">Dosen</a>
                 </li>
-                {{-- <li class="nav-item"> --}}
-                {{--    <a class="nav-link @if (Route::is('admin.mahasiswa.*')) active @endif" --}}
-                {{--       href="{{ route('admin.mahasiswa.index') }}">Mahasiswa</a> --}}
-                {{-- </li> --}}
             @elseif(auth()->user()->hasRole('koordinator program studi'))
                 @if (Route::is('kaprodi.kurikulum.*') && !Route::is('kaprodi.kurikulum.dashboard.*'))
                     <li class="nav-item">
@@ -45,7 +41,7 @@
                 @else
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.kurikulum.dashboard.*')) active @endif"
-                            href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}">Dashboard</a>
+                            href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun, 'domain' => 'sikap']) }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('kaprodi.cpl.*')) active @endif"
@@ -74,13 +70,13 @@
             @else
                 @if (Route::is('dosen.mata-kuliah.index'))
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('dosen.mata-kuliah.index') }}">Mata Kuliah</a>
+                        <a class="nav-link active" href="{{ route('dosen.mata-kuliah.index') }}">Mata Kuliah yang Diampu</a>
                     </li>
                 @else
-                    <li class="nav-item">
-                        <a class="nav-link @if (Route::is('dosen.mata-kuliah.dashboard')) active @endif"
-                            href="{{ route('dosen.mata-kuliah.dashboard', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Dashboard</a>
-                    </li>
+                    {{--<li class="nav-item">--}}
+                    {{--    <a class="nav-link @if (Route::is('dosen.mata-kuliah.dashboard')) active @endif"--}}
+                    {{--        href="{{ route('dosen.mata-kuliah.dashboard', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Dashboard</a>--}}
+                    {{--</li>--}}
                     <li class="nav-item">
                         <a class="nav-link @if (Route::is('dosen.mata-kuliah.show')) active @endif"
                             href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis]) }}">Informasi

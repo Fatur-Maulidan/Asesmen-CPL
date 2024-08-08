@@ -9,38 +9,36 @@
     {{-- Filter buttons --}}
     <div class="row mb-5">
         <div class="col-auto">
-            <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="Semua" for="option1">Semua</label>
+            <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" @if(!request('domain')) checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="option1">Semua</label>
 
-            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="SP" for="option2">Sikap
-                (SP)</label>
+            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off" @if(request('domain') == 'sikap') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="option2">Sikap (SP)</label>
 
-            <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="PP" for="option3">Pengetahuan
-                (PP)</label>
+            <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off" @if(request('domain') == 'pengetahuan') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="option3">Pengetahuan (PP)</label>
 
-            <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KU" for="option4">Keterampilan Umum
-                (KU)</label>
+            <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off" @if(request('domain') == 'keterampilan-umum') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="option4">Keterampilan Umum (KU)</label>
 
-            <input type="radio" class="btn-check" name="options" id="option5" autocomplete="off">
-            <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KK" for="option5">Keterampilan Khusus
-                (KK)</label>
+            <input type="radio" class="btn-check" name="options" id="option5" autocomplete="off" @if(request('domain') == 'keterampilan-khusus') checked @endif>
+            <label class="btn btn-outline-primary rounded-pill px-3" for="option5">Keterampilan Khusus (KK)</label>
         </div>
-        <div class="col text-end">
-            {{-- Button trigger modal --}}
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importIkModal" @if($data_cpl->isEmpty()) disabled @endif>
-                Import IK
-            </button>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importCplModal">
-                Import CP
-            </button>
-            <button type="button" class="btn btn-primary" id="btn-tambah-cpl" data-bs-toggle="modal"
-                    data-bs-target="#cplModal">
-                Tambah CP
-            </button>
-        </div>
+        @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+            <div class="col text-end">
+                {{-- Button trigger modal --}}
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importIkModal" @if($data_cpl->isEmpty()) disabled @endif>
+                    Import IK
+                </button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importCplModal">
+                    Import CP
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-tambah-cpl" data-bs-toggle="modal"
+                        data-bs-target="#cplModal">
+                    Tambah CP
+                </button>
+            </div>
+        @endif
     </div>
 
     {{-- CPL Modal --}}
@@ -290,7 +288,7 @@
     {{-- Data CPL --}}
     <div class="row">
         <div class="col-12">
-            <div class="accordion" id="accordionExample">
+            <div class="accordion" id="dataCP">
                 @forelse ($data_cpl as $index => $cpl)
                     <div class="accordion-item">
                         <h2 class="accordion-header">
@@ -304,17 +302,19 @@
                         </h2>
                         <div id="collapse{{ $index }}"
                              class="accordion-collapse collapse {{ $loop->index === 0 ? 'show' : '' }}"
-                             data-bs-parent="#accordionExample">
+                             data-bs-parent="#dataCP">
                             <div class="accordion-body py-4">
                                 <div class="d-flex align-items-center mb-2">
                                     <div class="fw-bold">Indikator Kinerja</div>
-                                    <button type="button"
-                                            class="btn btn-primary btn-tambah-ik btn-sm ms-3"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#ikModal"
-                                            data-id="{{ $cpl->id }}"
-                                            data-kode="{{ $cpl->kode }}"
-                                    >Tambah IK</button>
+                                    @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                                        <button type="button"
+                                                class="btn btn-primary btn-tambah-ik btn-sm ms-3"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#ikModal"
+                                                data-id="{{ $cpl->id }}"
+                                                data-kode="{{ $cpl->kode }}"
+                                        >Tambah IK</button>
+                                    @endif
                                 </div>
                                 @if( $cpl->indikatorKinerja->isNotEmpty() )
                                     <table class="table table-bordered table-hover">
@@ -325,20 +325,22 @@
                                                 <td class="align-middle">{{ $ik->deskripsi }}</td>
                                                 <td scope="col" class="align-middle" style="width: 10%">
                                                     <div>
-                                                        <button type="button"
-                                                                class="btn btn-warning btn-sm btn-ubah-ik text-nowrap mb-2"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#ikModal"
-                                                                data-cpl="{{ $ik->capaianPembelajaranLulusan->kode }}"
-                                                                data-id="{{ $ik->id }}"
-                                                                data-kode="{{ $ik->kode }}"
-                                                                data-deskripsi="{{ $ik->deskripsi }}"
-                                                                data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
-                                                                data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
-                                                                data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
-                                                                data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
-                                                                data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}"
-                                                        >Ubah IK</button>
+                                                        @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                                                            <button type="button"
+                                                                    class="btn btn-warning btn-sm btn-ubah-ik text-nowrap mb-2"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#ikModal"
+                                                                    data-cpl="{{ $ik->capaianPembelajaranLulusan->kode }}"
+                                                                    data-id="{{ $ik->id }}"
+                                                                    data-kode="{{ $ik->kode }}"
+                                                                    data-deskripsi="{{ $ik->deskripsi }}"
+                                                                    data-rubrik1="{{ $ik->rubrik->where('urutan', 1)->pluck('deskripsi')->first() }}"
+                                                                    data-rubrik2="{{ $ik->rubrik->where('urutan', 2)->pluck('deskripsi')->first() }}"
+                                                                    data-rubrik3="{{ $ik->rubrik->where('urutan', 3)->pluck('deskripsi')->first() }}"
+                                                                    data-rubrik4="{{ $ik->rubrik->where('urutan', 4)->pluck('deskripsi')->first() }}"
+                                                                    data-rubrik5="{{ $ik->rubrik->where('urutan', 5)->pluck('deskripsi')->first() }}"
+                                                            >Ubah IK</button>
+                                                        @endif
                                                         <button type="button"
                                                                 class="btn btn-info btn-sm btn-show-rubrik"
                                                                 data-bs-toggle="modal"
@@ -361,15 +363,17 @@
                                 @endif
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                <button type="button"
-                                        class="btn btn-warning btn-ubah-cpl"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#cplModal"
-                                        data-id="{{ $cpl->id }}"
-                                        data-kode="{{ $cpl->kode }}"
-                                        data-domain="{{ $cpl->domain }}"
-                                        data-deskripsi="{{ $cpl->deskripsi }}"
-                                >Ubah CP</button>
+                                @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                                    <button type="button"
+                                            class="btn btn-warning btn-ubah-cpl"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#cplModal"
+                                            data-id="{{ $cpl->id }}"
+                                            data-kode="{{ $cpl->kode }}"
+                                            data-domain="{{ $cpl->domain }}"
+                                            data-deskripsi="{{ $cpl->deskripsi }}"
+                                    >Ubah CP</button>
+                                @endif
                                 <a href="{{ route('kaprodi.cpl.show', ['kurikulum' => $kurikulum->tahun, 'cpl' => $cpl->id]) }}" class="btn btn-info">Detail CP</a>
                             </div>
                         </div>
@@ -387,6 +391,7 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
+            const url = "{{ url()->current() }}";
             const cplModal = document.getElementById('cplModal');
             const cplModalInstance = new bootstrap.Modal('#cplModal');
             const ikModal = document.getElementById('ikModal');
@@ -420,17 +425,23 @@
                 $('#rubrik_ik_feedback').html('');
             });
 
-            $('input[name="options"]').change(function () {
-                let filterValue = $('label[for="' + $(this).attr('id') + '"]').data('filter');
-                if (filterValue === 'Semua') {
-                    $('.accordion-item').show();
-                } else {
-                    $('.accordion-item').hide();
-                    $('.accordion-item').each(function () {
-                        if ($(this).find('button').text().includes(filterValue)) {
-                            $(this).show();
-                        }
-                    });
+            $('input[type=radio][name=options]').on('click', function () {
+                switch ($(this).attr('id')) {
+                    case 'option1':
+                        location.href = url;
+                        break;
+                    case 'option2':
+                        location.href = url + '?domain=sikap'
+                        break;
+                    case 'option3':
+                        location.href = url + '?domain=pengetahuan'
+                        break;
+                    case 'option4':
+                        location.href = url + '?domain=keterampilan-umum'
+                        break;
+                    case 'option5':
+                        location.href = url + '?domain=keterampilan-khusus'
+                        break;
                 }
             });
 

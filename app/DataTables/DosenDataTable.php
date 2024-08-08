@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Enums\RoleDosen;
 use App\Enums\StatusKeaktifan;
+use App\Enums\StatusKurikulum;
 use App\Models\Master_04_Dosen;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Button;
@@ -120,12 +121,7 @@ class DosenDataTable extends DataTable
      */
     protected function getColumns()
     {
-        return [
-            // Column::computed('action')
-            //     ->exportable(false)
-            //     ->printable(false)
-            //     ->width(60)
-            //     ->addClass('text-center'),
+        $columns = [
             Column::make('kode'),
             Column::make('nip')->title('NIP'),
             Column::make('nama'),
@@ -133,10 +129,14 @@ class DosenDataTable extends DataTable
             Column::make('jurusan'),
             Column::make('program_studi'),
             Column::make('status'),
-            Column::make('tindakan')
-            // Column::make('created_at'),
-            // Column::make('updated_at'),
+            Column::make('tindakan'),
         ];
+
+        if ($this->kaprodi && !$this->kurikulum->status->is(StatusKurikulum::Pengelolaan)) {
+            array_pop($columns);
+        }
+
+        return $columns;
     }
 
     /**

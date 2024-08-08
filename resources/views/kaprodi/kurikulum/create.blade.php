@@ -39,7 +39,7 @@
         <div class="row justify-content-center mb-4">
             <div class="col-6">
                 <div>
-                    <label for="tahun" class="form-label fw-bold">Batas Minimum CP</label>
+                    <label for="tahun" class="form-label fw-bold">Nilai Batas Minimum Capaian Pembelajaran Program Studi</label>
                     <input type="number" class="form-control @error('threshold') is-invalid @enderror" id="threshold" name="threshold" value="{{ old('threshold') }}" min="1" max="100">
                     @error('threshold')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="col-auto">&mdash;</div>
                         <div class="col">
-                            <input type="number" class="form-control" id="rubrik1_max" name="nilai[max][]" min="0" max="100">
+                            <input type="number" class="form-control" id="rubrik1_max" name="nilai[max][]" value="{{ old('nilai.max.0') ?? '' }}" min="0" max="100">
                         </div>
                     </div>
                 </div>
@@ -72,11 +72,11 @@
                     <div class="fw-bold mb-2">Rentang Nilai Rubrik Kurang</div>
                     <div class="row align-items-center">
                         <div class="col">
-                            <input type="number" class="form-control" id="rubrik2_min" name="nilai[min][]" min="0" max="100">
+                            <input type="number" class="form-control" id="rubrik2_min" name="nilai[min][]" value="{{ old('nilai.min.1') ?? '' }}" min="0" max="100">
                         </div>
                         <div class="col-auto">&mdash;</div>
                         <div class="col">
-                            <input type="number" class="form-control" id="rubrik2_max" name="nilai[max][]" min="0" max="100">
+                            <input type="number" class="form-control" id="rubrik2_max" name="nilai[max][]" value="{{ old('nilai.max.1') ?? '' }}" min="0" max="100">
                         </div>
                     </div>
                 </div>
@@ -85,11 +85,11 @@
                     <div class="fw-bold mb-2">Rentang Nilai Rubrik Cukup</div>
                     <div class="row align-items-center">
                         <div class="col">
-                            <input type="number" class="form-control" id="rubrik3_min" name="nilai[min][]" min="0" max="100">
+                            <input type="number" class="form-control" id="rubrik3_min" name="nilai[min][]" value="{{ old('nilai.min.2') ?? '' }}" min="0" max="100">
                         </div>
                         <div class="col-auto">&mdash;</div>
                         <div class="col">
-                            <input type="number" class="form-control" id="rubrik3_max" name="nilai[max][]" min="0" max="100">
+                            <input type="number" class="form-control" id="rubrik3_max" name="nilai[max][]" value="{{ old('nilai.max.2') ?? '' }}" min="0" max="100">
                         </div>
                     </div>
                 </div>
@@ -98,11 +98,11 @@
                     <div class="fw-bold mb-2">Rentang Nilai Baik</div>
                     <div class="row align-items-center">
                         <div class="col">
-                            <input type="number" class="form-control" id="rubrik4_min" name="nilai[min][]" min="0" max="100">
+                            <input type="number" class="form-control" id="rubrik4_min" name="nilai[min][]" value="{{ old('nilai.max.3') ?? '' }}" min="0" max="100">
                         </div>
                         <div class="col-auto">&mdash;</div>
                         <div class="col">
-                            <input type="number" class="form-control" id="rubrik4_max" name="nilai[max][]" min="0" max="100">
+                            <input type="number" class="form-control" id="rubrik4_max" name="nilai[max][]" value="{{ old('nilai.max.3') ?? '' }}" min="0" max="100">
                         </div>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                     <div class="fw-bold mb-2">Rentang Nilai Sangat Baik</div>
                     <div class="row align-items-center">
                         <div class="col">
-                            <input type="number" class="form-control" id="rubrik5_min" name="nilai[min][]" min="0" max="100">
+                            <input type="number" class="form-control" id="rubrik5_min" name="nilai[min][]" value="{{ old('nilai.min.4') ?? '' }}" min="0" max="100">
                         </div>
                         <div class="col-auto">&mdash;</div>
                         <div class="col">

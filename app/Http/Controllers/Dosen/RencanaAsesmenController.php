@@ -33,6 +33,7 @@ class RencanaAsesmenController extends Controller
             'nama' => Auth::user()->nama,
             'role' => 'Dosen',
             'mata_kuliah' => $mata_kuliah,
+            'kurikulum' => $mata_kuliah->kurikulum
         ]);
     }
 

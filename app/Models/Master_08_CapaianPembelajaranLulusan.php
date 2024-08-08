@@ -62,15 +62,24 @@ class Master_08_CapaianPembelajaranLulusan extends Model
         return $this->hasMany(Master_09_IndikatorKinerja::class, '08_MASTER_capaian_pembelajaran_lulusan_id');
     }
 
-    public function ketercapaian()
+    // # Scopes
+    public function scopeSikap($query)
     {
-        return $this->hasMany(Analisis_01_Ketercapaian_Mahasiswa::class, 'id_cpl');
+        return $query->where('domain', 'Sikap');
     }
 
-    // # Methods
-    public function getCplIdByKurikulum($kode, $kurikulum)
+    public function scopePengetahuan($query)
     {
-        return $this->where('kode',$kode)
-                    ->where('03_MASTER_kurikulum_id', $kurikulum)->first();
+        return $query->where('domain', 'Pengetahuan');
+    }
+
+    public function scopeKeterampilanUmum($query)
+    {
+        return $query->where('domain', 'Keterampilan Umum');
+    }
+
+    public function scopeKeterampilanKhusus($query)
+    {
+        return $query->where('domain', 'Keterampilan Khusus');
     }
 }

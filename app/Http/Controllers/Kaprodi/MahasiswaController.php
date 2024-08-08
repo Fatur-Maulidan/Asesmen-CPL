@@ -23,6 +23,7 @@ class MahasiswaController extends Controller
 
         return $dataTable->with('kurikulum', $kurikulum)->render('kaprodi.mahasiswa.index', [
             'title' => 'Mahasiswa',
+            'kaprodi' => true,
             'kurikulum' => $kurikulum,
         ]);
     }

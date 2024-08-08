@@ -6,18 +6,20 @@
 @endsection
 
 @section('main')
-    {{-- Filter buttons --}}
-    <div class="row mb-5">
-        <div class="col text-end">
-            {{-- Button trigger modal --}}
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importMahasiswaModal">
-                Import Mahasiswa
-            </button>
-            <button type="button" class="btn btn-primary" id="btn-tambah" data-bs-toggle="modal" data-bs-target="#mahasiswaModal">
-                Tambah Mahasiswa
-            </button>
+    {{-- Buttons --}}
+    @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+        <div class="row mb-5">
+            <div class="col text-end">
+                {{-- Button trigger modal --}}
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#importMahasiswaModal">
+                    Import Mahasiswa
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-tambah" data-bs-toggle="modal" data-bs-target="#mahasiswaModal">
+                    Tambah Mahasiswa
+                </button>
+            </div>
         </div>
-    </div>
+    @endif
 
     {{-- Import Mahasiswa Modal --}}
     <div class="modal fade" id="importMahasiswaModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

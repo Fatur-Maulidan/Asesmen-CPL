@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dosen;
 
+use App\Enums\StatusValidasiTP;
 use App\Http\Controllers\Controller;
 use App\Models\Master_03_Kurikulum;
 use App\Models\Master_04_Dosen;
@@ -13,6 +14,7 @@ use App\Http\Requests\TujuanPembelajaranUpdateRequest;
 use App\Models\Master_12_PetaIkMk;
 use App\Models\Master_13_TujuanPembelajaran;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TujuanPembelajaranController extends Controller
@@ -29,14 +31,17 @@ class TujuanPembelajaranController extends Controller
                 $query->where('jenis', $jenis);
             }],'mataKuliahRegister.indikatorKinerja')
             ->first();
+
         $data_tp = Master_13_TujuanPembelajaran::where('11_MASTER_mk_register_id', $mata_kuliah->mataKuliahRegister[0]->id)
             ->with('petaIkMk.indikatorKinerja')
             ->get();
+
         return view('dosen.tujuan-pembelajaran.index', [
             'title' => 'Tujuan Pembelajaran',
             'nama' => Auth::user()->nama,
             'data_tp' => $data_tp,
-            'mata_kuliah' => $mata_kuliah
+            'mata_kuliah' => $mata_kuliah,
+            'kurikulum' => $mata_kuliah->kurikulum,
         ]);
     }
 
@@ -47,7 +52,7 @@ class TujuanPembelajaranController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(TujuanPembelajaranStoreRequest $request, $kodeMataKuliah, $jenis)
-    { 
+    {
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
             ->with(['mataKuliahRegister' => function($query) use ($jenis) {
                 $query->where('jenis', $jenis);
@@ -81,29 +86,52 @@ class TujuanPembelajaranController extends Controller
         }
     }
 
+    public function show($kode_mata_kuliah, $jenis, $id)
+    {
+        if (request()->ajax()) {
+            $tp = Master_13_TujuanPembelajaran::with('petaIkMk')->find($id);
+
+            return response()->json([
+                'data' => [
+                    'deskripsi' => $tp->deskripsi,
+                    'indikator_kinerja' => $tp->petaIkMk->pluck('09_MASTER_indikator_kinerja_id')->toArray(),
+                    'bobot' => $tp->petaIkMk->first()->pivot->bobot_tp,
+                ],
+            ]);
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(TujuanPembelajaranUpdateRequest $request, $kodeMataKuliah, $jenis ,$id)
     {
-        $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
-            ->with(['mataKuliahRegister' => function($query) use ($jenis) {
-                $query->where('jenis', $jenis);
-            }])
-            ->first();
+        if (request()->ajax()) {
+            $validated = $request->validated();
 
-        $data_tp = Master_13_TujuanPembelajaran::find($id);
-        $data_tp->deskripsi = $request->input('deskripsi');
-        $data_tp->updated_at = date('Y-m-d H:i:s');
+            $tp = Master_13_TujuanPembelajaran::find($id);
 
-        if($data_tp->save()) {
-            return redirect()->route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis, 'id' => $id])->with('success', 'Tujuan Pembelajaran berhasil diperbaharui');
-        } else {
-            return redirect()->route('dosen.mata-kuliah.tujuan-pembelajaran.detail-informasi', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $jenis, 'id' => $id])->with('error', 'Tujuan Pembelajaran gagal diperbaharui');
+            try {
+                DB::transaction(function () use ($tp, $validated, $request, $id) {
+                    $tp->deskripsi = $validated['deskripsi'];
+                    $tp->status = StatusValidasiTP::Proses;
+                    $tp->alasan_penolakan = null;
+                    $tp->save();
+
+                    $tp->petaIkMk()->syncWithPivotValues($request->post('checkbox'), ['bobot_tp' => $validated['bobot']]);
+                });
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
+
+            return response()->json([
+                'message' => 'Data berhasil diubah',
+            ], 200);
         }
     }
 

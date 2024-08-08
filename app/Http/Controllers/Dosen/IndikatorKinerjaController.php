@@ -59,7 +59,8 @@ class IndikatorKinerjaController extends Controller
             'role' => 'Dosen',
             // 'kurikulum' => $this->kurikulum,
             'mata_kuliah' => $mata_kuliah,
-            'ik_mata_kuliah' => $ik_mata_kuliah->sort()->all()
+            'ik_mata_kuliah' => $ik_mata_kuliah->sort()->all(),
+            'kurikulum' => $mata_kuliah->kurikulum,
         ]);
     }
 
@@ -75,7 +76,7 @@ class IndikatorKinerjaController extends Controller
         $mata_kuliah = Master_07_MataKuliah::where('kode', $kodeMataKuliah)
             ->with('mataKuliahRegister.indikatorKinerja', 'mataKuliahRegister.tujuanPembelajaran.petaIkMk')
             ->first();
-            
+
         $indikator_kinerja = Master_09_IndikatorKinerja::with('mataKuliahRegister')
             ->where('kode', $kodeIk)
             ->first();

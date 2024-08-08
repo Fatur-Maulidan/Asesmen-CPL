@@ -63,8 +63,10 @@
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('kaprodi.kurikulum.edit', ['kurikulum' => $kurikulum->id]) }}" class="btn btn-warning btn-sm">Ubah</a>
-                            <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun]) }}"
+                            @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                                <a href="{{ route('kaprodi.kurikulum.edit', ['kurikulum' => $kurikulum->id]) }}" class="btn btn-warning btn-sm">Ubah</a>
+                            @endif
+                            <a href="{{ route('kaprodi.kurikulum.dashboard.cpl', ['kurikulum' => $kurikulum->tahun, 'domain' => 'sikap']) }}"
                                class="btn btn-primary btn-sm">
                                 Lihat Kurikulum<i class="bi bi-arrow-right-circle fw-bold ms-2"></i>
                             </a>

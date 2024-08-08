@@ -24,31 +24,15 @@ class MataKuliahController extends Controller
             ->where('03_MASTER_kurikulum_id', $kurikulum->id)->get();
 
         $cp_mata_kuliah = collect();
-        $ik_mata_kuliah = collect();
 
         for ($i = 0; $i < $mata_kuliah->count(); $i++) {
             if ($mata_kuliah[$i]->mataKuliahRegister->isNotEmpty()) {
-                if (!$ik_mata_kuliah->has($mata_kuliah[$i]->kode)) {
-                    $ik_mata_kuliah->put($mata_kuliah[$i]->kode, collect());
-                }
-
                 if (!$cp_mata_kuliah->has($mata_kuliah[$i]->kode)) {
                     $cp_mata_kuliah->put($mata_kuliah[$i]->kode, collect());
                 }
 
                 foreach ($mata_kuliah[$i]->mataKuliahRegister as $mkr) {
                     foreach ($mkr->indikatorKinerja as $ik) {
-                        $ik_exists = $ik_mata_kuliah->get($mata_kuliah[$i]->kode)->contains(function ($value) use ($ik) {
-                            return $value['kode'] === $ik->kode;
-                        });
-
-                        if (!$ik_exists) {
-                            $ik_mata_kuliah->get($mata_kuliah[$i]->kode)->push([
-                                'kode' => $ik->kode,
-                                'deskripsi' => $ik->deskripsi,
-                            ]);
-                        }
-
                         $cp_exists = $cp_mata_kuliah->get($mata_kuliah[$i]->kode)->contains(function ($value) use ($ik) {
                             return $value['kode'] === $ik->capaianPembelajaranLulusan->kode;
                         });
@@ -64,14 +48,11 @@ class MataKuliahController extends Controller
             }
         }
 
-        //dd($ik_mata_kuliah, $cp_mata_kuliah);
-
         return view('kaprodi.mk.index', [
             'title' => 'Mata Kuliah',
             'kurikulum' => $kurikulum,
             'mata_kuliah' => $mata_kuliah->sortBy('kode', SORT_NATURAL),
             'cp_mata_kuliah' => $cp_mata_kuliah,
-            'ik_mata_kuliah' => $ik_mata_kuliah,
         ]);
     }
 

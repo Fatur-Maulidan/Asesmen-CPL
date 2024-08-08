@@ -7,18 +7,20 @@
 
 @section('main')
     {{-- Buttons --}}
-    <div class="row mb-5">
-        <div class="col text-end">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                    data-bs-target="#importMataKuliahModal">
-                Import Mata Kuliah
-            </button>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#mataKuliahModal" id="btn-tambah">
-                Tambah Mata Kuliah
-            </button>
+    @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+        <div class="row mb-5">
+            <div class="col text-end">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#importMataKuliahModal">
+                    Import Mata Kuliah
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#mataKuliahModal" id="btn-tambah">
+                    Tambah Mata Kuliah
+                </button>
+            </div>
         </div>
-    </div>
+    @endif
 
     {{-- Import Mata Kuliah Modal --}}
     <div class="modal fade" id="importMataKuliahModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -120,39 +122,39 @@
                                 <p class="mb-4">{{ $mk->deskripsi }}</p>
 
                                 <p class="fw-bold mb-1">Capaian Pembelajaran</p>
-                                <ul class="mb-0">
+                                @if ($cp_mata_kuliah->has($mk->kode))
                                     @foreach($cp_mata_kuliah as $key => $cp)
                                         @if ($key == $mk->kode)
-                                            @foreach($cp as $value)
-                                                <li class="mb-2">{{ $value['kode'] }}<br> {{ $value['deskripsi'] }}</li>
-                                            @endforeach
+                                            <table class="table table-bordered table-hover border">
+                                                <tbody>
+                                                @foreach($cp as $value)
+                                                    <tr>
+                                                        <td class="fw-bold text-nowrap align-middle">{{ $value['kode'] }}</td>
+                                                        <td class="align-middle">{{ $value['deskripsi'] }}</td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
                                         @endif
                                     @endforeach
-                                </ul>
-
-                                <p class="fw-bold mb-1 mt-4">Indikator Kinerja</p>
-                                <ul class="mb-0">
-                                    @foreach($ik_mata_kuliah as $key => $ik)
-                                        @if ($key == $mk->kode)
-                                            @foreach($ik as $value)
-                                                <li class="mb-2">{{ $value['kode'] }}<br> {{ $value['deskripsi'] }}</li>
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-                                </ul>
+                                @else
+                                    <div>Belum ada pemetaan.</div>
+                                @endif
 
                             </div>
                             <div class="accordion-footer bg-light mb-0 p-3 border-top ">
-                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mk->id]) }}" class="btn btn-info">Lihat Detail</a>
-                                <button type="button"
-                                        class="btn btn-warning btn-ubah"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#mataKuliahModal"
-                                        data-id="{{ $mk->id }}"
-                                        data-kode="{{ $mk->kode }}"
-                                        data-nama="{{ $mk->nama }}"
-                                        data-deskripsi="{{ $mk->deskripsi }}"
-                                >Ubah</button>
+                                <a href="{{ route('kaprodi.mata-kuliah.show', ['kurikulum' => $kurikulum->tahun, 'mata_kuliah' => $mk->id]) }}" class="btn btn-info">Lihat Data Tahun Akademik</a>
+                                @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                                    <button type="button"
+                                            class="btn btn-warning btn-ubah"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#mataKuliahModal"
+                                            data-id="{{ $mk->id }}"
+                                            data-kode="{{ $mk->kode }}"
+                                            data-nama="{{ $mk->nama }}"
+                                            data-deskripsi="{{ $mk->deskripsi }}"
+                                    >Ubah Data Mata Kuliah</button>
+                                @endif
                             </div>
                         </div>
                     </div>

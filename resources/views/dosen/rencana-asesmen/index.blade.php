@@ -6,14 +6,16 @@
 @endsection
 
 @section('main')
-    {{-- Action Button --}}
-    <div class="row mb-4">
-        <div class="col-12">
-            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
-                data-bs-target="#tambahRencanaAsesmenModal">Tambah Rencana Asesmen
-            </button>
+    @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+        {{-- Action Button --}}
+        <div class="row mb-4">
+            <div class="col-12">
+                <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
+                        data-bs-target="#tambahRencanaAsesmenModal">Tambah Rencana Asesmen
+                </button>
+            </div>
         </div>
-    </div>
+    @endif
 
     <!-- Modal -->
     <div class="modal fade" id="tambahRencanaAsesmenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -64,7 +66,7 @@
                             <select class="form-select" id="tp" name="tp[]" multiple>
                                 @foreach ($mata_kuliah->mataKuliahRegister as $mkr)
                                     <optgroup label="{{ $mkr->jenis }}">
-                                        @foreach ($mkr->tujuanPembelajaran as $tp)
+                                        @foreach ($mkr->tujuanPembelajaran->where('status', \App\Enums\StatusValidasiTP::Disetujui) as $tp)
                                             <option value="{{ $tp->id }}"><span>{{ $tp->kode }}</span>
                                                 - {{ $tp->deskripsi }}</option>
                                         @endforeach
@@ -87,26 +89,27 @@
         <div class="col-12">
             @foreach ($mata_kuliah->mataKuliahRegister as $mkr)
                 <h2>{{ $mkr->jenis }}</h2>
-                <div class="accordion accordion-flush border border-2 mb-4"
-                    id="daftarRencanaAsesmen{{ $loop->iteration }}">
-                    @forelse($mkr->rencanaAsesmen as $ra)
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button
-                                    class="accordion-button fw-bold bg-body-tertiary @if (!$loop->first) collapsed @endif"
-                                    type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}"
-                                    aria-expanded="true"
-                                    aria-controls="collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}">
-                                    {{ $ra->kode }}
-                                </button>
-                            </h2>
-                            <div id="collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}"
-                                class="accordion-collapse collapse @if ($loop->first) show @endif"
-                                data-bs-parent="#daftarRencanaAsesmen{{ $loop->parent->iteration }}">
-                                <div class="accordion-body">
-                                    <table class="table table-hover table-bordered my-2">
-                                        <tbody>
+                @if($mkr->rencanaAsesmen->isNotEmpty())
+                    <div class="accordion accordion-flush border border-2 mb-4"
+                         id="daftarRencanaAsesmen{{ $loop->iteration }}">
+                        @foreach($mkr->rencanaAsesmen as $ra)
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button
+                                        class="accordion-button fw-bold bg-body-tertiary @if (!$loop->first) collapsed @endif"
+                                        type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}"
+                                        aria-expanded="true"
+                                        aria-controls="collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}">
+                                        {{ $ra->kode }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ $loop->parent->iteration . '-' . $loop->iteration }}"
+                                     class="accordion-collapse collapse @if ($loop->first) show @endif"
+                                     data-bs-parent="#daftarRencanaAsesmen{{ $loop->parent->iteration }}">
+                                    <div class="accordion-body">
+                                        <table class="table table-hover table-bordered my-2">
+                                            <tbody>
                                             <tr>
                                                 <td class="fw-bold">Kategori</td>
                                                 <td class="fw-bold text-nowrap">Minggu ke-</td>
@@ -126,21 +129,22 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                        </tbody>
-                                    </table>
-                                    {{-- <button type="button" class="btn btn-danger btn-hapus mt-2" data-bs-toggle="modal" --}}
-                                    {{--        data-bs-target="#confirmModal" data-id="{{ $ra->id }}">Hapus --}}
-                                    {{-- </button> --}}
-                                    {{-- <button type="button" class="btn btn-success mt-2">Input Nilai</button> --}}
+                                            </tbody>
+                                        </table>
+                                        {{-- <button type="button" class="btn btn-danger btn-hapus mt-2" data-bs-toggle="modal" --}}
+                                        {{--        data-bs-target="#confirmModal" data-id="{{ $ra->id }}">Hapus --}}
+                                        {{-- </button> --}}
+                                        {{-- <button type="button" class="btn btn-success mt-2">Input Nilai</button> --}}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @empty
-                        <div class="alert alert-secondary" role="alert">
-                            Belum ada rencana asesmen untuk mata kuliah {{ $mkr->jenis }}.
-                        </div>
-                    @endforelse
-                </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="alert alert-secondary" role="alert">
+                        Belum ada rencana asesmen.
+                    </div>
+                @endif
             @endforeach
         </div>
     </div>

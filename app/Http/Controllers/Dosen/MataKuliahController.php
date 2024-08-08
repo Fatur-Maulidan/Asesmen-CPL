@@ -62,6 +62,7 @@ class MataKuliahController extends Controller
             'cpl_mata_kuliah' => $cpl_mata_kuliah->sort(),
             'ik_mata_kuliah' => $ik_mata_kuliah->sort(),
             'tp_mata_kuliah' => $tp_mata_kuliah->sort(),
+            'kurikulum' => $mata_kuliah->kurikulum,
         ]);
     }
 

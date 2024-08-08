@@ -15,7 +15,7 @@ class CreateTriggers extends Migration
     public function up()
     {
         DB::unprepared('
-            CREATE DEFINER=`root`@`%` TRIGGER `map_mahasiswa` AFTER INSERT ON `11_MASTER_mk_register` FOR EACH ROW BEGIN
+            CREATE TRIGGER `map_mahasiswa` AFTER INSERT ON `11_MASTER_mk_register` FOR EACH ROW BEGIN
                 DECLARE id_mk BIGINT UNSIGNED;
                 DECLARE id_kurikulum BIGINT UNSIGNED;
                 DECLARE id_prodi BIGINT UNSIGNED;
@@ -60,7 +60,7 @@ class CreateTriggers extends Migration
                     END IF;
 
                     INSERT INTO
-                        `18_MASTER_mahasiswa_perkuliahan` (`06_MASTER_mahasiswa_nim`, `11_MASTER_mk_register_id`)
+                        `18_MASTER_perkuliahan` (`06_MASTER_mahasiswa_nim`, `11_MASTER_mk_register_id`)
                     VALUES
                         (nim_mhs, NEW.id);
 
@@ -71,13 +71,13 @@ class CreateTriggers extends Migration
         ');
 
         DB::unprepared('
-            CREATE DEFINER=`root`@`%` TRIGGER `SP_update` AFTER UPDATE ON `19_MASTER_nilai_mahasiswa` FOR EACH ROW BEGIN
+            CREATE TRIGGER `SP_update` AFTER UPDATE ON `19_MASTER_nilai_mahasiswa` FOR EACH ROW BEGIN
                 CALL SET_KETERCAPAIAN_TP(OLD.`06_MASTER_mahasiswa_nim`, OLD.`15_MASTER_rencana_asesmen_id`, NEW.nilai);
             END;
         ');
 
         DB::unprepared('
-            CREATE DEFINER=`root`@`%` TRIGGER `KTTP_mapping` AFTER INSERT ON `19_MASTER_nilai_mahasiswa` FOR EACH ROW BEGIN
+            CREATE TRIGGER `KTTP_mapping` AFTER INSERT ON `19_MASTER_nilai_mahasiswa` FOR EACH ROW BEGIN
                 DECLARE id_mk BIGINT UNSIGNED;
                 DECLARE id_mr BIGINT UNSIGNED;
                 DECLARE id_cpl_v BIGINT UNSIGNED;

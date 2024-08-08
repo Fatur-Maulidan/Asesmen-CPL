@@ -33,7 +33,7 @@ class IndikatorKinerjaImport implements OnEachRow, WithHeadingRow, SkipsOnError
         $rowIndex = $row->getIndex();
         $row      = $row->toArray();
 
-        $cpl = $this->data_cpl->where('kode', $row['kode_cp'])->first();
+        $cpl = $this->data_cpl->where('kode', explode('.', $row['kode_ik'])[0])->first();
         $exists = $cpl->indikatorKinerja->whereIn('kode', $row['kode_ik'])->values();
 
         if ($exists->isEmpty()) {

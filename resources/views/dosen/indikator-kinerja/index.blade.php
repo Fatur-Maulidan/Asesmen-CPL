@@ -29,20 +29,23 @@
                                 <div class="accordion-body">
                                     <div class="">
                                         <div class="fw-bold">Tujuan Pembelajaran</div>
-                                        <ul>
+                                        <ul class="mb-0">
                                             @forelse ($ik['tp'] as $tp)
-                                                <li>{{ $tp['kode'] }}</li>
+                                                <li>
+                                                    {{ $tp['kode'] }}<br>
+                                                    {{ $tp['deskripsi'] }}
+                                                </li>
                                             @empty
                                                 <li>Belum ada pemetaan.</li>
                                             @endforelse
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="accordion-footer bg-light mb-0 p-3 border-top">
-                                    <a
-                                        href="{{ route('dosen.mata-kuliah.indikator-kinerja.show', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis, 'kodeIk' => $ik['kode']]) }}">Lihat
-                                        Detail</a>
-                                </div>
+                                {{--<div class="accordion-footer bg-light mb-0 p-3 border-top">--}}
+                                {{--    <a--}}
+                                {{--        href="{{ route('dosen.mata-kuliah.indikator-kinerja.show', ['kodeMataKuliah' => $mata_kuliah->kode, 'jenis' => $mata_kuliah->mataKuliahRegister[0]->jenis, 'kodeIk' => $ik['kode']]) }}">Lihat--}}
+                                {{--        Detail</a>--}}
+                                {{--</div>--}}
                             </div>
                         </div>
                     @endforeach

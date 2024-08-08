@@ -19,8 +19,10 @@
                 </select>
                 <button type="submit" class="btn btn-outline-primary ms-3">Pilih</button>
             </form>
-            <a href="{{ route('kaprodi.tp.validasi', ['kurikulum' => $kurikulum->tahun]) }}"
-               class="btn btn-success me-2">Validasi Tujuan Pembelajaran</a>
+            @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+                <a href="{{ route('kaprodi.tp.validasi', ['kurikulum' => $kurikulum->tahun]) }}"
+                   class="btn btn-success me-2">Validasi Tujuan Pembelajaran</a>
+            @endif
         </div>
     </div>
 

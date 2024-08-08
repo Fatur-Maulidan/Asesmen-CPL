@@ -98,4 +98,15 @@ class KurikulumController extends Controller
 
         return redirect()->to(route('kaprodi.kurikulum.index'));
     }
+
+    public function finalize($id)
+    {
+        $kurikulum = Master_03_Kurikulum::find($id);
+
+        $kurikulum->update([
+            'status' => StatusKurikulum::Aktif
+        ]);
+
+        return redirect()->to(route('kaprodi.kurikulum.index'));
+    }
 }

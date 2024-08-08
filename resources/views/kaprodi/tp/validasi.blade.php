@@ -57,10 +57,11 @@
                 <table class="table table-responsive table-hover table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Kode TP</th>
-                            <th scope="col" style="width: 45%">Deskripsi TP</th>
-                            <th scope="col">Tindakan</th>
-                            <th scope="col">Alasan Penolakan</th>
+                            <th class="text-center" scope="col">Kode TP</th>
+                            <th class="text-center" scope="col">Deskripsi TP</th>
+                            <th class="text-center" scope="col">IK dan Bobot</th>
+                            <th class="text-center" scope="col">Tindakan</th>
+                            <th class="text-center" scope="col">Alasan Penolakan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,13 +72,20 @@
 
                             @foreach($data_mata_kuliah->mataKuliahRegister as $mkr)
                                 <tr>
-                                    <td colspan="4" class="text-center bg-body-secondary">{{ $mkr->jenis }}</td>
+                                    <td colspan="5" class="text-center bg-body-secondary">{{ $mkr->jenis }}</td>
                                 </tr>
                                 @forelse($mkr->tujuanPembelajaran->where('status', \App\Enums\StatusValidasiTP::Proses) as $tp)
                                     <tr>
                                         <input type="hidden" name="tp[{{ $index }}][id]" value="{{ $tp->id }}">
                                         <td class="align-middle">{{ $tp->kode }}</td>
                                         <td class="align-middle">{{ $tp->deskripsi }}</td>
+                                        <td class="align-middle">
+                                            @foreach($tp->petaIkMk as $value)
+                                                <ul class="mb-0">
+                                                    <li>{{ $value->indikatorKinerja->kode }} (Bobot: {{ $value->pivot->bobot_tp }})</li>
+                                                </ul>
+                                            @endforeach
+                                        </td>
                                         <td class="align-middle">
                                             <div class="d-flex justify-content-center">
                                                 <div class="form-check me-3">
@@ -101,7 +109,7 @@
                                     @php $index++; @endphp
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="align-middle text-center">Tidak ada tujuan pembelajaran yang perlu divalidasi.</td>
+                                        <td colspan="5" class="align-middle text-center">Tidak ada tujuan pembelajaran yang perlu divalidasi.</td>
                                     </tr>
                                 @endforelse
                             @endforeach

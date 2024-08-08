@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Enums\StatusKeaktifan;
+use App\Enums\StatusKurikulum;
 use App\Models\Master_06_Mahasiswa;
 use \Illuminate\Support\Facades\Route;
 use Yajra\DataTables\Html\Button;
@@ -93,12 +94,7 @@ class MahasiswaDataTable extends DataTable
      */
     protected function getColumns()
     {
-        return [
-            // Column::computed('action')
-            //       ->exportable(false)
-            //       ->printable(false)
-            //       ->width(60)
-            //       ->addClass('text-center'),
+        $columns = [
             Column::make('nim')->title('NIM'),
             Column::make('nama'),
             Column::make('email'),
@@ -108,6 +104,12 @@ class MahasiswaDataTable extends DataTable
             Column::make('status'),
             Column::make('tindakan'),
         ];
+
+        if ($this->kaprodi && !$this->kurikulum->status->is(StatusKurikulum::Pengelolaan)) {
+            array_pop($columns);
+        }
+
+        return $columns;
     }
 
     /**

@@ -24,7 +24,8 @@ class TujuanPembelajaranUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'deskripsi' => 'required',
+            'bobot' => 'required'
         ];
     }
 }

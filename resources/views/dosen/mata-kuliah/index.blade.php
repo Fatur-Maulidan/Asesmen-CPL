@@ -6,23 +6,6 @@
 @endsection
 
 @section('main')
-    {{-- <div class="d-flex flex-row mb-4 me-4" style="width: 50%;"> --}}
-    {{--    <select class="form-select" id="tahun-akademik" style="width:50%;padding-left:-200px" --}}
-    {{--        data-placeholder="Pilih Tahun Akademik"> --}}
-    {{--        <option></option> --}}
-    {{--        @for ($index = 0; $index < 5; $index++) --}}
-    {{--            <option style="color:black" value="202{{ $index }}/202{{ $index + 1 }}"> --}}
-    {{--                202{{ $index }}/202{{ $index + 1 }} --}}
-    {{--            </option> --}}
-    {{--        @endfor --}}
-    {{--    </select> --}}
-
-    {{--    <div class="ms-4 position-relative" style="width:50%;"> --}}
-    {{--        <input type="text" class="form-control" placeholder="Cari" style="padding-left:35px"> --}}
-    {{--        <i class="bi bi-search position-absolute" style="left:5%;top:18%"></i> --}}
-    {{--    </div> --}}
-    {{-- </div> --}}
-
     <div class="row">
         @foreach ($mata_kuliah as $index => $mk_register)
             <div class="col-4">
@@ -33,26 +16,21 @@
                                 <div class="d-flex flex-row align-items-center">
                                     <div class="fs-5 fw-bold me-2">{{ $mk_register->mataKuliah->kode }}</div>
                                 </div>
-                                <div class="">{{ $mk_register->mataKuliah->nama }} -
-                                    {{ $mk_register->jenis }}</div>
+                                <div>{{ $mk_register->mataKuliah->nama }} <span class="badge text-bg-info">{{ $mk_register->jenis }}</span></div>
                             </div>
-                            <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode, 'jenis' => $mk_register->jenis]) }}"
-                                class="link-dark">
-                                <i class="bi bi-arrow-right-circle"></i>
-                            </a>
                         </div>
-                        <div>D3 Teknik Informatika</div>
+                        <div>{{ $mk_register->mataKuliah->kurikulum->programStudi->jenjang_pendidikan . ' ' . $mk_register->mataKuliah->kurikulum->programStudi->nama }}</div>
                     </div>
                     <div class="card-body d-flex flex-column justify-content-center">
                         <div class="d-flex flex-column mb-3">
                             <div class="fw-bold">Tahun Akademik</div>
                             <ul class="mb-0">
-                                @foreach ($mk_register->mataKuliah->mataKuliahRegister->unique('tahun_akademik') as $mk_register->mataKuliahr)
-                                    <li>{{ $mk_register->mataKuliahr->tahun_akademik }}</li>
+                                @foreach ($mk_register->mataKuliah->mataKuliahRegister->unique('tahun_akademik_awal') as $tahun_akademik)
+                                    <li>{{ $tahun_akademik->tahun_akademik_awal . ' / ' . $tahun_akademik->tahun_akademik_akhir }}</li>
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="d-flex flex-column mb-3">
+                        <div class="d-flex flex-column">
                             <div class="fw-bold">Semester</div>
                             <ul class="mb-0">
                                 @foreach ($mk_register->mataKuliah->mataKuliahRegister->unique('semester') as $mk_register->mataKuliahr)
@@ -60,36 +38,12 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="d-flex flex-column mb-0">
-                            <div class="fw-bold">Kelas Terdaftar</div>
-                            <div class="">
-                                <ul class="mb-0">
-                                    <li>3A</li>
-                                    <li>3B</li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                     <div class="card-footer text-body-secondary py-3">
-                        <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode, 'jenis' => $mk_register->jenis]) }}"
-                            class="d-block">Lihat Detailnya</a>
-                        <a href="{{ route('dosen.mata-kuliah.tujuan-pembelajaran', ['kodeMataKuliah' => $mk_register->mataKuliah->kode, 'jenis' => $mk_register->jenis]) }}"
-                            class="d-block">Lihat Tujuan Pembelajaran</a>
-                        <a href="" class="d-block">Lihat Asesmen Pembelajaran</a>
+                        <a href="{{ route('dosen.mata-kuliah.show', ['kodeMataKuliah' => $mk_register->mataKuliah->kode, 'jenis' => $mk_register->jenis]) }}" class="btn btn-secondary">Lihat Detail</a>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        // $('#tahun-akademik').select2({
-        //     theme: "bootstrap-5",
-        //     width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        //     placeholder: $(this).data('placeholder'),
-        //     allowClear: true
-        // });
-    </script>
-@endpush

@@ -18,9 +18,6 @@ class MataKuliahRegisterController extends Controller
     public function store(MataKuliahRegisterRequest $request, $tahun_kurikulum)
     {
         if ($request->ajax()) {
-            $kurikulum = Master_03_Kurikulum::getKurikulumByYearAndProdiStatic($tahun_kurikulum, Auth::user()->kaprodi->id);
-            $mahasiswa = Master_06_Mahasiswa::where('03_MASTER_kurikulum_id', $kurikulum->id)->get(['nim']);
-
             $validated = $request->validated();
 
             $exists = Master_11_MataKuliahRegister::where('tahun_akademik_awal', $validated['tahun_mulai'])
@@ -35,7 +32,7 @@ class MataKuliahRegisterController extends Controller
             }
 
             try {
-                DB::transaction(function () use ($validated, $mahasiswa) {
+                DB::transaction(function () use ($validated) {
                     $mkr = Master_11_MataKuliahRegister::create([
                         'tahun_akademik_awal' => $validated['tahun_mulai'],
                         'tahun_akademik_akhir' => $validated['tahun_selesai'],
@@ -46,7 +43,6 @@ class MataKuliahRegisterController extends Controller
 
                     $mkr->dosen()->attach($validated['dosen_pengampu']);
                     $mkr->indikatorKinerja()->attach($validated['indikator_kinerja']);
-                    $mkr->mahasiswa()->attach($mahasiswa);
                 });
             } catch (\Exception $e) {
                 return response()->json([
@@ -57,6 +53,63 @@ class MataKuliahRegisterController extends Controller
             return response()->json([
                 'message' => 'Data berhasil disimpan',
             ], 201);
+        }
+    }
+
+    public function show($tahun_kurikulum, $id)
+    {
+        if (request()->ajax()) {
+            $mkr = Master_11_MataKuliahRegister::with('indikatorKinerja', 'dosen')->find($id);
+            $ik = $mkr->indikatorKinerja->pluck('id')->toArray();
+            $dosen = $mkr->dosen->pluck('id')->toArray();
+
+            return response()->json([
+                'mkr' => $mkr,
+                'indikator_kinerja' => $ik,
+                'dosen' => $dosen,
+            ]);
+        }
+    }
+
+    public function update(MataKuliahRegisterRequest $request, $tahun_kurikulum, $id)
+    {
+        if ($request->ajax()) {
+            $validated = $request->validated();
+
+            $exists = Master_11_MataKuliahRegister::where('tahun_akademik_awal', $validated['tahun_mulai'])
+                ->where('jenis', $validated['jenis'])
+                ->where('07_MASTER_mata_kuliah_id', $validated['id_mata_kuliah'])
+                ->first();
+
+            if ($exists) {
+                return response()->json([
+                    'message' => 'Tahun akademik sudah terdaftar.',
+                ], 409);
+            }
+
+            $mkr = Master_11_MataKuliahRegister::find($id);
+
+            try {
+                DB::transaction(function () use ($validated, $mkr) {
+                    $mkr->update([
+                        'tahun_akademik_awal' => $validated['tahun_mulai'],
+                        'tahun_akademik_akhir' => $validated['tahun_selesai'],
+                        'semester' => $validated['semester'],
+                        'jenis' => $validated['jenis']
+                    ]);
+
+                    $mkr->dosen()->sync($validated['dosen_pengampu']);
+                    $mkr->indikatorKinerja()->sync($validated['indikator_kinerja']);
+                });
+            } catch (\Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
+
+            return response()->json([
+                'message' => 'Data berhasil diubah',
+            ], 200);
         }
     }
 }
