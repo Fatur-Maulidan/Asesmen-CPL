@@ -6,7 +6,7 @@
 @endsection
 
 @section('main')
-    @if($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+    @if ($kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
         <div class="row col-12">
             <div class="alert alert-secondary">
                 Kurikulum belum dimulai.
@@ -15,19 +15,23 @@
     @else
         <div class="row mb-5">
             <div class="col-auto">
-                <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" @if(request('domain') == 'sikap') checked @endif>
-                <label class="btn btn-outline-primary rounded-pill px-3" data-filter="SP" for="option1" >Sikap
+                <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off"
+                    @if (request('domain') == 'sikap') checked @endif>
+                <label class="btn btn-outline-primary rounded-pill px-3" data-filter="SP" for="option1">Sikap
                     (SP)</label>
 
-                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off" @if(request('domain') == 'pengetahuan') checked @endif>
+                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off"
+                    @if (request('domain') == 'pengetahuan') checked @endif>
                 <label class="btn btn-outline-primary rounded-pill px-3" data-filter="PP" for="option2">Pengetahuan
                     (PP)</label>
 
-                <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off" @if(request('domain') == 'keterampilan-umum') checked @endif>
+                <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off"
+                    @if (request('domain') == 'keterampilan-umum') checked @endif>
                 <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KU" for="option3">Keterampilan Umum
                     (KU)</label>
 
-                <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off" @if(request('domain') == 'keterampilan-khusus') checked @endif>
+                <input type="radio" class="btn-check" name="options" id="option4" autocomplete="off"
+                    @if (request('domain') == 'keterampilan-khusus') checked @endif>
                 <label class="btn btn-outline-primary rounded-pill px-3" data-filter="KK" for="option4">Keterampilan Khusus
                     (KK)</label>
             </div>
@@ -39,7 +43,7 @@
             </div>
 
             <div class="col-4 overflow-y-scroll" style="max-height: 400px;">
-                @foreach($ketercapaian_cp as $cp)
+                @foreach ($ketercapaian_cp as $cp)
                     <div class="mb-3">
                         <div class="fw-bold">{{ $cp->kode }}</div>
                         <div>{{ $cp->deskripsi }}</div>
@@ -50,12 +54,12 @@
     @endif
 @endsection
 
-@push("scripts")
-    @if(!$kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
+@push('scripts')
+    @if (!$kurikulum->status->is(\App\Enums\StatusKurikulum::Pengelolaan))
         <script>
             const url = "{{ url()->current() }}";
 
-            $('input[type=radio][name=options]').on('click', function () {
+            $('input[type=radio][name=options]').on('click', function() {
                 switch ($(this).attr('id')) {
                     case 'option1':
                         location.href = url + '?domain=sikap'
@@ -102,7 +106,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Ketercapaian CP Program Studi Domain KU',
+                            text: 'Ketercapaian CP Program Studi',
                             font: {
                                 size: 18
                             }
